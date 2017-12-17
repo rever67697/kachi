@@ -27,3 +27,11 @@ nbdist/
 build_log.txt
 .settings/.jsdtscope
 target/
+.settings/.jsdtscope
+.settings/.jsdtscope
+src/main/webapp/META-INF/MANIFEST.MF
+src/main/webapp/WEB-INF/web.xml
+target/classes/application.properties
+target/classes/application.properties
+target/classes/com/team/Application.class
+target/classes/META-INF/MANIFEST.MF

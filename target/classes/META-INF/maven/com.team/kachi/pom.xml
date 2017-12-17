@@ -37,48 +37,52 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--jdbc-->
+        <!-- mybatis -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <!--Mybatis-->
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<!--分页插件--> 
+		<dependency> 
+			<groupId>com.github.pagehelper</groupId> 
+			<artifactId>pagehelper</artifactId> 
+			<version>4.1.1</version>
+		</dependency>
+		<!-- thymeleaf -->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>1.2.2</version>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- 热加载 -->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.2.8</version>
-        </dependency>
-        <!--Mysql / DataSource-->
-        <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <!-- oracle -->
-        <dependency>
-            <groupId>com.oracle</groupId>  
-            <artifactId>ojdbc14</artifactId>
-            <version>10.2.0.1.0</version>  
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
         <!--druid-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.0.18</version>
         </dependency>
+        <!-- memcached 依赖 -->
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.1.43</version>
-        </dependency>
+		    <groupId>com.google.code.simple-spring-memcached</groupId>
+		    <artifactId>xmemcached-provider</artifactId>
+		    <version>3.6.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.google.code.simple-spring-memcached</groupId>
+		    <artifactId>spring-cache</artifactId>
+		    <version>3.6.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
