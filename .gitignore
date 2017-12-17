@@ -22,3 +22,9 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+*.launch
+.settings/.jsdtscope
+build_log.txt
+target/classes/application.properties
+target/classes/com/team/Application.class
+target/classes/com/team/Application.class
