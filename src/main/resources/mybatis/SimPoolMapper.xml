@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.SimPoolDao">
+
+	<select id="getSimPoolByDeparment" resultType="com.team.model.SimPool">
+		select r.*,
+			   t.name departmentName 
+		from m_simpool r,
+			 m_department t
+		where r.departmentId=t.id
+		  and t.status=0
+	</select> 
+	
+</mapper>

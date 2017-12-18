@@ -1,17 +1,247 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>index.html</title>
+    <title>卡池后台管理</title>
 	
-    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-    <meta http-equiv="description" content="this is my page">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    
-    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<style type="text/css">
+		.selected{  background: #ffe48d !important;}
+	</style>
+	<script type="text/javascript">
+	$(document).ready(function () {
+		$.ajax({
+			url:getContextPath()+'/getMenu',
+			type:'get',
+			success:function(data){
+				InitLeftMenu(data);
+			}
+		});
+	
+		tabClose();
+		tabCloseEven();
+		
+		$("#accordion").delegate('.easyui-accordion li a','click',function(){
+			var tabTitle = $(this).text();  
+		    var url = $(this).attr("rel");  
+		    var iconCls = $(this).attr("class");
+		    addTab(tabTitle, url,iconCls);  
+		    $('.easyui-accordion li div').removeClass("selected");  
+		    $(this).parent().addClass("selected"); 
+		});  
+	});
+	
 
-  </head>
-  
-  <body>
-    This is my HTML page. <br>
-  </body>
+
+	function addTab(subtitle, url,iconCls) {  
+	    if (!$('#tabs').tabs('exists', subtitle)) {  
+	        $('#tabs').tabs('add', {  
+	            title: subtitle,  
+	            content: createFrame(url),  
+	            closable: true,  
+	            width: $('#mainPanle').width() - 10,  
+	            height: $('#mainPanle').height() - 26 ,
+	            iconCls:iconCls
+	        });  
+	    } else {  
+	        $('#tabs').tabs('select', subtitle);  
+	        
+	   }  
+	    tabClose(); 
+	}  
+
+
+	function createFrame(url) {  
+	    var s = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';  
+	    return s;  
+	}  
+
+
+	function tabClose() {  
+	    /*双击关闭TAB选项卡*/  
+	    $(".tabs-inner").dblclick(function () {  
+	        var subtitle = $(this).children("span").text();  
+	        $('#tabs').tabs('close', subtitle);  
+	    }); 
+	
+	    $(".tabs-inner").bind('contextmenu', function (e) {  
+	        $('#mm').menu('show', {  
+	            left: e.pageX,  
+	            top: e.pageY,  
+	        });  
+	        var subtitle = $(this).children("span").text();  
+	        $('#mm').data("currtab", subtitle);  
+	        return false;  
+	    });  
+	}  
+
+	//绑定右键菜单事件  
+	function tabCloseEven() {  
+	    //关闭当前  
+	$('#mm-tabclose').click(function () {  
+	        var currtab_title = $('#mm').data("currtab");  
+	        $('#tabs').tabs('close', currtab_title);  
+	    }); 
+	    //全部关闭  
+	$('#mm-tabcloseall').click(function () {  
+	        $('.tabs-inner span').each(function (i, n) {  
+	            var t = $(n).text();  
+	           $('#tabs').tabs('close', t);  
+	        });  
+	    });  
+
+    //关闭除当前之外的TAB  
+    $('#mm-tabcloseother').click(function () {  
+        var currtab_title = $('#mm').data("currtab");  
+        $('.tabs-inner span').each(function (i, n) {  
+            var t = $(n).text();  
+            if (t != currtab_title)  
+                $('#tabs').tabs('close', t);  
+        });  
+    });  
+    //关闭当前右侧的TAB  
+    $('#mm-tabcloseright').click(function () {  
+        var nextall = $('.tabs-selected').nextAll();  
+        if (nextall.length == 0) {  
+           //msgShow('系统提示','后边没有啦~~','error');  
+            alert('后边没有啦~~');  
+            return false;  
+        }  
+        nextall.each(function (i, n) {  
+            var t = $('a:eq(0) span', $(n)).text();  
+            $('#tabs').tabs('close', t);  
+        });  
+        return false;  
+   });  
+    //关闭当前左侧的TAB  
+    $('#mm-tabcloseleft').click(function () {  
+        var prevall = $('.tabs-selected').prevAll();  
+        if (prevall.length == 0) {  
+            alert('到头了，前边没有啦~~');  
+            return false;  
+        }  
+        prevall.each(function (i, n) {  
+            var t = $('a:eq(0) span', $(n)).text();  
+            $('#tabs').tabs('close', t);  
+        });  
+        return false;  
+    });  
+
+    //退出  
+    $("#mm-exit").click(function () {  
+        $('#mm').menu('hide');  
+    	}); 
+    //更新
+    $('#mm-tabupdate').click(function(){
+		var currTab = $('#tabs').tabs('getSelected');
+		console.log($(currTab.panel('options').content).attr('src'));
+		var url = $(currTab.panel('options').content).attr('src');
+		$('#tabs').tabs('update',{
+			tab:currTab,
+			options:{
+				content:createFrame(url)
+			}
+		});
+	});
+	}
+	
+	function InitLeftMenu(data) {
+	  $('.panel-title').text('菜单-导航');
+	  
+	  $("#nav").find(".panel-body").each(function(index) {
+		var t=$(this).panel("options").title;
+	    $('#nav').accordion("remove",t);
+	  });
+	  
+     $("#nav").accordion({animate:false});
+     $.each(data, function(i, n) {
+		var menulist ='';
+		menulist +='<ul style="padding-left:5px;">';
+        $.each(n.children, function(j, o) {
+        	menulist += '<li><div><a href="javascript:void(0)" rel="' + getContextPath()+'/'+o.url + '"><span class="icon '+o.iconCls+'" >&nbsp;</span><span '
+        	menulist += 'class="nav leftMenuSel">' +o.name + '</span></a></div></li> ';
+        });
+		menulist += '</ul>';
+		$('#nav').accordion('add', {
+            title: '<span class="accordionCls">'+n.name+'</span>',
+			//title:n.menuname,
+            content: menulist,
+            iconCls: 'icon ' + n.iconCls,
+            height:'15px'
+        });
+		
+     });
+     //给所有有连接的子菜单加上事件
+	 $('.easyui-accordion div ul li a').click(function(){
+		var tabTitle = $(this).children('.nav').text();
+		var url = $(this).attr("rel");
+		//获取菜单前面的图标样式
+		var icon = 'icon '+$('.icon',this).attr('class');
+		if(''!=url&&'null'!=url) {
+			addTab(tabTitle,url,icon);
+		}else {
+			addTab(tabTitle,'pages/public/error.jsp',icon);
+		}
+			
+		$('.easyui-accordion div ul li div').removeClass("selected");
+		$(this).parent().addClass("selected");
+	 }).hover(function(){
+		$(this).parent().addClass("hover");
+	 },function(){
+		$(this).parent().removeClass("hover");
+	 });
+	
+		//选中第一个子菜单
+		var panels = $('#nav').accordion('panels');
+		var t = panels[0].panel('options').title;
+	    $('#nav').accordion('select', t);
+	}
+	
+	
+</script>
+</head>
+<body class="easyui-layout" >
+		<!-- 定义上面的层 -->
+		<div region="north" title="" split="false" style="height:60px" >
+			
+		</div>
+		<!-- 定义下面的层 -->
+		<div region="south" title="" split="false" style="height:0">
+			
+		</div>
+		<!-- 定义右边的层 -->
+		<div region="east" iconCls="icon-reload" title="Tree Menu" split="true" style="width:0px;">
+			
+		</div>
+		<!-- 定义左边的层 -->
+		<div region="west" split="false" title="菜单" style="width:200px;padding:1px;overflow:hidden;">
+			<div id="nav" class="easyui-accordion" fit="true" border="false">
+				
+			</div>
+		</div>
+		<!-- 定义中间层 -->
+		<div region="center" title="" style="overflow:hidden;" id="mainPanle" >
+			<div id="tabs" class="easyui-tabs" fit="true" border="false">
+				
+			</div>
+		</div>
+	<div id="mm" class="easyui-menu" style="width:150px;">
+		<div id="mm-tabupdate" iconCls="icon-reload">刷新</div>
+		<div id="mm-tabclose">关闭</div>
+		<div id="mm-tabcloseall">全部关闭</div>
+		<div id="mm-tabcloseother">除此之外全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="mm-tabcloseright">当前页右侧全部关闭</div>
+		<div id="mm-tabcloseleft">当前页左侧全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="mm-exit">退出</div>
+	</div>
+		
+		
+</body>
 </html>

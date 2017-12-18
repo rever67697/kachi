@@ -29,7 +29,7 @@ public class SimPool implements Serializable{
 	
 	private String inIp;//SUM Controller内网IP
 	
-	private String outIp;//SUM Controller外网IP
+	private String oupIp;//SUM Controller外网IP
 	
 	private Integer port;//端口
 	
@@ -38,6 +38,16 @@ public class SimPool implements Serializable{
 	private Integer webPort;//卡池显示端口
 	
 	private String lionVersion;//Controller软件版本
+	
+	private String departmentName;//代理商名称，bean额外加的，为了方便子啊页面上显示
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -119,12 +129,12 @@ public class SimPool implements Serializable{
 		this.inIp = inIp;
 	}
 
-	public String getOutIp() {
-		return outIp;
+	public String getOupIp() {
+		return oupIp;
 	}
 
-	public void setOutIp(String outIp) {
-		this.outIp = outIp;
+	public void setOupIp(String oupIp) {
+		this.oupIp = oupIp;
 	}
 
 	public Integer getPort() {
