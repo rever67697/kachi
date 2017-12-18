@@ -5,10 +5,10 @@
 	<select id="getSimPoolByDeparment" resultType="com.team.model.SimPool">
 		select r.*,
 			   t.name departmentName 
-		from m_simpool r,
-			 m_department t
-		where r.departmentId=t.id
-		  and t.status=0
+		from m_simpool r
+		left join m_department t
+		on r.departmentId=t.id
+		   and t.status=0
 	</select> 
 	
 </mapper>

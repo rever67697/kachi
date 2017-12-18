@@ -53,3 +53,9 @@ function eraseCookie(name)
 {
 	createCookie(name,"",-1);
 } 
+
+var colors={"blue":"rgb(67,116,224)",
+			"gray":"rgb(128,128,128)",
+			"green":"rgb(51,194,7)",
+			"red":"rgb(243,123,29)"
+			};

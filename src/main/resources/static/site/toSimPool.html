@@ -27,7 +27,7 @@
 			         	{field:'spid',title:'卡池编号',width:80},
 			         	{field:'name',title:'卡池名称',width:100},
 			         	{field:'isActive',title:'活动状态',width:100,formatter:function(value,rec,index){
-			         		return value=="1"?"正常":"暂停";
+			         		return '<div style="color:#fff;width:90px;text-align:center;background:'+(value=="1"?colors.blue:colors.red)+'">'+(value=="1"?"正常":"暂停")+'</div>';
 			         	}},
 			         	{field:'oupIp',title:'卡池外网IP',width:100},
 			         	{field:'type',title:'卡池类型',width:100},
