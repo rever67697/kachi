@@ -8,18 +8,26 @@
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.tooltip.js"></script>
 	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
-	<script type="text/javascript" src="../js/frameQuery.js"></script>
-
+	<style type="text/css">
+		.card_container{width:100%;border:1px solid transparent;height:200px}
+		.card_container:after{display:block;content:'';height:0;clear:both}
+		.box{width:20px;height:10px;margin:5px;float:left;cursor:pointer}
+		.title{padding:5px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);display:inline-block;margin-bottom:10px}
+	</style>
   </head>
   
   <body>
-    	<div id="dg" style=""></div>
+  	<div id="dg"></div>
+    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
+    	<div class="title"></div>
+    	<div class="card_container" ></div>
+    </div>
   </body>
   <script type="text/javascript">
-	$(function(){
-		$('#dg').datagrid({
+  	var options={
 			title:'卡池设备列表',
 			columns:[[
 						{field:'ck',checkbox:true}, 
@@ -52,12 +60,59 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
+		};
+  
+	$(function(){
+		$('#dg').datagrid(options);
+		
+		$('#cardsDialog').dialog({
+			modal : true,
+   			resizable:true,
+   			width:800,
+   			height:350,
+   			cache: false,
+			title : "卡池对应卡信息"
 		});
-	
+		
 	});
   
   	function doCardsInfo(){
-  		
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             $.getJSON(getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             	var cardList = data.rows;
+             	if(cardList && cardList.length>0){
+             		$('.card_container').html('');
+             		var total = rowData.type?rowData.type:cardList.length;
+             		var count = 0;
+             		for(var i = 0;i < total;i++){
+             			var box = v_status["1"];
+             			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
+             				box = v_status[cardList[count].status];
+             				count ++;
+             			}
+             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container'))
+             			.tooltip({
+						    position: 'top',
+						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
+						    onShow: function(){
+						    	var color = $(this).attr('color');
+								$(this).tooltip('tip').css({
+									backgroundColor:color,
+								});
+						    }
+						});	;
+             		}
+             		console.log(rowData.name);
+             		$('.title').html(rowData.name);
+             		$('#cardsDialog').dialog('open');
+             	}
+             });
+        }
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
   	}
   	
   	function doModifyDept(){

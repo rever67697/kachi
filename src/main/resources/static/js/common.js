@@ -57,5 +57,13 @@ function eraseCookie(name)
 var colors={"blue":"rgb(67,116,224)",
 			"gray":"rgb(128,128,128)",
 			"green":"rgb(51,194,7)",
-			"red":"rgb(243,123,29)"
-			};
+			"red":"rgb(243,123,29)",
+			"black":"rgb(0,0,0)"
+		};
+
+var v_status={"0":["正常",colors.blue],
+			  "1":["没卡",colors.black],
+			  "2":["指定",colors.green],
+			  "3":["停机",colors.red],
+			  "4":["作废",colors.gray]
+		};

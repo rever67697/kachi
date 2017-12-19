@@ -1,9 +1,7 @@
 package com.team.service;
 
-import java.util.List;
 
 import com.team.model.ResultList;
-import com.team.model.SimPool;
 
 /**
  * 卡池表相关操作	m_simpool
