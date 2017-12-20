@@ -16,10 +16,23 @@
 		.card_container:after{display:block;content:'';height:0;clear:both}
 		.box{width:20px;height:10px;margin:5px;float:left;cursor:pointer}
 		.title{padding:5px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);display:inline-block;margin-bottom:10px}
+		.table{border-collapse:collapse;width:100%}
+		.table .td{padding:2px 5px}
 	</style>
   </head>
   
   <body>
+  	<form id="queryForm">
+  		<table class="table">
+  			<tr>
+  				<td>卡池编号：</td><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+  				<td>卡池名称：</td><td><input name="name" placeholder="请输入卡池名称"/></td>
+  				<td>卡池状态：</td>
+  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
+  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
+  			</tr>
+  		</table>
+  	</form>
   	<div id="dg"></div>
     <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
     	<div class="title"></div>
@@ -29,6 +42,7 @@
   <script type="text/javascript">
   	var options={
 			title:'卡池设备列表',
+			queryParams:$('#queryForm').serializeObject(),
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'卡池id',hidden:true},
@@ -118,6 +132,10 @@
   	function doModifyDept(){
   		
   	}
-  
+  	
+  	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
   </script>
 </html>

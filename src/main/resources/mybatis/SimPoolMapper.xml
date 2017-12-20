@@ -2,13 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.SimPoolDao">
 
-	<select id="getSimPoolByDeparment" resultType="com.team.model.SimPool">
+	<select id="getSimPoolByDeparment" resultType="com.team.model.SimPool" parameterType="java.util.Map">
 		select r.*,
 			   t.name departmentName 
 		from m_simpool r
 		left join m_department t
 		on r.departmentId=t.id
 		   and t.status=0
+		where 1=1
+		<if test="departmentId!=null" >  
+         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+        </if>
+		<if test="spid!=null" >  
+         	and r.spid = #{spid,jdbcType=INTEGER}  
+        </if>
+		<if test="isActive!=null" >  
+         	and r.isActive = #{isActive,jdbcType=INTEGER}  
+        </if>
+        <if test="name!=null and name!=''" >  
+         	and r.name like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
+        </if>
 	</select> 
-	
 </mapper>

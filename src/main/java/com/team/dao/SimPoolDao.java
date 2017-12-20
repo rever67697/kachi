@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team.model.SimPool;
 
@@ -17,6 +18,6 @@ public interface SimPoolDao {
 	 *@return
 	 *return
 	 */
-	public List<SimPool> getSimPoolByDeparment(int departmentId);
+	public List<SimPool> getSimPoolByDeparment(Map<String, Object> map);
 	
 }

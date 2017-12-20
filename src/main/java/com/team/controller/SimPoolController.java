@@ -18,8 +18,8 @@ public class SimPoolController {
 	private SimPoolService simPoolService;
 	
 	@PostMapping("/getSimPoolByDept")
-	public Object getSimPoolByDeparment(int page,int rows){
-		return simPoolService.getSimPoolByDeparment(0, page, rows);
+	public Object getSimPoolByDeparment(String spid,String name,String isActive,int page,int rows){
+		return simPoolService.getSimPoolByDeparment(null,spid,name,isActive, page, rows);
 	}
 	
 }

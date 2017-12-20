@@ -10,6 +10,6 @@ import com.team.model.ResultList;
  */
 public interface SimPoolService {
 	
-	public ResultList getSimPoolByDeparment(int departmentId,int page,int rows);
+	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows);
 	
 }
