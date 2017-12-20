@@ -13,24 +13,32 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	<form id="queryForm">
-  		<table class="table">
-  			<tr>
-  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
-  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
-  				<th>卡池状态：</th>
-  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
-  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-  			</tr>
-  		</table>
-  	</form>
-  	<div id="dg"></div>
-    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
-    	<div class="title"></div>
-    	<div class="card_container" ></div>
-    </div>
+  	<div id="tt" class="easyui-tabs">
+	    <div title="概要信息" style="" iconCls="icon icon-outline">
+			tab1
+	    </div>
+	    <div title="卡池设备" iconCls="icon icon-device">
+		  	<form id="queryForm">
+		  		<table class="table">
+		  			<tr>
+		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
+		  				<th>卡池状态：</th>
+		  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
+		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  			</tr>
+		  		</table>
+		  	</form>
+		  	<div id="dg"></div>
+		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
+		    	<div class="title"></div>
+		    	<div class="card_container" ></div>
+		    </div>
+	    </div>
+	</div>
   </body>
   <script type="text/javascript">
+  	$('#tt').css('height',window.innerHeight*0.98+'px');
   	var options={
 			title:'卡池设备列表',
 			queryParams:$('#queryForm').serializeObject(),
@@ -53,11 +61,16 @@
 				  		iconCls: 'icon-yj-log',
 				  		text:'查看卡信息',
 				  		handler: doCardsInfo
-				  	},'-',{
+				  	  },'-',{
 				  		iconCls: 'icon-edit',
 				  		text:'调整归属商',
 				  		handler: doModifyDept
-				  	}],
+				  	  },'-',{
+				  		iconCls: 'icon-add',
+				  		text:'预分配卡池',
+				  		handler: doGivePool
+				  	  }
+				  	 ],
 			url:getContextPath()+'/getSimPoolByDept',
 			iconCls:'icon-tip',
 			nowrap:false,
@@ -127,6 +140,9 @@
   	function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
+  	}
+  	
+  	function doGivePool(){
   	}
   </script>
 </html>

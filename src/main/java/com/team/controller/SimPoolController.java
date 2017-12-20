@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.SimPoolService;
+import com.team.util.StringUtil;
 
 /**
  * 创建日期：2017-12-18下午3:51:14
@@ -20,6 +21,11 @@ public class SimPoolController {
 	@PostMapping("/getSimPoolByDept")
 	public Object getSimPoolByDeparment(String spid,String name,String isActive,int page,int rows){
 		return simPoolService.getSimPoolByDeparment(null,spid,name,isActive, page, rows);
+	}
+	
+	@GetMapping("/getPoolOutlineInfo")
+	public Object getPoolOutlineInfo(String departmentId){
+		return simPoolService.getOutlineInfo(StringUtil.putInteger(departmentId));
 	}
 	
 }

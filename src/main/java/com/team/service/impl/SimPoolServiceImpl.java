@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimPoolDao;
+import com.team.model.OutlineInfo;
 import com.team.model.ResultList;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
@@ -39,6 +40,23 @@ public class SimPoolServiceImpl implements SimPoolService{
 		List<SimPool> list = simPoolDao.getSimPoolByDeparment(map);
 		PageInfo<SimPool> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);
+	}
+
+	@Override
+	/**
+	 * 根据代理商查找卡池的总览信息
+	 *@param departmentId
+	 *@return
+	 *return
+	 */
+	public OutlineInfo getOutlineInfo(Integer departmentId) {
+		List<OutlineInfo> list = simPoolDao.getOutlineInfo(departmentId);
+		OutlineInfo info = null;
+		if(list!=null&&list.size()>0){
+			info = list.get(0);
+			info.setOfflinePoolCount(info.getSimPoolCount()-info.getOnlinePoolCount());
+		}
+		return info;
 	}
 
 }

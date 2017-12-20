@@ -3,6 +3,9 @@ package com.team.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.team.model.OutlineInfo;
 import com.team.model.SimPool;
 
 /**
@@ -19,5 +22,13 @@ public interface SimPoolDao {
 	 *return
 	 */
 	public List<SimPool> getSimPoolByDeparment(Map<String, Object> map);
+	
+	/**
+	 * 根据代理商查找卡池的总览信息
+	 *@param departmentId
+	 *@return
+	 *return
+	 */
+	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
 	
 }
