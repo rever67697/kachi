@@ -11,25 +11,16 @@
 	<script type="text/javascript" src="../js/jquery.tooltip.js"></script>
 	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
-	<style type="text/css">
-		.card_container{width:100%;border:1px solid transparent;height:200px}
-		.card_container:after{display:block;content:'';height:0;clear:both}
-		.box{width:20px;height:10px;margin:5px;float:left;cursor:pointer}
-		.title{padding:5px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);display:inline-block;margin-bottom:10px}
-		.table{border-collapse:collapse;width:100%}
-		.table .td{padding:2px 5px}
-	</style>
   </head>
-  
   <body>
   	<form id="queryForm">
   		<table class="table">
   			<tr>
-  				<td>卡池编号：</td><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
-  				<td>卡池名称：</td><td><input name="name" placeholder="请输入卡池名称"/></td>
-  				<td>卡池状态：</td>
+  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
+  				<th>卡池状态：</th>
   				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
-  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
+  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
   			</tr>
   		</table>
   	</form>
@@ -119,7 +110,7 @@
 						});	;
              		}
              		console.log(rowData.name);
-             		$('.title').html(rowData.name);
+             		$('.title').html(rowData.name+' （'+rowData.type+'）');
              		$('#cardsDialog').dialog('open');
              	}
              });
