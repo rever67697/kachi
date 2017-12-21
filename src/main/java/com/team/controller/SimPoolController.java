@@ -1,5 +1,7 @@
 package com.team.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class SimPoolController {
 	}
 	
 	@GetMapping("/getPoolOutlineInfo")
-	public Object getPoolOutlineInfo(String departmentId){
+	public Object getPoolOutlineInfo(String departmentId,HttpServletRequest request){
 		return simPoolService.getOutlineInfo(StringUtil.putInteger(departmentId));
 	}
 	
