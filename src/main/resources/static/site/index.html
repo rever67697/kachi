@@ -16,7 +16,7 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
 		$.ajax({
-			url:getContextPath()+'/getMenu',
+			url:kcJs.fn.getContextPath()+'/getMenu',
 			type:'get',
 			success:function(data){
 				InitLeftMenu(data);
@@ -163,7 +163,7 @@
 		var menulist ='';
 		menulist +='<ul style="padding-left:5px;">';
         $.each(n.children, function(j, o) {
-        	menulist += '<li><div><a href="javascript:void(0)" rel="' + getContextPath()+'/'+o.url + '"><span class="icon '+o.iconCls+'" >&nbsp;</span><span '
+        	menulist += '<li><div><a href="javascript:void(0)" rel="' + kcJs.fn.getContextPath()+'/'+o.url + '"><span class="icon '+o.iconCls+'" >&nbsp;</span><span '
         	menulist += 'class="nav leftMenuSel">' +o.name + '</span></a></div></li> ';
         });
 		menulist += '</ul>';

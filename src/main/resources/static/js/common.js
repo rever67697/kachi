@@ -1,10 +1,35 @@
-function getContextPath(fullUrl){
-	   if(fullUrl==null || fullUrl==''){
-		   fullUrl = window.location.href+'';
-	   }
-	   var arrUrl = fullUrl.split('/');
-	   return arrUrl[0]+'//'+arrUrl[2]+'/'+arrUrl[3];
-}
+var kcJs=
+(function($) {
+    //定义颜色
+    var v_colors={"blue":"rgb(67,116,224)",
+			"gray":"rgb(128,128,128)",
+			"green":"rgb(51,194,7)",
+			"red":"rgb(243,123,29)",
+			"black":"rgb(0,0,0)"
+		   };	
+    var v_status={"0":["正常",v_colors.blue],
+			  "1":["没卡",v_colors.black],
+			  "2":["指定",v_colors.green],
+			  "3":["停机",v_colors.red],
+			  "4":["作废",v_colors.gray]
+			};
+	_FUNC={
+		getContextPath:function(fullUrl){
+			   if(fullUrl==null || fullUrl==''){
+				   fullUrl = window.location.href+'';
+			   }
+			   var arrUrl = fullUrl.split('/');
+			   return arrUrl[0]+'//'+arrUrl[2]+'/'+arrUrl[3];
+		},	
+		getCardStatus:function(status){
+			return v_status[status];
+		},
+		getColor:function(o){
+			return v_colors[o];
+		}
+	};
+	return {fn:_FUNC};
+})(jQuery);	
 //解决在火狐上不兼容
 $.fn.serializeObject = function()
 {
@@ -22,7 +47,6 @@ $.fn.serializeObject = function()
  });
  return o;
 };
-
 //cookie
 function createCookie(name,value,days)
 {
@@ -53,17 +77,3 @@ function eraseCookie(name)
 {
 	createCookie(name,"",-1);
 } 
-
-var colors={"blue":"rgb(67,116,224)",
-			"gray":"rgb(128,128,128)",
-			"green":"rgb(51,194,7)",
-			"red":"rgb(243,123,29)",
-			"black":"rgb(0,0,0)"
-		};
-
-var v_status={"0":["正常",colors.blue],
-			  "1":["没卡",colors.black],
-			  "2":["指定",colors.green],
-			  "3":["停机",colors.red],
-			  "4":["作废",colors.gray]
-		};
