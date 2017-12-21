@@ -14,8 +14,20 @@
   </head>
   <body>
   	<div id="tt" class="easyui-tabs">
-	    <div title="概要信息" style="" iconCls="icon icon-outline">
-			<span th:text="${myName}"></span>
+	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
+		    <table class="table kc-outline">
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount"></div><div>卡池总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="onlinePoolCount"></div><div>在线卡池</div></td>
+		    		<td><div class="kc-outline-number gray" id="offlinePoolCount"></div><div>离线卡池</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="cardSlotCount"></div><div>卡槽总数</div></td>
+		    	</tr>
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>已插卡数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="noCardCount"></div><div>未插卡数</div></td>
+		    		<td></td><td></td>
+		    	</tr>
+		    </table>
 	    </div>
 	    <div title="卡池设备" iconCls="icon icon-device">
 		  	<form id="queryForm">
@@ -24,7 +36,7 @@
 		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
 		  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
 		  				<th>卡池状态：</th>
-		  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
+		  				<td><select name="isActive"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
 		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 		  			</tr>
 		  		</table>
@@ -82,6 +94,8 @@
 		};
   
 	$(function(){
+		getCardPoolInfo();
+	
 		$('#dg').datagrid(options);
 		
 		$('#cardsDialog').dialog({
@@ -143,6 +157,19 @@
   	}
   	
   	function doGivePool(){
+  	}
+  	
+  	function getCardPoolInfo(){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
+  			if(data){
+  				$('#simPoolCount').text(data.simPoolCount);
+  				$('#onlinePoolCount').text(data.onlinePoolCount);
+  				$('#offlinePoolCount').text(data.offlinePoolCount);
+  				$('#cardSlotCount').text(data.cardSlotCount);
+  				$('#simCardCount').text(data.simCardCount);
+  				$('#noCardCount').text(data.cardSlotCount-data.simCardCount);
+  			}
+  		});
   	}
   </script>
 </html>

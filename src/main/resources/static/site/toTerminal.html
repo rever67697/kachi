@@ -12,6 +12,129 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	终端管理
+	  	<form id="queryForm">
+	  		<table class="table">
+	  			<tr>
+	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+	  				<th>终端状态：</th>
+	  				<td><select name="status">
+		  					<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
+		  					<option value="2">停用</option><option value="3">注销</option>
+	  					</select>
+	  				</td>
+	  				<th>激活状态：</th>
+	  				<td><select name="activated">
+		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
+	  					</select>
+	  				</td>
+	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+	  			</tr>
+	  		</table>
+	  	</form>
+	  	<div id="dg"></div>
   </body>
+  <script type="text/javascript">
+  	var options={
+			title:'终端设备列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'终端id',hidden:true},
+			         	{field:'tsid',title:'终端编号',width:80},
+			         	{field:'status',title:'活动状态',width:100,formatter:function(value,rec,index){
+			         		var status = kcJs.fn.getTerminalStatus(value);
+			         		return status?('<div style="color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>'):'';
+			         	}},
+			         	{field:'activated',title:'是否激活',width:80,formatter:function(value,rec,index){
+			         		value=value+'';
+			         		return value?(value=='1'?'已激活':'未激活'):'';
+			         	}},
+			         	{field:'model',title:'终端型号',width:100},
+			         	{field:'sVersion',title:'软件版本',width:100},
+			         	{field:'upLog',title:'上传日志',width:100,formatter:function(value,rec,index){
+			         		value=value+'';
+			         		return value?(value=='1'?'上传':'不上传'):'';
+			         	}},
+			         	{field:'usedVpn',title:'是否支持VPN',width:80},
+			         	{field:'usedSoft',title:'是否支持软卡',width:80},
+			         	{field:'departmentName',title:'所属部门',width:150},
+			         	{field:'countryName',title:'所在地区',width:150}
+					]],
+			toolbar: [{
+				  		iconCls: 'icon-add',
+				  		text:'添加终端',
+				  		handler: doAdd
+				  	  },'-',{
+				  		iconCls: 'icon-export_xls',
+				  		text:'excel上传',
+				  		handler: doUpload
+				  	  },'-',{
+				  		iconCls: 'icon-edit',
+				  		text:'修改',
+				  		handler: doModify
+				  	  },'-',{
+				  		iconCls: 'icon-search',
+				  		text:'查看历史',
+				  		handler: doHistory
+				  	  },'-',{
+				  		iconCls: 'icon-nkey',
+				  		text:'查看占用流量卡',
+				  		handler: doCard
+				  	  },'-',{
+				  		iconCls: 'icon-cancel',
+				  		text:'删除',
+				  		handler: doDelete
+				  	  }
+				  	 ],
+			url:kcJs.fn.getContextPath()+'/getTerminalByDept',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+		};
+  
+	$(function(){
+		$('#dg').datagrid(options);
+	});
+	
+	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
+  
+  	function doAdd(){
+  		
+  	}
+  	
+  	function doUpload(){
+  		
+  	}
+  	
+  	function doModify(){
+  	
+  	}
+  	
+  	function doHistory(){
+  	
+  	}
+  	
+  	function doCard(){
+  	
+  	}
+  	
+  	function doDelete(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             /* var rowData = $('#dg').datagrid("getSelected");
+             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             }); */
+        }
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
+  	}
+  	
+  </script>
 </html>

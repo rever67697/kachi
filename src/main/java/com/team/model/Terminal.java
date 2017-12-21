@@ -45,13 +45,34 @@ public class Terminal implements Serializable{
 	
 	private Integer departmentId;//部门ID
 	
-	private String medi;//WCDMA的MEID
+	private String meid;//WCDMA的MEID
 	
 	private Integer saleType;//销售类型
 	
 	private Integer resetWifi;//是否重置wifi：0：不重置；1：重置
 	
 	private String androidVersion;
+	
+	private String departmentName;
+	
+	private String countryName;
+	
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -198,11 +219,11 @@ public class Terminal implements Serializable{
 	}
 
 	public String getMedi() {
-		return medi;
+		return meid;
 	}
 
-	public void setMedi(String medi) {
-		this.medi = medi;
+	public void setMedi(String meid) {
+		this.meid = meid;
 	}
 
 	public Integer getSaleType() {

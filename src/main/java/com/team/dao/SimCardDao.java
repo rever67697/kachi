@@ -2,6 +2,8 @@ package com.team.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.team.model.SimCard;
 
 /**
@@ -17,6 +19,6 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public List<SimCard> getSimCardByPool(int cpId);
+	public List<SimCard> getSimCardByPool(@Param("cpId")int cpId);
 	
 }

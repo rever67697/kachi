@@ -2,16 +2,24 @@ var kcJs=
 (function($) {
     //定义颜色
     var v_colors={"blue":"rgb(67,116,224)",
-			"gray":"rgb(128,128,128)",
-			"green":"rgb(51,194,7)",
-			"red":"rgb(243,123,29)",
-			"black":"rgb(0,0,0)"
-		   };	
-    var v_status={"0":["正常",v_colors.blue],
-			  "1":["没卡",v_colors.black],
-			  "2":["指定",v_colors.green],
-			  "3":["停机",v_colors.red],
-			  "4":["作废",v_colors.gray]
+				 "gray":"rgb(128,128,128)",
+				 "green":"rgb(51,194,7)",
+				 "red":"rgb(243,123,29)",
+				 "black":"rgb(0,0,0)",
+				 "light-blue":"rgb(87,181,227)"
+		   };
+    //卡状态
+    var c_status={"0":["正常",v_colors.blue],
+			      "1":["没卡",v_colors.black],
+			      "2":["指定",v_colors.green],
+			      "3":["停机",v_colors.red],
+			      "4":["作废",v_colors.gray]
+			};
+    //终端状态
+    var t_status={"0":["正常",v_colors.blue],
+			  	  "1":["未初始化",v_colors.green],
+			  	  "2":["停用",v_colors.red],
+			  	  "3":["注销",v_colors.gray]
 			};
 	_FUNC={
 		getContextPath:function(fullUrl){
@@ -21,11 +29,14 @@ var kcJs=
 			   var arrUrl = fullUrl.split('/');
 			   return arrUrl[0]+'//'+arrUrl[2]+'/'+arrUrl[3];
 		},	
-		getCardStatus:function(status){
-			return v_status[status];
+		getCardStatus:function(o){
+			return c_status[o];
 		},
 		getColor:function(o){
 			return v_colors[o];
+		},
+		getTerminalStatus:function(o){
+			return t_status[o];
 		}
 	};
 	return {fn:_FUNC};
