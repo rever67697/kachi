@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
   </head>
   <body>
 	  	<form id="queryForm">
@@ -32,6 +33,13 @@
 	  		</table>
 	  	</form>
 	  	<div id="dg"></div>
+	  	<div id="uploadDialog"  class="excel" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  		<table class="excel">
+	  			<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
+	  			<tr style="height:40px"></tr>
+	  			<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
+	  		</table>
+	  	</div>
   </body>
   <script type="text/javascript">
   	var options={
@@ -62,7 +70,7 @@
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-add',
-				  		text:'添加终端',
+				  		text:'添加',
 				  		handler: doAdd
 				  	  },'-',{
 				  		iconCls: 'icon-export_xls',
@@ -93,10 +101,20 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
+			height:window.innerHeight*0.89
 		};
   
 	$(function(){
 		$('#dg').datagrid(options);
+		
+		$('#uploadDialog').dialog({
+			modal : true,
+   			resizable:true,
+   			width:500,
+   			height:200,
+   			cache: false,
+			title : "excel上传终端信息"
+		});
 	});
 	
 	function doQuery(){
@@ -109,7 +127,7 @@
   	}
   	
   	function doUpload(){
-  		
+  		$('#uploadDialog').dialog('open');
   	}
   	
   	function doModify(){
@@ -136,5 +154,32 @@
         }
   	}
   	
+  	function upload(){
+	  	if($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1){
+			$('#uploadDialog').dialog('close');
+			$('#dg').datagrid('loading');
+			$.ajaxFileUpload({
+				url:kcJs.fn.getContextPath()+'/uploadTerminalByExcel',
+				secureuri : false,
+				fileElementId : 'file',
+				dataType:'json',
+				success:function(data,status){
+					$('#dg').datagrid('loaded');
+					console.log(data);
+					if(data && data.code){
+							$.messager.alert('提示',data.code=='200'?'上传成功！':data.msg,'info');
+					}else{
+						$.messager.alert('提示','上传失败','info');
+					}
+				},
+				error:function(data, status, e) {
+					$('#dg').datagrid('loaded');
+					$.messager.alert('提示','未知错误!!!','info');
+				}
+			});  
+		}else{
+			$.messager.alert('提示','请上传指定的excel模板！','info');
+		}
+  	}
   </script>
 </html>

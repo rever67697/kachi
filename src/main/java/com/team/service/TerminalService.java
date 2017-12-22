@@ -1,7 +1,14 @@
 package com.team.service;
 
 
-import com.team.model.ResultList;
+
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
+import com.team.model.Terminal;
 
 /**
  * 终端的相关操作	m_terminal
@@ -12,5 +19,12 @@ public interface TerminalService {
 	
 	public ResultList getTerminalByDeparment(String departmentId,String tsid,String status,String activated,int page,int rows);
 	
+	public int deleteTerminalByIds(String ids);
+	
+	public int insertTerminal(Terminal terminal);
+	
+	public int updateTerminalById(Terminal terminal);
+	
+	public ReturnMsg getTerminalList(MultipartFile file);
 	
 }

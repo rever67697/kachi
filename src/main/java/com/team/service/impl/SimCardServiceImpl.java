@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.dao.SimCardDao;
-import com.team.model.ResultList;
+import com.team.vo.ResultList;
 import com.team.model.SimCard;
 import com.team.service.SimCardService;
 

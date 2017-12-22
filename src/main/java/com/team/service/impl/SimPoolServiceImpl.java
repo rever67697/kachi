@@ -11,7 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimPoolDao;
 import com.team.model.OutlineInfo;
-import com.team.model.ResultList;
+import com.team.vo.ResultList;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
 import com.team.util.StringUtil;

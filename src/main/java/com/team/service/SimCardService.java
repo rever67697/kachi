@@ -1,7 +1,7 @@
 package com.team.service;
 
+import com.team.vo.ResultList;
 
-import com.team.model.ResultList;
 
 /**
  * 卡表相关操作	m_simcard

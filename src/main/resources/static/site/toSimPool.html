@@ -13,7 +13,7 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	<div id="tt" class="easyui-tabs">
+  	<div id="tt" class="easyui-tabs" >
 	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
 		    <table class="table kc-outline">
 		    	<tr>
@@ -29,7 +29,7 @@
 		    	</tr>
 		    </table>
 	    </div>
-	    <div title="卡池设备" iconCls="icon icon-device">
+	    <div title="卡池设备" iconCls="icon icon-device" >
 		  	<form id="queryForm">
 		  		<table class="table">
 		  			<tr>
@@ -42,7 +42,7 @@
 		  		</table>
 		  	</form>
 		  	<div id="dg"></div>
-		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
+		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<div class="title"></div>
 		    	<div class="card_container" ></div>
 		    </div>
@@ -91,6 +91,7 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
+			height:window.innerHeight*0.83
 		};
   
 	$(function(){
@@ -161,13 +162,14 @@
   	
   	function getCardPoolInfo(){
   		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
-  			if(data){
-  				$('#simPoolCount').text(data.simPoolCount);
-  				$('#onlinePoolCount').text(data.onlinePoolCount);
-  				$('#offlinePoolCount').text(data.offlinePoolCount);
-  				$('#cardSlotCount').text(data.cardSlotCount);
-  				$('#simCardCount').text(data.simCardCount);
-  				$('#noCardCount').text(data.cardSlotCount-data.simCardCount);
+  			if(data && data.code=='200'){
+  				var info = data.data;
+  				$('#simPoolCount').text(info.simPoolCount);
+  				$('#onlinePoolCount').text(info.onlinePoolCount);
+  				$('#offlinePoolCount').text(info.offlinePoolCount);
+  				$('#cardSlotCount').text(info.cardSlotCount);
+  				$('#simCardCount').text(info.simCardCount);
+  				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
   			}
   		});
   	}

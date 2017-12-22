@@ -12,6 +12,25 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	套餐管理
+  	上传文件:<input type="file" id="file" name="file"><button onclick="upload()">上传</button>
   </body>
+  <script type="text/javascript">
+  	function upload(){
+  		$.ajaxFileUpload({
+			url:kcJs.fn.getContextPath()+'/uploadFile',
+			secureuri : false,
+			fileElementId : 'file',
+			data:{},
+			dataType:'json',
+			success:function(data){
+				if(data){
+					alert(data.msg);
+				}
+			},
+			error:function(data, status, e) {
+				alert("error");
+			}
+		}); 
+  	}
+  </script>
 </html>
