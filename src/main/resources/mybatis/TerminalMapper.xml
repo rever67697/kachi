@@ -53,10 +53,11 @@
         order by r.tsid
 	</select> 
 	
-	<delete id="deleteTerminalByIds" parameterType="java.util.List">
-	    delete from m_terminal
+	<update id="deleteTerminalByIds" parameterType="java.util.List">
+	    update m_terminal
+	    set status=3
 	    where ID in (<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
-	</delete>
+	</update>
 	
 	<insert id="insertTerminal" parameterType="com.team.model.Terminal">
 	    insert into m_terminal (ID, TSID, MAC, 

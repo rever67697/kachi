@@ -8,7 +8,7 @@ var kcJs=
 				 "black":"rgb(0,0,0)",
 				 "light-blue":"rgb(87,181,227)",
 				 "orange":"rgb(240,160,26)"
-		   };
+	};
     //卡状态
     var c_status={"0":["正常",v_colors.blue],
 			      "1":["停用",v_colors.red],
@@ -16,13 +16,25 @@ var kcJs=
 			      "3":["待激活",v_colors.orange],
 			      "4":["作废",v_colors.gray],
     			  "5":["没卡",v_colors.black]
-			};
+	};
     //终端状态
     var t_status={"0":["正常",v_colors.blue],
 			  	  "1":["未初始化",v_colors.orange],
 			  	  "2":["停用",v_colors.red],
 			  	  "3":["注销",v_colors.gray]
-			};
+	};
+    //中国相关的运营商代码
+    var d_mnc={"00":"中国移动",
+    		 "01":"中国联通",
+    		 "02":"中国移动",
+    		 "03":"中国电信",
+    		 "04":"中国移动",
+    		 "05":"中国电信",
+    		 "06":"中国联通",
+    		 "07":"中国移动",
+    		 "09":"中国联通",
+    		 "11":"电信"
+    };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
 	_FUNC={
 		createCookie:function(name,value,days){
@@ -107,13 +119,12 @@ var kcJs=
 			$.each(option.data,function(i,o){
 				html += '<option value="'+o[option.value]+'" '+(option.defaultVal&&o[option.value]==option.defaultVal?"selected":"")+'>'+o[option.name]+'</option>';
 			});
-			$(option.container).html(html);
+			$(option.container).append(html);
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){
+			option = $.extend({"needNull":true,"queryParam":{}},option);
 			var _this = this;
-			option.queryParams = option.queryParams||{};
-			option.needNull = option.needNull||true;
 			$.post(this.getContextPath()+'/'+option.url,option.queryParams,function(data){
 				if(data && data.code=='200'){
 					_this.initSelectOption({"container":option.container,"data":data.data,"needNull":option.needNull,"defaultVal":option.defaultVal});
@@ -131,6 +142,12 @@ var kcJs=
 			$(obj).keyup(function(){
 				$(this).val($(this).val().replace(/\D/,''));
 			});
+		},
+		getMncName:function(o){
+			if(o && o.indexOf("460") == 0){
+				return d_mnc[o.substr(3,2)];
+			}
+			return o;
 		}
 	};
 	return {fn:_FUNC};
@@ -172,7 +189,7 @@ Date.prototype.format = function(format) {
 };
 
 $(function(){
-	$('input,select',$('.table.readOnly')).attr({'disabled':true});
+	$('input,select',$('.table.readOnly')).attr({'disabled':true}).css('color','black');
 	kcJs.fn.initDic_noYes($('.fill-noYes'));
 	kcJs.fn.onlyNumber($('.onlyNumber'));
 });
