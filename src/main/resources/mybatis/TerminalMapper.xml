@@ -32,7 +32,7 @@
 			  r.resetWifi,
 			  r.androidVersion,
 			  t.name departmentName,
-			  k.countryname countryName
+			  ifnull(k.namecn,k.countryname) countryName
 		from m_terminal r
 		left join m_department t
 		on r.departmentId=t.id
@@ -50,6 +50,7 @@
 		<if test="activated!=null" >  
          	and r.activated = #{activated,jdbcType=INTEGER}  
         </if>
+        order by r.tsid
 	</select> 
 	
 	<delete id="deleteTerminalByIds" parameterType="java.util.List">

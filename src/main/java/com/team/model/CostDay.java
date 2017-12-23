@@ -33,6 +33,17 @@ public class CostDay implements Serializable{
 	private Integer isLocal;//是否在归属地使用
 	
 	private Integer countryCode;//使用国家(当天第一次开机的国家)
+	
+	private String countryName;
+	
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
 
 	public Integer getId() {
 		return id;

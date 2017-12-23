@@ -1954,4 +1954,6 @@ body{border:1px solid transparent;overflow:hidden}
 .ligh-blue{background:rgb(87,181,227)}
 table.excel{border-collapse:collapse;width:95%;margin:20px auto;font-weight:normal;font-size:15px}
 table.excel input{border:0;border:1px solid #ccc;padding:3px;line-height:18px;min-width:100px;border-radius:4px}
-table.excel a.l-btn-plain{border:1px solid #ccc;border-radius:4px;padding:3px 10px 3px 3px;font-size:15px}
+table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radius:4px;padding:3px 10px 3px 3px;font-size:15px}
+.table.th-normal th{font-weight:normal}
+.table .noborder{border:0}

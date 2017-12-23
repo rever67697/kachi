@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.team.service.TestService;
 
 /**
  * 创建日期：2017-12-11上午9:55:20
@@ -27,25 +26,11 @@ import com.team.service.TestService;
 @RestController
 public class TestController {
 	
-	@Autowired
-	private TestService testService;
 	
 
 	@GetMapping("/testSb")
 	public Object test(){
 		return "hello,this is springBoot!";
-	}
-	
-	@GetMapping("/getAll")
-	public Object testDb(){
-		System.out.println("success");
-		return testService.getAll();
-	}
-	
-	@GetMapping("/getCustomer/{id}")
-	public Object getCustomer(@PathVariable("id") int id){
-		System.out.println("id===="+id);
-		return testService.getCustomerById(id);
 	}
 	
 	@RequestMapping("/uploadFile")

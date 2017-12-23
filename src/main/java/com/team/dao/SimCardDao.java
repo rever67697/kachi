@@ -19,6 +19,6 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public List<SimCard> getSimCardByPool(@Param("cpId")int cpId);
+	public List<SimCard> getSimCardByPool(@Param("cpId")Integer cpId);
 	
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.CommonDao">
+
+	<select id="getCountryDic" resultType="java.util.Map">
+		select countrycode value,
+			   namecn name
+		from m_country
+		order by countrycode
+	</select>
+
+	<select id="getDepartmentDic" resultType="java.util.Map">
+		select id value,
+			   name
+		from m_department
+		where status=0
+		order by id
+	</select>
+</mapper>

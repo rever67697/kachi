@@ -32,7 +32,7 @@ public class TerminalSim {
 	private String runVersion;//当前版本
 	
 	private Integer vCountryCode;//国家编码
-
+	
 	public Integer getId() {
 		return id;
 	}

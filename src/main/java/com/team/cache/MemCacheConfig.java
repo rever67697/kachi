@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @since: 1.0
  * @description:
  */
-@Configuration
+//@Configuration
 public class MemCacheConfig extends CachingConfigurerSupport {
 
     private static final String USER_CACHE = "userCache";

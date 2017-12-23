@@ -10,6 +10,6 @@ import com.team.vo.ResultList;
  */
 public interface SimCardService {
 	
-	public ResultList getSimCardByPool(int cpId);
+	public ResultList getSimCardByPool(Integer cpId);
 	
 }

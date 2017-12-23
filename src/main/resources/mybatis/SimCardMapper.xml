@@ -5,7 +5,7 @@
 	<select id="getSimCardByPool" resultType="com.team.model.SimCard">
 		select id,number,status,cpchannelId
 		from m_simcard
-		where cpid=#{cpId}
+		where cpid=#{cpId,jdbcType=INTEGER}
 		order by cpchannelId
 	</select> 
 	

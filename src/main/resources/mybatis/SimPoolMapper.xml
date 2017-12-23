@@ -26,6 +26,7 @@
         <if test="name!=null and name!=''" >  
          	and r.name like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
         </if>
+        order by r.spid
 	</select> 
 	
 	

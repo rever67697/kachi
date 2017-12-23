@@ -1,6 +1,5 @@
 package com.team.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team.model.Terminal;
+import com.team.service.CostDayService;
 import com.team.service.TerminalService;
+import com.team.service.TerminalSimService;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -22,6 +23,10 @@ public class TerminalController {
 
 	@Autowired
 	private TerminalService terminalService;
+	@Autowired
+	private CostDayService costDayService;
+	@Autowired
+	private TerminalSimService terminalSimService;
 	
 	@PostMapping("/getTerminalByDept")
 	public ResultList getTerminalByDeparment(String status,String tsid,String activated,int page,int rows){
@@ -59,6 +64,16 @@ public class TerminalController {
 	public ReturnMsg uploadTerminalByExcel(MultipartFile file){
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
 		return returnMsg;
+	} 
+	
+	@PostMapping("/getCostDayByTsid")
+	public ResultList getCostDayByTsid(Integer tsid,int page,int rows){
+		return costDayService.getCostDayByTsid(tsid, page, rows);
+	}
+	
+	@PostMapping("/getTerminalSimByTsid")
+	public ReturnMsg getTerminalSimByTsid(Integer tsid){
+		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 
 	
 }

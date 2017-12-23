@@ -16,7 +16,7 @@
 	  	<form id="queryForm">
 	  		<table class="table">
 	  			<tr>
-	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
 	  				<th>终端状态：</th>
 	  				<td><select name="status">
 		  					<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
@@ -33,12 +33,51 @@
 	  		</table>
 	  	</form>
 	  	<div id="dg"></div>
-	  	<div id="uploadDialog"  class="excel" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  	<div id="historyDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  		<div id="dlDg"></div>
+	  	</div>
+	  	<div id="uploadDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 	  		<table class="excel">
 	  			<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
 	  			<tr style="height:40px"></tr>
 	  			<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
 	  		</table>
+	  	</div>
+	  	
+	  	<div id="cardDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  		<table class="table readOnly">
+	  			<tr><td>终端编号</td><td><input name="tsid" value="01"/></td></tr>
+	  			<tr><td>IMSI码</td><td><input name="imsi"/></td></tr>
+	  			<tr><td>MCC</td><td><input name="mcc"/></td></tr>
+	  			<tr><td>最后心跳时间</td><td><input name="beatTime"/></td></tr>
+	  			<tr><td>选卡时间</td><td><input name="date"/></td></tr>
+	  			<tr><td>是否是在归属地</td><td><select name="reserve"><option value=""></option><option value="0">是</option><option value="1">否</option></select></td></tr>
+	  			<tr><td>副卡IMSI</td><td><input name="eCardImsi"/></td></tr>
+	  			<tr><td>副卡时延</td><td><input name="eCardDuration"/></td></tr>
+	  			<tr><td>当前版本</td><td><input name="runVersion"/></td></tr>
+	  			<tr><td>国家编码</td><td><select name="vCountryCode"></select></td></tr>
+	  		</table>
+	  	</div>
+	  	
+	  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  		<form id="doForm">
+	  			<input type="hidden" name="id"/>
+		  		<table class="table th-normal">
+		  			<tr><th>终端编号：</th><td><input class="easyui-validatebox" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>
+		  			<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>
+		  			<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>
+		  			<tr><th>终端状态：</th><td><input name="status"/></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
+		  			<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>
+		  			<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>
+		  			<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
+		  			<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
+		  			<tr><th>代理商：</th><td><select name="departmentId"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
+		  			<tr><th>销售类型：</th><td><input name="saleType"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
+		  			<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr>
+		  			<tr style="height:10px"></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="">提 交</a></td></tr>
+		  		</table>
+	  		</form>
 	  	</div>
   </body>
   <script type="text/javascript">
@@ -55,16 +94,22 @@
 			         	}},
 			         	{field:'activated',title:'是否激活',width:80,formatter:function(value,rec,index){
 			         		value=value+'';
-			         		return value?(value=='1'?'已激活':'未激活'):'';
+			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
 			         	{field:'model',title:'终端型号',width:100},
 			         	{field:'sVersion',title:'软件版本',width:100},
-			         	{field:'upLog',title:'上传日志',width:100,formatter:function(value,rec,index){
+			         	{field:'upLog',title:'是否上传日志',width:100,formatter:function(value,rec,index){
 			         		value=value+'';
-			         		return value?(value=='1'?'上传':'不上传'):'';
+			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
-			         	{field:'usedVpn',title:'是否支持VPN',width:80},
-			         	{field:'usedSoft',title:'是否支持软卡',width:80},
+			         	{field:'usedVpn',title:'是否支持VPN',width:80,formatter:function(value,rec,index){
+			         		value=value+'';
+			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
+			         	}},
+			         	{field:'usedSoft',title:'是否支持软卡',width:80,formatter:function(value,rec,index){
+			         		value=value+'';
+			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
+			         	}},
 			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'countryName',title:'所在地区',width:150}
 					]],
@@ -103,18 +148,75 @@
 			scrollbarSize:0,
 			height:window.innerHeight*0.89
 		};
+	var dl_options={
+			columns:[[
+						//{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'id',hidden:true},
+			         	{field:'tsid',title:'终端编号',width:80},
+			         	{field:'date',title:'时间（所在国家）',width:100,formatter:function(value,rec,index){
+			         		return kcJs.fn.getDate(value);
+			         	}},
+			         	{field:'date',title:'时间（北京时间）',width:100,formatter:function(value,rec,index){
+			         		return kcJs.fn.getDate(value);
+			         	}},
+			         	{field:'duration',title:'使用时长（分钟）',width:100},
+			         	{field:'flow',title:'使用流量',width:70},
+			         	{field:'cost',title:'超额费用',width:70},
+			         	{field:'rxFlow',title:'下行流量',width:70},
+			         	{field:'txFlow',title:'上行流量',width:70},
+			         	{field:'additionalFlow',title:'超额流量',width:70},
+			         	{field:'isLocal',title:'是否在归属地使用',width:100,formatter:function(value,rec,index){
+			         		value=value+'';
+			         		return value?(value=='1'?'是':'否'):'';
+			         	}},
+			         	{field:'countryName',title:'使用国家',width:100}
+					]],
+			url:kcJs.fn.getContextPath()+'/getCostDayByTsid',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			fit:true
+		};	
+		
   
 	$(function(){
 		$('#dg').datagrid(options);
 		
 		$('#uploadDialog').dialog({
 			modal : true,
-   			resizable:true,
    			width:500,
    			height:200,
    			cache: false,
 			title : "excel上传终端信息"
 		});
+		$('#historyDialog').dialog({
+			modal : true,
+   			width:window.innerWidth*0.85,
+   			height:window.innerHeight*0.9,
+   			cache: false,
+			title : "终端使用历史信息"
+		});
+		$('#cardDialog').dialog({
+			modal : true,
+   			width:400,
+   			height:450,
+   			cache: false,
+			title : "当前占用卡信息"
+		});
+		
+		$('#doDialog').dialog({
+			modal : true,
+   			width:800,
+   			height:465,
+   			cache: false,
+			title : "添加/修改终端信息"
+		});
+		
+		kcJs.fn.initSelect($('[name=vCountryCode],[name=homeLocation]'),'getCountryDic');
+		kcJs.fn.initSelect($('[name=departmentId]'),'getDepartmentDic');
+		
 	});
 	
 	function doQuery(){
@@ -131,26 +233,72 @@
   	}
   	
   	function doModify(){
-  	
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             kcJs.fn.autoFillData($('#doDialog'),rowData);
+             $('#doDialog').dialog('open');
+        }
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
   	}
   	
   	function doHistory(){
-  	
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             dl_options.queryParams={tsid:rowData.tsid};
+             $('#historyDialog').dialog('open');
+             $('#dlDg').datagrid(dl_options);
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
   	}
   	
   	function doCard(){
-  	
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             $.post(kcJs.fn.getContextPath()+'/getTerminalSimByTsid',{tsid:rowData.tsid},function(data){
+				if(data && data.code && data.code == '200'){
+					if(data.data){
+						kcJs.fn.autoFillData($('#cardDialog'),data.data,["beatTime","date"]);
+						$('#cardDialog').dialog('open');
+					}else{
+						$.messager.alert("提示", "没有对应的卡信息", "info");
+					}
+				}else{
+					$.messager.alert("提示", "调用出错", "info");
+				}
+			},'json');
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
   	}
   	
   	function doDelete(){
   		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0 && selectRows.length == 1) {
-             /* var rowData = $('#dg').datagrid("getSelected");
-             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
-             }); */
-        }
-        else {
-            $.messager.alert("提示", "请选择其中一条信息", "info");
+  		if (selectRows.length > 0) {
+  			$.messager.confirm('提示','是否确定删除？',function(r){
+  				if(r){
+  					$('#dg').datagrid('loading');
+		  			var ids = [];
+		  			for(var i = 0;i < selectRows.length;i++){
+		  				ids.push(selectRows[i].id);
+		  			}
+		  			$.post(kcJs.fn.getContextPath()+'/deleteTerminalByIds',{ids:ids.join(",")},function(data){
+		  				if(data && data.code && data.code == '200'){
+		  					doQuery();	
+		  				}else{
+		  					$('#dg').datagrid('loaded');
+		  				}
+		  				$.messager.alert("提示", data.msg, "info");
+		  			},'json');
+		  		}
+  			});
+        }else {
+            $.messager.alert("提示", "请选择至少一条信息", "info");
         }
   	}
   	
@@ -165,7 +313,6 @@
 				dataType:'json',
 				success:function(data,status){
 					$('#dg').datagrid('loaded');
-					console.log(data);
 					if(data && data.code){
 							$.messager.alert('提示',data.code=='200'?'上传成功！':data.msg,'info');
 					}else{

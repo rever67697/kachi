@@ -33,7 +33,7 @@
 		  	<form id="queryForm">
 		  		<table class="table">
 		  			<tr>
-		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" class="onlyNumber"/></td>
 		  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
 		  				<th>卡池状态：</th>
 		  				<td><select name="isActive"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
@@ -101,7 +101,6 @@
 		
 		$('#cardsDialog').dialog({
 			modal : true,
-   			resizable:true,
    			width:800,
    			height:350,
    			cache: false,
@@ -121,7 +120,7 @@
              		var total = rowData.type?rowData.type:cardList.length;
              		var count = 0;
              		for(var i = 0;i < total;i++){
-             			var box = kcJs.fn.getCardStatus(1);
+             			var box = kcJs.fn.getCardStatus(5);
              			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
              				box = kcJs.fn.getCardStatus(cardList[count].status);
              				count ++;
