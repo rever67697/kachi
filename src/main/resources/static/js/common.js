@@ -110,12 +110,13 @@ var kcJs=
 			$(option.container).html(html);
 		},
 		//给指定的select容器通过url返回的数组初始化数据
-		initSelect:function(obj,url,queryParams){
+		initSelect:function(option){
 			var _this = this;
-			queryParams = queryParams||{};
-			$.post(this.getContextPath()+'/'+url,queryParams,function(data){
+			option.queryParams = option.queryParams||{};
+			option.needNull = option.needNull||true;
+			$.post(this.getContextPath()+'/'+option.url,option.queryParams,function(data){
 				if(data && data.code=='200'){
-					_this.initSelectOption({"container":obj,"data":data.data,"needNull":true});
+					_this.initSelectOption({"container":option.container,"data":data.data,"needNull":option.needNull,"defaultVal":option.defaultVal});
 				}else{
 					$.messager.alert('提示','操作失败','info');
 				}

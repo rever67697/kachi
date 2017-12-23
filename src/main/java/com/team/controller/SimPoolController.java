@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team.model.OutlineInfo;
 import com.team.service.SimPoolService;
 import com.team.util.IConstant;
-import com.team.util.StringUtil;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -31,7 +31,7 @@ public class SimPoolController {
 	
 	@GetMapping("/getPoolOutlineInfo")
 	public ReturnMsg getPoolOutlineInfo(String departmentId,HttpServletRequest request){
-		OutlineInfo info = simPoolService.getOutlineInfo(StringUtil.putInteger(departmentId));
+		OutlineInfo info = simPoolService.getOutlineInfo(CommonUtil.putInteger(departmentId));
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
 		returnMsg.setData(info);
 		return returnMsg;

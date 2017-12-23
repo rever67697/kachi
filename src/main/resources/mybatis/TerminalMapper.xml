@@ -61,7 +61,7 @@
 	<insert id="insertTerminal" parameterType="com.team.model.Terminal">
 	    insert into m_terminal (ID, TSID, MAC, 
 	      MODEL, BATCH, SVERSION, 
-	      KEY, STATUS, UPLOG, 
+	      `KEY`, STATUS, UPLOG, 
 	      IMEI, ACTIVATED, HOMELOCATION, 
 	      SSID, WIFIPASSWORD, LICFIX, 
 	      USEDVPN, USEDSOFT, departmentId, 
@@ -85,7 +85,7 @@
 	      MODEL = #{model,jdbcType=VARCHAR},
 	      BATCH = #{batch,jdbcType=VARCHAR},
 	      SVERSION = #{sVersion,jdbcType=VARCHAR},
-	      KEY = #{key,jdbcType=VARCHAR},
+	      `KEY` = #{key,jdbcType=VARCHAR},
 	      STATUS = #{status,jdbcType=INTEGER},
 	      UPLOG = #{upLog,jdbcType=INTEGER},
 	      IMEI = #{imei,jdbcType=VARCHAR},

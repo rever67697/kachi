@@ -253,11 +253,11 @@ public class Terminal implements Serializable{
 		this.departmentId = departmentId;
 	}
 
-	public String getMedi() {
+	public String getMeid() {
 		return meid;
 	}
 
-	public void setMedi(String meid) {
+	public void setMeid(String meid) {
 		this.meid = meid;
 	}
 

@@ -22,7 +22,7 @@ import com.team.vo.ReturnMsg;
 import com.team.model.Terminal;
 import com.team.service.TerminalService;
 import com.team.util.IConstant;
-import com.team.util.StringUtil;
+import com.team.util.CommonUtil;
 
 /**
  * 终端的相关操作	m_terminal
@@ -46,10 +46,10 @@ public class TerminalServiceImpl implements TerminalService{
 			String status,String activated, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", StringUtil.putInteger(departmentId));
-		map.put("tsid", StringUtil.putInteger(tsid));
-		map.put("status", StringUtil.putInteger(status));
-		map.put("activated", StringUtil.putInteger(activated));
+		map.put("departmentId", CommonUtil.putInteger(departmentId));
+		map.put("tsid", CommonUtil.putInteger(tsid));
+		map.put("status", CommonUtil.putInteger(status));
+		map.put("activated", CommonUtil.putInteger(activated));
 		List<Terminal> list = terminalDao.getTerminalByDeparment(map);
 		PageInfo<Terminal> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);
@@ -73,7 +73,7 @@ public class TerminalServiceImpl implements TerminalService{
 
 	@Override
 	public int insertTerminal(Terminal terminal) {
-		// TODO Auto-generated method stub
+		terminal.setId(CommonUtil.getNewId());
 		return terminalDao.insertTerminal(terminal);
 	}
 
@@ -104,29 +104,29 @@ public class TerminalServiceImpl implements TerminalService{
 					continue;
 				}
 				try {
-					Integer tsid = StringUtil.getCellIntVal(row.getCell(0));
-					String mac = StringUtil.getCellStringVal(row.getCell(1));
-					String model = StringUtil.getCellStringVal(row.getCell(2));
-					String batch = StringUtil.getCellStringVal(row.getCell(3));
-					String sVersion = StringUtil.getCellStringVal(row.getCell(4));
-					String key = StringUtil.getCellStringVal(row.getCell(5));
-					Integer status = StringUtil.getCellIntVal(row.getCell(6));
-					Integer upLog = StringUtil.getCellIntVal(row.getCell(7));
-					String imei = StringUtil.getCellStringVal(row.getCell(8));
-					Integer activated = StringUtil.getCellIntVal(row.getCell(9));
-					Integer homeLocation = StringUtil.getCellIntVal(row.getCell(10));
-					String ssid = StringUtil.getCellStringVal(row.getCell(11));
-					String wifiPassword = StringUtil.getCellStringVal(row.getCell(12));
-					String licFix = StringUtil.getCellStringVal(row.getCell(13));
-					Integer usedVpn = StringUtil.getCellIntVal(row.getCell(14));
-					Integer usedSoft = StringUtil.getCellIntVal(row.getCell(15));
-					Integer departmentId = StringUtil.getCellIntVal(row.getCell(16));
-					String meid = StringUtil.getCellStringVal(row.getCell(17));
-					Integer saleType = StringUtil.getCellIntVal(row.getCell(18));
-					Integer resetWifi = StringUtil.getCellIntVal(row.getCell(19));
-					String androidVersion = StringUtil.getCellStringVal(row.getCell(20));
+					Integer tsid = CommonUtil.getCellIntVal(row.getCell(0));
+					String mac = CommonUtil.getCellStringVal(row.getCell(1));
+					String model = CommonUtil.getCellStringVal(row.getCell(2));
+					String batch = CommonUtil.getCellStringVal(row.getCell(3));
+					String sVersion = CommonUtil.getCellStringVal(row.getCell(4));
+					String key = CommonUtil.getCellStringVal(row.getCell(5));
+					Integer status = CommonUtil.getCellIntVal(row.getCell(6));
+					Integer upLog = CommonUtil.getCellIntVal(row.getCell(7));
+					String imei = CommonUtil.getCellStringVal(row.getCell(8));
+					Integer activated = CommonUtil.getCellIntVal(row.getCell(9));
+					Integer homeLocation = CommonUtil.getCellIntVal(row.getCell(10));
+					String ssid = CommonUtil.getCellStringVal(row.getCell(11));
+					String wifiPassword = CommonUtil.getCellStringVal(row.getCell(12));
+					String licFix = CommonUtil.getCellStringVal(row.getCell(13));
+					Integer usedVpn = CommonUtil.getCellIntVal(row.getCell(14));
+					Integer usedSoft = CommonUtil.getCellIntVal(row.getCell(15));
+					Integer departmentId = CommonUtil.getCellIntVal(row.getCell(16));
+					String meid = CommonUtil.getCellStringVal(row.getCell(17));
+					Integer saleType = CommonUtil.getCellIntVal(row.getCell(18));
+					Integer resetWifi = CommonUtil.getCellIntVal(row.getCell(19));
+					String androidVersion = CommonUtil.getCellStringVal(row.getCell(20));
 					
-					Terminal terminal = new Terminal(null, tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated, 
+					Terminal terminal = new Terminal(CommonUtil.getNewId(), tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated, 
 							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, saleType, resetWifi, androidVersion);
 					list.add(terminal);
 				} catch (Exception e) {

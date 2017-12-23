@@ -14,7 +14,7 @@ import com.team.model.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
-import com.team.util.StringUtil;
+import com.team.util.CommonUtil;
 
 /**
  * 创建日期：2017-12-18下午3:40:55
@@ -33,10 +33,10 @@ public class SimPoolServiceImpl implements SimPoolService{
 	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", StringUtil.putInteger(departmentId));
-		map.put("spid", StringUtil.putInteger(spid));
+		map.put("departmentId", CommonUtil.putInteger(departmentId));
+		map.put("spid", CommonUtil.putInteger(spid));
 		map.put("name", name);
-		map.put("isActive", StringUtil.putInteger(isActive));
+		map.put("isActive", CommonUtil.putInteger(isActive));
 		List<SimPool> list = simPoolDao.getSimPoolByDeparment(map);
 		PageInfo<SimPool> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);

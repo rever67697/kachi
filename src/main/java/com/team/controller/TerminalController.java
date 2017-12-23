@@ -1,6 +1,8 @@
 package com.team.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,18 +44,14 @@ public class TerminalController {
 		return IConstant.MSG_OPERATE_ERROR;
 	}
 	
-	@PostMapping("/insertTerminal")
-	public ReturnMsg insertTerminal(Terminal terminal){
-		int count = terminalService.insertTerminal(terminal);
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
+	@PostMapping("/saveTerminal")
+	public ReturnMsg saveTerminal(Terminal terminal){
+		int count = 0;
+		if(terminal.getId()!=null){
+			count = terminalService.updateTerminalById(terminal);
+		}else{
+			count = terminalService.insertTerminal(terminal);
 		}
-		return IConstant.MSG_OPERATE_ERROR;
-	} 
-	
-	@PostMapping("/updateTerminalById")
-	public ReturnMsg updateTerminalById(Terminal terminal){
-		int count = terminalService.updateTerminalById(terminal);
 		if(count > 0){
 			return IConstant.MSG_OPERATE_SUCCESS;
 		}
@@ -63,6 +61,13 @@ public class TerminalController {
 	@PostMapping("/uploadTerminalByExcel")
 	public ReturnMsg uploadTerminalByExcel(MultipartFile file){
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
+		if("200".equals(returnMsg.getCode())){
+			List<Terminal> list = (List<Terminal>) returnMsg.getData();
+			for (Terminal terminal : list) {
+				terminalService.insertTerminal(terminal);
+			}
+			returnMsg.setData(list.size());
+		}
 		return returnMsg;
 	} 
 	

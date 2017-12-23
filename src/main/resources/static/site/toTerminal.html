@@ -33,7 +33,7 @@
 	  		</table>
 	  	</form>
 	  	<div id="dg"></div>
-	  	<div id="historyDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  	<div id="historyDialog" closed="true" style="padding-top:5px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 	  		<div id="dlDg"></div>
 	  	</div>
 	  	<div id="uploadDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
@@ -63,19 +63,22 @@
 	  		<form id="doForm">
 	  			<input type="hidden" name="id"/>
 		  		<table class="table th-normal">
-		  			<tr><th>终端编号：</th><td><input class="easyui-validatebox" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>
+		  			<tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>
 		  			<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>
 		  			<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>
-		  			<tr><th>终端状态：</th><td><input name="status"/></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
+		  			<tr><th>终端状态：</th><td><select name="status">
+		  										<option value="0">正常</option><option value="1">未初始化</option>
+		  										<option value="2">停用</option><option value="3">注销</option>
+		  													</select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
 		  			<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>
 		  			<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>
 		  			<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
 		  			<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
 		  			<tr><th>代理商：</th><td><select name="departmentId"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
-		  			<tr><th>销售类型：</th><td><input name="saleType"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
+		  			<tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
 		  			<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr>
 		  			<tr style="height:10px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="">提 交</a></td></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 		  		</table>
 	  		</form>
 	  	</div>
@@ -193,7 +196,7 @@
 		});
 		$('#historyDialog').dialog({
 			modal : true,
-   			width:window.innerWidth*0.85,
+   			width:window.innerWidth*0.88,
    			height:window.innerHeight*0.9,
    			cache: false,
 			title : "终端使用历史信息"
@@ -214,8 +217,8 @@
 			title : "添加/修改终端信息"
 		});
 		
-		kcJs.fn.initSelect($('[name=vCountryCode],[name=homeLocation]'),'getCountryDic');
-		kcJs.fn.initSelect($('[name=departmentId]'),'getDepartmentDic');
+		kcJs.fn.initSelect({"container":$('[name=vCountryCode],[name=homeLocation]'),"url":'getCountryDic',"defaultVal":"156"});
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic'});
 		
 	});
 	
@@ -225,7 +228,10 @@
   	}
   
   	function doAdd(){
-  		
+  		$('#doForm')[0].reset();
+  		$('#doDialog [name=id]').val('');
+  		$('#doDialog [name=tsid]').attr('readOnly',false);
+  		$('#doDialog').dialog('open');
   	}
   	
   	function doUpload(){
@@ -238,6 +244,7 @@
              var rowData = $('#dg').datagrid("getSelected");
              kcJs.fn.autoFillData($('#doDialog'),rowData);
              $('#doDialog').dialog('open');
+             $('#doDialog [name=tsid]').attr('readOnly',true);
         }
         else {
             $.messager.alert("提示", "请选择其中一条信息", "info");
@@ -314,7 +321,12 @@
 				success:function(data,status){
 					$('#dg').datagrid('loaded');
 					if(data && data.code){
-							$.messager.alert('提示',data.code=='200'?'上传成功！':data.msg,'info');
+						if(data.code=='200'){
+							$.messager.alert('提示','上传成功！','info');
+							doQuery();
+						}else{
+							$.messager.alert('提示',data.msg,'info');
+						}
 					}else{
 						$.messager.alert('提示','上传失败','info');
 					}
@@ -327,6 +339,24 @@
 		}else{
 			$.messager.alert('提示','请上传指定的excel模板！','info');
 		}
+  	}
+  	
+  	function saveData(){
+  		if($('#doForm').form('validate')){
+  			$('#doDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/saveTerminal',$('#doForm').serializeObject(),function(data){
+  				if(data){
+	    			$.messager.alert('提示',data.msg,'info');
+	    			if(data.code=='200'){
+	    				doQuery();
+	    			}else{
+	    				$('#dg').datagrid('loaded');
+	    			}
+	    		}
+	    		
+  			});
+  		}
   	}
   </script>
 </html>

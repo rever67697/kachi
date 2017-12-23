@@ -1,12 +1,14 @@
 package com.team.util;
 
+import java.util.Random;
+
 import org.apache.poi.ss.usermodel.Cell;
 
 /**
  * 创建日期：2017-12-19下午6:39:34
  * author:wuzhiheng
  */
-public class StringUtil {
+public class CommonUtil {
 	
 	/**
 	 * 只要用作把Integer参数放进Map中，如果参数为空，返回null
@@ -53,6 +55,19 @@ public class StringUtil {
 			return str;
 		}
 		return null;
+	}
+	/**
+	 * 返回一个1开头的8位数的整形数字
+	 *@return
+	 *return
+	 */
+	public static Integer getNewId(){
+		String id = "1";
+		Random random = new Random();
+		for(int i=0;i<7;i++){
+			id += random.nextInt(9);
+		}
+		return Integer.valueOf(id);
 	}
 	
 }
