@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,13 @@ public interface SimCardDao {
 	 *return
 	 */
 	public List<SimCard> getSimCardByPool(@Param("cpId")Integer cpId);
+	
+	/**
+	 * 根据卡套餐id寻找是否有SIM卡在使用这个套餐，如果没有数据返回，则判断没有sim卡在使用这个套餐
+	 *@param packageId
+	 *@return
+	 *return
+	 */
+	public String getPackageExist(@Param("packageId")Integer packageId);
 	
 }
