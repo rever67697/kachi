@@ -9,13 +9,20 @@
     <select id="getSimPackage" parameterType="java.util.Map" resultType="com.team.model.SimPackage">
 	    select 
 	    <include refid="allColumn" />
+	    ,case OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 				 when 'China Unicom' then '中国联通' 
+			 				 when 'China Telecom' then '中国电信'
+							 when 'China Tietong' then '中国铁通' 
+							 else OPERATORNAMECN end operatorName
 	    from m_simpackage r
+	    left join m_operator t 
+	    on r.OPERATORCODE=t.OPERATORCODE
 	    where 1=1
 	    <if test="status!=null" >  
          	and r.status = #{status,jdbcType=INTEGER}  
         </if>
         <if test="name!=null and name!=''" >  
-         	and r.name like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
+         	and r.name like concat('%',#{name,jdbcType=VARCHAR},'%')
         </if>
         order by r.status,r.level desc
 	</select>

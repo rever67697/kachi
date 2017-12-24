@@ -26,5 +26,10 @@ public class CommonController {
 	public ReturnMsg getDepartmentDic(){
 		return commonService.getDepartmentDic();
 	}
+	
+	@PostMapping("/getOperatorDic")
+	public ReturnMsg getOperatorDic(){
+		return commonService.getOperatorDic();
+	}
 
 }

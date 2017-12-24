@@ -23,5 +23,12 @@ public interface CommonDao {
 	 */
 	public List<Map<String, Object>> getDepartmentDic();
 	
+	/**
+	 * 查找运营商
+	 *@return
+	 *return
+	 */
+	public List<Map<String, Object>> getOperatorDic();
+	
 	
 }

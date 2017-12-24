@@ -16,4 +16,16 @@
 		where status=0
 		order by id
 	</select>
+	
+	<select id="getOperatorDic" resultType="java.util.Map">
+		select OPERATORCODE value,
+			 concat(case OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 							when 'China Unicom' then '中国联通' 
+			 							when 'China Telecom' then '中国电信'
+										when 'China Tietong' then '中国铁通' 
+										else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
+		from m_operator 
+		where status=0
+		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc
+	</select>
 </mapper>

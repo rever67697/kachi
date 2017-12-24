@@ -48,4 +48,17 @@ public class CommonServiceImpl implements CommonService{
 		return returnMsg;
 	}
 
+	@Override
+	/**
+	 * 查找运营商
+	 */
+	public ReturnMsg getOperatorDic() {
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		List<Map<String, Object>> list =commonDao.getOperatorDic();
+		if(list != null && list.size() > 0){
+			returnMsg.setData(list);
+		}
+		return returnMsg;
+	}
+
 }
