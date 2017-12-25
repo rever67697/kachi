@@ -12,4 +12,6 @@ public interface SimCardService {
 	
 	public ResultList getSimCardByPool(Integer cpId);
 	
+	public String getPackageExist(Integer packageId);
+	
 }

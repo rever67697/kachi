@@ -9,8 +9,8 @@
 		order by cpchannelId
 	</select> 
 	
-	<select id="getPackageExist" resultType="java.util.Map">
-		select 1 from dual where 
+	<select id="getPackageExist" resultType="String">
+		select '1' result from dual where 
 		exists (select 1 from m_simcard r where r.packageid=#{packageId,jdbcType=INTEGER})
 	</select>
 	

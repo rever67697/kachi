@@ -70,4 +70,8 @@ public class CommonUtil {
 		return Integer.valueOf(id);
 	}
 	
+	public static boolean StringIsNull(String str){
+		return str==null||"".equals(str)||"null".equals(str)?true:false;
+	}
+	
 }
