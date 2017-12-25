@@ -40,7 +40,6 @@
 	      OPERATORCODE = #{operatorCode,jdbcType=INTEGER},
 	      MAXFLOW = #{maxFlow,jdbcType=INTEGER},
 	      MAXROAMFLOW = #{maxRoamFlow,jdbcType=INTEGER},
-	      STATUS = #{status,jdbcType=INTEGER},
 	      LEVEL = #{level,jdbcType=INTEGER},
 	      MCCS = #{mccs,jdbcType=VARCHAR}
 	    where ID = #{id,jdbcType=INTEGER}
@@ -48,10 +47,10 @@
 	
 	<insert id="insertPackage" parameterType="com.team.model.SimPackage" >
 	    insert into m_simpackage (ID, NAME, OPERATORCODE, 
-	      MAXFLOW, MAXROAMFLOW, STATUS, 
+	      MAXFLOW, MAXROAMFLOW, 
 	      LEVEL, MCCS)
 	    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{operatorCode,jdbcType=INTEGER}, 
-	      #{maxFlow,jdbcType=INTEGER}, #{maxRoamFlow,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+	      #{maxFlow,jdbcType=INTEGER}, #{maxRoamFlow,jdbcType=INTEGER}, 
 	      #{level,jdbcType=INTEGER}, #{mccs,jdbcType=VARCHAR})
     </insert>
 </mapper>
