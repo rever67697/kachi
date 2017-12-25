@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.team.model.OutlineInfo;
+import com.team.vo.OutlineInfo;
 import com.team.model.SimPool;
 
 /**

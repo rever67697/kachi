@@ -59,16 +59,14 @@ public class TerminalServiceImpl implements TerminalService{
 	/**
 	 * 根据id批量删除终端
 	 */
-	public int deleteTerminalByIds(String ids) {
-		if(ids!=null&&!"".equals(ids)){
-			String[] arr = ids.split(",");
-			List<Integer> list = new ArrayList<Integer>(); 
-			for (String string : arr) {
-				list.add(Integer.valueOf(string));
-			}
-			return terminalDao.deleteTerminalByIds(list);
+	public ReturnMsg deleteTerminalByIds(String ids) {
+		String[] arr = ids.split(",");
+		List<Integer> list = new ArrayList<Integer>(); 
+		for (String string : arr) {
+			list.add(Integer.valueOf(string));
 		}
-		return 0;
+		int count = terminalDao.deleteTerminalByIds(list);
+		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 
 	@Override

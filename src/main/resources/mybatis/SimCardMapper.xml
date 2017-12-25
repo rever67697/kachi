@@ -14,4 +14,28 @@
 		exists (select 1 from m_simcard r where r.packageid=#{packageId,jdbcType=INTEGER})
 	</select>
 	
+	<delete id="deleteSimCard" parameterType="java.util.List">
+		delete from m_simcard
+		where id in(<foreach collection="list" item="item">#{item,,jdbcType=INTEGER}</foreach>)
+	</delete>
+	
+	<select id="getSimCard" parameterType="java.util.Map" resultType="com.team.model.SimCard">
+		select r.* 
+		from m_simcard r
+		where 1=1
+		<if test="cpid != null">
+			and r.cpid=#{cpId,jdbcType=INTEGER}
+		</if>
+		<if test="status != null">
+			and r.status=#{status,jdbcType=INTEGER}
+		</if>
+		<if test="departmentId != null">
+			and r.departmentId=#{departmentId,jdbcType=INTEGER}
+		</if>
+		<if test="number != null and number != ''">
+			and r.number=#{number,jdbcType=VARCHAR}
+		</if>
+		order by r.cpid,r.cpchannelid
+	</select>
+	
 </mapper>

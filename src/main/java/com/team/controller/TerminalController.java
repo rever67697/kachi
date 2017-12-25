@@ -37,11 +37,7 @@ public class TerminalController {
 	
 	@PostMapping("/deleteTerminalByIds")
 	public ReturnMsg deleteTerminalByIds(String ids){
-		int count = terminalService.deleteTerminalByIds(ids);
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return terminalService.deleteTerminalByIds(ids);
 	}
 	
 	@PostMapping("/saveTerminal")

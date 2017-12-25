@@ -1,7 +1,7 @@
 package com.team.service;
 
 
-import com.team.model.OutlineInfo;
+import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 
 /**
