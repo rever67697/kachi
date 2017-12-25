@@ -30,7 +30,7 @@
 	</select> 
 	
 	
-	<select id="getOutlineInfo" resultType="com.team.model.OutlineInfo">
+	<select id="getOutlineInfo" resultType="com.team.vo.OutlineInfo">
 		select (select count(1) from m_simpool r where 1=1 <include refid="departmentId"/>) as simPoolCount,
 			   (select count(1) from m_simpool r where isActive=1 <include refid="departmentId"/>) as onlinePoolCount,
 			   (select sum(ifnull(type,0)) from m_simpool r where 1=1 <include refid="departmentId"/>) as cardSlotCount,

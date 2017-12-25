@@ -19,7 +19,7 @@ public interface TerminalService {
 	
 	public ResultList getTerminalByDeparment(String departmentId,String tsid,String status,String activated,int page,int rows);
 	
-	public int deleteTerminalByIds(String ids);
+	public ReturnMsg deleteTerminalByIds(String ids);
 	
 	public int insertTerminal(Terminal terminal);
 	

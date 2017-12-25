@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimPoolDao;
-import com.team.model.OutlineInfo;
+import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
