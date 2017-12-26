@@ -12,6 +12,258 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	副卡管理
+  
+  		<div id="tt" class="easyui-tabs">	
+<!-- 	    <div title="	副卡管理概要信息" style="" iconCls="icon icon-outline"> -->
+<!-- 			副卡概要信息 -->
+<!-- 	    </div> -->
+	    <div title="副卡列表" iconCls="icon icon-device">
+		  	<form id="queryForm">
+		  		<table class="table">
+		  			<tr>
+		  				<th>副卡号码：</th><td><input name="number" placeholder="请输入副卡号码" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>运营商：</th><td><input name="operatorCode" placeholder="请输入运营商编号"/></td>
+<!-- 		  				<th>卡池状态：</th> -->
+<!-- 		  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td> -->
+		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  			</tr>
+		  		</table>
+		  	</form>
+<!-- 		  	  <div id="win" class="easyui-window" title="副卡信息"  closed="true" style="width:500px;"> -->
+<!-- 					<form style="padding:10px 20px 10px 40px;"> -->
+						
+<!-- 						<p>Name: <input type="text"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+<!-- 					    <p>Pass: <input type="password"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+				
+<!-- 						<div style="padding:5px;text-align:center;"> -->
+<!-- 							<a href="#" class="easyui-linkbutton" icon="icon-ok">保存</a> -->
+<!-- 							<a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 				</div> -->
+		    
+		  	<div id="dg">
+		  	</div>
+		    <div id="cardsDialog"  class="easyui-dialog"  closed="true" style="padding:10px">
+		    	<form id="channelCardInfo">
+		    		<table class>
+		    			<input type="hidden" name="id" value="">
+		    			<tr><th>ISMI：</th><td><input name="imsi" class="easyui-textbox" placeholder="请输入IMSI" /></td></tr>
+		    			<tr><th>副卡号码：</th><td><input name="number" class="easyui-textbox" placeholder="请输入副卡号码" onkeyup="this.value=this.value.replace(/\D/,'')"/></td></tr>
+		    			<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" placeholder="请输入ICCID" /></td></tr>
+		    			<tr><th>运营商：</th><td><input name="operatorCode" class="easyui-textbox" placeholder="请输入运营商编号" /></td></tr>
+		    			<tr><th>国家：</th><td><input name="countryCode" class="easyui-textbox" placeholder="请输入国家 编号" /></td></tr>
+		    			<tr><th>短信中心号码：</th><td><input name="mcNumber" class="easyui-textbox" placeholder="请输入短信中心号码" /></td></tr>
+		    			<tr><th>详情：</th><td><input name="detail" class="easyui-textbox" data-options="multiline:true" placeholder="请输入详情" /></td></tr>
+		    		</table>
+		    	</form>
+		    </div>
+		     
+	    </div>
+	</div>
+	
+	<script type="text/javascript">
+  	$('#tt').css('height',window.innerHeight*0.98+'px');
+  	var options={
+			title:'副卡列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'副卡id',hidden:true},
+			         	{field:'imsi',title:'IMSI',width:80},
+			         	{field:'number',title:'卡号',width:100},
+// 			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
+// 			         		return '<div style="color:#fff;width:90px;text-align:center;background:'+(value=="1"?colors.blue:colors.red)+'">'+(value=="1"?"正常":"暂停")+'</div>';
+// 			         	}},
+			         	{field:'operatorCode',title:'运营商',width:100},//
+			         	{field:'countryCode',title:'国家',width:120},//
+			         	{field:'mcNumber',title:'短信中心号码',width:100},//
+			         	{field:'detail',title:'详情',width:100},//
+					]],
+			toolbar: [{
+				  		iconCls: 'icon-yj-log',
+				  		text:'批量增加副卡信息',
+				  		handler: addChannelCard
+				  	  },'-',{
+				  		iconCls: 'icon-edit',
+				  		text:'修改副卡信息',
+				  		handler: editChannelCard
+				  	  },'-',{
+				  		iconCls: 'icon-add',
+				  		text:'增加副卡',
+				  		handler: addChannelCard
+				  	  },'-',{
+					  		iconCls: 'icon-delete2',
+					  		text:'删除副卡',
+					  		handler: delChannelCard
+					  	  }
+				  	 ],
+			url:getContextPath()+'/getChannelCards',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+		};
+  
+	$(function(){
+		$('#dg').datagrid(options);
+		
+		$('#cardsDialog').dialog({
+			modal : true,
+			iconCls:'icon-save',
+   			resizable:true,
+   			width:500,
+   			cache: false,
+			title : "副卡信息",
+			buttons:[{
+				text:'保存',
+				iconCls:'icon-ok',
+				handler:saveChannelCard
+			},{
+				text:'取消',
+				handler:function(){
+					$('#cardsDialog').dialog('close');
+				}
+			}]
+		});
+	});
+	
+	function checkSelect(){
+		var selectRows=$('#dg').datagrid('getSelections');
+		if(selectRows.length<1){
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+			return false;
+		}
+		if(selectRows.length>1){
+            $.messager.alert("提示", "只能选择其中一条信息进行编辑", "info");
+			return false;
+		}
+		return true;
+	}
+	function saveChannelCard(){
+		console.log($('#channelCardInfo').serialize())	;	
+		if(channelCardInfo.id.value){
+			$.post(getContextPath()+'/updateChannelCard',$('#channelCardInfo').serialize(),function(result){
+				if(result.msg){
+		            $.messager.alert("提示", result.msg, "info");
+				}else{
+		            $.messager.alert("提示", "修改失败", "info");
+				}
+			})
+		}else {
+			$.post(getContextPath()+'/insertChannelCard',$('#channelCardInfo').serialize(),function(result){
+				if(result.msg){
+		            $.messager.alert("提示", result.msg, "info");
+				}else{
+		            $.messager.alert("提示", "增加失败", "info");
+				}
+			})
+		}
+		
+	}
+  function editChannelCard(){
+	  if(checkSelect()){
+          var rowData = $('#dg').datagrid("getSelected");
+          $.getJSON(getContextPath()+'/getChannelCard?id='+rowData.id,function(data){
+        	  $('#channelCardInfo input').each(function(){
+        		  var inputName=$(this).attr('name');
+        		  if(inputName){
+        			  $(this).val(data[inputName]);
+        		  }
+        	  })
+          });
+ 		$('#cardsDialog').dialog('open');
+	  }
+  }
+  function addChannelCards(){
+	  
+  }
+  function addChannelCard(){
+	  $('#channelCardInfo input').each(function(){
+			  $(this).val('');
+  });
+		$('#cardsDialog').dialog('open');
+
+  }
+  function delChannelCard(){
+		var selectRows = $('#dg').datagrid("getSelections");
+		var selectIds=new Array();
+		if(!selectRows){
+            $.messager.alert("提示", "请选择需要删除的副卡", "info");
+			return ;
+		}
+		for(var i=0;i<selectRows.length;i++){
+			selectIds.push(selectRows[i].id);
+		}
+		console.log(selectIds.join(","));
+		$.ajax({
+			url:getContextPath()+'/deleteChannelCards/',
+			data:{ids:selectIds.join(",")},
+			type:'post',
+			contentType: 'application/json;charset=utf-8',
+			success:function(data){
+				if(data.msg){
+		            $.messager.alert("提示", data.msg, "info");
+				}else{
+		            $.messager.alert("提示", "删除失败", "info");
+				}
+			},
+			error:function(){
+				
+			}
+		});
+		
+  }
+  	function doCardsInfo(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             $.getJSON(getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             	var cardList = data.rows;
+             	if(cardList && cardList.length>0){
+             		$('.card_container').html('');
+             		var total = rowData.type?rowData.type:cardList.length;
+             		var count = 0;
+             		for(var i = 0;i < total;i++){
+             			var box = v_status["1"];
+             			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
+             				box = v_status[cardList[count].status];
+             				count ++;
+             			}
+             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container'))
+             			.tooltip({
+						    position: 'top',
+						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
+						    onShow: function(){
+						    	var color = $(this).attr('color');
+								$(this).tooltip('tip').css({
+									backgroundColor:color,
+								});
+						    }
+						});	;
+             		}
+             		console.log(rowData.name);
+             		$('.title').html(rowData.name+' （'+rowData.type+'）');
+             		$('#cardsDialog').dialog('open');
+             	}
+             });
+       } 	
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
+  	}
+  	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
+ 
+  </script>
+	
+	
   </body>
 </html>
