@@ -17,8 +17,8 @@ public class IConstant {
 	public final static String CODE_SUCCESS = "200";
 	public final static String CODE_ERROR = "404";
 	public final static String CODE_UNKNOW = "500";
-	public final static ReturnMsg MSG_OPERATE_SUCCESS = new ReturnMsg(CODE_SUCCESS, "操作成功");
-	public final static ReturnMsg MSG_OPERATE_ERROR = new ReturnMsg(CODE_ERROR, "操作失败");
-	public final static ReturnMsg MSG_OPERATE_UNKNOW = new ReturnMsg(CODE_UNKNOW, "未知错误");
+	public final static ReturnMsg MSG_OPERATE_SUCCESS = new ReturnMsg(CODE_SUCCESS, "操作成功！");
+	public final static ReturnMsg MSG_OPERATE_ERROR = new ReturnMsg(CODE_ERROR, "操作失败！");
+	public final static ReturnMsg MSG_OPERATE_UNKNOW = new ReturnMsg(CODE_UNKNOW, "未知错误！");
 	
 }

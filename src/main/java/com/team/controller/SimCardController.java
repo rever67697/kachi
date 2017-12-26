@@ -1,5 +1,7 @@
 package com.team.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,7 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.SimCardService;
+import com.team.util.CommonUtil;
+import com.team.util.IConstant;
+import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 
 /**
  * 创建日期：2017-12-18下午3:51:14
@@ -33,6 +39,15 @@ public class SimCardController {
 	@PostMapping("/getSimCard")
 	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows){
 		return simCardService.getSimCard(departmentId, cpId, number, status, page, rows);
+	}
+	
+	@PostMapping("/getCardOutlineInfo")
+	public ReturnMsg getPoolOutlineInfo(String departmentId,HttpServletRequest request){
+		OutlineInfo info = simCardService.getOutlineInfo(departmentId);
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		returnMsg.setData(info);
+		return returnMsg;
+		
 	}
 	
 }

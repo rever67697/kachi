@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.team.model.SimCard;
+import com.team.vo.OutlineInfo;
 
 /**
  * 卡表的相关操作	m_simcard
@@ -46,4 +47,12 @@ public interface SimCardDao {
 	 *return
 	 */
 	public List<SimCard> getSimCard(Map<String, Object> map);
+	
+	/**
+	 * 查询流量卡总览信息
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
 }

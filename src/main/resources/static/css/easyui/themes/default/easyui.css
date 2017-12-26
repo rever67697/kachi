@@ -1941,7 +1941,7 @@ body{border:1px solid transparent;overflow:hidden}
 .table th{background:rgb(237,246,255);text-align:right;font-size:13px}
 .table td input{height:20px}
 .table input,.table select{border:0}
-.table td input,.table td select{border:1px solid #ccc;width:90%;padding:3px;line-height:18px;border-radius:4px}
+.table td input,.table td select{border:1px solid #ccc;width:90%;padding:3px;line-height:18px;border-radius:4px;min-width:120px}
 .table td select{width:93%}
 #tabs .panel-body {overflow:hidden}
 .kc-outline td{padding-left:20px;height:120px;width:25%}
@@ -1952,6 +1952,7 @@ body{border:1px solid transparent;overflow:hidden}
 .gray{background:rgb(128,128,128)}
 .green{background:rgb(51,194,7)}
 .black{background:rgb(0,0,0)}
+.orange{background:rgb(240,160,26)}
 .ligh-blue{background:rgb(87,181,227)}
 table.excel{border-collapse:collapse;width:95%;margin:20px auto;font-weight:normal;font-size:15px}
 table.excel input{border:0;border:1px solid #ccc;padding:3px;line-height:18px;min-width:100px;border-radius:4px}

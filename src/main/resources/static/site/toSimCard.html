@@ -16,14 +16,14 @@
 	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
 		    <table class="table kc-outline">
 		    	<tr>
-		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount"></div><div>卡总数</div></td>
-		    		<td><div class="kc-outline-number ligh-blue" id="onlinePoolCount"></div><div>正常卡数</div></td>
-		    		<td><div class="kc-outline-number gray" id="offlinePoolCount"></div><div>指定卡数</div></td>
-		    		<td><div class="kc-outline-number ligh-blue" id="cardSlotCount"></div><div>作废卡数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>卡总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>
+		    		<td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>
+		    		<td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>
 		    	</tr>
 		    	<tr>
-		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>停机卡数</div></td>
-		    		<td></td>
+		    		<td><div class="kc-outline-number red" id="stopCardCount"></div><div>停机卡数</div></td>
+		    		<td><div class="kc-outline-number gray" id="offCardCount"></div><div>作废卡数</div></td>
 		    		<td></td><td></td>
 		    	</tr>
 		    </table>
@@ -91,7 +91,7 @@
 		};
   
 	$(function(){
-		//getCardPoolInfo();
+		getCardInfo();
 	
 		$('#dg').datagrid(options);
 		
@@ -114,9 +114,6 @@
   		$('#dg').datagrid(options);
   	}
   	
-  	function doGivePool(){
-  	}
-  	
   	function getCardPoolInfo(){
   		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
   			if(data && data.code=='200'){
@@ -129,6 +126,20 @@
   				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
   			}
   		});
+  	}
+  	
+  	function getCardInfo(){
+  		$.post(kcJs.fn.getContextPath()+'/getCardOutlineInfo',function(data){
+  			if(data && data.code=='200'){
+  				var info = data.data;
+  				$('#simCardCount').text(info.simCardCount);
+  				$('#onCardCount').text(info.onCardCount);
+  				$('#stopCardCount').text(info.stopCardCount);
+  				$('#appointCardCount').text(info.appointCardCount);
+  				$('#readCardCount').text(info.readCardCount);
+  				$('#offCardCount').text(info.offCardCount);
+  			}
+  		},'json');
   	}
   </script>
 </html>

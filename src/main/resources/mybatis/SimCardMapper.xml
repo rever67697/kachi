@@ -38,4 +38,16 @@
 		order by r.cpid,r.cpchannelid
 	</select>
 	
+	<select id="getOutlineInfo"  resultType="com.team.vo.OutlineInfo">
+		select count(1) simCardCount,
+			   sum(case when status=0 then 1 else 0 end) onCardCount,
+	     	   sum(case when status=1 then 1 else 0 end) stopCardCount,
+               sum(case when status=2 then 1 else 0 end) appointCardCount,
+               sum(case when status=3 then 1 else 0 end) readCardCount,
+	           sum(case when status=4 then 1 else 0 end) offCardCount
+		from  m_simcard r
+		<if test="departmentId != null">
+			and r.departmentId=#{departmentId,jdbcType=INTEGER}
+		</if>
+	</select>
 </mapper>

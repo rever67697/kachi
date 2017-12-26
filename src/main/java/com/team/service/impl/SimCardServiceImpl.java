@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import com.team.dao.SimCardDao;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
+import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import com.team.model.SimCard;
@@ -75,6 +76,19 @@ public class SimCardServiceImpl implements SimCardService{
 		List<SimCard> list = simCardDao.getSimCard(map);
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
+	}
+
+	@Override
+	/**
+	 * 查询流量卡总览信息
+	 */
+	public OutlineInfo getOutlineInfo(String departmentId) {
+		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil.putInteger(departmentId));
+		OutlineInfo info = null;
+		if(list!=null&&list.size()>0){
+			info = list.get(0);
+		}
+		return info;
 	}
 
 }

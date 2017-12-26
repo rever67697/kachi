@@ -16,13 +16,23 @@ public class OutlineInfo {
 	
 	private Integer simCardCount;//已插卡总数
 	
-	private Integer onCardCount;//正常卡数
+	private Integer onCardCount;//正常卡数0
 	
-	private Integer offCardCount;//作废卡数
+	private Integer stopCardCount;//停用卡数1
 	
-	private Integer appointCardCount;//指定卡数
+	private Integer appointCardCount;//指定卡数2
 	
-	private Integer stopCardCount;//停机卡数
+	private Integer readCardCount;//待激活卡数3
+	
+	private Integer offCardCount;//作废卡数4
+
+	public Integer getReadCardCount() {
+		return readCardCount;
+	}
+
+	public void setReadCardCount(Integer readCardCount) {
+		this.readCardCount = readCardCount;
+	}
 
 	public Integer getSimPoolCount() {
 		return simPoolCount;
