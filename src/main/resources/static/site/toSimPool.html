@@ -42,6 +42,16 @@
 		  		</table>
 		  	</form>
 		  	<div id="dg"></div>
+		  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+		  		<form id="doForm">
+			  		<table class="table th-normal">
+			  			<tr><th>卡池ID：</th><td><input name="SPID" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+			  			<tr><th>代理商ID：</th><td><input name="DEPARTMENTID" class="easyui-numberbox onlyNumber" required="true"/></td></tr>
+			  			<tr style="height:20px"></tr>
+			  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			  		</table>
+		  		</form>
+		  	</div>
 		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<div class="title"></div>
 		    	<div class="card_container" ></div>
@@ -98,6 +108,14 @@
 		getCardPoolInfo();
 	
 		$('#dg').datagrid(options);
+		
+		$('#doDialog').dialog({
+			modal : true,
+   			width:380,
+   			height:180,
+   			cache: false,
+			title : "预分配卡池"
+		});
 		
 		$('#cardsDialog').dialog({
 			modal : true,
@@ -157,7 +175,9 @@
   	}
   	
   	function doGivePool(){
-  	}
+		$('#doForm')[0].reset();
+  		$('#doDialog').dialog('open');
+	}
   	
   	function getCardPoolInfo(){
   		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
@@ -171,6 +191,23 @@
   				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
   			}
   		});
+  	}
+  	
+  	function saveData(){
+  		if($('#doForm').form('validate')){
+  			$('#doDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/givePool',$('#doForm').serializeObject(),function(data){
+  				if(data){
+		    			$.messager.alert('提示',data.msg,'info');
+		    			if(data.code=='200'){
+		    				doQuery();
+		    			}else{
+		    				$('#dg').datagrid('loaded');
+		    			}
+		    		}
+  			}); 
+  		}
   	}
   </script>
 </html>

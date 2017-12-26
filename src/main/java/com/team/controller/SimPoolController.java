@@ -38,4 +38,9 @@ public class SimPoolController {
 		
 	}
 	
+	@PostMapping("/givePool")
+	public ReturnMsg givePool(){
+		return null;
+	}
+	
 }
