@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>流量卡管理</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
@@ -12,6 +12,123 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	流量卡管理
+  	<div id="tt" class="easyui-tabs" >
+	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
+		    <table class="table kc-outline">
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount"></div><div>卡总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="onlinePoolCount"></div><div>正常卡数</div></td>
+		    		<td><div class="kc-outline-number gray" id="offlinePoolCount"></div><div>指定卡数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="cardSlotCount"></div><div>作废卡数</div></td>
+		    	</tr>
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>停机卡数</div></td>
+		    		<td></td>
+		    		<td></td><td></td>
+		    	</tr>
+		    </table>
+	    </div>
+	    <div title="流量卡" iconCls="icon icon-device" >
+		  	<form id="queryForm">
+		  		<table class="table">
+		  			<tr>
+		  				<th>卡号：</th><td><input name="number" placeholder="请输入卡号" class="onlyNumber"/></td>
+		  				<th>卡状态：</th>
+		  				<td><select name="status"><option value="">全部</option><option value="0">正常</option>
+		  										  <option value="1">停用</option><option value="2">指定</option>
+		  										  <option value="3">待激活</option><option value="4">作废</option>
+		  					</select></td>
+		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
+		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
+		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  			</tr>
+		  		</table>
+		  	</form>
+		  	<div id="dg"></div>
+	    </div>
+	</div>
   </body>
+  <script type="text/javascript">
+  	$('#tt').css('height',window.innerHeight*0.98+'px');
+  	var options={
+			title:'流量卡列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'SIM卡id',hidden:true},
+			         	{field:'imsi',title:'imsi',width:100},
+			         	{field:'number',title:'卡号',width:100},
+			         	{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
+			         		var status = kcJs.fn.getCardStatus(value+'');
+			         		return status?'<div style="color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
+			         	}},
+			         	{field:'operatorCode',title:'运营商',width:100},
+			         	{field:'mcNumber',title:'短信中心号码',width:100},
+			         	{field:'packageId',title:'卡套餐',width:120},
+			         	{field:'expiryDate',title:'有效期截卡时间',width:120},
+			         	{field:'cpId',title:'所在卡池',width:80},
+			         	{field:'cpChannelId',title:'卡池通道',width:100},
+			         	{field:'departmentId',title:'所属部门',width:150}
+					]],
+			toolbar: [{
+				  		iconCls: 'icon-edit',
+				  		text:'修改',
+				  		handler: doModify
+				  	  },'-',{
+				  		iconCls: 'icon-cancel',
+				  		text:'删除',
+				  		handler: doDelete
+				  	  }
+				  	 ],
+			url:kcJs.fn.getContextPath()+'/getSimCard',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			height:window.innerHeight*0.82
+		};
+  
+	$(function(){
+		//getCardPoolInfo();
+	
+		$('#dg').datagrid(options);
+		
+	});
+  
+  	function doModify(){
+  	
+  	}
+  	
+  	function doDelete(){
+  	
+  	}
+  	
+  	function doModifyDept(){
+  		
+  	}
+  	
+  	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
+  	
+  	function doGivePool(){
+  	}
+  	
+  	function getCardPoolInfo(){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
+  			if(data && data.code=='200'){
+  				var info = data.data;
+  				$('#simPoolCount').text(info.simPoolCount);
+  				$('#onlinePoolCount').text(info.onlinePoolCount);
+  				$('#offlinePoolCount').text(info.offlinePoolCount);
+  				$('#cardSlotCount').text(info.cardSlotCount);
+  				$('#simCardCount').text(info.simCardCount);
+  				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
+  			}
+  		});
+  	}
+  </script>
 </html>

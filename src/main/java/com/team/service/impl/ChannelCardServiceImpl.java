@@ -11,8 +11,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.ChannelCardDao;
 import com.team.model.ChannelCard;
-import com.team.model.ResultList;
 import com.team.service.ChannelCardService;
+import com.team.vo.ResultList;
 
 @Service
 public class ChannelCardServiceImpl implements ChannelCardService {

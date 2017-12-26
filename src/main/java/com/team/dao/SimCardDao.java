@@ -1,11 +1,15 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.team.model.SimCard;
 
 /**
  * 卡表的相关操作	m_simcard
+ * 卡的状态有5种（0：正常；1:停用; 2：指定;3:待激活；4：作废）只有正常和指定状态的卡才会被终端选中使用
  * 创建日期：2017-12-18下午3:38:21
  * author:wuzhiheng
  */
@@ -17,6 +21,29 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public List<SimCard> getSimCardByPool(int cpId);
+	public List<SimCard> getSimCardByPool(@Param("cpId")Integer cpId);
 	
+	/**
+	 * 根据卡套餐id寻找是否有SIM卡在使用这个套餐，如果没有数据返回，则判断没有sim卡在使用这个套餐
+	 *@param packageId
+	 *@return
+	 *return
+	 */
+	public String getPackageExist(@Param("packageId")Integer packageId);
+	
+	/**
+	 * 状态为作废的卡可以删除
+	 *@param list
+	 *@return
+	 *return
+	 */
+	public int deleteSimCard(List<Integer> list);
+	
+	/**
+	 * 根据条件寻找出sim卡列表
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public List<SimCard> getSimCard(Map<String, Object> map);
 }

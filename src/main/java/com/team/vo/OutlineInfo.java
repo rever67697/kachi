@@ -1,4 +1,4 @@
-package com.team.model;
+package com.team.vo;
 /**
  * 用作显示概览信息的装载bean
  * 创建日期：2017-12-20下午5:27:27

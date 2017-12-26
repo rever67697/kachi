@@ -35,7 +35,7 @@ public class SimCard implements Serializable{
 	
 	private Integer cpStatus;//卡池状态:0:正常；1：拔出
 	
-	private Integer cPid;//卡池id
+	private Integer cpId;//卡池id
 	
 	private Integer cpChannelId;//卡池通道编号
 	
@@ -177,12 +177,12 @@ public class SimCard implements Serializable{
 		this.cpStatus = cpStatus;
 	}
 
-	public Integer getcPid() {
-		return cPid;
+	public Integer getCpId() {
+		return cpId;
 	}
 
-	public void setcPid(Integer cPid) {
-		this.cPid = cPid;
+	public void setCpId(Integer cpId) {
+		this.cpId = cpId;
 	}
 
 	public Integer getCpChannelId() {
@@ -336,7 +336,7 @@ public class SimCard implements Serializable{
 				+ operatorCode + ", mcNumber=" + mcNumber + ", packageId="
 				+ packageId + ", offPeriod=" + offPeriod + ", sustained="
 				+ sustained + ", simmeProtocol=" + simmeProtocol + ", status="
-				+ status + ", cpStatus=" + cpStatus + ", cPid=" + cPid
+				+ status + ", cpStatus=" + cpStatus + ", cPid=" + cpId
 				+ ", cpChannelId=" + cpChannelId + ", countryCode="
 				+ countryCode + ", provinceCode=" + provinceCode
 				+ ", expiryDate=" + expiryDate + ", insertDate=" + insertDate

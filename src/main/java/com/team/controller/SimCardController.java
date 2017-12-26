@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.SimCardService;
+import com.team.vo.ResultList;
 
 /**
  * 创建日期：2017-12-18下午3:51:14
@@ -25,8 +26,13 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getSimCardByPool/{cpId}")
-	public Object getSimCardByPool(@PathVariable("cpId")int cpId){
+	public ResultList getSimCardByPool(@PathVariable("cpId")int cpId){
 		return simCardService.getSimCardByPool(cpId);
+	}
+	
+	@PostMapping("/getSimCard")
+	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows){
+		return simCardService.getSimCard(departmentId, cpId, number, status, page, rows);
 	}
 	
 }

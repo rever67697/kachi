@@ -1,4 +1,4 @@
-package com.team.model;
+package com.team.vo;
 
 import java.util.List;
 

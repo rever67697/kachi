@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.SimPackageDao">
+	<sql id="allColumn" >
+    	r.ID, r.NAME, r.OPERATORCODE, r.MAXFLOW, r.MAXROAMFLOW, r.STATUS, r.LEVEL, r.MCCS
+    </sql>
+    
+    
+    <select id="getSimPackage" parameterType="java.util.Map" resultType="com.team.model.SimPackage">
+	    select 
+	    <include refid="allColumn" />
+	    ,case OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 				 when 'China Unicom' then '中国联通' 
+			 				 when 'China Telecom' then '中国电信'
+							 when 'China Tietong' then '中国铁通' 
+							 else OPERATORNAMECN end operatorName
+	    from m_simpackage r
+	    left join m_operator t 
+	    on r.OPERATORCODE=t.OPERATORCODE
+	    where 1=1
+	    <if test="status!=null" >  
+         	and r.status = #{status,jdbcType=INTEGER}  
+        </if>
+        <if test="name!=null and name!=''" >  
+         	and r.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+        </if>
+        order by r.status,r.level desc
+	</select>
+	
+	
+	<update id="deletePackage">
+		update m_simpackage
+		set status=1
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updatePackage" parameterType="com.team.model.SimPackage" >
+	    update m_simpackage
+	    set NAME = #{name,jdbcType=VARCHAR},
+	      OPERATORCODE = #{operatorCode,jdbcType=INTEGER},
+	      MAXFLOW = #{maxFlow,jdbcType=INTEGER},
+	      MAXROAMFLOW = #{maxRoamFlow,jdbcType=INTEGER},
+	      LEVEL = #{level,jdbcType=INTEGER},
+	      MCCS = #{mccs,jdbcType=VARCHAR}
+	    where ID = #{id,jdbcType=INTEGER}
+    </update>
+	
+	<insert id="insertPackage" parameterType="com.team.model.SimPackage" >
+	    insert into m_simpackage (ID, NAME, OPERATORCODE, 
+	      MAXFLOW, MAXROAMFLOW, 
+	      LEVEL, MCCS)
+	    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{operatorCode,jdbcType=INTEGER}, 
+	      #{maxFlow,jdbcType=INTEGER}, #{maxRoamFlow,jdbcType=INTEGER}, 
+	      #{level,jdbcType=INTEGER}, #{mccs,jdbcType=VARCHAR})
+    </insert>
+</mapper>

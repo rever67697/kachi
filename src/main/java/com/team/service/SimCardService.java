@@ -1,7 +1,8 @@
 package com.team.service;
 
+import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 
-import com.team.model.ResultList;
 
 /**
  * 卡表相关操作	m_simcard
@@ -10,6 +11,12 @@ import com.team.model.ResultList;
  */
 public interface SimCardService {
 	
-	public ResultList getSimCardByPool(int cpId);
+	public ResultList getSimCardByPool(Integer cpId);
+	
+	public String getPackageExist(Integer packageId);
+	
+	public ReturnMsg deleteSimCard(String ids);
+	
+	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows);
 	
 }

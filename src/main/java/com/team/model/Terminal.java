@@ -45,13 +45,69 @@ public class Terminal implements Serializable{
 	
 	private Integer departmentId;//部门ID
 	
-	private String medi;//WCDMA的MEID
+	private String meid;//WCDMA的MEID
 	
 	private Integer saleType;//销售类型
 	
 	private Integer resetWifi;//是否重置wifi：0：不重置；1：重置
 	
 	private String androidVersion;
+	
+	private String departmentName;
+	
+	private String countryName;
+
+	public Terminal() {
+		super();
+	}
+
+	public Terminal(Integer id, Integer tsid, String mac, String model,
+			String batch, String sVersion, String key, Integer status,
+			Integer upLog, String imei, Integer activated,
+			Integer homeLocation, String ssid, String wifiPassword,
+			String licFix, Integer usedVpn, Integer usedSoft,
+			Integer departmentId, String meid, Integer saleType,
+			Integer resetWifi, String androidVersion) {
+		super();
+		this.id = id;
+		this.tsid = tsid;
+		this.mac = mac;
+		this.model = model;
+		this.batch = batch;
+		this.sVersion = sVersion;
+		this.key = key;
+		this.status = status;
+		this.upLog = upLog;
+		this.imei = imei;
+		this.activated = activated;
+		this.homeLocation = homeLocation;
+		this.ssid = ssid;
+		this.wifiPassword = wifiPassword;
+		this.licFix = licFix;
+		this.usedVpn = usedVpn;
+		this.usedSoft = usedSoft;
+		this.departmentId = departmentId;
+		this.meid = meid;
+		this.saleType = saleType;
+		this.resetWifi = resetWifi;
+		this.androidVersion = androidVersion;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -197,12 +253,12 @@ public class Terminal implements Serializable{
 		this.departmentId = departmentId;
 	}
 
-	public String getMedi() {
-		return medi;
+	public String getMeid() {
+		return meid;
 	}
 
-	public void setMedi(String medi) {
-		this.medi = medi;
+	public void setMeid(String meid) {
+		this.meid = meid;
 	}
 
 	public Integer getSaleType() {
@@ -227,6 +283,21 @@ public class Terminal implements Serializable{
 
 	public void setAndroidVersion(String androidVersion) {
 		this.androidVersion = androidVersion;
+	}
+
+	@Override
+	public String toString() {
+		return "Terminal [id=" + id + ", tsid=" + tsid + ", mac=" + mac
+				+ ", model=" + model + ", batch=" + batch + ", sVersion="
+				+ sVersion + ", key=" + key + ", status=" + status + ", upLog="
+				+ upLog + ", imei=" + imei + ", activated=" + activated
+				+ ", homeLocation=" + homeLocation + ", ssid=" + ssid
+				+ ", wifiPassword=" + wifiPassword + ", licFix=" + licFix
+				+ ", usedVpn=" + usedVpn + ", usedSoft=" + usedSoft
+				+ ", departmentId=" + departmentId + ", meid=" + meid
+				+ ", saleType=" + saleType + ", resetWifi=" + resetWifi
+				+ ", androidVersion=" + androidVersion + ", departmentName="
+				+ departmentName + ", countryName=" + countryName + "]";
 	}
 	
 	

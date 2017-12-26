@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.TerminalDao">
+
+	<sql id="departmentId">
+		<if test="departmentId!=null" >  
+         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+        </if>
+	</sql>
+
+	<select id="getTerminalByDeparment" resultType="com.team.model.Terminal" parameterType="java.util.Map">
+		select r.id,
+			  r.tsid,
+			  r.mac,
+			  r.model,
+			  r.batch,
+			  r.sVersion,
+			  r.key,
+			  r.status,
+			  r.upLog,
+			  r.imei,
+			  r.activated,
+			  r.homeLocation,
+			  r.ssid,
+			  r.wifiPassword,
+			  r.licFix,
+			  r.usedVpn,
+			  r.usedSoft,
+			  r.departmentId,
+			  r.meid,
+			  r.saleType,
+			  r.resetWifi,
+			  r.androidVersion,
+			  t.name departmentName,
+			  ifnull(k.namecn,k.countryname) countryName
+		from m_terminal r
+		left join m_department t
+		on r.departmentId=t.id
+		   and t.status=0
+		left join m_country k 
+		on k.countrycode=r.homeLocation
+		where 1=1
+		<include refid="departmentId"/>
+		<if test="tsid!=null" >  
+         	and r.tsid = #{tsid,jdbcType=INTEGER}  
+        </if>
+		<if test="status!=null" >  
+         	and r.status = #{status,jdbcType=INTEGER}  
+        </if>
+		<if test="activated!=null" >  
+         	and r.activated = #{activated,jdbcType=INTEGER}  
+        </if>
+        order by r.tsid
+	</select> 
+	
+	<update id="deleteTerminalByIds" parameterType="java.util.List">
+	    update m_terminal
+	    set status=3
+	    where ID in (<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
+	</update>
+	
+	<insert id="insertTerminal" parameterType="com.team.model.Terminal">
+	    insert into m_terminal (ID, TSID, MAC, 
+	      MODEL, BATCH, SVERSION, 
+	      `KEY`, STATUS, UPLOG, 
+	      IMEI, ACTIVATED, HOMELOCATION, 
+	      SSID, WIFIPASSWORD, LICFIX, 
+	      USEDVPN, USEDSOFT, departmentId, 
+	      MEID, SALETYPE, resetWiFi, 
+	      androidVersion)
+	    values (#{id,jdbcType=INTEGER}, #{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
+		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
+		        #{key,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{upLog,jdbcType=INTEGER}, 
+		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
+		        #{ssid,jdbcType=VARCHAR}, #{wifiPassword,jdbcType=VARCHAR}, #{licFix,jdbcType=VARCHAR}, 
+		        #{usedVpn,jdbcType=INTEGER}, #{usedSoft,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
+		        #{meid,jdbcType=VARCHAR}, #{saleType,jdbcType=INTEGER}, #{resetWifi,jdbcType=INTEGER}, 
+	            #{androidVersion,jdbcType=VARCHAR}
+	     	   )
+  	</insert>
+	
+  	<update id="updateTerminalById" parameterType="com.team.model.Terminal">
+	    update m_terminal
+	    set TSID = #{tsid,jdbcType=INTEGER},
+	      MAC = #{mac,jdbcType=VARCHAR},
+	      MODEL = #{model,jdbcType=VARCHAR},
+	      BATCH = #{batch,jdbcType=VARCHAR},
+	      SVERSION = #{sVersion,jdbcType=VARCHAR},
+	      `KEY` = #{key,jdbcType=VARCHAR},
+	      STATUS = #{status,jdbcType=INTEGER},
+	      UPLOG = #{upLog,jdbcType=INTEGER},
+	      IMEI = #{imei,jdbcType=VARCHAR},
+	      ACTIVATED = #{activated,jdbcType=INTEGER},
+	      HOMELOCATION = #{homeLocation,jdbcType=INTEGER},
+	      SSID = #{ssid,jdbcType=VARCHAR},
+	      WIFIPASSWORD = #{wifiPassword,jdbcType=VARCHAR},
+	      LICFIX = #{licFix,jdbcType=VARCHAR},
+	      USEDVPN = #{usedVpn,jdbcType=INTEGER},
+	      USEDSOFT = #{usedSoft,jdbcType=INTEGER},
+	      departmentId = #{departmentId,jdbcType=INTEGER},
+	      MEID = #{meid,jdbcType=VARCHAR},
+	      SALETYPE = #{saleType,jdbcType=INTEGER},
+	      resetWiFi = #{resetWifi,jdbcType=INTEGER},
+	      androidVersion = #{androidVersion,jdbcType=VARCHAR}
+	    where ID = #{id,jdbcType=INTEGER}
+  	</update>
+</mapper>

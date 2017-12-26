@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.model.ChannelCard;
-import com.team.model.ResultList;
 import com.team.service.ChannelCardService;
+import com.team.vo.ResultList;
 
 /**
  * @author Wzq

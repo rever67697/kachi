@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>套餐管理</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
@@ -12,6 +12,152 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	套餐管理
+  	<form id="queryForm">
+  		<table class="table">
+  			<tr>
+  				<th>套餐名称：</th><td><input name="name" placeholder="请输入套餐名称"/></td>
+  				<th>套餐状态：</th>
+  				<td><select name="status"><option value="">全部</option><option  value="0">正常</option><option value="1">删除</option></select></td>
+  				<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+  			</tr>
+  		</table>
+  	</form>
+  	<div id="dg"></div>
+  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  		<form id="doForm">
+	  			<input type="hidden" name="id"/>
+		  		<table class="table th-normal">
+		  			<tr><th>套餐名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>运营商编号：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
+		  			<tr><th>本国流量（KB）：</th><td><input name="maxFlow" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+		  			<tr><th>漫游流量：</th><td><input name="maxRoamFlow" class="easyui-numberbox"/></td></tr>
+		  			<tr><th>优先级：</th><td><input name="level" class="onlyNumber"/></td></tr>
+		  			<tr><th>套餐支持的漫游国家：</th><td><input name="mccs"/></td></tr>
+		  			<tr style="height:20px"></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  		</table>
+	  		</form>
+	  	</div>
   </body>
+  <script type="text/javascript">
+  	var options={
+			title:'卡套餐列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'套餐id',hidden:true},
+			         	{field:'name',title:'套餐名称',width:150},
+			         	{field:'operatorName',title:'运营商',width:150},
+			         	{field:'maxFlow',title:'国内通用流量（KB）',width:120},
+			         	{field:'maxRoamFlow',title:'漫游流量',width:120},
+			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
+			         		var color = kcJs.fn.getColor(value=="0"?"blue":"gray");
+			         		return '<div style="color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=="0"?"正常":"删除")+'</div>';
+			         	}},
+			         	{field:'level',title:'优先级',width:100},
+			         	{field:'mccs',title:'套餐支持的漫游国家',width:200,formatter:function(value,rec,index){
+			         		return value?value:"不限";
+			         	}}
+					]],
+			toolbar: [{
+				  		iconCls: 'icon-add',
+				  		text:'添加',
+				  		handler: doAdd
+				  	  },'-',{
+				  		iconCls: 'icon-edit',
+				  		text:'修改',
+				  		handler: doModify
+				  	  },'-',{
+				  		iconCls: 'icon-cancel',
+				  		text:'删除',
+				  		handler: doDelete
+				  	  }
+				  	 ],
+			url:kcJs.fn.getContextPath()+'/getSimPackage',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			singleSelect:true,
+			height:window.innerHeight*0.89
+		};
+  
+	$(function(){
+		$('#dg').datagrid(options);
+		
+		$('#doDialog').dialog({
+			modal : true,
+   			width:380,
+   			height:340,
+   			cache: false,
+			title : "添加/修改卡套餐"
+		});
+		
+		kcJs.fn.initSelect({"container":$('[name=operatorCode]'),"url":'getOperatorDic',"needNull":false});
+	});
+	
+	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
+  
+  	function doAdd(){
+  		$('#doForm')[0].reset();
+  		$('#doDialog [name=id]').val('');
+  		$('#doDialog').dialog('open');
+  	}
+  	
+  	function doModify(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+             var rowData = $('#dg').datagrid("getSelected");
+             kcJs.fn.autoFillData($('#doDialog'),rowData);
+             $('#doDialog').dialog('open');
+        }
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
+  	}
+  	
+  	function doDelete(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length == 1) {
+  			$.messager.confirm('提示','是否确定删除？',function(r){
+  				if(r){
+  					$('#dg').datagrid('loading');
+		  			$.post(kcJs.fn.getContextPath()+'/deletePackageById',{id:selectRows[0].id},function(data){
+		  				if(data && data.code && data.code == '200'){
+		  					doQuery();	
+		  				}else{
+		  					$('#dg').datagrid('loaded');
+		  				}
+		  				$.messager.alert("提示", data.msg, "info");
+		  			},'json');
+		  		}
+  			});
+        }else {
+            $.messager.alert("提示", "请选择一条信息", "info");
+        }
+  	}
+  	
+  	function saveData(){
+  		if($('#doForm').form('validate')){
+  			$('#doDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
+  				if(data){
+	    			$.messager.alert('提示',data.msg,'info');
+	    			if(data.code=='200'){
+	    				doQuery();
+	    			}else{
+	    				$('#dg').datagrid('loaded');
+	    			}
+	    		}
+	    		
+  			});
+  		}
+  	}
+  </script>
 </html>

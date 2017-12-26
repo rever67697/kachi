@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.CommonDao">
+
+	<select id="getCountryDic" resultType="java.util.Map">
+		select countrycode value,
+			   namecn name
+		from m_country
+		order by countrycode
+	</select>
+
+	<select id="getDepartmentDic" resultType="java.util.Map">
+		select id value,
+			   name
+		from m_department
+		where status=0
+		order by id
+	</select>
+	
+	<select id="getOperatorDic" resultType="java.util.Map">
+		select OPERATORCODE value,
+			 concat(case OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 							when 'China Unicom' then '中国联通' 
+			 							when 'China Telecom' then '中国电信'
+										when 'China Tietong' then '中国铁通' 
+										else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
+		from m_operator 
+		where status=0
+		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc
+	</select>
+</mapper>

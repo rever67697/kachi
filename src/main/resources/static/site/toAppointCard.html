@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>指定卡管理</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
@@ -12,6 +12,54 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	指定卡管理
+  
+  	
+  		<div id="tt" class="easyui-tabs">	
+	    <div title="指定卡管理" style="" iconCls="icon icon-outline">
+		指定卡概要信息
+	    </div>
+	    <div title="指定卡信息列表" iconCls="icon icon-device">
+		  	<form id="queryForm">
+		  		<table class="table">
+		  			<tr>
+		  				<th>指定卡号码：</th><td><input name="number" placeholder="请输入指定卡号码" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>运营商：</th><td><input name="operatorCode" placeholder="请输入运营商编号"/></td>
+<!-- 		  				<th>卡池状态：</th> -->
+<!-- 		  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td> -->
+		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  			</tr>
+		  		</table>
+		  	</form>
+		  	  <div id="win" class="easyui-window" title="指定卡修改信息"  closed="true" style="width:500px;">
+					<form style="padding:10px 20px 10px 40px;">
+				<table class="table">
+		  			<tr>
+		  				<th>主键标识：</th><td><input name="ID" class="onlyNumber"/></td>
+		  				<th>IMSI：</th><td><input name="IMSI" class="onlyNumber"/></td>
+		  				<th>卡号：</th><td><input name="NUMBER" class="onlyNumber"/></td>
+		  				<th>ICCID：</th><td><input name="ICCID" class="onlyNumber"/></td>
+		  				<th>运营商编码：</th><td><input name="OPERATORCODE" class="onlyNumber"/></td>
+		  				<th>国家编码：</th><td><input name="COUNTRYCODE" class="onlyNumber"/></td>
+		  				<th>短信中心号码：</th><td><input name="MCNUMBER" class="onlyNumber"/></td>
+		  				<th>最后一次充值时间：</th><td><input name="RECHARGETIME" class="onlyNumber"/></td>
+		  				<th>账户余额：</th><td><input name="BALANCE" class="onlyNumber"/></td>
+		  				<th>通道卡状态：</th><td><input name="STATUS" class="onlyNumber"/></td>
+		  				<th>详情：</th><td><input name="DETAIL" class="onlyNumber"/></td>
+		  			</tr>
+		  		</table>
+						<div style="padding:5px;text-align:center;">
+							<a href="#" class="easyui-linkbutton" icon="icon-ok">保存</a>
+							<a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>
+						</div>
+					</form>
+				</div>
+			
+						
+		    
+		  
+		   
+		     
+	    </div>
+	</div>
   </body>
 </html>

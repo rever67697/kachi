@@ -23,6 +23,16 @@ public class SimPackage implements Serializable{
 	private Integer level;//优先级
 	
 	private String mccs;//套餐支持的漫游国家，用,分隔，为空表示任何国家都可以使用
+	
+	private String operatorName;//运营商名称
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
 
 	public Integer getId() {
 		return id;

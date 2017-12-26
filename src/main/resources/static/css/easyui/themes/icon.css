@@ -55,7 +55,10 @@
 .icon-tip{
 	background:url('icons/tip.png') no-repeat;
 }
-
+.icon-nkey{ 
+	background:url('icons/tabicons.png') no-repeat;
+	background-position:-380px -220px
+	}
 
 .icon{ 
 	background:url('icons/tabicons.png') no-repeat;width:18px;height:18px;float:left;

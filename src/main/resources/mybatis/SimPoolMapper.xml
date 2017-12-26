@@ -24,12 +24,13 @@
          	and r.isActive = #{isActive,jdbcType=INTEGER}  
         </if>
         <if test="name!=null and name!=''" >  
-         	and r.name like concat(concat('%',#{name,jdbcType=VARCHAR}),'%')
+         	and r.name like concat('%',#{name,jdbcType=VARCHAR},'%')
         </if>
+        order by r.spid
 	</select> 
 	
 	
-	<select id="getOutlineInfo" resultType="com.team.model.OutlineInfo">
+	<select id="getOutlineInfo" resultType="com.team.vo.OutlineInfo">
 		select (select count(1) from m_simpool r where 1=1 <include refid="departmentId"/>) as simPoolCount,
 			   (select count(1) from m_simpool r where isActive=1 <include refid="departmentId"/>) as onlinePoolCount,
 			   (select sum(ifnull(type,0)) from m_simpool r where 1=1 <include refid="departmentId"/>) as cardSlotCount,

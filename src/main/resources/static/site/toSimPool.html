@@ -13,24 +13,46 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-  	<div id="tt" class="easyui-tabs">
-	    <div title="概要信息" style="" iconCls="icon icon-outline">
-			tab1
+  	<div id="tt" class="easyui-tabs" >
+	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
+		    <table class="table kc-outline">
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount"></div><div>卡池总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="onlinePoolCount"></div><div>在线卡池</div></td>
+		    		<td><div class="kc-outline-number gray" id="offlinePoolCount"></div><div>离线卡池</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="cardSlotCount"></div><div>卡槽总数</div></td>
+		    	</tr>
+		    	<tr>
+		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>已插卡数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="noCardCount"></div><div>未插卡数</div></td>
+		    		<td></td><td></td>
+		    	</tr>
+		    </table>
 	    </div>
-	    <div title="卡池设备" iconCls="icon icon-device">
+	    <div title="卡池设备" iconCls="icon icon-device" >
 		  	<form id="queryForm">
 		  		<table class="table">
 		  			<tr>
-		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>卡池编号：</th><td><input name="spid" placeholder="请输入卡池编号" class="onlyNumber"/></td>
 		  				<th>卡池名称：</th><td><input name="name" placeholder="请输入卡池名称"/></td>
 		  				<th>卡池状态：</th>
-		  				<td><select name="isActive" placeholder="请输入卡池名称"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
+		  				<td><select name="isActive"><option value="">全部</option><option  value="1">正常</option><option value="0">暂停</option></select></td>
 		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 		  			</tr>
 		  		</table>
 		  	</form>
 		  	<div id="dg"></div>
-		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
+		  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+		  		<form id="doForm">
+			  		<table class="table th-normal">
+			  			<tr><th>卡池ID：</th><td><input name="SPID" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+			  			<tr><th>代理商ID：</th><td><input name="DEPARTMENTID" class="easyui-numberbox onlyNumber" required="true"/></td></tr>
+			  			<tr style="height:20px"></tr>
+			  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			  		</table>
+		  		</form>
+		  	</div>
+		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<div class="title"></div>
 		    	<div class="card_container" ></div>
 		    </div>
@@ -48,7 +70,8 @@
 			         	{field:'spid',title:'卡池编号',width:80},
 			         	{field:'name',title:'卡池名称',width:100},
 			         	{field:'isActive',title:'活动状态',width:100,formatter:function(value,rec,index){
-			         		return '<div style="color:#fff;width:90px;text-align:center;background:'+(value=="1"?colors.blue:colors.red)+'">'+(value=="1"?"正常":"暂停")+'</div>';
+			         		var color = kcJs.fn.getColor(value=="1"?"blue":"red");
+			         		return '<div style="color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=="1"?"正常":"暂停")+'</div>';
 			         	}},
 			         	{field:'oupIp',title:'卡池外网IP',width:100},
 			         	{field:'type',title:'卡池类型',width:100},
@@ -71,21 +94,31 @@
 				  		handler: doGivePool
 				  	  }
 				  	 ],
-			url:getContextPath()+'/getSimPoolByDept',
+			url:kcJs.fn.getContextPath()+'/getSimPoolByDept',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
+			height:window.innerHeight*0.82
 		};
   
 	$(function(){
+		getCardPoolInfo();
+	
 		$('#dg').datagrid(options);
+		
+		$('#doDialog').dialog({
+			modal : true,
+   			width:380,
+   			height:180,
+   			cache: false,
+			title : "预分配卡池"
+		});
 		
 		$('#cardsDialog').dialog({
 			modal : true,
-   			resizable:true,
    			width:800,
    			height:350,
    			cache: false,
@@ -98,16 +131,16 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             $.getJSON(getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
              	var cardList = data.rows;
              	if(cardList && cardList.length>0){
              		$('.card_container').html('');
              		var total = rowData.type?rowData.type:cardList.length;
              		var count = 0;
              		for(var i = 0;i < total;i++){
-             			var box = v_status["1"];
+             			var box = kcJs.fn.getCardStatus(5);
              			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
-             				box = v_status[cardList[count].status];
+             				box = kcJs.fn.getCardStatus(cardList[count].status);
              				count ++;
              			}
              			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container'))
@@ -115,14 +148,13 @@
 						    position: 'top',
 						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
 						    onShow: function(){
-						    	var color = $(this).attr('color');
+						    	//var color = $(this).attr('color');
 								$(this).tooltip('tip').css({
-									backgroundColor:color,
+									backgroundColor:$(this).attr('color'),
 								});
 						    }
 						});	;
              		}
-             		console.log(rowData.name);
              		$('.title').html(rowData.name+' （'+rowData.type+'）');
              		$('#cardsDialog').dialog('open');
              	}
@@ -143,6 +175,39 @@
   	}
   	
   	function doGivePool(){
+		$('#doForm')[0].reset();
+  		$('#doDialog').dialog('open');
+	}
+  	
+  	function getCardPoolInfo(){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
+  			if(data && data.code=='200'){
+  				var info = data.data;
+  				$('#simPoolCount').text(info.simPoolCount);
+  				$('#onlinePoolCount').text(info.onlinePoolCount);
+  				$('#offlinePoolCount').text(info.offlinePoolCount);
+  				$('#cardSlotCount').text(info.cardSlotCount);
+  				$('#simCardCount').text(info.simCardCount);
+  				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
+  			}
+  		});
+  	}
+  	
+  	function saveData(){
+  		if($('#doForm').form('validate')){
+  			$('#doDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/givePool',$('#doForm').serializeObject(),function(data){
+  				if(data){
+		    			$.messager.alert('提示',data.msg,'info');
+		    			if(data.code=='200'){
+		    				doQuery();
+		    			}else{
+		    				$('#dg').datagrid('loaded');
+		    			}
+		    		}
+  			}); 
+  		}
   	}
   </script>
 </html>

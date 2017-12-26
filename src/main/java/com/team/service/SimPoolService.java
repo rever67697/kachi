@@ -1,8 +1,8 @@
 package com.team.service;
 
 
-import com.team.model.OutlineInfo;
-import com.team.model.ResultList;
+import com.team.vo.OutlineInfo;
+import com.team.vo.ResultList;
 
 /**
  * 卡池表相关操作	m_simpool
