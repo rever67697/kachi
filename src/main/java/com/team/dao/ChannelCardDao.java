@@ -12,15 +12,36 @@ import com.team.model.ChannelCard;
  *
  */
 public interface ChannelCardDao {
-  public List<ChannelCard> queryChannelCardsBy(Map<String, Object> map);
-
-  public ChannelCard queryChannelCardById(String Id);
-
-  public boolean insertChannelCard(ChannelCard channelCard);
-
-  public boolean insertChannelCards(List<ChannelCard> list);
-
-  public boolean deleteChannelCards(String[] list);
-
-  public boolean updateChannelCard(ChannelCard channelCard);
+	
+  /**
+   * 查询副卡列表	
+   *@param map
+   *@return
+   *return
+   */
+  public List<ChannelCard> getChannelCard(Map<String, Object> map);
+  
+  /**
+   * 插入单条副卡
+   *@param channelCard
+   *@return
+   *return
+   */
+  public int insertChannelCard(ChannelCard channelCard);
+  /**
+   * 批量删除副卡，状态设置为1
+   *@param list
+   *@return
+   *return
+   */
+  public int deleteChannelCards(List<Integer> list);
+  
+  /**
+   * 更新副卡信息
+   *@param channelCard
+   *@return
+   *return
+   */
+  public int updateChannelCard(ChannelCard channelCard);
+  
 }

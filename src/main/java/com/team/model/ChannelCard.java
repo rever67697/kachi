@@ -26,11 +26,51 @@ public class ChannelCard implements Serializable{
 	
 	private Date rechargeTime;//最后一次充值时间
 	
-	private Double blance;//账户余额
+	private Double balance;//账户余额
 	
 	private Integer status;//状态
 	
 	private String detail;//详情
+	
+	private String countryName;//国家名字
+	
+	private String operatorName;//运营商名称
+	
+	public ChannelCard() {
+		super();
+	}
+
+	public ChannelCard(Long imsi, String number, String iccid,
+			Integer operatorCode, Integer countryCode, String mcNumber,
+			Date rechargeTime, Double balance, Integer status, String detail) {
+		super();
+		this.imsi = imsi;
+		this.number = number;
+		this.iccid = iccid;
+		this.operatorCode = operatorCode;
+		this.countryCode = countryCode;
+		this.mcNumber = mcNumber;
+		this.rechargeTime = rechargeTime;
+		this.balance = balance;
+		this.status = status;
+		this.detail = detail;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -96,12 +136,12 @@ public class ChannelCard implements Serializable{
 		this.rechargeTime = rechargeTime;
 	}
 
-	public Double getBlance() {
-		return blance;
+	public Double getBalance() {
+		return balance;
 	}
 
-	public void setBlance(Double blance) {
-		this.blance = blance;
+	public void setBalance(Double balance) {
+		this.balance = balance;
 	}
 
 	public Integer getStatus() {

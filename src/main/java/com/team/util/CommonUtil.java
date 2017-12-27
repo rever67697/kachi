@@ -1,5 +1,6 @@
 package com.team.util;
 
+import java.util.Date;
 import java.util.Random;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -39,6 +40,20 @@ public class CommonUtil {
 		}
 		return null;
 	}
+	
+	public static Long getCellLongVal(Cell cell){
+		if(cell != null){
+			String str = cell.toString();
+			int index = str.indexOf(".0");
+			if(index > -1 && index == str.length()-2){
+				str = str.replace(".0", "");
+			}else{
+				return null;
+			}
+			return Long.valueOf(str);
+		}
+		return null;
+	}
 	/**
 	 * 读取excel应该为整数字符串的数据
 	 *@param cell
@@ -53,6 +68,20 @@ public class CommonUtil {
 				str = str.replace(".0", "");
 			}
 			return str;
+		}
+		return null;
+	}
+	
+	public static Double getCellDoubleVal(Cell cell){
+		if(cell != null){
+			return cell.getNumericCellValue();
+		}
+		return null;
+	}
+	
+	public static Date getCellDateVal(Cell cell){
+		if(cell != null){
+			return cell.getDateCellValue();
 		}
 		return null;
 	}

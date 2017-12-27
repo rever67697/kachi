@@ -107,19 +107,18 @@ var kcJs=
 	  			}
 	  		});
 		},
-		//给指定的select容器初始化数据，参数container：容器,data：数组数据,needNull：是否需要给一个空值,defaultVal：是否选中默认值
+		//给指定的select容器初始化数据，参数container：容器,data：数组数据,needNull：是否需要给一个空值，nullDesc：空值的描述，defaultVal：是否选中默认值
 		initSelectOption:function(option){
 			if(!option.data){
 				return;
 			}
-			option.value = option.value||'value';
-			option.name = option.name||'name';
+			option = $.extend({"value":"value","name":"name","nullDesc":"--请选择--"},option);
 			var html = '';
-			if(option.needNull) html+='<option value="">--请选择--</option>';
+			if(option.needNull) html+='<option value="">'+option.nullDesc+'</option>';
 			$.each(option.data,function(i,o){
 				html += '<option value="'+o[option.value]+'" '+(option.defaultVal&&o[option.value]==option.defaultVal?"selected":"")+'>'+o[option.name]+'</option>';
 			});
-			$(option.container).append(html);
+			$(option.container).html(html);
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){
@@ -127,7 +126,8 @@ var kcJs=
 			var _this = this;
 			$.post(this.getContextPath()+'/'+option.url,option.queryParams,function(data){
 				if(data && data.code=='200'){
-					_this.initSelectOption({"container":option.container,"data":data.data,"needNull":option.needNull,"defaultVal":option.defaultVal});
+					option.data=data.data;
+					_this.initSelectOption(option);
 				}else{
 					$.messager.alert('提示','操作失败','info');
 				}

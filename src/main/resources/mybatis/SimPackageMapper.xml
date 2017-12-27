@@ -41,7 +41,8 @@
 	      MAXFLOW = #{maxFlow,jdbcType=INTEGER},
 	      MAXROAMFLOW = #{maxRoamFlow,jdbcType=INTEGER},
 	      LEVEL = #{level,jdbcType=INTEGER},
-	      MCCS = #{mccs,jdbcType=VARCHAR}
+	      MCCS = #{mccs,jdbcType=VARCHAR},
+	      status=#{status,jdbcType=INTEGER}
 	    where ID = #{id,jdbcType=INTEGER}
     </update>
 	
