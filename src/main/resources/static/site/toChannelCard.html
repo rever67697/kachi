@@ -101,7 +101,7 @@
 					  		handler: delChannelCard
 					  	  }
 				  	 ],
-			url:getContextPath()+'/getChannelCards',
+			url:kcJs.fn.getContextPath()+'/getChannelCards',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -148,7 +148,7 @@
 	function saveChannelCard(){
 		console.log($('#channelCardInfo').serialize())	;	
 		if(channelCardInfo.id.value){
-			$.post(getContextPath()+'/updateChannelCard',$('#channelCardInfo').serialize(),function(result){
+			$.post(kcJs.fn.getContextPath()+'/updateChannelCard',$('#channelCardInfo').serialize(),function(result){
 				if(result.msg){
 		            $.messager.alert("提示", result.msg, "info");
 				}else{
@@ -156,7 +156,7 @@
 				}
 			})
 		}else {
-			$.post(getContextPath()+'/insertChannelCard',$('#channelCardInfo').serialize(),function(result){
+			$.post(kcJs.fn.getContextPath()+'/insertChannelCard',$('#channelCardInfo').serialize(),function(result){
 				if(result.msg){
 		            $.messager.alert("提示", result.msg, "info");
 				}else{
@@ -169,7 +169,7 @@
   function editChannelCard(){
 	  if(checkSelect()){
           var rowData = $('#dg').datagrid("getSelected");
-          $.getJSON(getContextPath()+'/getChannelCard?id='+rowData.id,function(data){
+          $.getJSON(kcJs.fn.getContextPath()+'/getChannelCard?id='+rowData.id,function(data){
         	  $('#channelCardInfo input').each(function(){
         		  var inputName=$(this).attr('name');
         		  if(inputName){
@@ -202,7 +202,7 @@
 		}
 		console.log(selectIds.join(","));
 		$.ajax({
-			url:getContextPath()+'/deleteChannelCards/',
+			url:kcJs.fn.getContextPath()+'/deleteChannelCards/',
 			data:{ids:selectIds.join(",")},
 			type:'post',
 			contentType: 'application/json;charset=utf-8',
@@ -223,7 +223,7 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             $.getJSON(getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
              	var cardList = data.rows;
              	if(cardList && cardList.length>0){
              		$('.card_container').html('');
