@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.ChannelCardDao">
+
+	<sql id="departmentId">
+		<if test="departmentId!=null" >  
+         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+        </if>
+	</sql>
+
+	<select id="queryChannelCardsBy" resultType="com.team.model.ChannelCard" parameterType="java.util.Map">
+		select cc.* from m_channel_card cc
+		where 1=1
+		<if test="operatorCode!=null and operatorCode!=''" >  
+         	and cc.operatorCode = #{operatorCode,jdbcType=INTEGER}  
+        </if>
+        <if test="number!=null and number!=''" >  
+         	and cc.number like concat(concat('%',#{number,jdbcType=VARCHAR}),'%')
+        </if>
+          <if test="status!=null and number!=''" >  
+         	and cc.status =#{status}
+        </if>
+        
+	</select> 
+	
+	
+	<select id="queryChannelCardById" resultType="com.team.model.ChannelCard" parameterType="java.lang.String">
+	 	select * from m_channel_card where id=#{id}
+	</select>
+	
+	<update id="deleteChannelCards" parameterType="java.lang.String">
+			update  m_channel_card set status=1 where id in
+			<foreach collection="ids" item="id" index="index" open="(" separator="," close=")" >
+			 #{id}
+			</foreach>
+	</update>
+	<update id="updateChannelCard" parameterType="com.team.model.ChannelCard">
+			update m_channel_card set imsi=#{imsi},number=#{number},iccid=#{iccid},operatorcode=#{operatorCode},
+			countrycode=#{countryCode},mcnumber=#{mcNumber},detail=#{detail} where id=#{id}
+	</update>
+	<insert id="insertChannelCards" parameterType="java.util.List" >
+			insert into m_channel_card (imsi,number,iccid,operatorcode,countrycode,mcnumber,detail,status) values
+			<foreach collection="list" item="l" index="index" open="(" separator="," close=")" >
+			 #{l.imsi},#{l.number},#{l.iccid},#{l.operatorCode},#{l.countryCode},#{l.mcNumber},#{l.detail},0
+			</foreach>
+	</insert>
+	<insert id="insertChannelCard" parameterType="com.team.model.ChannelCard" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+			insert into m_channel_card (imsi,number,iccid,operatorcode,countrycode,mcnumber,detail,status) values
+			(#{imsi},#{number},#{iccid},#{operatorCode},#{countryCode},#{mcNumber},#{detail},0)
+	</insert>
+</mapper>

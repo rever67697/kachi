@@ -14,9 +14,9 @@
   <body>
   
   		<div id="tt" class="easyui-tabs">	
-	    <div title="	副卡管理概要信息" style="" iconCls="icon icon-outline">
-			副卡概要信息
-	    </div>
+<!-- 	    <div title="	副卡管理概要信息" style="" iconCls="icon icon-outline"> -->
+<!-- 			副卡概要信息 -->
+<!-- 	    </div> -->
 	    <div title="副卡列表" iconCls="icon icon-device">
 		  	<form id="queryForm">
 		  		<table class="table">
@@ -29,59 +29,37 @@
 		  			</tr>
 		  		</table>
 		  	</form>
-		  	  <div id="win" class="easyui-window" title="副卡修改信息"  closed="true" style="width:500px;">
-					<form style="padding:10px 20px 10px 40px;">
-				<table class="table">
-		  			<tr>
-		  				<th>主键标识：</th><td><input name="ID" class="onlyNumber"/></td>
-		  				<th>IMSI：</th><td><input name="IMSI" class="onlyNumber"/></td>
-		  				<th>卡号：</th><td><input name="NUMBER" class="onlyNumber"/></td>
-		  				<th>ICCID：</th><td><input name="ICCID" class="onlyNumber"/></td>
-		  				<th>运营商编码：</th><td><input name="OPERATORCODE" class="onlyNumber"/></td>
-		  				<th>国家编码：</th><td><input name="COUNTRYCODE" class="onlyNumber"/></td>
-		  				<th>短信中心号码：</th><td><input name="MCNUMBER" class="onlyNumber"/></td>
-		  				<th>最后一次充值时间：</th><td><input name="RECHARGETIME" class="onlyNumber"/></td>
-		  				<th>账户余额：</th><td><input name="BALANCE" class="onlyNumber"/></td>
-		  				<th>通道卡状态：</th><td><input name="STATUS" class="onlyNumber"/></td>
-		  				<th>详情：</th><td><input name="DETAIL" class="onlyNumber"/></td>
-		  			</tr>
-		  		</table>
-						<div style="padding:5px;text-align:center;">
-							<a href="#" class="easyui-linkbutton" icon="icon-ok">保存</a>
-							<a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>
-						</div>
-					</form>
-				</div>
-			<div id="accWin" class="easyui-window" title="添加副卡"  closed="true" style="width:500px;">
-					<form style="padding:10px 20px 10px 40px;">
-				<table class="table">
-		  			<tr>
-		  				<th>主键标识：</th><td><input name="ID" class="onlyNumber"/></td>
-		  				<th>IMSI：</th><td><input name="IMSI" class="onlyNumber"/></td>
-		  				<th>卡号：</th><td><input name="NUMBER" class="onlyNumber"/></td>
-		  				<th>ICCID：</th><td><input name="ICCID" class="onlyNumber"/></td>
-		  				<th>运营商编码：</th><td><input name="OPERATORCODE" class="onlyNumber"/></td>
-		  				<th>国家编码：</th><td><input name="COUNTRYCODE" class="onlyNumber"/></td>
-		  				<th>短信中心号码：</th><td><input name="MCNUMBER" class="onlyNumber"/></td>
-		  				<th>最后一次充值时间：</th><td><input name="RECHARGETIME" class="onlyNumber"/></td>
-		  				<th>账户余额：</th><td><input name="BALANCE" class="onlyNumber"/></td>
-		  				<th>通道卡状态：</th><td><input name="STATUS" class="onlyNumber"/></td>
-		  				<th>详情：</th><td><input name="DETAIL" class="onlyNumber"/></td>
-		  			</tr>
-		  		</table>
-						<div style="padding:5px;text-align:center;">
-							<a href="#" class="easyui-linkbutton" icon="icon-ok">保存</a>
-							<a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>
-						</div>
-					</form>
-				</div>
+<!-- 		  	  <div id="win" class="easyui-window" title="副卡信息"  closed="true" style="width:500px;"> -->
+<!-- 					<form style="padding:10px 20px 10px 40px;"> -->
+						
+<!-- 						<p>Name: <input type="text"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+<!-- 					    <p>Pass: <input type="password"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+<!-- 						<p>Pass: <input type="password"></p> -->
+				
+<!-- 						<div style="padding:5px;text-align:center;"> -->
+<!-- 							<a href="#" class="easyui-linkbutton" icon="icon-ok">保存</a> -->
+<!-- 							<a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a> -->
+<!-- 						</div> -->
+<!-- 					</form> -->
+<!-- 				</div> -->
 		    
 		  	<div id="dg">
 		  	</div>
-		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFFFFF;" iconCls="icon-user">
-		    	<div class="title"></div>
-		    	<div class="card_container" >
-		    	</div>
+		    <div id="cardsDialog"  class="easyui-dialog"  closed="true" style="padding:10px">
+		    	<form id="channelCardInfo">
+		    		<table class>
+		    			<input type="hidden" name="id" value="">
+		    			<tr><th>ISMI：</th><td><input name="imsi" class="easyui-textbox" placeholder="请输入IMSI" /></td></tr>
+		    			<tr><th>副卡号码：</th><td><input name="number" class="easyui-textbox" placeholder="请输入副卡号码" onkeyup="this.value=this.value.replace(/\D/,'')"/></td></tr>
+		    			<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" placeholder="请输入ICCID" /></td></tr>
+		    			<tr><th>运营商：</th><td><input name="operatorCode" class="easyui-textbox" placeholder="请输入运营商编号" /></td></tr>
+		    			<tr><th>国家：</th><td><input name="countryCode" class="easyui-textbox" placeholder="请输入国家 编号" /></td></tr>
+		    			<tr><th>短信中心号码：</th><td><input name="mcNumber" class="easyui-textbox" placeholder="请输入短信中心号码" /></td></tr>
+		    			<tr><th>详情：</th><td><input name="detail" class="easyui-textbox" data-options="multiline:true" placeholder="请输入详情" /></td></tr>
+		    		</table>
+		    	</form>
 		    </div>
 		     
 	    </div>
@@ -107,12 +85,12 @@
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-yj-log',
-				  		text:'查看副卡卡信息',
-				  		handler: doCardsInfo
+				  		text:'批量增加副卡信息',
+				  		handler: addChannelCard
 				  	  },'-',{
 				  		iconCls: 'icon-edit',
 				  		text:'修改副卡信息',
-				  		handler: doModifyDept
+				  		handler: editChannelCard
 				  	  },'-',{
 				  		iconCls: 'icon-add',
 				  		text:'增加副卡',
@@ -123,7 +101,7 @@
 					  		handler: delChannelCard
 					  	  }
 				  	 ],
-			url:getContextPath()+'/getChannelCards',
+			url:kcJs.fn.getContextPath()+'/getChannelCards',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -137,31 +115,115 @@
 		
 		$('#cardsDialog').dialog({
 			modal : true,
+			iconCls:'icon-save',
    			resizable:true,
-   			width:800,
-   			height:350,
+   			width:500,
    			cache: false,
-			title : "卡池对应卡信息"
+			title : "副卡信息",
+			buttons:[{
+				text:'保存',
+				iconCls:'icon-ok',
+				handler:saveChannelCard
+			},{
+				text:'取消',
+				handler:function(){
+					$('#cardsDialog').dialog('close');
+				}
+			}]
 		});
 	});
-  function editChannel(){
+	
+	function checkSelect(){
+		var selectRows=$('#dg').datagrid('getSelections');
+		if(selectRows.length<1){
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+			return false;
+		}
+		if(selectRows.length>1){
+            $.messager.alert("提示", "只能选择其中一条信息进行编辑", "info");
+			return false;
+		}
+		return true;
+	}
+	function saveChannelCard(){
+		console.log($('#channelCardInfo').serialize())	;	
+		if(channelCardInfo.id.value){
+			$.post(kcJs.fn.getContextPath()+'/updateChannelCard',$('#channelCardInfo').serialize(),function(result){
+				if(result.msg){
+		            $.messager.alert("提示", result.msg, "info");
+				}else{
+		            $.messager.alert("提示", "修改失败", "info");
+				}
+			})
+		}else {
+			$.post(kcJs.fn.getContextPath()+'/insertChannelCard',$('#channelCardInfo').serialize(),function(result){
+				if(result.msg){
+		            $.messager.alert("提示", result.msg, "info");
+				}else{
+		            $.messager.alert("提示", "增加失败", "info");
+				}
+			})
+		}
+		
+	}
+  function editChannelCard(){
+	  if(checkSelect()){
+          var rowData = $('#dg').datagrid("getSelected");
+          $.getJSON(kcJs.fn.getContextPath()+'/getChannelCard?id='+rowData.id,function(data){
+        	  $('#channelCardInfo input').each(function(){
+        		  var inputName=$(this).attr('name');
+        		  if(inputName){
+        			  $(this).val(data[inputName]);
+        		  }
+        	  })
+          });
+ 		$('#cardsDialog').dialog('open');
+	  }
+  }
+  function addChannelCards(){
 	  
   }
-  function doModifyDept(){
-  		console.log('修改');
-	     $('#win').window('open');
-  	}
   function addChannelCard(){
-	   $('#accWin').window('open');
+	  $('#channelCardInfo input').each(function(){
+			  $(this).val('');
+  });
+		$('#cardsDialog').dialog('open');
+
   }
   function delChannelCard(){
-	  
+		var selectRows = $('#dg').datagrid("getSelections");
+		var selectIds=new Array();
+		if(!selectRows){
+            $.messager.alert("提示", "请选择需要删除的副卡", "info");
+			return ;
+		}
+		for(var i=0;i<selectRows.length;i++){
+			selectIds.push(selectRows[i].id);
+		}
+		console.log(selectIds.join(","));
+		$.ajax({
+			url:kcJs.fn.getContextPath()+'/deleteChannelCards/',
+			data:{ids:selectIds.join(",")},
+			type:'post',
+			contentType: 'application/json;charset=utf-8',
+			success:function(data){
+				if(data.msg){
+		            $.messager.alert("提示", data.msg, "info");
+				}else{
+		            $.messager.alert("提示", "删除失败", "info");
+				}
+			},
+			error:function(){
+				
+			}
+		});
+		
   }
   	function doCardsInfo(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             $.getJSON(getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
              	var cardList = data.rows;
              	if(cardList && cardList.length>0){
              		$('.card_container').html('');
@@ -195,15 +257,11 @@
             $.messager.alert("提示", "请选择其中一条信息", "info");
         }
   	}
-
- 
   	function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
   	}
-  	
-  	function doGivePool(){
-  	}
+ 
   </script>
 	
 	

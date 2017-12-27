@@ -8,7 +8,7 @@ import java.util.Date;
  * 创建日期：2017-12-15下午4:25:32
  * author:wuzhiheng
  */
-public class ChanelCard implements Serializable{
+public class ChannelCard implements Serializable{
 	
 	private Integer id;//主键
 	
