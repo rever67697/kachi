@@ -100,7 +100,7 @@ var kcJs=
 	  				if(arr){
 	  					for(var i = 0;i < arr.length;i++){
 	  						if(name==arr[i]){
-	  							_this.formatInputDate($(this),data[name]);
+	  							_this.formatInputDate($(this),data[name],'yyyy-MM-dd hh:mm:ss');
 	  						}
 	  					}
 	  				}
@@ -189,7 +189,7 @@ Date.prototype.format = function(format) {
 };
 
 $(function(){
-	$('input,select',$('.table.readOnly')).attr({'disabled':true}).css('color','black');
+	$('input,select',$('.table.readOnly')).attr({'readOnly':true});
 	kcJs.fn.initDic_noYes($('.fill-noYes'));
 	kcJs.fn.onlyNumber($('.onlyNumber'));
 });

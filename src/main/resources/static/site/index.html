@@ -139,7 +139,6 @@
     //更新
     $('#mm-tabupdate').click(function(){
 		var currTab = $('#tabs').tabs('getSelected');
-		console.log($(currTab.panel('options').content).attr('src'));
 		var url = $(currTab.panel('options').content).attr('src');
 		$('#tabs').tabs('update',{
 			tab:currTab,
@@ -207,7 +206,7 @@
 </head>
 <body class="easyui-layout" >
 		<!-- 定义上面的层 -->
-		<div region="north" title="" split="false"  style="height:60px" >
+		<div region="north" title="" split="false"  style="height:60px;background:rgb(78,151,227)" >
 			
 		</div>
 		<!-- 定义下面的层 -->

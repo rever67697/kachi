@@ -20,6 +20,15 @@ public class CommonUtil {
 	public static Integer putInteger(String str){
 		return str!=null&&!"".equals(str)&&str.matches("^\\d{1,}$")?Integer.valueOf(str):null;
 	}
+	/**
+	 * 只要用作把Long参数放进Map中，如果参数为空，返回null
+	 *@param str
+	 *@return
+	 *return
+	 */
+	public static Long putLong(String str){
+		return str!=null&&!"".equals(str)&&str.matches("^\\d{1,}$")?Long.valueOf(str):null;
+	}
 	
 	/**
 	 * 读取excel应该为整数类型的数据
@@ -40,7 +49,12 @@ public class CommonUtil {
 		}
 		return null;
 	}
-	
+	/**
+	 * 读取excel应该为long的数据
+	 *@param cell
+	 *@return
+	 *return
+	 */
 	public static Long getCellLongVal(Cell cell){
 		if(cell != null){
 			String str = cell.toString();
@@ -71,14 +85,24 @@ public class CommonUtil {
 		}
 		return null;
 	}
-	
+	/**
+	 * 读取excel应该为Double的数据
+	 *@param cell
+	 *@return
+	 *return
+	 */
 	public static Double getCellDoubleVal(Cell cell){
 		if(cell != null){
 			return cell.getNumericCellValue();
 		}
 		return null;
 	}
-	
+	/**
+	 * 读取excel应该为Date的数据
+	 *@param cell
+	 *@return
+	 *return
+	 */
 	public static Date getCellDateVal(Cell cell){
 		if(cell != null){
 			return cell.getDateCellValue();
@@ -99,6 +123,12 @@ public class CommonUtil {
 		return Integer.valueOf(id);
 	}
 	
+	/**
+	 * 判断一个字符串是否为空
+	 *@param str
+	 *@return
+	 *return
+	 */
 	public static boolean StringIsNull(String str){
 		return str==null||"".equals(str)||"null".equals(str)?true:false;
 	}

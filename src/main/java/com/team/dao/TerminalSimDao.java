@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -20,5 +21,24 @@ public interface TerminalSimDao {
 	 *return
 	 */
 	public List<TerminalSim> getTerminalSimByTsid(@Param("tsid")Integer tsid);
+	
+	
+	/**
+	 * 查询终端卡列表
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public List<TerminalSim> getTerminalSimList(Map<String, Object> map);
+	
+	/**
+	 * 支持批量删除在线终端
+	 *@param list
+	 *@return
+	 *return
+	 */
+	public int deleteTerminalByIds(List<Integer> list);
+	
+	
 	
 }

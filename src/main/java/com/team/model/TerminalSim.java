@@ -33,6 +33,16 @@ public class TerminalSim {
 	
 	private Integer vCountryCode;//国家编码
 	
+	private String countryName;//国家名称
+	
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.SimCardService;
-import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;

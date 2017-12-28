@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team.model.ChannelCard;
-import com.team.model.Terminal;
 import com.team.service.ChannelCardService;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;

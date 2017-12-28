@@ -4,6 +4,8 @@ package com.team.service;
 
 
 
+
+import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
 /**
@@ -15,4 +17,7 @@ public interface TerminalSimService {
 	
 	public ReturnMsg getTerminalSimByTsid(Integer tsid);
 	
+	public ResultList getTerminalSimList(String tsid,String imsi,int page,int rows);
+	
+	public ReturnMsg deleteTerminalByIds(String ids);
 }
