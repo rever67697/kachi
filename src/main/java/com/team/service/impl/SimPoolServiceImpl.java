@@ -6,20 +6,24 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimPoolDao;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
 import com.team.util.CommonUtil;
+import com.team.util.IConstant;
 
 /**
  * 创建日期：2017-12-18下午3:40:55
  * author:wuzhiheng
  */
+@Transactional
 @Service
 public class SimPoolServiceImpl implements SimPoolService{
 
@@ -49,14 +53,16 @@ public class SimPoolServiceImpl implements SimPoolService{
 	 *@return
 	 *return
 	 */
-	public OutlineInfo getOutlineInfo(Integer departmentId) {
+	public ReturnMsg getOutlineInfo(Integer departmentId) {
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
 		List<OutlineInfo> list = simPoolDao.getOutlineInfo(departmentId);
 		OutlineInfo info = null;
 		if(list!=null&&list.size()>0){
 			info = list.get(0);
 			info.setOfflinePoolCount(info.getSimPoolCount()-info.getOnlinePoolCount());
+			returnMsg.setData(info);
 		}
-		return info;
+		return returnMsg;
 	}
 
 }

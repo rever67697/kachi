@@ -65,7 +65,9 @@
 			         	{field:'operatorCode',title:'运营商',width:100},
 			         	{field:'mcNumber',title:'短信中心号码',width:100},
 			         	{field:'packageId',title:'卡套餐',width:120},
-			         	{field:'expiryDate',title:'有效期截卡时间',width:120},
+			         	{field:'expiryDate',title:'有效期截卡时间',width:150,formatter:function(value,rec,index){
+			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
+			         	}},
 			         	{field:'cpId',title:'所在卡池',width:80},
 			         	{field:'cpChannelId',title:'卡池通道',width:100},
 			         	{field:'departmentId',title:'所属部门',width:150}

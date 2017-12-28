@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +24,7 @@ import com.team.vo.ReturnMsg;
  * 创建日期：2017-12-22下午10:23:43
  * author:wuzhiheng
  */
+@Transactional
 @Service
 public class TerminalSimServiceImpl implements TerminalSimService{
 	

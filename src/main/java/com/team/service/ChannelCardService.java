@@ -1,6 +1,8 @@
 package com.team.service;
 
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team.model.ChannelCard;
@@ -13,10 +15,10 @@ public interface ChannelCardService {
 
   public ReturnMsg deleteChannelCards(String ids);
 
-  public int updateChannelCard(ChannelCard channelCard);
+  public ReturnMsg saveChannelCard(ChannelCard channelCard);
 
-  public int insertChannelCard(ChannelCard channelCard);
-  
   public ReturnMsg getChannelCardList(MultipartFile file);
+  
+  public void insertBatch(List<ChannelCard> list);
   
 }

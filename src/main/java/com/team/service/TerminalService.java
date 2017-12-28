@@ -3,6 +3,8 @@ package com.team.service;
 
 
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team.vo.ResultList;
@@ -20,10 +22,10 @@ public interface TerminalService {
 	
 	public ReturnMsg deleteTerminalByIds(String ids);
 	
-	public int insertTerminal(Terminal terminal);
-	
-	public int updateTerminalById(Terminal terminal);
+	public ReturnMsg saveTerminal(Terminal terminal);
 	
 	public ReturnMsg getTerminalList(MultipartFile file);
+	
+	public void insertBatch(List<Terminal> list);
 	
 }

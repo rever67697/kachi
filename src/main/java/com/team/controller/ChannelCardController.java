@@ -45,16 +45,7 @@ public class ChannelCardController {
 	
 	@PostMapping("/saveChannelCard")
 	public ReturnMsg saveChannelCard(ChannelCard channelCard){
-		int count = 0;
-		if(channelCard.getId()!=null){
-			count = channelCardService.updateChannelCard(channelCard);
-		}else{
-			count = channelCardService.insertChannelCard(channelCard);
-		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return channelCardService.saveChannelCard(channelCard);
 	}
 	
 	@PostMapping("/uploadChannelCardByExcel")
@@ -62,9 +53,7 @@ public class ChannelCardController {
 		ReturnMsg returnMsg = channelCardService.getChannelCardList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<ChannelCard> list = (List<ChannelCard>) returnMsg.getData();
-			for (ChannelCard channelCard : list) {
-				channelCardService.insertChannelCard(channelCard);
-			}
+			channelCardService.insertBatch(list);
 			returnMsg.setData(list.size());
 		}
 		return returnMsg;

@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
@@ -28,6 +29,7 @@ import com.team.util.CommonUtil;
  * 创建日期：2017-12-21下午4:53:20
  * author:wuzhiheng
  */
+@Transactional
 @Service
 public class TerminalServiceImpl implements TerminalService{
 
@@ -68,17 +70,6 @@ public class TerminalServiceImpl implements TerminalService{
 		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 
-	@Override
-	public int insertTerminal(Terminal terminal) {
-		terminal.setId(CommonUtil.getNewId());
-		return terminalDao.insertTerminal(terminal);
-	}
-
-	@Override
-	public int updateTerminalById(Terminal terminal) {
-		return terminalDao.updateTerminalById(terminal);
-	}
-	
 	@SuppressWarnings("finally")
 	@Override
 	/***
@@ -107,6 +98,7 @@ public class TerminalServiceImpl implements TerminalService{
 					String sVersion = CommonUtil.getCellStringVal(row.getCell(4));
 					String key = CommonUtil.getCellStringVal(row.getCell(5));
 					Integer status = CommonUtil.getCellIntVal(row.getCell(6));
+					status = status==null?0:status;
 					Integer upLog = CommonUtil.getCellIntVal(row.getCell(7));
 					String imei = CommonUtil.getCellStringVal(row.getCell(8));
 					Integer activated = CommonUtil.getCellIntVal(row.getCell(9));
@@ -139,6 +131,27 @@ public class TerminalServiceImpl implements TerminalService{
 			returnMsg.setData(list);
 			return returnMsg;
 		}
+	}
+
+	@Override
+	public void insertBatch(List<Terminal> list) {
+		for (Terminal terminal : list) {
+			terminalDao.insertTerminal(terminal);
+		}
+	}
+
+	@Override
+	public ReturnMsg saveTerminal(Terminal terminal) {
+		int count = 0;
+		if(terminal.getId()!=null){
+			count = terminalDao.updateTerminalById(terminal);
+		}else{
+			count = terminalDao.insertTerminal(terminal);
+		}
+		if(count > 0){
+			return IConstant.MSG_OPERATE_SUCCESS;
+		}
+		return IConstant.MSG_OPERATE_ERROR;
 	}
 
 	

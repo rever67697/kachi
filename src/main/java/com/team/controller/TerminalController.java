@@ -12,7 +12,6 @@ import com.team.model.Terminal;
 import com.team.service.CostDayService;
 import com.team.service.TerminalService;
 import com.team.service.TerminalSimService;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -42,16 +41,7 @@ public class TerminalController {
 	
 	@PostMapping("/saveTerminal")
 	public ReturnMsg saveTerminal(Terminal terminal){
-		int count = 0;
-		if(terminal.getId()!=null){
-			count = terminalService.updateTerminalById(terminal);
-		}else{
-			count = terminalService.insertTerminal(terminal);
-		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return terminalService.saveTerminal(terminal);
 	} 
 	
 	@PostMapping("/uploadTerminalByExcel")
@@ -59,9 +49,7 @@ public class TerminalController {
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<Terminal> list = (List<Terminal>) returnMsg.getData();
-			for (Terminal terminal : list) {
-				terminalService.insertTerminal(terminal);
-			}
+			terminalService.insertBatch(list);
 			returnMsg.setData(list.size());
 		}
 		return returnMsg;

@@ -1,6 +1,5 @@
 package com.team.service;
 
-import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -20,5 +19,5 @@ public interface SimCardService {
 	
 	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows);
 	
-	public OutlineInfo getOutlineInfo(String departmentId);
+	public ReturnMsg getOutlineInfo(String departmentId);
 }

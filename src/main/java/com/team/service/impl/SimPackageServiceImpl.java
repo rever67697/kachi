@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +23,7 @@ import com.team.vo.ReturnMsg;
  * 创建日期：2017-12-23下午6:07:26
  * author:wuzhiheng
  */
+@Transactional
 @Service
 public class SimPackageServiceImpl implements SimPackageService{
 	
@@ -51,20 +53,17 @@ public class SimPackageServiceImpl implements SimPackageService{
 	}
 
 	@Override
-	/**
-	 * 更新卡套餐信息
-	 */
-	public int updatePackage(SimPackage simPackage) {
-		return simPackageDao.updatePackage(simPackage);
-	}
-
-	@Override
-	/**
-	 * 添加卡套餐
-	 */
-	public int insertPackage(SimPackage simPackage) {
-		simPackage.setId(CommonUtil.getNewId());
-		return simPackageDao.insertPackage(simPackage);
+	public ReturnMsg savePackage(SimPackage simPackage) {
+		int count = 0;
+		if(simPackage.getId()!=null){
+			count = simPackageDao.updatePackage(simPackage);
+		}else{
+			count = simPackageDao.insertPackage(simPackage);
+		}
+		if(count > 0){
+			return IConstant.MSG_OPERATE_SUCCESS;
+		}
+		return IConstant.MSG_OPERATE_ERROR;
 	}
 
 }

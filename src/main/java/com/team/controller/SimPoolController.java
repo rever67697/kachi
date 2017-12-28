@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.team.vo.OutlineInfo;
 import com.team.model.ReadPoolDept;
 import com.team.service.ReadPoolDeptService;
 import com.team.service.SimPoolService;
-import com.team.util.IConstant;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -33,11 +31,7 @@ public class SimPoolController {
 	
 	@PostMapping("/getPoolOutlineInfo")
 	public ReturnMsg getPoolOutlineInfo(String departmentId){
-		OutlineInfo info = simPoolService.getOutlineInfo(CommonUtil.putInteger(departmentId));
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		returnMsg.setData(info);
-		return returnMsg;
-		
+		return simPoolService.getOutlineInfo(CommonUtil.putInteger(departmentId));
 	}
 	
 	@PostMapping("/giveSimPool")

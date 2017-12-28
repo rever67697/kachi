@@ -1,8 +1,8 @@
 package com.team.service;
 
 
-import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 
 /**
  * 卡池表相关操作	m_simpool
@@ -13,6 +13,6 @@ public interface SimPoolService {
 	
 	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows);
 	
-	public OutlineInfo getOutlineInfo(Integer departmentId);
+	public ReturnMsg getOutlineInfo(Integer departmentId);
 	
 }

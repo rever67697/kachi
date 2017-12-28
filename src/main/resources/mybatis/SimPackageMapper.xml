@@ -47,11 +47,11 @@
     </update>
 	
 	<insert id="insertPackage" parameterType="com.team.model.SimPackage" >
-	    insert into m_simpackage (ID, NAME, OPERATORCODE, 
+	    insert into m_simpackage (NAME, OPERATORCODE, 
 	      MAXFLOW, MAXROAMFLOW, 
-	      LEVEL, MCCS)
-	    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{operatorCode,jdbcType=INTEGER}, 
+	      LEVEL, MCCS,status)
+	    values (#{name,jdbcType=VARCHAR}, #{operatorCode,jdbcType=INTEGER}, 
 	      #{maxFlow,jdbcType=INTEGER}, #{maxRoamFlow,jdbcType=INTEGER}, 
-	      #{level,jdbcType=INTEGER}, #{mccs,jdbcType=VARCHAR})
+	      #{level,jdbcType=INTEGER}, #{mccs,jdbcType=VARCHAR},0)
     </insert>
 </mapper>

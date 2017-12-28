@@ -14,8 +14,6 @@ public interface SimPackageService {
 	
 	public ReturnMsg deletePackage(Integer id);
 	
-	public int updatePackage(SimPackage simPackage);
-	
-	public int insertPackage(SimPackage simPackage);
+	public ReturnMsg savePackage(SimPackage simPackage);
 	
 }

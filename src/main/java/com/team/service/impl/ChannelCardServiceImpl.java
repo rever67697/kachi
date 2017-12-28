@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
@@ -24,6 +25,7 @@ import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
+@Transactional
 @Service
 public class ChannelCardServiceImpl implements ChannelCardService {
 
@@ -55,15 +57,12 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 	}
 
 	@Override
-	public int updateChannelCard(ChannelCard channelCard) {
-		return channelCardDao.updateChannelCard(channelCard);
+	public void insertBatch(List<ChannelCard> list){
+		for (ChannelCard channelCard : list) {
+			channelCardDao.insertChannelCard(channelCard);
+		}
 	}
-
-	@Override
-	public int insertChannelCard(ChannelCard channelCard) {
-		return channelCardDao.insertChannelCard(channelCard);
-	}
-
+	
 	@SuppressWarnings("finally")
 	@Override
 	public ReturnMsg getChannelCardList(MultipartFile file) {
@@ -108,6 +107,20 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 			returnMsg.setData(list);
 			return returnMsg;
 		}
+	}
+
+	@Override
+	public ReturnMsg saveChannelCard(ChannelCard channelCard) {
+		int count = 0;
+		if(channelCard.getId()!=null){
+			count = channelCardDao.updateChannelCard(channelCard);
+		}else{
+			count = channelCardDao.insertChannelCard(channelCard);
+		}
+		if(count > 0){
+			return IConstant.MSG_OPERATE_SUCCESS;
+		}
+		return IConstant.MSG_OPERATE_ERROR;
 	}
 
 }

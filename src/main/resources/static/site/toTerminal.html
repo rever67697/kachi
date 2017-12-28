@@ -264,7 +264,7 @@
              var rowData = $('#dg').datagrid("getSelected");
              $.post(kcJs.fn.getContextPath()+'/getTerminalSimByTsid',{tsid:rowData.tsid},function(data){
 				if(data && data.code && data.code == '200'){
-					if(data.data){
+					if(data.data && data.data.id){
 						kcJs.fn.autoFillData($('#cardDialog'),data.data,["beatTime","date"]);
 						$('#cardDialog').dialog('open');
 					}else{

@@ -41,12 +41,8 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/getCardOutlineInfo")
-	public ReturnMsg getPoolOutlineInfo(String departmentId,HttpServletRequest request){
-		OutlineInfo info = simCardService.getOutlineInfo(departmentId);
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		returnMsg.setData(info);
-		return returnMsg;
-		
+	public ReturnMsg getPoolOutlineInfo(String departmentId){
+		return simCardService.getOutlineInfo(departmentId);
 	}
 	
 }

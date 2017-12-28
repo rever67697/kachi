@@ -31,16 +31,7 @@ public class SimPackageController {
 	
 	@PostMapping("/savePackage")
 	public ReturnMsg savePackage(SimPackage simPackage){
-		int count = 0;
-		if(simPackage.getId()!=null){
-			count = simPackageService.updatePackage(simPackage);
-		}else{
-			count = simPackageService.insertPackage(simPackage);
-		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return simPackageService.savePackage(simPackage);
 	} 
 	
 	@PostMapping("/deletePackageById")

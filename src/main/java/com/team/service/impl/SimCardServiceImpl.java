@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +24,7 @@ import com.team.service.SimCardService;
  * 创建日期：2017-12-19上午10:04:29
  * author:wuzhiheng
  */
+@Transactional
 @Service
 public class SimCardServiceImpl implements SimCardService{
 
@@ -43,7 +45,6 @@ public class SimCardServiceImpl implements SimCardService{
 	 * 根据卡套餐id寻找是否有SIM卡在使用这个套餐
 	 */
 	public String getPackageExist(Integer packageId) {
-		System.out.println("result"+simCardDao.getPackageExist(packageId));
 		return simCardDao.getPackageExist(packageId);
 	}
 
@@ -82,13 +83,15 @@ public class SimCardServiceImpl implements SimCardService{
 	/**
 	 * 查询流量卡总览信息
 	 */
-	public OutlineInfo getOutlineInfo(String departmentId) {
+	public ReturnMsg getOutlineInfo(String departmentId) {
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
 		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil.putInteger(departmentId));
 		OutlineInfo info = null;
 		if(list!=null&&list.size()>0){
 			info = list.get(0);
+			returnMsg.setData(info);
 		}
-		return info;
+		return returnMsg;
 	}
 
 }

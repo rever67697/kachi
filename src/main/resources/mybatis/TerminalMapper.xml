@@ -60,7 +60,7 @@
 	</update>
 	
 	<insert id="insertTerminal" parameterType="com.team.model.Terminal">
-	    insert into m_terminal (ID, TSID, MAC, 
+	    insert into m_terminal (TSID, MAC, 
 	      MODEL, BATCH, SVERSION, 
 	      `KEY`, STATUS, UPLOG, 
 	      IMEI, ACTIVATED, HOMELOCATION, 
@@ -68,7 +68,7 @@
 	      USEDVPN, USEDSOFT, departmentId, 
 	      MEID, SALETYPE, resetWiFi, 
 	      androidVersion)
-	    values (#{id,jdbcType=INTEGER}, #{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
+	    values (#{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
 		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
 		        #{key,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{upLog,jdbcType=INTEGER}, 
 		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
