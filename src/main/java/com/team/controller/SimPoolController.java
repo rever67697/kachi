@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.model.ReadPoolDept;
+import com.team.model.SimPool;
 import com.team.service.ReadPoolDeptService;
 import com.team.service.SimPoolService;
 import com.team.util.CommonUtil;
@@ -37,6 +38,11 @@ public class SimPoolController {
 	@PostMapping("/giveSimPool")
 	public ReturnMsg giveSimPool(ReadPoolDept readPoolDept){
 		return readPoolDeptService.saveReadPoolDept(readPoolDept);
+	}
+	
+	@PostMapping("/modifyDept")
+	public ReturnMsg modifyDept(SimPool simPool){
+		return simPoolService.modifyDept(simPool);
 	}
 	
 }

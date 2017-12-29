@@ -42,14 +42,6 @@ public class SimCardServiceImpl implements SimCardService{
 
 	@Override
 	/**
-	 * 根据卡套餐id寻找是否有SIM卡在使用这个套餐
-	 */
-	public String getPackageExist(Integer packageId) {
-		return simCardDao.getPackageExist(packageId);
-	}
-
-	@Override
-	/**
 	 * 状态为作废的卡可以删除
 	 */
 	public ReturnMsg deleteSimCard(String ids) {

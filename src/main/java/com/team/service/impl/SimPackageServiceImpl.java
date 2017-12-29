@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.dao.SimCardDao;
 import com.team.dao.SimPackageDao;
 import com.team.model.SimPackage;
 import com.team.service.SimPackageService;
@@ -29,6 +30,8 @@ public class SimPackageServiceImpl implements SimPackageService{
 	
 	@Autowired
 	private SimPackageDao simPackageDao;
+	@Autowired
+	private SimCardDao simCardDao;
 	
 	@Override
 	/**
@@ -49,7 +52,15 @@ public class SimPackageServiceImpl implements SimPackageService{
 	 * 单条删除卡套餐
 	 */
 	public ReturnMsg deletePackage(Integer id) {
-		return simPackageDao.deletePackage(id) > 0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		ReturnMsg returnMsg = null;
+		if(!CommonUtil.StringIsNull(simCardDao.getPackageExist(id))){
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg.setMsg("删除失败，有SIM卡正在使用该套餐！");
+		}else{
+			simPackageDao.deletePackage(id);
+			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		}
+		return returnMsg;
 	}
 
 	@Override

@@ -29,6 +29,11 @@
         order by r.spid
 	</select> 
 	
+	<update id="updateDept" parameterType="com.team.model.SimPool">
+		update m_simpool
+		set departmentId= #{departmentId,jdbcType=INTEGER}  
+		where id= #{id,jdbcType=INTEGER}  
+	</update>
 	
 	<select id="getOutlineInfo" resultType="com.team.vo.OutlineInfo">
 		select (select count(1) from m_simpool r where 1=1 <include refid="departmentId"/>) as simPoolCount,

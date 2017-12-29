@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.team.model.SimCard;
+import com.team.model.SimPool;
 import com.team.vo.OutlineInfo;
 
 /**
@@ -55,4 +56,12 @@ public interface SimCardDao {
 	 *return
 	 */
 	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
+	
+	/**
+	 * 根据卡池id更新卡所属的代理商
+	 *@param simPool
+	 *@return
+	 *return
+	 */
+	public int updateCardDept(SimPool simPool);
 }

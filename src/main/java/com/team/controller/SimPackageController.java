@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.model.SimPackage;
-import com.team.service.SimCardService;
 import com.team.service.SimPackageService;
-import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -21,8 +18,6 @@ public class SimPackageController {
 
 	@Autowired
 	private SimPackageService simPackageService;
-	@Autowired
-	private SimCardService simCardService;
 	
 	@PostMapping("/getSimPackage")
 	public ResultList getSimPackage(String status,String name,int page,int rows){
@@ -36,14 +31,7 @@ public class SimPackageController {
 	
 	@PostMapping("/deletePackageById")
 	public ReturnMsg deleteTerminalByIds(Integer id){
-		ReturnMsg returnMsg = null;
-		if(!CommonUtil.StringIsNull(simCardService.getPackageExist(id))){
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
-			returnMsg.setMsg("删除失败，有SIM卡正在使用该套餐！");
-		}else{
-			returnMsg = simPackageService.deletePackage(id);
-		}
-		return returnMsg;
+		return simPackageService.deletePackage(id);
 	}
 	
 }

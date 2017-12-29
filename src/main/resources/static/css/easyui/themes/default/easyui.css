@@ -1945,7 +1945,7 @@ body{border:1px solid transparent;overflow:hidden}
 .table td select{width:93%}
 #tabs .panel-body {overflow:hidden}
 .kc-outline td{padding-left:20px;height:120px;width:25%}
-.kc-outline-number{border-radius:50px;font-weight:bold;color:#fff;display:inline-block;padding:5px 10px;font-size:18px;min-width:35px;text-align:center}
+.kc-outline-number{border-radius:50px;font-weight:bold;color:#fff;display:inline-block;padding:10px 12px;font-size:20px;min-width:35px;text-align:center}
 .kc-outline-number+div{font-size:15px;margin-top:10px}
 .blue{background:rgb(67,116,224)}
 .red{background:rgb(243,123,29)}

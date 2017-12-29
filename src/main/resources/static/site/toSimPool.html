@@ -56,6 +56,19 @@
 		    	<div class="title"></div>
 		    	<div class="card_container" ></div>
 		    </div>
+		    <div id="doDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+		    	<form id="doForm">
+		    		<input type="hidden" name="id">
+		    		<table class="table readOnly">
+			  			<tr><td>卡池编号</td><td><input name="spid"/></td></tr>
+			  			<tr><td>卡池名称</td><td><input name="name"/></td></tr>
+			  			<tr><td>卡池类型</td><td><input name="type"/></td></tr>
+			  			<tr><td>所属部门</td><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
+			  			<tr style="height:10px"></tr>
+		  				<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="modifyData()">提 交</a></td></tr>
+			  		</table>
+		    	</form>
+		  	</div>
 	    </div>
 	</div>
   </body>
@@ -81,7 +94,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: [{
-				  		iconCls: 'icon-yj-log',
+				  		iconCls: 'icon-search',
 				  		text:'查看卡情况',
 				  		handler: doCardsInfo
 				  	  },'-',{
@@ -101,7 +114,7 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
-			height:window.innerHeight*0.82
+			height:window.innerHeight*0.827
 		};
   
 	$(function(){
@@ -125,7 +138,15 @@
 			title : "卡池对应卡信息"
 		});
 		
-		kcJs.fn.initSelect({"container":$('#giveForm [name=departmentId]'),"url":'getDepartmentDic',"needNull":false});
+		$('#doDialog').dialog({
+			modal : true,
+   			width:400,
+   			height:250,
+   			cache: false,
+			title : "调整代理商"
+		});
+		
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":'--请选择--'});
 	});
   
   	function doCardsInfo(){
@@ -149,7 +170,6 @@
 						    position: 'top',
 						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
 						    onShow: function(){
-						    	//var color = $(this).attr('color');
 								$(this).tooltip('tip').css({
 									backgroundColor:$(this).attr('color'),
 								});
@@ -167,7 +187,13 @@
   	}
   	
   	function doModifyDept(){
-  		
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 && selectRows.length == 1) {
+  			 kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+             $('#doDialog').dialog('open');
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
   	}
   	
   	function doQuery(){
@@ -202,6 +228,20 @@
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			$('#dg').datagrid('loaded');
+		    	}
+  			}); 
+  		}
+  	}
+  	
+  	function modifyData(){
+  		if($('#doForm').form('validate')){
+  			console.log($('#doForm').serializeObject());
+  			$('#doDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/modifyDept',$('#doForm').serializeObject(),function(data){
+  				if(data){
+	    			$.messager.alert('提示',data.msg,'info');
+	    			doQuery();
 		    	}
   			}); 
   		}

@@ -31,4 +31,12 @@ public interface SimPoolDao {
 	 */
 	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
 	
+	/**
+	 * 更新卡池的代理商
+	 *@param simPool
+	 *@return
+	 *return
+	 */
+	public int updateDept(SimPool simPool);
+	
 }

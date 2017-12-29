@@ -1,6 +1,7 @@
 package com.team.service;
 
 
+import com.team.model.SimPool;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -14,5 +15,7 @@ public interface SimPoolService {
 	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows);
 	
 	public ReturnMsg getOutlineInfo(Integer departmentId);
+	
+	public ReturnMsg modifyDept(SimPool simPool);
 	
 }

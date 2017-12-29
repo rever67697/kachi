@@ -1,6 +1,5 @@
 package com.team.controller;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.SimCardService;
-import com.team.util.IConstant;
-import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 

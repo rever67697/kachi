@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.dao.SimCardDao;
 import com.team.dao.SimPoolDao;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
@@ -29,6 +30,8 @@ public class SimPoolServiceImpl implements SimPoolService{
 
 	@Autowired
 	private SimPoolDao simPoolDao;
+	@Autowired
+	private SimCardDao simCardDao;
 	
 	@Override
 	/**
@@ -63,6 +66,18 @@ public class SimPoolServiceImpl implements SimPoolService{
 			returnMsg.setData(info);
 		}
 		return returnMsg;
+	}
+
+	@Override
+	/**
+	 * 根据卡池id更新卡池的代理商，顺带更新卡池下流量卡的代理商
+	 */
+	public ReturnMsg modifyDept(SimPool simPool) {
+		if(simPoolDao.updateDept(simPool) > 0){
+			simCardDao.updateCardDept(simPool);
+			return IConstant.MSG_OPERATE_SUCCESS;
+		}
+		return IConstant.MSG_OPERATE_ERROR;
 	}
 
 }
