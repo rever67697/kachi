@@ -35,6 +35,10 @@ var kcJs=
     		 "09":"中国联通",
     		 "11":"电信"
     };
+    //指定卡类型
+    var ready_type={"0":["临时指定一次",v_colors.blue],
+    				"1":["一直指定",v_colors.green]
+    };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
 	_FUNC={
 		createCookie:function(name,value,days){
@@ -77,6 +81,10 @@ var kcJs=
 		//获取终端状态信息
 		getTerminalStatus:function(o){
 			return t_status[o];
+		},
+		//获取指定卡类型状态颜色映射
+		getReadyType:function(s){
+			return ready_type[s];
 		},
 		//接收一个long类型的毫秒数，返回格式化的字符串
 		getDate:function(o,pattern){

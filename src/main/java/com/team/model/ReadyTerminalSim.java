@@ -2,6 +2,10 @@ package com.team.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 给终端人工指定卡信息，一般用于测试	m_ready_terminal_sim
  * 创建日期：2017-12-15下午4:48:51
@@ -16,7 +20,8 @@ public class ReadyTerminalSim {
 	private Long imsi;
 	
 	private Integer lastStatus;//SIM卡前状态
-	
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date insertDate;//添加时间
 	
 	private Integer operator;//操作人
