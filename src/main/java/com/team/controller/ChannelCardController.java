@@ -34,8 +34,9 @@ public class ChannelCardController {
 	 * @return
 	 */
 	@PostMapping("/getChannelCard")
-	public ResultList getChannelCard(String number, String operatorCode, String status, int page, int rows) {
-		return channelCardService.getChannelCard(number, operatorCode, status, page, rows);
+	public ResultList getChannelCard(String number,String countryCode,String operatorCode, String status, 
+			int page, int rows) {
+		return channelCardService.getChannelCard(number,countryCode, operatorCode, status, page, rows);
 	}
 
 	@PostMapping("/deleteChannelCards")

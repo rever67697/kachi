@@ -52,9 +52,9 @@ public class CommonServiceImpl implements CommonService{
 	/**
 	 * 查找运营商
 	 */
-	public ReturnMsg getOperatorDic() {
+	public ReturnMsg getOperatorDic(Integer countryCode) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Map<String, Object>> list =commonDao.getOperatorDic();
+		List<Map<String, Object>> list =commonDao.getOperatorDic(countryCode);
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}

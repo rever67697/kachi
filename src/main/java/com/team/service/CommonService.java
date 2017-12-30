@@ -12,6 +12,6 @@ public interface CommonService {
 	
 	public ReturnMsg getDepartmentDic();
 	
-	public ReturnMsg getOperatorDic();
+	public ReturnMsg getOperatorDic(Integer countryCode);
 	
 }
