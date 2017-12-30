@@ -6,7 +6,7 @@
 		select countrycode value,
 			   namecn name
 		from m_country
-		order by countrycode
+		order by case when countrycode=156 then 0 else 1 end 
 	</select>
 
 	<select id="getDepartmentDic" resultType="java.util.Map">
@@ -26,6 +26,9 @@
 										else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
 		from m_operator 
 		where status=0
-		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc
+		<if test="countryCode!=null">
+			and countrycode=#{countryCode,jdbcType=INTEGER}
+		</if>
+		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc,OPERATORCODE
 	</select>
 </mapper>

@@ -130,9 +130,10 @@ var kcJs=
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){
+			console.log(option);
 			option = $.extend({"needNull":true,"queryParam":{}},option);
 			var _this = this;
-			$.post(this.getContextPath()+'/'+option.url,option.queryParams,function(data){
+			$.post(this.getContextPath()+'/'+option.url,option.queryParam,function(data){
 				if(data && data.code=='200'){
 					option.data=data.data;
 					_this.initSelectOption(option);

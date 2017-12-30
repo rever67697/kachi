@@ -16,6 +16,9 @@
 		left join m_operator k 
 	    on r.OPERATORCODE=k.OPERATORCODE
 		where 1=1
+		<if test="countryCode!=null" >  
+         	and r.countrycode = #{countryCode,jdbcType=INTEGER}  
+        </if>
 		<if test="operatorCode!=null" >  
          	and r.operatorCode = #{operatorCode,jdbcType=INTEGER}  
         </if>

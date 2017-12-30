@@ -1,6 +1,7 @@
 package com.team.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,8 @@ public class CommonController {
 	}
 	
 	@PostMapping("/getOperatorDic")
-	public ReturnMsg getOperatorDic(){
-		return commonService.getOperatorDic();
+	public ReturnMsg getOperatorDic(Integer countryCode){
+		return commonService.getOperatorDic(countryCode);
 	}
 
 }

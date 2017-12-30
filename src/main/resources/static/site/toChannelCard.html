@@ -17,7 +17,8 @@
 	  		<table class="table">
 	  			<tr>
 	  				<th>副卡号码：</th><td><input name="number" placeholder="请输入副卡号码" class="onlyNumber"/></td>
-	  				<th>运营商：</th><td><select name="operatorCode"></select></td>
+	  				<th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
+	  				<th>运营商：</th><td><select name="operatorCode"><option value="">--全部--</option></select></td>
 	  				<th>副卡状态：</th><td><select name="status"><option value="">全部</option><option value="0">正常</option><option value="1">停用</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
@@ -31,8 +32,8 @@
 	    			<tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
 	    			<tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
 	    			<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>
+	    			<tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>
 	    			<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
-	    			<tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true"></select></td></tr>
 	    			<tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>
 	    			<tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>
 	    			<tr><th>状态：</th><td><select name="status"><option value="0">正常</option><option value="1">停用</option></select></td></tr>
@@ -117,9 +118,7 @@
 			title : "excel上传副卡信息"
 		});
 		
-		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"defaultVal":"156"});
-		kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),"url":'getOperatorDic',"nullDesc":"全部"});
-		kcJs.fn.initSelect({"container":$('#doForm select[name=operatorCode]'),"url":'getOperatorDic',"needNull":false});
+		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"nullDesc":"--全部--"});
 		
 	});
 	
@@ -127,6 +126,8 @@
   		$('#doForm')[0].reset();
   		$('#doDialog [name=id]').val('');
   		//$('#doDialog [name=tsid]').attr('readOnly',false);
+  		$('#doForm [name=countryCode]').val('156');
+  		changeOperator();
   		$('#doDialog').dialog('open');
   	}
   	
@@ -138,9 +139,13 @@
   	function doModify(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
+  			 $.ajaxSetup({async : false}); 
              var rowData = $('#dg').datagrid("getSelected");
              kcJs.fn.autoFillData($('#doDialog'),rowData);
+             changeOperator();
+             kcJs.fn.autoFillData($('#doDialog'),rowData);
              $('#doDialog').dialog('open');
+             $.ajaxSetup({async : false}); 
              //$('#doDialog [name=tsid]').attr('readOnly',true);
         }
         else {
@@ -227,6 +232,26 @@
   	function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
+  	}
+  	
+  	function changeOperator(flag){
+  		if(flag == 1){
+  			var countryCode = $('#queryForm [name=countryCode]').val();
+  			if(countryCode){
+  				kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),
+  						"url":'getOperatorDic',"queryParam":{countryCode:countryCode},"nullDesc":"--全部--"});
+  			}else{
+  				$('#queryForm select[name=operatorCode]').html('<option value="">--全部--</option>');
+  			}
+  		}else{
+  			var countryCode=$('#doForm [name=countryCode]').val();
+  			if(countryCode){
+  				kcJs.fn.initSelect({"container":$('#doForm select[name=operatorCode]'),
+  						"url":'getOperatorDic',"needNull":false,"queryParam":{countryCode:countryCode}});
+  			}else{
+  				$('#doForm select[name=operatorCode]').html('');
+  			}
+  		}
   	}
  
   </script>
