@@ -27,9 +27,9 @@
 		order by r.tsid
 	</select>
 	
-	<delete id="deleteTerminalByIds" parameterType="java.util.List">
+	<delete id="deleteTerminalByIds">
 		delete from  m_terminal_sim
-	    where ID in (<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
+	    where ID in (<foreach collection="array" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
 	</delete>
 	
 </mapper>

@@ -1,6 +1,5 @@
 package com.team.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,12 +44,7 @@ public class SimCardServiceImpl implements SimCardService{
 	 * 状态为作废的卡可以删除
 	 */
 	public ReturnMsg deleteSimCard(String ids) {
-		String[] arr = ids.split(",");
-		List<Integer> list = new ArrayList<Integer>();
-		for (String string : arr) {
-			list.add(Integer.valueOf(string));
-		}
-		int count = simCardDao.deleteSimCard(list);
+		int count = simCardDao.deleteSimCard(ids.split(","));
 		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 

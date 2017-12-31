@@ -7,10 +7,10 @@
 		from  m_ready_terminal_sim rts
 		where 1=1
 		<if test="tsid!=null " >  
-         	and rts.tsid like #{tsid}  
+         	and rts.tsid like #{tsid,jdbcType=INTEGER}  
         </if>
         <if test="imsi!=null " >  
-         	and rts.imsi like  #{imsi}
+         	and rts.imsi like  #{imsi,jdbcType=BIGINT}
         </if>
 	</select> 
 	
@@ -22,15 +22,17 @@
 		</foreach>
 		)
   </delete>
+  
   <insert id="insert" parameterType="com.team.model.ReadyTerminalSim" >
-    insert into m_ready_terminal_sim (ID, TSID, imsi, 
-      lastStatus, insertDate, operator, 
-      type)
-    values (#{id,jdbcType=INTEGER}, #{tsid,jdbcType=INTEGER}, #{imsi,jdbcType=BIGINT}, 
-      #{lastStatus,jdbcType=INTEGER}, #{insertDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=INTEGER}, 
+    insert into m_ready_terminal_sim 
+    (TSID, imsi, lastStatus, operator,type)
+    values 
+    ( #{tsid,jdbcType=INTEGER}, #{imsi,jdbcType=BIGINT}, 
+      #{lastStatus,jdbcType=INTEGER}, now(), #{operator,jdbcType=INTEGER}, 
       #{type,jdbcType=INTEGER})
   </insert>
-    <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
+  
+  <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
     update m_ready_terminal_sim
     <set >
       <if test="tsid != null" >

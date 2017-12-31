@@ -1,6 +1,5 @@
 package com.team.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,12 +59,7 @@ public class TerminalSimServiceImpl implements TerminalSimService{
 
 	@Override
 	public ReturnMsg deleteTerminalByIds(String ids) {
-		String[] arr = ids.split(",");
-		List<Integer> list = new ArrayList<Integer>(); 
-		for (String string : arr) {
-			list.add(Integer.valueOf(string));
-		}
-		int count = terminalSimDao.deleteTerminalByIds(list);
+		int count = terminalSimDao.deleteTerminalByIds(ids.split(","));
 		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 

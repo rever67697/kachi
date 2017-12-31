@@ -34,7 +34,7 @@ public interface ChannelCardDao {
    *@return
    *return
    */
-  public int deleteChannelCards(List<Integer> list);
+  public int deleteChannelCards(List<Integer> ids);
   
   /**
    * 更新副卡信息

@@ -1,6 +1,5 @@
 package com.team.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,17 +14,18 @@ public class ReadyTernimalSimController {
   @Autowired
   private ReadyTerminalSimService ReadyTerminalSimService;
 
-  @PostMapping("getReadyTerminalSim")
+  @PostMapping("/getReadyTerminalSim")
   public ResultList getReadyTerminalSim(String tsid, String imsi, int page, int rows) {
     return ReadyTerminalSimService.getReadyTerminalSim(tsid, imsi, page, rows);
   }
 
-  @PostMapping("saveReadyTerminalSim")
+  @PostMapping("/saveReadyTerminalSim")
   public ReturnMsg saveReadyTerminalSim(ReadyTerminalSim readyTerminalSim) {
     return ReadyTerminalSimService.saveReadyTerminalSim(readyTerminalSim);
   }
-  @PostMapping("deleteReadyTerminalSim")
-  public ReturnMsg deleteReadyTerminalSim(@Param(value = "ids") String ids) {
+  
+  @PostMapping("/deleteReadyTerminalSim")
+  public ReturnMsg deleteReadyTerminalSim(String ids) {
     return ReadyTerminalSimService.deleteReadyTerminalSim(ids);
   }
 }

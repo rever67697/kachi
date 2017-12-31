@@ -1,6 +1,5 @@
 package com.team.service.impl;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import com.team.dao.ReadyTerminalSimDao;
 import com.team.model.ReadyTerminalSim;
 import com.team.service.ReadyTerminalSimService;
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -27,8 +27,8 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
   public ResultList getReadyTerminalSim(String tsid, String imsi, int page, int rows) {
     PageHelper.startPage(page, rows);
     Map<String, Object> paramMap = new HashMap<String, Object>();
-    paramMap.put("tsid", "%" + tsid + "%");
-    paramMap.put("imsi", "%" + imsi + "%");
+    paramMap.put("tsid", CommonUtil.putInteger(tsid));
+    paramMap.put("imsi", CommonUtil.putLong(imsi));
     List<ReadyTerminalSim> list = readyTerminalSimDao.getReadyTerminalSim(paramMap);
     PageInfo<ReadyTerminalSim> pageInfo = new PageInfo<ReadyTerminalSim>(list);
     return new ResultList(pageInfo.getTotal(), list);
@@ -51,7 +51,6 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
     if (readyTerminalSim.getId() != null) {
       count = readyTerminalSimDao.update(readyTerminalSim);
     } else {
-      readyTerminalSim.setInsertDate(new Date(System.currentTimeMillis()));
       count = readyTerminalSimDao.insert(readyTerminalSim);
     }
     return count > 0 ? IConstant.MSG_OPERATE_SUCCESS : IConstant.MSG_OPERATE_ERROR;
