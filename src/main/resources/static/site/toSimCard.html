@@ -56,21 +56,21 @@
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'SIM卡id',hidden:true},
-			         	{field:'imsi',title:'imsi',width:100},
+			         	{field:'imsi',title:'imsi',width:110},
 			         	{field:'number',title:'卡号',width:100},
 			         	{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
 			         		var status = kcJs.fn.getCardStatus(value+'');
 			         		return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
 			         	}},
-			         	{field:'operatorCode',title:'运营商',width:100},
+			         	{field:'operatorName',title:'运营商',width:90},
 			         	{field:'mcNumber',title:'短信中心号码',width:100},
-			         	{field:'packageId',title:'卡套餐',width:120},
-			         	{field:'expiryDate',title:'有效期截卡时间',width:150,formatter:function(value,rec,index){
+			         	{field:'packageName',title:'卡套餐',width:100},
+			         	{field:'expiryDate',title:'有效期截卡时间',width:140,formatter:function(value,rec,index){
 			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
 			         	}},
-			         	{field:'cpId',title:'所在卡池',width:80},
-			         	{field:'cpChannelId',title:'卡池通道',width:100},
-			         	{field:'departmentId',title:'所属部门',width:150}
+			         	{field:'simPoolName',title:'所在卡池',width:80},
+			         	{field:'cpChannelId',title:'卡池通道',width:80},
+			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-edit',
@@ -104,7 +104,28 @@
   	}
   	
   	function doDelete(){
-  	
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		var ids = [];
+  		for(var i = 0;i < selectRows.length;i++){
+  			ids.push(selectRows[i].id);
+  			if(selectRows[i].status != 4){
+  				$.messager.alert('提示','只有状态为作废的卡才能删除！','info');
+  				return;
+  			}
+  		}
+  		$.messager.confirm('提示','是否确定删除？',function(r){
+			if(r){
+				$('#dg').datagrid('loading');
+	  			$.post(kcJs.fn.getContextPath()+'/deleteSimCard',{ids:ids.join(",")},function(data){
+	  				if(data && data.code && data.code == '200'){
+	  					doQuery();	
+	  				}else{
+	  					$('#dg').datagrid('loaded');
+	  				}
+	  				$.messager.alert("提示", data.msg, "info");
+	  			},'json');
+	  		}
+		});
   	}
   	
   	function doModifyDept(){

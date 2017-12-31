@@ -42,4 +42,9 @@ public class SimCardController {
 		return simCardService.getOutlineInfo(departmentId);
 	}
 	
+	@PostMapping("/deleteSimCard")
+	public ReturnMsg deleteSimCard(String ids){
+		return simCardService.deleteSimCard(ids);
+	}
+	
 }

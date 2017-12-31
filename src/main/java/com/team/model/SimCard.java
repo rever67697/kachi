@@ -31,7 +31,7 @@ public class SimCard implements Serializable{
 	
 	private String simmeProtocol;//议类型:2g:sim;3g:usim
 	
-	private Integer status;//0：正常；1：拨出；3：停机
+	private Integer status;//0：正常；1:停用; 2：指定;3:待激活；4：作废
 	
 	private Integer cpStatus;//卡池状态:0:正常；1：拔出
 	
@@ -72,6 +72,46 @@ public class SimCard implements Serializable{
 	private String groupPref;//分组
 	
 	private String note;//备注
+	
+	private String packageName;//套餐名称
+	
+	private String simPoolName;//卡池名称
+	
+	private String departmentName;//代理商名称
+	
+	private String operatorName;//运营商名称
+	
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getSimPoolName() {
+		return simPoolName;
+	}
+
+	public void setSimPoolName(String simPoolName) {
+		this.simPoolName = simPoolName;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
 
 	public Integer getId() {
 		return id;
