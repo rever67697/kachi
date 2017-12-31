@@ -1,11 +1,12 @@
-package com.team.model;
+package com.team.model.auth;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TbAuthMenu {
+public class TbAuthMenu implements Serializable{
 	private int id;
 	private int parentId;
 	private String name;

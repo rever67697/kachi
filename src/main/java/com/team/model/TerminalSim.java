@@ -1,5 +1,6 @@
 package com.team.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * 创建日期：2017-12-15下午4:40:34
  * author:wuzhiheng
  */
-public class TerminalSim {
+public class TerminalSim implements Serializable{
 	
 	private Integer id;//主键
 	

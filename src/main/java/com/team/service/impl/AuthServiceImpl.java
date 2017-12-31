@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team.dao.AuthDao;
-import com.team.model.TbAuthMenu;
+import com.team.model.auth.TbAuthMenu;
 import com.team.service.AuthService;
 
 @Service

@@ -2,8 +2,9 @@ package com.team.dao;
 
 import java.util.List;
 
+import com.team.model.auth.TbAuthMenu;
 
-import com.team.model.TbAuthMenu;
+
 
 public interface AuthDao {
 	

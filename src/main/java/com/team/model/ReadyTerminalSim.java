@@ -1,5 +1,6 @@
 package com.team.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * 创建日期：2017-12-15下午4:48:51
  * author:wuzhiheng
  */
-public class ReadyTerminalSim {
+public class ReadyTerminalSim implements Serializable{
 
 	private Integer id;//主键
 	

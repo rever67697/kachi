@@ -11,10 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team.model.auth.TbAuthUser;
 import com.team.service.impl.AuthServiceImpl;
 import com.team.util.CommonUtil;
+import com.team.util.IConstant;
+import com.team.vo.ReturnMsg;
 
 
 
@@ -28,7 +32,7 @@ public class AuthController {
 	@Autowired
 	private AuthServiceImpl authService;
 	
-	@GetMapping("/getMenu")
+	@PostMapping("/getMenu")
 	@ResponseBody
 	public Object getMenu(){
 		return authService.queryMenuByUser();
@@ -38,7 +42,7 @@ public class AuthController {
 	public void verificationCode(HttpServletRequest request,HttpServletResponse response){
 		// 生成验证码并放入session中
 		String verificationCodes = CommonUtil.generateCode(4);
-		request.getSession().setAttribute("varificationCode",verificationCodes);
+		request.getSession().setAttribute("verificationCode",verificationCodes);
 		try {
 			// 禁止图像缓存
 			// 创建二进制的输出流
@@ -53,5 +57,35 @@ public class AuthController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@PostMapping("/login")
+	@ResponseBody
+	public ReturnMsg login(TbAuthUser user,String code,HttpServletRequest request){
+		ReturnMsg returnMsg = null;
+		String msg = "";
+		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
+		if(verificationCode != null && verificationCode.equals(code)){
+			if("admin".equals(user.getUserName()) && "123".equals(user.getPassWord())){
+				request.getSession().setAttribute("kachi_user", user);
+			}else{
+				msg = "用户名或密码错误！";
+			}
+		}else{
+			msg = "验证码错误！";
+		}
+		if(CommonUtil.StringIsNull(msg)){
+			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		}else{
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg.setMsg(msg);
+		}
+		return returnMsg;
+	}
+	
+	@PostMapping("/getUser")
+	@ResponseBody
+	public TbAuthUser getUser(HttpServletRequest request){
+		return (TbAuthUser) request.getSession().getAttribute("kachi_user");
 	}
 }

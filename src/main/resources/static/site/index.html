@@ -15,25 +15,20 @@
 	</style>
 	<script type="text/javascript">
 	$(document).ready(function () {
-		$.ajax({
-			url:kcJs.fn.getContextPath()+'/getMenu',
-			type:'get',
-			success:function(data){
+		$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
+			if(data){
+				console.log(data);
+			}
+		},'json');
+		
+		$.post(kcJs.fn.getContextPath()+'/getMenu',function(data){
+			if(data){
 				InitLeftMenu(data);
 			}
-		});
+		},'json');
 	
 		tabClose();
 		tabCloseEven();
-		
-		$("#accordion").delegate('.easyui-accordion li a','click',function(){
-			var tabTitle = $(this).text();  
-		    var url = $(this).attr("rel");  
-		    var iconCls = $(this).attr("class");
-		    addTab(tabTitle, url,iconCls);  
-		    $('.easyui-accordion li div').removeClass("selected");  
-		    $(this).parent().addClass("selected"); 
-		});  
 	});
 	
 
@@ -226,7 +221,9 @@
 		<!-- 定义中间层 -->
 		<div region="center" title="" style="overflow:hidden;" id="mainPanle" >
 			<div id="tabs" class="easyui-tabs" fit="true" border="false">
-				
+				<div title="欢迎页" style="background:url('../images/welcome_bg.jpg') center center no-repeat" iconCls="icon icon-whome">
+					
+			    </div>
 			</div>
 		</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">

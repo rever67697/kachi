@@ -1,4 +1,4 @@
-*{box-sizing: border-box;}
+*{box-sizing: border-box;padding:0;margin:0}
 body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
 .login{width: 403px;margin: 0 auto;margin-top: 98px}
 .login_logo{text-align: center;margin-bottom: 25px;height:46px}
@@ -55,4 +55,8 @@ body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
 	border-radius:5px;
 	border:1px solid #ccc;
 	cursor:pointer
+}
+#msg{
+	color:red;
+	text-align:center
 }

@@ -156,7 +156,7 @@ public class CommonUtil {
 	public static BufferedImage generateVerificationImage(
 			char[] verificationCodes) throws Exception {
 		// 设定长宽
-		int width = 64, height = 20;
+		int width = 120, height = 36;
 		BufferedImage image = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		// 获取图形上下文
@@ -167,7 +167,7 @@ public class CommonUtil {
 		g.setColor(getRandColor(200, 250));
 		g.fillRect(0, 0, width, height);
 		// 设定字体
-		g.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+		g.setFont(new Font("Times New Roman", Font.ITALIC, 30));
 		// 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到
 		g.setColor(getRandColor(160, 200));
 		for (int i = 0; i < 155; i++) {
@@ -186,7 +186,7 @@ public class CommonUtil {
 			g.setColor(new Color(20 + random.nextInt(110), 20 + random
 					.nextInt(110), 20 + random.nextInt(110)));
 			// 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
-			g.drawString(c + "", 13 * i++ + 6, 16);
+			g.drawString(c + "", 25 * i++ + 12, 27);
 		}
 		// 将认证码存入SESSION
 		// ActionContext.getContext().getSession().put("rand", sRand);

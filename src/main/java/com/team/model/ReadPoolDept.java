@@ -1,5 +1,6 @@
 package com.team.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * 创建日期：2017-12-26下午9:03:48
  * author:wuzhiheng
  */
-public class ReadPoolDept {
+public class ReadPoolDept implements Serializable{
 
 	private Integer id;
 	

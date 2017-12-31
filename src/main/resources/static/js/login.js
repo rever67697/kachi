@@ -1,5 +1,5 @@
 $(function(){
-	changeValidateCode($('#code')[0]);
+	changeValidateCode();
 	initLogInfo();
 	
 	$('#savePwd').click(function(){
@@ -20,15 +20,15 @@ function checkLogin() {
 	var passWord=$('[name=passWord]').val();
 	var code=$('[name=code]').val();
 	if(''==loginName) {
-		alert('请输入用户名!');
+		$('#msg').text('请输入用户名!');
 		return false;
 	}
 	if(''==passWord) {
-		alert('请输入密码!');
+		$('#msg').text('请输入密码!');
 		return false;
 	}
 	if(''==code) {
-		alert('请输入验证码!');
+		$('#msg').text('请输入验证码!');
 		return false;
 	}
 	return true;
@@ -47,16 +47,27 @@ function doLogin() {
 			createCookie('kachi_password','',7);
 		}
 		createCookie('kachi_savePwd',checked,7);
-		//form1.submit();
+		var loginName=$('[name=userName]').val();
+		var passWord=$('[name=passWord]').val();
+		var code=$('[name=code]').val();
+		$.post(getContextPath()+'/login',$('#loginForm').serializeObject(),function(data){
+			if(data && data.code=='200'){
+				window.location.href=getContextPath()+'/site/index.html';
+			}else{
+				$('#msg').text(data.msg);
+				changeValidateCode();
+				$('[name=code]').val('');
+			}
+		});
 	}
 }
 
 	
-function changeValidateCode(obj) {
+function changeValidateCode() {
 	   //获取当前的时间作为参数，无具体意义
 	   var timenow = new Date().getTime();
 	   //每次请求需要一个不同的参数，否则可能会返回同样的验证码
-	   obj.src = getContextPath()+"/verificationCode?d=" + timenow;
+	   $('#code')[0].src = getContextPath()+"/verificationCode?d=" + timenow;
  }
 
 /**初始化登陆信息**/
@@ -97,3 +108,20 @@ function getContextPath(fullUrl){
 	   var arrUrl = fullUrl.split('/');
 	   return arrUrl[0]+'//'+arrUrl[2]+'/'+arrUrl[3];
 }
+//解决在火狐上不兼容
+$.fn.serializeObject = function()
+{
+ var o = {};
+ var a = this.serializeArray();
+ $.each(a, function() {
+  if (o[this.name]) {
+   if (!o[this.name].push) {
+    o[this.name] = [o[this.name]];
+   }
+   o[this.name].push(this.value || '');
+  } else {
+   o[this.name] = this.value || '';
+  }
+ });
+ return o;
+};

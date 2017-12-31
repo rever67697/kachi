@@ -11,7 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.team.model.auth.TbAuthUser;
 
 /**
  * 创建日期：2017-12-14下午4:30:18
@@ -20,6 +23,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyFilter implements Filter{
 
+	@Value("${filter.noFilterPath}")
+	private String noFilterPath;
+	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -31,17 +37,32 @@ public class MyFilter implements Filter{
 			FilterChain arg2) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) arg0;
 		HttpServletResponse response = (HttpServletResponse) arg1;
-		System.out.println(request.getRequestURI());
-		/*if(!request.getRequestURI().endsWith("login.html")){
-			response.sendRedirect(request.getContextPath()+"/site/login.html");
-		}*/
-		arg2.doFilter(arg0, arg1);
+		//System.out.println(request.getRequestURI());
+		
+		//先判断用户有没有登录
+		TbAuthUser user = (TbAuthUser) request.getSession().getAttribute("kachi_user");
+		
+		if(user == null){
+			boolean ok = false;
+			for (String string : noFilterPath.split(";")) {
+				if(request.getRequestURI().endsWith(string)){
+					ok = true;
+					break;
+				}
+			}
+			if(ok){
+				arg2.doFilter(arg0, arg1);
+			}else{
+				response.sendRedirect(request.getContextPath()+"/site/login.html");
+			}
+		}else{
+			arg2.doFilter(arg0, arg1);
+		}
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
