@@ -39,7 +39,7 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public int deleteSimCard(String[] list);
+	public int deleteSimCard(List<Integer> list);
 	
 	/**
 	 * 根据条件寻找出sim卡列表

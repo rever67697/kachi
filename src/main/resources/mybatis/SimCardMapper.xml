@@ -46,9 +46,10 @@
 		</if>
 	</select>
 	
-	<delete id="deleteSimCard">
+	<delete id="deleteSimCard" parameterType="java.util.List">
 		delete from m_simcard
-		where id in(<foreach collection="list" item="item">#{item,,jdbcType=INTEGER}</foreach>)
+		where status=4
+		  and id in(<foreach collection="list" item="item">#{item,,jdbcType=INTEGER}</foreach>)
 	</delete>
 	
 	<delete id="updateCardDept" parameterType="com.team.model.SimPool">

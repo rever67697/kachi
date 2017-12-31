@@ -48,7 +48,12 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 
 	@Override
 	public ReturnMsg deleteChannelCards(String ids) {
-		int count = channelCardDao.deleteChannelCards(ids.split(","));
+		String[] arr = ids.split(",");
+		List<Integer> list = new ArrayList<Integer>();
+		for (String string : arr) {
+			list.add(Integer.valueOf(string));
+		}
+		int count = channelCardDao.deleteChannelCards(list);
 		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 

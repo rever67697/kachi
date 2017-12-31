@@ -14,10 +14,10 @@
         </if>
 	</select> 
 	
-	<delete id="delete" parameterType="java.lang.String" >
+	<delete id="delete" parameterType="java.util.List" >
     delete from m_ready_terminal_sim
     where id in(
-		<foreach collection="array" item="i"  separator="," >
+		<foreach collection="list" item="i"  separator="," >
 		 #{i,jdbcType=INTEGER}
 		</foreach>
 		)

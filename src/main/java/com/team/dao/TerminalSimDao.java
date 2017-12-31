@@ -37,7 +37,7 @@ public interface TerminalSimDao {
 	 *@return
 	 *return
 	 */
-	public int deleteTerminalByIds(String[] ids);
+	public int deleteTerminalByIds(List<Integer> ids);
 	
 	
 	

@@ -25,7 +25,7 @@ public interface ReadyTerminalSimDao {
    * @return
    */
   // public int delete(List<String> ids);
-  public int delete(String[] ids);
+  public int delete(List<Integer> ids);
 
   /**
    * 插入单条记录

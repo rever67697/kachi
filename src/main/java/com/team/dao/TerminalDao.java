@@ -27,7 +27,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public int deleteTerminalByIds(String[] ids);
+	public int deleteTerminalByIds(List<Integer> ids);
 	
 	/**
 	 * 插入一条终端数据

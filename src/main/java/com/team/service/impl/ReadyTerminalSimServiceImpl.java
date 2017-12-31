@@ -1,5 +1,6 @@
 package com.team.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +37,12 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 
   @Override
   public ReturnMsg deleteReadyTerminalSim(String ids) {
-    int count = 0;
-    if (ids != null) {
-      String[] idArr = ids.split(",");
-      count = readyTerminalSimDao.delete(idArr);
-    }
+    String[] arr = ids.split(",");
+	List<Integer> list = new ArrayList<Integer>();
+	for (String string : arr) {
+		list.add(Integer.valueOf(string));
+	}
+	int  count = readyTerminalSimDao.delete(list);
     return count > 0 ? IConstant.MSG_OPERATE_SUCCESS : IConstant.MSG_OPERATE_ERROR;
   }
 
