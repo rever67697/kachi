@@ -1,0 +1,58 @@
+*{box-sizing: border-box;}
+body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
+.login{width: 403px;margin: 0 auto;margin-top: 98px}
+.login_logo{text-align: center;margin-bottom: 25px;height:46px}
+.login_body{background:rgb(247,247,247);padding:28px 47px 20px 47px;border-radius:8px;
+			box-shadow:-5px 0px 5px rgba(0,0,0,0.1),0px -1px 5px rgba(0,0,0,0.1),
+						5px 0px 5px rgba(0,0,0,0.1),0px 5px 5px rgba(0,0,0,0.1)}
+.input_label{color: #4f5d80;font-size: 15px;font-weight: normal;margin-bottom: 11px;}
+.input_container{margin-bottom:20px}
+.input_box{border:1px solid #ccc;width:100%;border-radius:5px;
+		   padding:0 5px;height:36px;line-height:36px;font-size:14px}
+#savePwd {
+	visibility: hidden;
+	position: absolute;
+}		   
+#checkboxbg {
+	padding-left:30px;
+	background: url('../images/login_xk_0.png')  no-repeat;
+	float: left;
+	cursor:pointer;
+	margin-top:10px;
+	font-size:15px;
+	height:23px;line-height:23px
+}
+#savePwd.checked+#checkboxbg {
+	background: url('../images/login_xk_1.png')  no-repeat
+}
+
+.submit_btn{
+	float:right;
+	padding:10px 40px;
+	border:0;
+	background:rgb(95,160,234);
+	border-radius:4px;
+	color:#fff;
+	cursor:pointer
+}
+.submit_btn:hover{
+	background:rgb(41,128,185);
+}
+.divided_two:after{
+	content:'';
+	display:block;
+	height:0;
+	clear:both
+}
+.divided_two>div{
+	width:50%;
+	float:left
+}
+#code{
+	width:80%;
+	height:36px;
+	float:right;
+	border-radius:5px;
+	border:1px solid #ccc;
+	cursor:pointer
+}
