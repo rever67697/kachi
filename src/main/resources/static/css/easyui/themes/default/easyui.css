@@ -1935,6 +1935,8 @@ body{border:1px solid transparent;overflow:hidden}
 .card_container{width:100%;border:1px solid transparent;height:200px}
 .card_container:after{display:block;content:'';height:0;clear:both}
 .box{width:20px;height:10px;margin:5px;float:left;cursor:pointer}
+.boxDesc{display:inline-block}
+.boxdesc{width:20px;height:10px;display:inline-block;cursor:pointer;margin-left:10px;border-radius:4px}
 .title{padding:5px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);display:inline-block;margin-bottom:10px}
 .table{border-collapse:collapse;width:100%;margin-bottom:5px;margin-top:5px;font-weight:normal}
 .table td,.table th{padding:2px 5px;border:1px solid #ccc}

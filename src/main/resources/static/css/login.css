@@ -49,7 +49,7 @@ body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
 	float:left
 }
 #code{
-	width:80%;
+	width:120px;
 	height:36px;
 	float:right;
 	border-radius:5px;

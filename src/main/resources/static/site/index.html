@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<style type="text/css">
 		.selected{  background: #ffe48d !important;}
@@ -196,13 +197,24 @@
 	    $('#nav').accordion('select', t);
 	}
 	
+	function logout(){
+		$.messager.confirm('提示','是否退出登录？',function(r){
+			if(r){
+				$.post(kcJs.fn.getContextPath()+'/logout',function(data){
+					window.location.href=kcJs.fn.getContextPath()+'/site/login.html';
+				},'json');
+			}
+		});
+	}
 	
 </script>
 </head>
 <body class="easyui-layout" >
 		<!-- 定义上面的层 -->
 		<div region="north" title="" split="false"  style="height:60px;background:rgb(78,151,227)" >
-			
+			<div style="position:absolute;bottom:0;right:0">
+				<a class="easyui-linkbutton" onclick="logout()">退出登录</a>
+			</div>
 		</div>
 		<!-- 定义下面的层 -->
 		<div region="south" title="" split="false" style="height:0">
@@ -222,7 +234,6 @@
 		<div region="center" title="" style="overflow:hidden;" id="mainPanle" >
 			<div id="tabs" class="easyui-tabs" fit="true" border="false">
 				<div title="欢迎页" style="background:url('../images/welcome_bg.jpg') center center no-repeat" iconCls="icon icon-whome">
-					
 			    </div>
 			</div>
 		</div>

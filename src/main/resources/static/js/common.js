@@ -109,7 +109,6 @@ var kcJs=
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){
-			console.log(option);
 			option = $.extend({"needNull":true,"queryParam":{}},option);
 			var _this = this;
 			$.post(this.getContextPath()+'/'+option.url,option.queryParam,function(data){
@@ -136,6 +135,13 @@ var kcJs=
 				return d_mnc[o.substr(3,2)];
 			}
 			return o;
+		},
+		getBoxTxt:function(){
+			var html = '';
+			for(var o in c_status){
+				html+='<span class="boxdesc" style="background:'+c_status[o][1]+'"></span>&nbsp;'+c_status[o][0];
+			}
+			return html;
 		}
 	};
 	return {fn:_FUNC};

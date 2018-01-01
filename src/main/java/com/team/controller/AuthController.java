@@ -88,4 +88,11 @@ public class AuthController {
 	public TbAuthUser getUser(HttpServletRequest request){
 		return (TbAuthUser) request.getSession().getAttribute("kachi_user");
 	}
+	
+	@PostMapping("/logout")
+	@ResponseBody
+	public ReturnMsg logout(HttpServletRequest request){
+		request.getSession().removeAttribute("kachi_user");
+		return IConstant.MSG_OPERATE_SUCCESS;
+	}
 }

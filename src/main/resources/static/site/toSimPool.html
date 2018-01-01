@@ -54,6 +54,7 @@
 		  	</div>
 		    <div id="cardsDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<div class="title"></div>
+		    	<span class="boxDesc"></span>
 		    	<div class="card_container" ></div>
 		    </div>
 		    <div id="doDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
@@ -177,6 +178,7 @@
 						});	;
              		}
              		$('.title').html(rowData.name+' （'+rowData.type+'）');
+             		$('.boxDesc').html(kcJs.fn.getBoxTxt());
              		$('#cardsDialog').dialog('open');
              	}
              });
