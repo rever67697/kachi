@@ -12,51 +12,73 @@
 	<script type="text/javascript" src="../js/common.js"></script>
   </head>
   <body>
-	  	<form id="queryForm">
-	  		<table class="table">
-	  			<tr>
-	  				<th>指定卡IMSI：</th><td><input name="imsi" placeholder="请输入指定卡IMSI" class="onlyNumber"/></td>
-	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
-	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-	  			</tr>
-	  		</table>
-	  	</form>
-	  	<div id="dg"></div>
-	  	<div id="doDialog"   closed="true" style="width:500px;">
-			<form id="doForm" style="padding:10px 20px 10px 40px;">
-				<input type="hidden" name="id" value="">
-				<table class="table">
-		  			<tr><th>IMSI：</th><td><input name="imsi"  class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-		  			<tr><th>TSID：</th><td><input name="tsid"  class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-		  			<tr><th>指定日期：</th><td><input name="insertDate" readonly/></td></tr>
-		  			<tr><th>指定前状态：</th><td><select name="lastStatus">
-		  					<option value="0">正常</option>
-		  					<option value="1">停用</option>
-		  				</select></tr>
-<!-- 		  				<input name="lastStatus" /></td> -->
-		  			<tr><th>操作人：</th><td><input name="operator"/></td></tr>
-		  			<tr><th>指定类型：</th><td><select name="type">
-		  					<option value="0">临时指定</option>
-		  					<option value="1">一直指定</option>
-		  				</select></tr>
-<!-- 		  				<input name="type"/></td> -->
-		  			
+		  	<form id="queryForm">
+		  		<table class="table">
+		  			<tr>
+		  				<th>指定卡IMSI：</th><td><input name="imsi" placeholder="请输入指定卡IMSI" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<th>终端ID：</th><td><input name="tsid" placeholder="请输入终端ID" onkeyup="this.value=this.value.replace(/\D/,'')"/></td>
+		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  			</tr>
 		  		</table>
-				<div style="padding:5px;text-align:center;">
-					<a href="#" class="easyui-linkbutton" icon="icon-ok" onclick="saveData()">保存</a>
-				</div>
-			</form>
-		</div>
+		  	</form>
+		  	<div id="dg"></div>
+		  	<div id="modifyDia"   closed="true" style="width:500px;">
+				<form id="modifyForm" style="padding:10px 20px 10px 40px;">
+					<input type="hidden" name="id" value="">
+					<table class="table">
+			  			<tr><th>终端TSID：</th><td><input name="tsid"  class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+			  			<tr><th>卡IMSI：</th><td><input name="imsi"  class="easyui-validatebox onlyNumber" required="true"/>
+			  			</td></tr>
+			  			<tr><th>指定日期：</th><td><input name="insertDate" readonly/></td></tr>
+			  			<tr><th>指定前状态：</th><td><select name="lastStatus">
+			  					<option value="0">正常</option>
+			  					<option value="1">停用</option>
+			  				</select></tr>
+			  			<tr><th>操作人：</th><td><input name="operator" readonly/></td></tr>
+			  			<tr><th>指定类型：</th><td><select name="type">
+			  					<option value="0">临时指定</option>
+			  					<option value="1">一直指定</option>
+			  				</select></tr>
+			  		</table>
+					<div style="padding:5px;text-align:center;">
+						<a href="#" class="easyui-linkbutton" icon="icon-ok" onclick="updateData()">保存</a>
+					</div>
+				</form>
+			</div>
+			<div id="addDia"   closed="true" style="width:500px;">
+				<form id="addForm" style="padding:10px 20px 10px 40px;">
+					<table class="table">
+			  			<tr><th>终端TSID：</th><td><select name="tsid"  class="easyui-combogrid easyui-validatebox onlyNumber" required="true"></select></td></tr>
+			  			<tr><th>卡IMSI：</th><td><select name="imsi"  class="easyui-combogrid easyui-validatebox onlyNumber" required="true"></select>
+						<a href="#" class="easyui-linkbutton" icon="icon-add" onclick="addImsi(this)">添加卡</a>
+			  			</td></tr>
+			  			<tr><th>指定类型：</th><td><select name="type">
+			  					<option value="0">临时指定</option>
+			  					<option value="1">一直指定</option>
+			  				</select></tr>
+			  		</table>
+					<div style="padding:5px;text-align:center;">
+						<a href="#" class="easyui-linkbutton" icon="icon-ok" onclick="saveData()">保存</a>
+					</div>
+				</form>
+			</div>
+						
+		     
   </body>
   <script type="text/javascript">
+  function addImsi(a){
+	  $(a).before('<select name="imsi"  class="easyui-combogrid easyui-validatebox onlyNumber" required="true">');
+	$('select[name="imsi"]').combogrid(cardOptions);
+	  
+  }
   var options={
 			title:'指定卡列表',
 			queryParams:$('#queryForm').serializeObject(),
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'指定卡id',hidden:true},
+			         	{field:'tsid',title:'终端ID',width:140},
 			         	{field:'imsi',title:'IMSI',width:140},
-			         	{field:'tsid',title:'卡号',width:140},
 // 			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
 // 			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center" class="'+(value=="0"?"blue":"red")+'">'+(value=="0"?"正常":"停用")+'</div>';
 // 			         	}},
@@ -97,11 +119,70 @@
 			scrollbarSize:0,
 			height:window.innerHeight*0.89
 		};
+  	var terminalOptions={
+  			panelWidth: 700,
+  			panelHeight:400,
+			idField: 'tsid',
+			textField: 'tsid',
+			url:kcJs.fn.getContextPath()+'/getTerminalByDept',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			columns:[[
+	         	{field:'tsid',title:'终端编号',width:80},
+	         	{field:'status',title:'活动状态',width:100,formatter:function(value,rec,index){
+	         		var status = kcJs.fn.getTerminalStatus(value);
+	         		return status?('<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>'):'';
+	         	}},
+	         	{field:'model',title:'终端型号',width:100},
+	         	{field:'usedSoft',title:'是否支持软卡',width:80,formatter:function(value,rec,index){
+	         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
+	         	}},
+	         	{field:'departmentName',title:'所属部门',width:150},
+	         	{field:'countryName',title:'所在地区',width:150}
+			]],
+			fitColumns: true
+  	};
+  	var cardOptions={
+  			panelWidth: 800,
+  			panelHeight:400,
+			idField: 'imsi',
+			textField: 'imsi',
+			mode:'remote',
+			url:kcJs.fn.getContextPath()+'/getSimCardsInAppointCard',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			columns:[[
+	         	{field:'imsi',title:'imsi',width:100},
+	         	{field:'number',title:'卡号',width:100},
+	         	{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
+	         		var status = kcJs.fn.getCardStatus(value+'');
+	         		return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
+	         	}},
+	         	{field:'operatorCode',title:'运营商',width:100},
+	         	{field:'departmentId',title:'所属部门',width:150}
+			]],
+			fitColumns: true
+  	};
   
 	$(function(){
 		$('#dg').datagrid(options);
 		
-		$('#doDialog').dialog({
+		$('#modifyDia').dialog({
+			modal : true,
+ 			width:400,
+ 			height:400,
+ 			cache: false,
+			title : "指定卡信息"
+		});
+		$('#addDia').dialog({
 			modal : true,
  			width:400,
  			height:400,
@@ -110,19 +191,67 @@
 		});
 		
 	});
-	
-	function doAdd(){
-		$('#doForm')[0].reset();
-		$('#dia [name=id]').val('');
+	function initImsiSelect(){
+		$('#addDia table tr:eq(1) td')
+			.html('<select name="imsi"  class="easyui-combogrid easyui-validatebox onlyNumber" required="true"></select>'
+					+'<a href="#" class="easyui-linkbutton" icon="icon-add" onclick="addImsi(this)">添加卡</a>');
+		$('select[name="imsi"]').combogrid(cardOptions);
+		$('a.easyui-linkbutton').linkbutton();
+		
+	}
+	function doAdd(){//新增弹出窗
+		$('#addForm')[0].reset();
+		$('select[name="tsid"]').combogrid(terminalOptions);
+		initImsiSelect();
+		$('select[name="imsi"]:gt(0)').remove();
 		//$('#dia [name=tsid]').attr('readOnly',false);
-		$('#dia').dialog('open');
+		$('#addDia').dialog('open');
 	}
 	
-	function saveData(){
-		if($('#doForm').form('validate')){
-			$('#dia').dialog('close');
+	
+	function doModify(){//修改弹窗
+		var selectRows = $('#dg').datagrid("getSelections");
+		if (selectRows.length > 0 && selectRows.length == 1) {
+           var rowData = $('#dg').datagrid("getSelected");
+           kcJs.fn.autoFillData($('#modifyDia'),rowData);
+           $('#modifyDia').dialog('open');
+           //$('#doDialog [name=tsid]').attr('readOnly',true);
+      }
+      else {
+          $.messager.alert("提示", "请选择其中一条信息", "info");
+      }
+	}
+	
+	function doDelete(){
+		var selectRows = $('#dg').datagrid("getSelections");
+		if (selectRows.length > 0) {
+			$.messager.confirm('提示','是否确定删除？',function(r){
+				if(r){
+					$('#dg').datagrid('loading');
+		  			var ids = [];
+		  			for(var i = 0;i < selectRows.length;i++){
+		  				ids.push(selectRows[i].id);
+		  			}
+		  			$.post(kcJs.fn.getContextPath()+'/deleteReadyTerminalSim',{ids:ids.join(",")},function(data){
+		  				if(data && data.code && data.code == '200'){
+		  					doQuery();	
+		  				}else{
+		  					$('#dg').datagrid('loaded');
+		  				}
+		  				$.messager.alert("提示", data.msg, "info");
+		  			},'json');
+		  		}
+			});
+      }else {
+          $.messager.alert("提示", "请选择至少一条信息", "info");
+      }
+	}
+	
+	function saveData(){//新增保存
+		if($('#addForm').form('validate')){
+			$('#addDia').dialog('close');
 			$('#dg').datagrid('loading');
-			$.post(kcJs.fn.getContextPath()+'/saveReadyTerminalSim',$('#doForm').serializeObject(),function(data){
+			$.post(kcJs.fn.getContextPath()+'/saveReadyTerminalSim',$('#addForm').serializeObject(),function(data){
 				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			if(data.code=='200'){
@@ -131,7 +260,22 @@
 	    				$('#dg').datagrid('loaded');
 	    			}
 	    		}
-	    		
+			});
+		}
+	}
+	function updateData(){//修改保存
+		if($('#modifyForm').form('validate')){
+			$('#modifyDia').dialog('close');
+			$('#dg').datagrid('loading');
+			$.post(kcJs.fn.getContextPath()+'/updateReadyTerminalSim',$('#modifyForm').serializeObject(),function(data){
+				if(data){
+	    			$.messager.alert('提示',data.msg,'info');
+	    			if(data.code=='200'){
+	    				doQuery();
+	    			}else{
+	    				$('#dg').datagrid('loaded');
+	    			}
+	    		}
 			});
 		}
 	}
@@ -140,6 +284,5 @@
 		options.queryParams = $('#queryForm').serializeObject();
 		$('#dg').datagrid(options);
 	}
-
   </script>
-</html>
+</html>	
