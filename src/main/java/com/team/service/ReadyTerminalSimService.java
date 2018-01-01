@@ -9,5 +9,9 @@ public interface ReadyTerminalSimService {
 
   public ReturnMsg deleteReadyTerminalSim(String ids);
 
-  public ReturnMsg saveReadyTerminalSim(ReadyTerminalSim readyTerminalSim);
+  // public ReturnMsg saveReadyTerminalSim(String tsid, String[] imsi, String type, String user);
+
+  public ReturnMsg updateReadyTerminalSim(ReadyTerminalSim readyTerminalSim);
+
+  public ReturnMsg saveReadyTerminalSim(Integer tsid, String[] imsis, Integer type, Integer user);
 }

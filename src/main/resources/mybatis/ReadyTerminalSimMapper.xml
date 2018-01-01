@@ -22,14 +22,28 @@
 		</foreach>
 		)
   </delete>
-  <insert id="insert" parameterType="com.team.model.ReadyTerminalSim" >
-    insert into m_ready_terminal_sim (ID, TSID, imsi, 
-      lastStatus, insertDate, operator, 
-      type)
-    values (#{id,jdbcType=INTEGER}, #{tsid,jdbcType=INTEGER}, #{imsi,jdbcType=BIGINT}, 
-      #{lastStatus,jdbcType=INTEGER}, #{insertDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER})
-  </insert>
+  <insert id="insert" parameterType="java.util.List">
+	insert into m_ready_terminal_sim ( TSID, imsi,
+	lastStatus, insertDate, operator,type)
+	values 
+	<foreach collection="list" item="l" separator=",">
+		(	
+		#{l.tsid,jdbcType=INTEGER},
+		#{l.imsi,jdbcType=BIGINT},
+		(select status from m_simcard where imsi=#{l.imsi,jdbcType=BIGINT}),
+		#{l.insertDate,jdbcType=TIMESTAMP},
+		#{l.operator,jdbcType=INTEGER},
+		#{l.type,jdbcType=INTEGER}
+		)
+	</foreach>
+</insert>
+<update id="changeCardStatus" >
+update m_simcard set status=2 where imsi in (
+<foreach collection="list" item="i" separator=",">
+	#{i}
+</foreach>
+)
+</update>
     <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
     update m_ready_terminal_sim
     <set >

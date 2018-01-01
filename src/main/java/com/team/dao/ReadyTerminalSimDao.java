@@ -30,10 +30,10 @@ public interface ReadyTerminalSimDao {
   /**
    * 插入单条记录
    * 
-   * @param readyTerminalSim
+   * @param list
    * @return
    */
-  public int insert(ReadyTerminalSim readyTerminalSim);
+  public int insert(List<ReadyTerminalSim> list);
 
   /**
    * 更新单条记录
@@ -42,4 +42,12 @@ public interface ReadyTerminalSimDao {
    * @return
    */
   public int update(ReadyTerminalSim readyTerminalSim);
+
+  /**
+   * 修改卡状态为指定状态
+   * 
+   * @param imsi
+   * @return
+   */
+  public int changeCardStatus(List<Long> imsi);
 }

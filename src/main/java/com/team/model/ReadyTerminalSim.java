@@ -28,7 +28,30 @@ public class ReadyTerminalSim {
 	
 	private Integer type;//预指定类型
 
-	public Integer getId() {
+  public ReadyTerminalSim(Integer tsid, Integer type, Integer user) {
+    this.tsid = tsid;
+    // this.imsi = imsi;
+    this.type = type;
+    this.operator = user;
+  }
+
+  public ReadyTerminalSim() {
+    super();
+  }
+
+  public ReadyTerminalSim(Integer id, Integer tsid, Long imsi, Integer lastStatus, Date insertDate,
+      Integer operator, Integer type) {
+    super();
+    this.id = id;
+    this.tsid = tsid;
+    this.imsi = imsi;
+    this.lastStatus = lastStatus;
+    this.insertDate = insertDate;
+    this.operator = operator;
+    this.type = type;
+  }
+
+  public Integer getId() {
 		return id;
 	}
 
