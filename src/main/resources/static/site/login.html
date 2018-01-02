@@ -6,6 +6,12 @@
     <script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
     <script type="text/javascript" src="../js/login.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/login.css"/>
+	<script type="text/javascript">
+		if(self!=top){
+			//如果不是顶层页面，将其设为顶层页面
+			top.location=self.location;
+		}
+	</script>
   </head>
   
   <body>

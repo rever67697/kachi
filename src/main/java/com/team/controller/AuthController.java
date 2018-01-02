@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.code.kaptcha.Producer;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.impl.AuthServiceImpl;
 import com.team.util.CommonUtil;
@@ -31,6 +32,8 @@ public class AuthController {
 	
 	@Autowired
 	private AuthServiceImpl authService;
+	@Autowired
+    private Producer captchaProducer;
 	
 	@PostMapping("/getMenu")
 	@ResponseBody
@@ -48,7 +51,8 @@ public class AuthController {
 			// 创建二进制的输出流
 			ServletOutputStream sos = response.getOutputStream();
 			// 将图像输出到Servlet输出流中
-			BufferedImage image = CommonUtil.generateVerificationImage(verificationCodes.toCharArray());
+			//BufferedImage image = CommonUtil.generateVerificationImage(verificationCodes.toCharArray());
+			BufferedImage image = captchaProducer.createImage(verificationCodes); 
 			ImageIO.write(image, "jpeg", sos);
 			sos.flush();
 			sos.close();

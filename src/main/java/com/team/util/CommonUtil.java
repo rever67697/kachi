@@ -46,8 +46,6 @@ public class CommonUtil {
 			int index = str.indexOf(".0");
 			if(index > -1 && index == str.length()-2){
 				str = str.replace(".0", "");
-			}else{
-				return null;
 			}
 			return Integer.valueOf(str);
 		}
@@ -65,8 +63,6 @@ public class CommonUtil {
 			int index = str.indexOf(".0");
 			if(index > -1 && index == str.length()-2){
 				str = str.replace(".0", "");
-			}else{
-				return null;
 			}
 			return Long.valueOf(str);
 		}

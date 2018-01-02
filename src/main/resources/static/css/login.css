@@ -28,12 +28,13 @@ body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
 
 .submit_btn{
 	float:right;
-	padding:10px 40px;
+	padding:10px 0;
 	border:0;
 	background:rgb(95,160,234);
 	border-radius:4px;
 	color:#fff;
-	cursor:pointer
+	cursor:pointer;
+	width:120px
 }
 .submit_btn:hover{
 	background:rgb(41,128,185);
@@ -60,3 +61,4 @@ body{background:url('../images/login_bgx.png') ;color: #5a5a5a;}
 	color:red;
 	text-align:center
 }
+input:checked{border:1px solid blue}
