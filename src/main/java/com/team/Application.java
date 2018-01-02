@@ -22,8 +22,6 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.github.pagehelper.PageHelper;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.google.code.kaptcha.util.Config;
 
 @SpringBootApplication			//@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan
 @MapperScan("com.team.dao")		//查找报指定包及其子包下面的dao接口
@@ -77,25 +75,6 @@ public class Application{
     public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) throws Exception {  
         return new DataSourceTransactionManager(dataSource);  
     }  
-    
-    @Bean
-	public DefaultKaptcha captchaProducer(){
-		DefaultKaptcha captchaProducer =new DefaultKaptcha();
-		Properties properties =new Properties();
-		properties.setProperty("kaptcha.border","no");
-		properties.setProperty("kaptcha.border.color","105,179,90");
-		properties.setProperty("kaptcha.textproducer.font.color","blue");
-		properties.setProperty("kaptcha.image.width","120");
-		properties.setProperty("kaptcha.image.height","36");
-		properties.setProperty("kaptcha.textproducer.font.size","30");
-		properties.setProperty("kaptcha.session.key","code");
-		properties.setProperty("kaptcha.textproducer.char.length","4");
-		properties.setProperty("kaptcha.textproducer.font.names","Times New Roman,宋体,楷体,微软雅黑");
-		Config config=new Config(properties);
-		captchaProducer.setConfig(config);
-		return  captchaProducer;
-	}
-    
     /**
      * 启动入口main方法
      */
