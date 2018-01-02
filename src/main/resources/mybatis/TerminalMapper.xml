@@ -9,28 +9,7 @@
 	</sql>
 
 	<select id="getTerminalByDeparment" resultType="com.team.model.Terminal" parameterType="java.util.Map">
-		select r.id,
-			  r.tsid,
-			  r.mac,
-			  r.model,
-			  r.batch,
-			  r.sVersion,
-			  r.key,
-			  r.status,
-			  r.upLog,
-			  r.imei,
-			  r.activated,
-			  r.homeLocation,
-			  r.ssid,
-			  r.wifiPassword,
-			  r.licFix,
-			  r.usedVpn,
-			  r.usedSoft,
-			  r.departmentId,
-			  r.meid,
-			  r.saleType,
-			  r.resetWifi,
-			  r.androidVersion,
+		select r.*,
 			  t.name departmentName,
 			  ifnull(k.namecn,k.countryname) countryName
 		from m_terminal r

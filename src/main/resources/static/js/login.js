@@ -68,7 +68,7 @@ function changeValidateCode() {
 	   var timenow = new Date().getTime();
 	   //每次请求需要一个不同的参数，否则可能会返回同样的验证码
 	   //$('#code')[0].src = getContextPath()+"/verificationCode?d=" + timenow;
-	   $.get(getContextPath()+"/getcode?d"+timenow,function(data){
+	   $.get(getContextPath()+"/getCode?d"+timenow,function(data){
 		   if(data){
 			   $('#code')[0].src = data;
 		   }

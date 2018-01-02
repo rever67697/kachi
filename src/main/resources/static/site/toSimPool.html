@@ -81,13 +81,13 @@
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'卡池id',hidden:true},
-			         	{field:'spid',title:'卡池编号',width:80},
-			         	{field:'name',title:'卡池名称',width:100},
+			         	{field:'spid',title:'卡池编号',width:100},
+			         	{field:'name',title:'卡池名称',width:150},
 			         	{field:'isActive',title:'活动状态',width:100,formatter:function(value,rec,index){
 			         		var color = kcJs.fn.getColor(value=="1"?"blue":"red");
 			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=="1"?"正常":"暂停")+'</div>';
 			         	}},
-			         	{field:'oupIp',title:'卡池外网IP',width:100},
+			         	{field:'oupIp',title:'卡池外网IP',width:120},
 			         	{field:'type',title:'卡池类型',width:100},
 			         	{field:'mac',title:'卡池物理地址',width:120},
 			         	{field:'version',title:'卡池版本',width:100},
@@ -156,7 +156,7 @@
              var rowData = $('#dg').datagrid("getSelected");
              $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
              	var cardList = data.rows;
-             	if(cardList && cardList.length>0){
+             	if(cardList){
              		$('.card_container').html('');
              		var total = rowData.type?rowData.type:cardList.length;
              		var count = 0;

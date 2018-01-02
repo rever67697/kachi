@@ -21,7 +21,7 @@ import com.team.model.auth.TbAuthUser;
  * author:wuzhiheng
  */
 @Component
-public class MyFilter implements Filter{
+public class LoginFilter implements Filter{
 
 	@Value("${filter.noFilterPath}")
 	private String noFilterPath;

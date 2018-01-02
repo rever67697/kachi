@@ -122,7 +122,7 @@ public class AuthController {
 		}
 	}
 	
-	@GetMapping("/getcode")
+	@GetMapping("/getCode")
 	@ResponseBody
 	public String getcode(HttpServletRequest request) throws Exception{
 		int index = new Random().nextInt(49);
