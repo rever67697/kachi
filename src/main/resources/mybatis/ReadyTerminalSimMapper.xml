@@ -7,32 +7,45 @@
 		from  m_ready_terminal_sim rts
 		where 1=1
 		<if test="tsid!=null " >  
-         	and rts.tsid like #{tsid,jdbcType=INTEGER}  
+         	and rts.tsid like #{tsid}  
         </if>
         <if test="imsi!=null " >  
-         	and rts.imsi like  #{imsi,jdbcType=BIGINT}
+         	and rts.imsi like  #{imsi}
         </if>
 	</select> 
 	
-	<delete id="delete" parameterType="java.util.List" >
+	<delete id="delete" parameterType="java.lang.String" >
     delete from m_ready_terminal_sim
     where id in(
-		<foreach collection="list" item="i"  separator="," >
+		<foreach collection="array" item="i"  separator="," >
 		 #{i,jdbcType=INTEGER}
 		</foreach>
 		)
   </delete>
-  
-  <insert id="insert" parameterType="com.team.model.ReadyTerminalSim" >
-    insert into m_ready_terminal_sim 
-    (TSID, imsi, lastStatus, operator,type)
-    values 
-    ( #{tsid,jdbcType=INTEGER}, #{imsi,jdbcType=BIGINT}, 
-      #{lastStatus,jdbcType=INTEGER}, now(), #{operator,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER})
-  </insert>
-  
-  <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
+
+  <insert id="insert" parameterType="java.util.List">
+	insert into m_ready_terminal_sim ( TSID, imsi,
+	lastStatus, insertDate, operator,type)
+	values 
+	<foreach collection="list" item="l" separator=",">
+		(	
+		#{l.tsid,jdbcType=INTEGER},
+		#{l.imsi,jdbcType=BIGINT},
+		(select status from m_simcard where imsi=#{l.imsi,jdbcType=BIGINT}),
+		#{l.insertDate,jdbcType=TIMESTAMP},
+		#{l.operator,jdbcType=INTEGER},
+		#{l.type,jdbcType=INTEGER}
+		)
+	</foreach>
+</insert>
+<update id="changeCardStatus" >
+update m_simcard set status=2 where imsi in (
+<foreach collection="list" item="i" separator=",">
+	#{i}
+</foreach>
+)
+</update>
+    <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
     update m_ready_terminal_sim
     <set >
       <if test="tsid != null" >
