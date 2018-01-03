@@ -212,11 +212,14 @@
 </head>
 <body class="easyui-layout" >
 		<!-- 定义上面的层 -->
-		<div region="north" title="" split="false"  style="height:65px;background:rgb(78,151,227)" >
+		<div region="north" title="" split="false"  style="height:65px;background:rgb(78,151,227);overflow:hidden" >
+			<div class="top-left">
+				<h1>卡池后台管理系统</h1>
+			</div>
 			<div class="top-right">
 				<ul>
 					<li class="icon-q"><a href="javascript:logout()">退出登录</a></li>
-					<li class="icon-p">欢迎您：<span class="userName"></span></li>
+					<li class="icon-p">欢迎您：<a class="userName" href="javascript:;"></a></li>
 				</ul>
 			</div>
 		</div>
