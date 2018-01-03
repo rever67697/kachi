@@ -304,6 +304,12 @@
 .icon-delete2{
 	 background:url('icons/delete.png') no-repeat; 
 }
+.icon-p{
+	background:url('icons/people.png') no-repeat; 
+}
+.icon-q{
+	background:url('icons/quite.png') no-repeat; 
+}
 
 
 .icon-0-0 { background-position:0px 0px;}
