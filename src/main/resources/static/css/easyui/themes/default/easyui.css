@@ -1,4 +1,5 @@
 *{padding:0;margin:0}
+body{font-family:'微软雅黑'}
 .easyui-accordion div ul{list-style-type:none;margin:0px; padding:10px;}
 .easyui-accordion div ul li{ padding:0px;}
 .easyui-accordion div ul li a{line-height:5px;text-decoration: none;}
@@ -1968,5 +1969,5 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 .top-right ul>li a{text-decoration:none;color:#fff;display:inline-block}
 .top-right ul>li a:hover{text-decoration:underline}
 .top-left{float:left}
-.top-left h1{font-size:24px;color:white;font-weight:normal;height:63px;line-height:63px;padding-left:20px;margin:0}
+.top-left h1{font-size:24px;color:white;font-weight:normal;height:63px;line-height:63px;padding-left:20px;margin:0;letter-spacing:5px}
 

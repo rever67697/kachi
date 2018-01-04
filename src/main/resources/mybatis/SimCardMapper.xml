@@ -16,7 +16,23 @@
 	
 	<select id="getSimCard" parameterType="java.util.Map" resultType="com.team.model.SimCard">
 		select r.* 
+			   ,t.name packageName
+			   ,p.name simPoolName
+			   ,d.name departmentName
+			   ,case o.OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 				 		  when 'China Unicom' then '中国联通' 
+			 				 		  when 'China Telecom' then '中国电信'
+							 		  when 'China Tietong' then '中国铁通' 
+							 else o.OPERATORNAMECN end operatorName
 		from m_simcard r
+		left join m_simpackage t
+		on r.packageid=t.id
+		left join m_simpool p
+		on r.CPID=p.ID
+		left join m_department d
+		on r.departmentId=d.id
+		left join m_operator o
+		on r.OPERATORCODE=o.OPERATORCODE
 		where 1=1
 		<if test="cpid != null">
 			and r.cpid=#{cpId,jdbcType=INTEGER}
