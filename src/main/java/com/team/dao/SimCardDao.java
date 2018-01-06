@@ -64,4 +64,21 @@ public interface SimCardDao {
 	 *return
 	 */
 	public int updateCardDept(SimPool simPool);
+	
+	/**
+	 * 用于指定卡操作时，更新状态为指定
+	 *@param list
+	 *@return
+	 *return
+	 */
+	public int updateCardStatus(List<Integer> list);
+	
+
+	/**
+	 * 根据条件寻找出sim卡列表
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public List<SimCard> getSimCardInAppointCard(Map<String, Object> map);
 }

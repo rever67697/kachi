@@ -50,13 +50,10 @@
 			         	{field:'imsi',title:'IMSI码',width:120},
 			         	{field:'mcc',title:'MCC码',width:100},
 			         	{field:'groupKey',title:'GROUPKEY',width:120},
-			         	{field:'beatTime',title:'最后心跳时间',width:150,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
-			         	}},
-			         	{field:'date',title:'选卡时间',width:150,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
-			         	}},
+			         	{field:'beatTime',title:'最后心跳时间',width:150},
+			         	{field:'date',title:'选卡时间',width:150},
 			         	{field:'reserve',title:'是否是在归属地',width:100,formatter:function(value,rec,index){
+			         		value+='';
 			         		return value?(value=='0'?'是':'否'):'';
 			         	}},
 			         	{field:'runVersion',title:'当前版本',width:100},
@@ -130,7 +127,7 @@
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
              console.log(rowData);
-			 kcJs.fn.autoFillData($('#detailDialog'),rowData,["beatTime","date"]);
+			 kcJs.fn.autoFillData($('#detailDialog'),rowData);
 			 $('#detailDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息", "info");

@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 副卡基础信息	m_channel_card
  * 创建日期：2017-12-15下午4:25:32
@@ -24,6 +26,7 @@ public class ChannelCard implements Serializable{
 	
 	private String mcNumber;//短信中心号码
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date rechargeTime;//最后一次充值时间
 	
 	private Double balance;//账户余额

@@ -1970,4 +1970,8 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 .top-right ul>li a:hover{text-decoration:underline}
 .top-left{float:left}
 .top-left h1{font-size:24px;color:white;font-weight:normal;height:63px;line-height:63px;padding-left:20px;margin:0;letter-spacing:5px}
-
+.appoint-card input{width:150px!important}
+.appoint-card select{width:160px!important}
+.btn-delete{display:inline-block;border-radius:4px;text-align:center;height:26px;line-height:26px;
+	background:rgb(95,160,234);width:40px;margin-left:5px;cursor:pointer;color:#fff;font-size:14px}
+.btn-delete:hover{background:rgb(41,128,185)}

@@ -2,68 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.ReadyTerminalSimDao">
 
-	<select id="getReadyTerminalSim" resultType="com.team.model.ReadyTerminalSim" parameterType="java.util.Map">
-		select rts.* 
-		from  m_ready_terminal_sim rts
+	<select id="getReadyTerminalSim" resultType="com.team.model.ReadyTerminalSim"
+		parameterType="java.util.Map">
+		select r.*
+		from m_ready_terminal_sim r
 		where 1=1
-		<if test="tsid!=null " >  
-         	and rts.tsid like #{tsid}  
-        </if>
-        <if test="imsi!=null " >  
-         	and rts.imsi like  #{imsi}
-        </if>
-	</select> 
-	
-	<delete id="delete" parameterType="java.lang.String" >
-    delete from m_ready_terminal_sim
-    where id in(
-		<foreach collection="array" item="i"  separator="," >
-		 #{i,jdbcType=INTEGER}
+		<if test="tsid!=null ">
+			and r.tsid like #{tsid,jdbcType=INTEGER}
+		</if>
+		<if test="imsi!=null ">
+			and r.imsi like #{imsi,jdbcType=BIGINT}
+		</if>
+	</select>
+
+	<delete id="delete" parameterType="java.util.List">
+		delete from
+		m_ready_terminal_sim
+		where id in(
+		<foreach collection="list" item="item" separator=",">
+			#{item,jdbcType=INTEGER}
 		</foreach>
 		)
-  </delete>
+	</delete>
 
-  <insert id="insert" parameterType="java.util.List">
-	insert into m_ready_terminal_sim ( TSID, imsi,
-	lastStatus, insertDate, operator,type)
-	values 
-	<foreach collection="list" item="l" separator=",">
-		(	
-		#{l.tsid,jdbcType=INTEGER},
-		#{l.imsi,jdbcType=BIGINT},
-		(select status from m_simcard where imsi=#{l.imsi,jdbcType=BIGINT}),
-		#{l.insertDate,jdbcType=TIMESTAMP},
-		#{l.operator,jdbcType=INTEGER},
-		#{l.type,jdbcType=INTEGER}
-		)
-	</foreach>
-</insert>
-<update id="changeCardStatus" >
-update m_simcard set status=2 where imsi in (
-<foreach collection="list" item="i" separator=",">
-	#{i}
-</foreach>
-)
-</update>
-    <update id="update" parameterType="com.team.model.ReadyTerminalSim" >
-    update m_ready_terminal_sim
-    <set >
-      <if test="tsid != null" >
-        TSID = #{tsid,jdbcType=INTEGER},
-      </if>
-      <if test="imsi != null" >
-        imsi = #{imsi,jdbcType=BIGINT},
-      </if>
-      <if test="lastStatus != null" >
-        lastStatus = #{lastStatus,jdbcType=INTEGER},
-      </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=INTEGER}
-  </update>
+	<insert id="insert" parameterType="java.util.List">
+		insert into m_ready_terminal_sim ( TSID, imsi,
+		lastStatus, insertDate, operator,type)
+		values
+		<foreach collection="list" item="l" separator=",">
+			(
+			#{l.tsid,jdbcType=INTEGER},
+			#{l.imsi,jdbcType=BIGINT},
+			#{l.lastStatus,jdbcType=INTEGER},
+			now(),
+			#{l.operator,jdbcType=INTEGER},
+			#{l.type,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<update id="update" parameterType="com.team.model.ReadyTerminalSim">
+		update m_ready_terminal_sim
+		<set>
+			<if test="tsid != null">
+				TSID = #{tsid,jdbcType=INTEGER},
+			</if>
+			<if test="imsi != null">
+				imsi = #{imsi,jdbcType=BIGINT},
+			</if>
+			<if test="lastStatus != null">
+				lastStatus = #{lastStatus,jdbcType=INTEGER},
+			</if>
+			<if test="operator != null">
+				operator = #{operator,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

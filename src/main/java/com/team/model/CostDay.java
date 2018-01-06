@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 终端的日消费记录，以终端当天所在国家的时区来计算	m_cost_day
  * 创建日期：2017-12-15下午4:15:16
@@ -12,8 +14,10 @@ public class CostDay implements Serializable{
 	
 	private Integer id;//主键
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;//日期（当天所在国家的本地时区）
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date begIntegerime;//日期开始的时间（北京时间）
 	
 	private Integer tsid;//设备号

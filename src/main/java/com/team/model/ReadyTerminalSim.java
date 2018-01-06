@@ -8,51 +8,39 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * 给终端人工指定卡信息，一般用于测试	m_ready_terminal_sim
- * 创建日期：2017-12-15下午4:48:51
+ * 给终端人工指定卡信息，一般用于测试 m_ready_terminal_sim 创建日期：2017-12-15下午4:48:51
  * author:wuzhiheng
  */
-public class ReadyTerminalSim implements Serializable{
+public class ReadyTerminalSim implements Serializable {
 
-	private Integer id;//主键
-	
-	private Integer tsid;//终端id
-	
+	private Integer id;// 主键
+
+	private Integer tsid;// 终端id
+
 	private Long imsi;
-	
-	private Integer lastStatus;//SIM卡前状态
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date insertDate;//添加时间
-	
-	private Integer operator;//操作人
-	
-	private Integer type;//预指定类型
 
-  public ReadyTerminalSim(Integer tsid, Integer type, Integer user) {
-    this.tsid = tsid;
-    // this.imsi = imsi;
-    this.type = type;
-    this.operator = user;
-  }
+	private Integer lastStatus;// SIM卡前状态
+	//@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date insertDate;// 添加时间
 
-  public ReadyTerminalSim() {
-    super();
-  }
+	private Integer operator;// 操作人
 
-  public ReadyTerminalSim(Integer id, Integer tsid, Long imsi, Integer lastStatus, Date insertDate,
-      Integer operator, Integer type) {
-    super();
-    this.id = id;
-    this.tsid = tsid;
-    this.imsi = imsi;
-    this.lastStatus = lastStatus;
-    this.insertDate = insertDate;
-    this.operator = operator;
-    this.type = type;
-  }
+	private Integer type;// 预指定类型
 
-  public Integer getId() {
+	public ReadyTerminalSim(Integer tsid,Long imsi,Integer lastStatus, Integer type, Integer operator) {
+		this.tsid = tsid;
+		this.imsi = imsi;
+		this.lastStatus = lastStatus;
+		this.type = type;
+		this.operator = operator;
+	}
+
+	public ReadyTerminalSim() {
+		super();
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
@@ -107,7 +95,5 @@ public class ReadyTerminalSim implements Serializable{
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	
-	
-	
+
 }

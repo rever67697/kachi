@@ -49,6 +49,38 @@
 		order by r.cpid,r.cpchannelid
 	</select>
 	
+	<select id="getSimCardInAppointCard" parameterType="java.util.Map" resultType="com.team.model.SimCard">
+		select r.* 
+			   ,t.name packageName
+			   ,p.name simPoolName
+			   ,d.name departmentName
+			   ,case o.OPERATORNAMECN when 'China Mobile' then '中国移动' 
+			 				 		  when 'China Unicom' then '中国联通' 
+			 				 		  when 'China Telecom' then '中国电信'
+							 		  when 'China Tietong' then '中国铁通' 
+							 else o.OPERATORNAMECN end operatorName
+		from m_simcard r
+		left join m_simpackage t
+		on r.packageid=t.id
+		left join m_simpool p
+		on r.CPID=p.ID
+		left join m_department d
+		on r.departmentId=d.id
+		left join m_operator o
+		on r.OPERATORCODE=o.OPERATORCODE
+		where r.status in (0,1)
+		<if test="cpid != null">
+			and r.cpid=#{cpId,jdbcType=INTEGER}
+		</if>
+		<if test="departmentId != null">
+			and r.departmentId=#{departmentId,jdbcType=INTEGER}
+		</if>
+		<if test="number != null and number != ''">
+			and r.number=#{number,jdbcType=VARCHAR}
+		</if>
+		order by r.cpid,r.cpchannelid
+	</select>
+	
 	<select id="getOutlineInfo"  resultType="com.team.vo.OutlineInfo">
 		select count(1) simCardCount,
 			   sum(case when status=0 then 1 else 0 end) onCardCount,
@@ -68,9 +100,19 @@
 		  and id in(<foreach collection="list" item="item">#{item,,jdbcType=INTEGER}</foreach>)
 	</delete>
 	
-	<delete id="updateCardDept" parameterType="com.team.model.SimPool">
+	<update id="updateCardDept" parameterType="com.team.model.SimPool">
 		update m_simcard
 		set departmentId=#{departmentId,jdbcType=INTEGER}  
 		where cpId = #{id,jdbcType=INTEGER}
-	</delete>
+	</update>
+	
+	<update id="updateCardStatus" parameterType="java.util.List">
+		update m_simcard 
+		set status=2 
+		where id in (
+		<foreach collection="list" item="item" separator=",">
+			#{item,jdbcType=INTEGER}
+		</foreach>
+		)
+	</update>
 </mapper>

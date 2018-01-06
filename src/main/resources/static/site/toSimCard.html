@@ -34,9 +34,10 @@
 		  			<tr>
 		  				<th>卡号：</th><td><input name="number" placeholder="请输入卡号" class="onlyNumber"/></td>
 		  				<th>卡状态：</th>
-		  				<td><select name="status"><option value="">全部</option><option value="0">正常</option>
-		  										  <option value="1">停用</option><option value="2">指定</option>
-		  										  <option value="3">待激活</option><option value="4">作废</option>
+		  				<td><select name="status">
+		  						<option value="">全部</option><option value="0">正常</option>
+							    <option value="1">停用</option><option value="2">指定</option>
+							    <option value="3">待激活</option><option value="4">作废</option>
 		  					</select></td>
 		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
 		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
@@ -107,9 +108,7 @@
 			         	}},
 			         	{field:'operatorName',title:'运营商',width:90},
 			         	{field:'packageName',title:'卡套餐',width:120},
-			         	{field:'expiryDate',title:'有效期截卡时间',width:150,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
-			         	}},
+			         	{field:'expiryDate',title:'有效期截卡时间',width:150},
 			         	{field:'simPoolName',title:'所在卡池',width:100},
 			         	{field:'cpChannelId',title:'卡池通道',width:80},
 			         	{field:'departmentName',title:'所属部门',width:150}
@@ -156,7 +155,7 @@
   	function doModify(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
-             kcJs.fn.autoFillData($('#doDialog'),selectRows[0],["expiryDate","insertDate"]);
+             kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
              $('#doDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息", "info");
@@ -170,7 +169,7 @@
   	function doDetail(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
-             kcJs.fn.autoFillData($('#doDialog'),selectRows[0],["expiryDate","insertDate"]);
+             kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
              $('#doDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息", "info");

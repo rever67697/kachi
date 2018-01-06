@@ -62,9 +62,7 @@
  			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
  			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center" class="'+(value=="0"?"blue":"red")+'">'+(value=="0"?"正常":"停用")+'</div>';
  			         	}},
- 			         	{field:'rechargeTime',title:'最后一次充值时间',width:140,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value,'yyyy-MM-dd hh:mm:ss');
-			         	}},
+ 			         	{field:'rechargeTime',title:'最后一次充值时间',width:140},
  			         	{field:'balance',title:'账户余额',width:80},
 			         	{field:'operatorName',title:'运营商',width:100},
 			         	{field:'countryName',title:'国家',width:100},

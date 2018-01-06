@@ -156,22 +156,19 @@
 						//{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'id',hidden:true},
 			         	{field:'tsid',title:'终端编号',width:80},
-			         	{field:'date',title:'时间（所在国家）',width:100,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value);
-			         	}},
-			         	{field:'date',title:'时间（北京时间）',width:100,formatter:function(value,rec,index){
-			         		return kcJs.fn.getDate(value);
-			         	}},
+			         	{field:'date',title:'时间（所在国家）',width:100},
+			         	{field:'date',title:'时间（北京时间）',width:100},
 			         	{field:'duration',title:'使用时长（分钟）',width:100},
 			         	{field:'flow',title:'使用流量',width:70},
 			         	{field:'cost',title:'超额费用',width:70},
 			         	{field:'rxFlow',title:'下行流量',width:70},
 			         	{field:'txFlow',title:'上行流量',width:70},
 			         	{field:'additionalFlow',title:'超额流量',width:70},
-			         	{field:'isLocal',title:'是否在归属地使用',width:100,formatter:function(value,rec,index){
+			         	{field:'isLocal',title:'是否在归属地',width:100,formatter:function(value,rec,index){
+			         		value+='';
 			         		return value?(value=='0'?'是':'否'):'';
 			         	}},
-			         	{field:'countryName',title:'使用国家',width:100}
+			         	{field:'countryName',title:'所在国家',width:100}
 					]],
 			url:kcJs.fn.getContextPath()+'/getCostDayByTsid',
 			nowrap:false,
@@ -269,7 +266,7 @@
              $.post(kcJs.fn.getContextPath()+'/getTerminalSimByTsid',{tsid:rowData.tsid},function(data){
 				if(data && data.code && data.code == '200'){
 					if(data.data && data.data.id){
-						kcJs.fn.autoFillData($('#cardDialog'),data.data,["beatTime","date"]);
+						kcJs.fn.autoFillData($('#cardDialog'),data.data);
 						$('#cardDialog').dialog('open');
 					}else{
 						$.messager.alert("提示", "没有对应的卡信息", "info");

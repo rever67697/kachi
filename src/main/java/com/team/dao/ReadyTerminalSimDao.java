@@ -24,8 +24,7 @@ public interface ReadyTerminalSimDao {
    * @param ids
    * @return
    */
-  // public int delete(List<String> ids);
-  public int delete(List<Integer> ids);
+  public int delete(List<Integer> list);
 
   /**
    * 插入记录
@@ -43,11 +42,4 @@ public interface ReadyTerminalSimDao {
    */
   public int update(ReadyTerminalSim readyTerminalSim);
 
-  /**
-   * 修改卡状态为指定状态
-   * 
-   * @param imsi
-   * @return
-   */
-  public int changeCardStatus(List<Long> imsi);
 }

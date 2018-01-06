@@ -86,4 +86,17 @@ public class SimCardServiceImpl implements SimCardService{
 		return returnMsg;
 	}
 
+	@Override
+	public ResultList getSimCardInAppointCard(String departmentId, String cpId,
+			String number, int page, int rows) {
+		PageHelper.startPage(page, rows);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("departmentId", CommonUtil.putInteger(departmentId));
+		map.put("cpId", CommonUtil.putInteger(cpId));
+		map.put("number", number);
+		List<SimCard> list = simCardDao.getSimCardInAppointCard(map);
+		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
+		return new ResultList(pageInfo.getTotal(), list);
+	}
+
 }

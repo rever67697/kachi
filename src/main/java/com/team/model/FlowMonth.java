@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**卡的月流量	m_flow_month
  * 创建日期：2017-12-15下午3:15:00
  * author:wuzhiheng
@@ -17,6 +19,7 @@ public class FlowMonth implements Serializable{
 	
 	private String number;
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;//记录消费的年月
 	
 	private Integer maxFlow;//本国流量最大使用流量额度
@@ -25,10 +28,13 @@ public class FlowMonth implements Serializable{
 	
 	private Integer residueFlow;//本国流量剩余额度
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date lastUpdateTime;//最后更新时间
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodStratDate;//本账期起始时间
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodEndDate;//本帐期结束时间
 	
 	private Integer maxRoamFlow;//最大漫游流量（省内流量）

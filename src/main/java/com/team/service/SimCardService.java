@@ -18,4 +18,6 @@ public interface SimCardService {
 	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows);
 	
 	public ReturnMsg getOutlineInfo(String departmentId);
+	
+	public ResultList getSimCardInAppointCard(String departmentId,String cpId,String number,int page,int rows);
 }

@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**SIM卡分组数据，用于选卡 	m_sim_group
  * 创建日期：2017-12-15下午3:25:36
  * author:wuzhiheng
@@ -16,7 +18,8 @@ public class SimGroup implements Serializable{
 	private Long imsi;
 	
 	private Integer status;//状态
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date changeDate;//加载时间
 	
 	private Integer departmentId;//代理商Id

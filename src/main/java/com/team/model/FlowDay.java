@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**卡的日流量	m_flow_day
  * 创建日期：2017-12-15下午3:09:47
  * author:wuzhiheng
@@ -13,12 +15,14 @@ public class FlowDay implements Serializable{
 	
 	private Long imsi;//
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;//消费日期
 	
 	private Integer flow;//本国流量，单位
 	
 	private Integer roamFlow;//漫游流量（国内是省内流量）
 	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date lastUpdateTime;//最后更新时间
 
 	public Integer getId() {

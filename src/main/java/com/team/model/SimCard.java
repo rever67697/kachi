@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**卡信息	m_simcard
  * 创建日期：2017-12-15下午2:52:39
  * author:wuzhiheng
@@ -42,9 +44,11 @@ public class SimCard implements Serializable{
 	private Integer countryCode;//国家编码
 	
 	private Integer provinceCode;//省编码
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date expiryDate;//有效期截卡时间
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date insertDate;//插入时间
 	
 	private Integer usedVpn;//是否支持vpn
@@ -64,7 +68,8 @@ public class SimCard implements Serializable{
 	private String op;
 	
 	private String apn;
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date openDate;//开卡日期
 	
 	private Integer departmentId;//部门id

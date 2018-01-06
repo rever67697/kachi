@@ -3,6 +3,8 @@ package com.team.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 在线终端使用的卡信息		m_terminal_sim
  * 创建日期：2017-12-15下午4:40:34
@@ -19,9 +21,11 @@ public class TerminalSim implements Serializable{
 	private String mcc;
 	
 	private String groupKey;//卡组key
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date beatTime;//最后心跳时间
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;//选卡时间
 	
 	private Integer reserve;//是否是在归属地；0：归属地；1：漫游
