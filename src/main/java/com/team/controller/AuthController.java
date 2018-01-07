@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,13 +70,17 @@ public class AuthController {
 	
 	@PostMapping("/login")
 	@ResponseBody
-	public ReturnMsg login(TbAuthUser user,String code,HttpServletRequest request){
+	public ReturnMsg login(TbAuthUser user,String code,HttpServletRequest request,
+			HttpServletResponse response){
 		ReturnMsg returnMsg = null;
 		String msg = "";
 		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
 		if(verificationCode != null && verificationCode.equals(code)){
 			if("admin".equals(user.getUserName()) && "123".equals(user.getPassWord())){
 				request.getSession().setAttribute("kachi_user", user);
+				Cookie cookie = new Cookie("kachi_user",user.getUserName());
+				cookie.setMaxAge(60*60*24*7);//7天有效
+				response.addCookie(cookie);
 			}else{
 				msg = "用户名或密码错误！";
 			}
@@ -99,8 +104,11 @@ public class AuthController {
 	
 	@PostMapping("/logout")
 	@ResponseBody
-	public ReturnMsg logout(HttpServletRequest request){
+	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
 		request.getSession().removeAttribute("kachi_user");
+		Cookie cookie = new Cookie("kachi_user","");
+		cookie.setMaxAge(0);//消除cookie
+		response.addCookie(cookie);
 		return IConstant.MSG_OPERATE_SUCCESS;
 	}
 	

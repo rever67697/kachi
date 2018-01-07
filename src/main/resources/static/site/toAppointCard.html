@@ -63,6 +63,11 @@
 		  		<table class="table">
 		  			<tr>
 		  				<th>卡号：</th><td><input name="number" placeholder="请输入卡号" class="onlyNumber"/></td>
+		  				<th>卡状态：</th>
+		  				<td><select name="status">
+		  						<option value="0">正常</option>
+							    <option value="1">停用</option>
+		  					</select></td>
 		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
 		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
 		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_c()">查 询</a></td>
@@ -176,7 +181,7 @@
 				  		handler: selectCards
 				  	  }
 				  	 ],
-			url:kcJs.fn.getContextPath()+'/getSimCardsInAppointCard',
+			url:kcJs.fn.getContextPath()+'/getSimCard',
 			nowrap:false,
 			pagination:true,
 			pageList:[15,30],
@@ -206,7 +211,7 @@
 		
 		$('#cardDialog').dialog({
 			modal : true,
- 			width:800,
+ 			width:1000,
  			height:400,
  			cache: false,
 			title : "选取sim卡IMSI【可多选】"
