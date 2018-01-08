@@ -71,7 +71,7 @@
 			  			<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
 			  				<th>VPNIP：</th><td><input name="vpnIp"/></td></tr>
 			  			<tr><th>VPN名称：</th><td><select name="vpnName"></select></td>
-			  				<th>vpnPass：</th><td><input name="vpnPass"/></td></tr>
+			  				<th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
 			  			<tr><th>是否软卡：</th><td><select name="softType"></select></td>
 			  				<th>KI：</th><td><input name="ki"/></td></tr>
 			  			<tr><th>OPC：</th><td><input name="opc"/></td>
@@ -150,6 +150,7 @@
 			title : "查看/修改卡信息"
 		});
 		
+		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
 	});
   
   	function doModify(){
@@ -158,12 +159,39 @@
              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
              $('#doDialog').dialog('open');
         }else {
-            $.messager.alert("提示", "请选择其中一条信息", "info");
+            $.messager.alert("提示", "请选择其中一条信息！", "info");
         }
   	}
   	
   	function doDelete(){
-  	
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0 ) {
+  			var ids = [];
+  			for(var i = 0;i < selectRows.length;i++){
+  				ids.push(selectRows[i].id);
+  				if(selectRows[i].status!=4){
+  					$.messager.alert("提示", "只能删除状态为作废的SIM卡！", "info");
+  					return;
+  				}
+  			}
+  			$.messager.confirm('提示','是否确定删除？',function(r){
+  				if(r){
+  					$('#dg').datagrid('loading');
+		  			$.post(kcJs.fn.getContextPath()+'/deleteSimCard',{ids:ids.join(",")},function(data){
+		  				$('#dg').datagrid('loaded');
+			  			if(data && data.code=='200'){
+			  				$.messager.alert("提示", data.msg, "info");
+			  				doQuery();
+			  			}else{
+			  				$.messager.alert("提示", data.msg, "info");
+			  			}
+		  			},'json');
+  				}
+  			});
+  			
+        }else {
+            $.messager.alert("提示", "请选择至少一条信息！", "info");
+        }
   	}
   	
   	function doDetail(){
@@ -172,7 +200,7 @@
              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
              $('#doDialog').dialog('open');
         }else {
-            $.messager.alert("提示", "请选择其中一条信息", "info");
+            $.messager.alert("提示", "请选择其中一条信息！", "info");
         }
   	}
   	
@@ -181,19 +209,6 @@
   		$('#dg').datagrid(options);
   	}
   	
-  	function getCardPoolInfo(){
-  		$.getJSON(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
-  			if(data && data.code=='200'){
-  				var info = data.data;
-  				$('#simPoolCount').text(info.simPoolCount);
-  				$('#onlinePoolCount').text(info.onlinePoolCount);
-  				$('#offlinePoolCount').text(info.offlinePoolCount);
-  				$('#cardSlotCount').text(info.cardSlotCount);
-  				$('#simCardCount').text(info.simCardCount);
-  				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
-  			}
-  		});
-  	}
   	
   	function getCardInfo(){
   		$.post(kcJs.fn.getContextPath()+'/getCardOutlineInfo',function(data){

@@ -1975,3 +1975,5 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 .btn-delete{display:inline-block;border-radius:4px;text-align:center;height:26px;line-height:26px;
 	background:rgb(95,160,234);width:40px;margin-left:5px;cursor:pointer;color:#fff;font-size:14px}
 .btn-delete:hover{background:rgb(41,128,185)}
+.common-btn{border:0;background:rgb(95,160,234);padding:5px 10px;border-radius:4px;color:#fff;text-align:center;cursor:pointer}
+.common-btn:hover{background:rgb(41,128,185)}

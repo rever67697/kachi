@@ -1,7 +1,6 @@
 package com.team.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.team.dao.CommonDao;
 import com.team.service.CommonService;
 import com.team.util.IConstant;
+import com.team.vo.Dictionary;
 import com.team.vo.ReturnMsg;
 
 /**
@@ -28,7 +28,7 @@ public class CommonServiceImpl implements CommonService{
 	 */
 	public ReturnMsg getCountryDic() {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Map<String, Object>> list =commonDao.getCountryDic();
+		List<Dictionary> list =commonDao.getCountryDic();
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}
@@ -41,7 +41,7 @@ public class CommonServiceImpl implements CommonService{
 	 */
 	public ReturnMsg getDepartmentDic() {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Map<String, Object>> list =commonDao.getDepartmentDic();
+		List<Dictionary> list =commonDao.getDepartmentDic();
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}
@@ -54,7 +54,17 @@ public class CommonServiceImpl implements CommonService{
 	 */
 	public ReturnMsg getOperatorDic(Integer countryCode) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Map<String, Object>> list =commonDao.getOperatorDic(countryCode);
+		List<Dictionary> list =commonDao.getOperatorDic(countryCode);
+		if(list != null && list.size() > 0){
+			returnMsg.setData(list);
+		}
+		return returnMsg;
+	}
+
+	@Override
+	public ReturnMsg getSimPoolDic(Integer departmentId) {
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		List<Dictionary> list =commonDao.getSimPoolDic(departmentId);
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}

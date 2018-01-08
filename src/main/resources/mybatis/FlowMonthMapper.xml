@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.FlowMonthDao">
+	
+	<update id="updateMonthFlowByPackage" parameterType="com.team.model.SimPackage">
+		<![CDATA[
+		update m_flow_month r
+		set r.MAXFLOW=#{maxFlow,jdbcType=INTEGER} , 
+			r.RESIDUEFLOW=#{maxFlow,jdbcType=INTEGER}-r.USEDFLOW,
+			r.MAXROAMFLOW=#{maxRoamFlow,jdbcType=INTEGER} , 
+			r.RESIDUEROAMFLOW=#{maxRoamFlow,jdbcType=INTEGER}-r.USEDROAMFLOW,
+			r.LASTUPDATETIME=now()
+		where exists (select 1 from m_simcard t where r.IMSI=t.imsi and t.PACKAGEID=#{id,jdbcType=INTEGER})
+		  and r.ACCOUNTPERIODENDDATE>=now() 
+		  and r.ACCOUNTPERIODSTARTDATE<=now()
+		]]>
+	</update>
+	
+</mapper>

@@ -25,8 +25,8 @@ public class SimPackageController {
 	}
 	
 	@PostMapping("/savePackage")
-	public ReturnMsg savePackage(SimPackage simPackage){
-		return simPackageService.savePackage(simPackage);
+	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow){
+		return simPackageService.savePackage(simPackage,compareFlow,compareRoamFlow);
 	} 
 	
 	@PostMapping("/deletePackageById")

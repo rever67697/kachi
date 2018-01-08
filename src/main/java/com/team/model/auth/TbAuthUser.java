@@ -13,6 +13,16 @@ public class TbAuthUser implements Serializable{
 	private String loginName;
 	
 	private String passWord;
+	
+	private Integer departmentId;
+
+	public Integer getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -37,7 +47,5 @@ public class TbAuthUser implements Serializable{
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
 	}
-	
-	
 	
 }

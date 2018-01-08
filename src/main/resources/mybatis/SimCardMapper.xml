@@ -34,7 +34,7 @@
 		left join m_operator o
 		on r.OPERATORCODE=o.OPERATORCODE
 		where 1=1
-		<if test="cpid != null">
+		<if test="cpId != null">
 			and r.cpid=#{cpId,jdbcType=INTEGER}
 		</if>
 		<if test="status != null">
@@ -97,7 +97,7 @@
 	<delete id="deleteSimCard" parameterType="java.util.List">
 		delete from m_simcard
 		where status=4
-		  and id in(<foreach collection="list" item="item">#{item,,jdbcType=INTEGER}</foreach>)
+		  and id in(<foreach collection="list" item="item">#{item,jdbcType=INTEGER}</foreach>)
 	</delete>
 	
 	<update id="updateCardDept" parameterType="com.team.model.SimPool">

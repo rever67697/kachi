@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.CommonDao">
 
-	<select id="getCountryDic" resultType="java.util.Map">
+	<select id="getCountryDic" resultType="com.team.vo.Dictionary">
 		select countrycode value,
 			   namecn name
 		from m_country
 		order by case when countrycode=156 then 0 else 1 end 
 	</select>
 
-	<select id="getDepartmentDic" resultType="java.util.Map">
+	<select id="getDepartmentDic" resultType="com.team.vo.Dictionary">
 		select id value,
 			   name
 		from m_department
@@ -17,7 +17,7 @@
 		order by id
 	</select>
 	
-	<select id="getOperatorDic" resultType="java.util.Map">
+	<select id="getOperatorDic" resultType="com.team.vo.Dictionary">
 		select OPERATORCODE value,
 			 concat(case OPERATORNAMECN when 'China Mobile' then '中国移动' 
 			 							when 'China Unicom' then '中国联通' 
@@ -30,5 +30,18 @@
 			and countrycode=#{countryCode,jdbcType=INTEGER}
 		</if>
 		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc,OPERATORCODE
+	</select>
+	
+	<select id="getSimPoolDic" resultType="com.team.vo.Dictionary">
+		select r.id value,
+			   r.name name 
+		from m_simpool r
+		left join m_department t
+		on r.departmentId=t.id
+		   and t.status=0
+		where 1=1
+		<if test="departmentId!=null" >  
+         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+        </if>
 	</select>
 </mapper>

@@ -22,15 +22,18 @@ function checkLogin() {
 	var passWord=$('[name=passWord]').val();
 	var code=$('[name=code]').val();
 	if(''==loginName) {
+		$('[name=userName]').focus();
 		$('#msg').text('请输入用户名!');
 		return false;
 	}
 	if(''==passWord) {
+		$('[name=passWord]').focus();
 		$('#msg').text('请输入密码!');
 		return false;
 	}
 	if(''==code) {
 		$('#msg').text('请输入验证码!');
+		$('[name=code]').focus();
 		return false;
 	}
 	return true;

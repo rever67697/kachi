@@ -1,5 +1,6 @@
 package com.team.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * 创建日期：2017-12-18下午3:44:43
  * author:wuzhiheng
  */
-public class ResultList {
+public class ResultList implements Serializable{
 
 	private long total;
 	

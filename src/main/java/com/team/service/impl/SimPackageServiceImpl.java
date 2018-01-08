@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.dao.FlowMonthDao;
 import com.team.dao.SimCardDao;
 import com.team.dao.SimPackageDao;
 import com.team.model.SimPackage;
@@ -32,6 +33,8 @@ public class SimPackageServiceImpl implements SimPackageService{
 	private SimPackageDao simPackageDao;
 	@Autowired
 	private SimCardDao simCardDao;
+	@Autowired
+	private FlowMonthDao flowMonthDao;
 	
 	@Override
 	/**
@@ -64,10 +67,15 @@ public class SimPackageServiceImpl implements SimPackageService{
 	}
 
 	@Override
-	public ReturnMsg savePackage(SimPackage simPackage) {
+	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow) {
 		int count = 0;
 		if(simPackage.getId()!=null){
 			count = simPackageDao.updatePackage(simPackage);
+			if(!(simPackage.getMaxFlow()+"").equals(compareFlow)
+					|| !(simPackage.getMaxRoamFlow()+"").equals(compareRoamFlow)){
+				//需要更新流量大小
+				flowMonthDao.updateMonthFlowByPackage(simPackage);
+			}
 		}else{
 			count = simPackageDao.insertPackage(simPackage);
 		}

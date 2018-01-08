@@ -43,10 +43,11 @@
 	    		</table>
 	    	</form>
 	    </div>
-	    <div id="uploadDialog" closed="true" style="padding:10px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	    <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 	  		<table class="excel">
+	  			<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
 	  			<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
-	  			<tr style="height:40px"></tr>
+	  			<tr style="height:30px"></tr>
 	  			<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
 	  		</table>
 	  	</div>
@@ -250,6 +251,10 @@
   				$('#doForm select[name=operatorCode]').html('');
   			}
   		}
+  	}
+  	
+  	function downloadFile(){
+  		window.location.href=kcJs.fn.getContextPath()+"/downloadFile?fileName="+encodeURIComponent(encodeURIComponent('副卡.xlsx'));
   	}
  
   </script>

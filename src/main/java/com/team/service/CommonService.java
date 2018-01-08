@@ -14,4 +14,6 @@ public interface CommonService {
 	
 	public ReturnMsg getOperatorDic(Integer countryCode);
 	
+	public ReturnMsg getSimPoolDic(Integer departmentId);
+	
 }

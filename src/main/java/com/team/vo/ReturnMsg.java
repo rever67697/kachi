@@ -1,10 +1,13 @@
 package com.team.vo;
+
+import java.io.Serializable;
+
 /**
  * 通过返回一般Ajax请求返回的结果
  * 创建日期：2017-12-22上午12:11:03
  * author:wuzhiheng
  */
-public class ReturnMsg {
+public class ReturnMsg implements Serializable{
 
 	private String code;
 	

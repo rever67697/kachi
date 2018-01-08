@@ -26,6 +26,8 @@
   	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 	  		<form id="doForm">
 	  			<input type="hidden" name="id"/>
+	  			<input type="hidden" name="compareFlow"/>
+	  			<input type="hidden" name="compareRoamFlow"/>
 		  		<table class="table th-normal">
 		  			<tr><th>套餐名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
 		  			<tr><th>运营商编号：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
@@ -35,7 +37,7 @@
 		  			<tr><th>状态：</th><td><select name="status"><option  value="0">正常</option><option value="1">删除</option></select></tr>
 		  			<tr><th>套餐支持的漫游国家：</th><td><input name="mccs"/></td></tr>
 		  			<tr style="height:20px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 		  		</table>
 	  		</form>
 	  	</div>
@@ -114,7 +116,9 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             kcJs.fn.autoFillData($('#doDialog'),rowData);
+             kcJs.fn.autoFillData($('#doForm'),rowData);
+             $('#doForm [name=compareFlow]').val(rowData.maxFlow);
+             $('#doForm [name=compareRoamFlow]').val(rowData.maxRoamFlow);
              $('#doDialog').dialog('open');
         }
         else {

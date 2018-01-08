@@ -14,6 +14,6 @@ public interface SimPackageService {
 	
 	public ReturnMsg deletePackage(Integer id);
 	
-	public ReturnMsg savePackage(SimPackage simPackage);
+	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow);
 	
 }

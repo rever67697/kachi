@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.team.model.ChannelCard;
 import com.team.service.ChannelCardService;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 

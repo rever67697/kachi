@@ -1,10 +1,13 @@
 package com.team.vo;
+
+import java.io.Serializable;
+
 /**
  * 用作显示概览信息的装载bean
  * 创建日期：2017-12-20下午5:27:27
  * author:wuzhiheng
  */
-public class OutlineInfo {
+public class OutlineInfo implements Serializable{
 
 	private Integer simPoolCount;//卡池总数
 	
