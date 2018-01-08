@@ -18,7 +18,7 @@ import com.team.model.Terminal;
  */
 public interface TerminalService {
 	
-	public ResultList getTerminalByDeparment(String departmentId,String tsid,String status,String activated,int page,int rows);
+	public ResultList getTerminalByDeparment(Integer departmentId,Integer tsid,Integer status,Integer activated,int page,int rows);
 	
 	public ReturnMsg deleteTerminalByIds(String ids);
 	

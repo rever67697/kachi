@@ -3,6 +3,8 @@ package com.team.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import com.team.model.Terminal;
 import com.team.service.CostDayService;
 import com.team.service.TerminalService;
 import com.team.service.TerminalSimService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -30,8 +33,10 @@ public class TerminalController {
 	private TerminalSimService terminalSimService;
 	
 	@PostMapping("/getTerminalByDept")
-	public ResultList getTerminalByDeparment(String status,String tsid,String activated,int page,int rows){
-		return terminalService.getTerminalByDeparment(null, tsid, status,activated, page, rows);
+	public ResultList getTerminalByDeparment(Integer status,Integer tsid,Integer activated,
+			int page,int rows,HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return terminalService.getTerminalByDeparment(departmentId, tsid, status,activated, page, rows);
 	}
 	
 	@PostMapping("/deleteTerminalByIds")

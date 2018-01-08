@@ -12,7 +12,7 @@ import com.team.vo.ReturnMsg;
  */
 public interface SimPoolService {
 	
-	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows);
+	public ResultList getSimPoolByDeparment(Integer departmentId,Integer spid,String name,Integer isActive,int page,int rows);
 	
 	public ReturnMsg getOutlineInfo(Integer departmentId);
 	

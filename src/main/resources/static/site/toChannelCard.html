@@ -16,9 +16,9 @@
 	  	<form id="queryForm">
 	  		<table class="table">
 	  			<tr>
-	  				<th>副卡号码：</th><td><input name="number" placeholder="请输入副卡号码" class="onlyNumber"/></td>
+	  				<th>副卡卡号：</th><td><input name="number" placeholder="请输入副卡卡号" class="onlyNumber"/></td>
 	  				<th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
-	  				<th>运营商：</th><td><select name="operatorCode"><option value="">--全部--</option></select></td>
+	  				<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
 	  				<th>副卡状态：</th><td><select name="status"><option value="">全部</option><option value="0">正常</option><option value="1">停用</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
@@ -117,7 +117,7 @@
 			title : "excel上传副卡信息"
 		});
 		
-		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"nullDesc":"--全部--"});
+		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
 		
 	});
 	
@@ -238,9 +238,9 @@
   			var countryCode = $('#queryForm [name=countryCode]').val();
   			if(countryCode){
   				kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),
-  						"url":'getOperatorDic',"queryParam":{countryCode:countryCode},"nullDesc":"--全部--"});
+  						"url":'getOperatorDic',"queryParam":{countryCode:countryCode},"nullDesc":"全部"});
   			}else{
-  				$('#queryForm select[name=operatorCode]').html('<option value="">--全部--</option>');
+  				$('#queryForm select[name=operatorCode]').html('<option value="">全部</option>');
   			}
   		}else{
   			var countryCode=$('#doForm [name=countryCode]').val();

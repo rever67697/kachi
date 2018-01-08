@@ -6,7 +6,7 @@ import com.team.vo.ReturnMsg;
 
 public interface ReadyTerminalSimService {
 	
-  public ResultList getReadyTerminalSim(String tsid,String imsi,int page,int rows);
+  public ResultList getReadyTerminalSim(Integer tsid,Long imsi,int page,int rows);
 
   public ReturnMsg deleteReadyTerminalSim(String ids);
 

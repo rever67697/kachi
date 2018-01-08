@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.team.model.auth.TbAuthUser;
+import com.team.util.CommonUtil;
+import com.team.util.IConstant;
 
 /**
  * 创建日期：2017-12-14下午4:30:18
@@ -41,7 +43,7 @@ public class LoginFilter implements Filter{
 		//System.out.println(request.getRequestURI());
 		
 		//先判断用户有没有登录
-		TbAuthUser user = (TbAuthUser) request.getSession().getAttribute("kachi_user");
+		TbAuthUser user = CommonUtil.getUser(request);
 		
 		if(user == null){
 			boolean ok = false;
@@ -55,10 +57,10 @@ public class LoginFilter implements Filter{
 				arg2.doFilter(arg0, arg1);
 			}else{
 				for (Cookie cookie : request.getCookies()) {
-					if("kachi_user".equals(cookie.getName())){
+					if(IConstant.SESSION_USER_NAME.equals(cookie.getName())){
 						user = new TbAuthUser();
 						user.setUserName("admin");
-						request.getSession().setAttribute("kachi_user", user);
+						request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
 						arg2.doFilter(arg0, arg1);
 						return;
 					}

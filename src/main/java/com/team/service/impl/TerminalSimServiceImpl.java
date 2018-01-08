@@ -14,7 +14,6 @@ import com.github.pagehelper.PageInfo;
 import com.team.dao.TerminalSimDao;
 import com.team.model.TerminalSim;
 import com.team.service.TerminalSimService;
-import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -48,11 +47,11 @@ public class TerminalSimServiceImpl implements TerminalSimService{
 	}
 
 	@Override
-	public ResultList getTerminalSimList(String tsid, String imsi, int page,int rows) {
+	public ResultList getTerminalSimList(Integer tsid, Long imsi, int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tsid", CommonUtil.putInteger(tsid));
-		map.put("imsi", CommonUtil.putLong(imsi));
+		map.put("tsid", tsid);
+		map.put("imsi", imsi);
 		List<TerminalSim> list = terminalSimDao.getTerminalSimList(map);
 		PageInfo<TerminalSim> pageInfo = new PageInfo<TerminalSim>(list);
 		return new ResultList(pageInfo.getTotal(), list);

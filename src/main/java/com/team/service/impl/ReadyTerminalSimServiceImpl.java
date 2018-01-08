@@ -30,12 +30,12 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 	private SimCardDao simCardDao;
 
 	@Override
-	public ResultList getReadyTerminalSim(String tsid, String imsi, int page,
+	public ResultList getReadyTerminalSim(Integer tsid, Long imsi, int page,
 			int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("imsi", CommonUtil.putLong(imsi));
-		paramMap.put("tsid", CommonUtil.putInteger(tsid));
+		paramMap.put("imsi", imsi);
+		paramMap.put("tsid", tsid);
 		List<ReadyTerminalSim> list = readyTerminalSimDao
 				.getReadyTerminalSim(paramMap);
 		PageInfo<ReadyTerminalSim> pageInfo = new PageInfo<ReadyTerminalSim>(

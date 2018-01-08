@@ -1,6 +1,8 @@
 package com.team.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,13 +28,16 @@ public class SimPoolController {
 	private ReadPoolDeptService readPoolDeptService;
 	
 	@PostMapping("/getSimPoolByDept")
-	public ResultList getSimPoolByDeparment(String spid,String name,String isActive,int page,int rows){
-		return simPoolService.getSimPoolByDeparment(null,spid,name,isActive, page, rows);
+	public ResultList getSimPoolByDeparment(Integer spid,String name,Integer isActive,
+			int page,int rows,HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return simPoolService.getSimPoolByDeparment(departmentId,spid,name,isActive, page, rows);
 	}
 	
 	@PostMapping("/getPoolOutlineInfo")
-	public ReturnMsg getPoolOutlineInfo(String departmentId){
-		return simPoolService.getOutlineInfo(CommonUtil.putInteger(departmentId));
+	public ReturnMsg getPoolOutlineInfo(HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return simPoolService.getOutlineInfo(departmentId);
 	}
 	
 	@PostMapping("/giveSimPool")

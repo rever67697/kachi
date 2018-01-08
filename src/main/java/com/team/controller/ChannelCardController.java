@@ -33,7 +33,7 @@ public class ChannelCardController {
 	 * @return
 	 */
 	@PostMapping("/getChannelCard")
-	public ResultList getChannelCard(String number,String countryCode,String operatorCode, String status, 
+	public ResultList getChannelCard(String number,Integer countryCode,Integer operatorCode, Integer status, 
 			int page, int rows) {
 		return channelCardService.getChannelCard(number,countryCode, operatorCode, status, page, rows);
 	}

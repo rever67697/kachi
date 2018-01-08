@@ -43,14 +43,14 @@ public class TerminalServiceImpl implements TerminalService{
 	 *@return
 	 *return
 	 */
-	public ResultList getTerminalByDeparment(String departmentId, String tsid,
-			String status,String activated, int page, int rows) {
+	public ResultList getTerminalByDeparment(Integer departmentId, Integer tsid,
+			Integer status,Integer activated, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", CommonUtil.putInteger(departmentId));
-		map.put("tsid", CommonUtil.putInteger(tsid));
-		map.put("status", CommonUtil.putInteger(status));
-		map.put("activated", CommonUtil.putInteger(activated));
+		map.put("departmentId", departmentId);
+		map.put("tsid", tsid);
+		map.put("status", status);
+		map.put("activated", activated);
 		List<Terminal> list = terminalDao.getTerminalByDeparment(map);
 		PageInfo<Terminal> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);

@@ -19,7 +19,7 @@ public class TerminalSimController {
 	private TerminalSimService terminalSimService;
 	
 	@PostMapping("/getTerminalSimList")
-	public ResultList getTerminalSimList(String tsid,String imsi,int page,int rows){
+	public ResultList getTerminalSimList(Integer tsid,Long imsi,int page,int rows){
 		return terminalSimService.getTerminalSimList(tsid, imsi, page, rows);
 	}
 	

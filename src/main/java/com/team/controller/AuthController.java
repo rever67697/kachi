@@ -44,8 +44,8 @@ public class AuthController {
 		if(verificationCode != null && verificationCode.equals(code)){
 			if("admin".equals(user.getUserName()) && "123".equals(user.getPassWord())){
 				user.setDepartmentId(0);
-				request.getSession().setAttribute("kachi_user", user);
-				Cookie cookie = new Cookie("kachi_user",user.getUserName());
+				request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
+				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getUserName());
 				cookie.setMaxAge(60*60*24*7);//7天有效
 				response.addCookie(cookie);
 			}else{
@@ -66,14 +66,14 @@ public class AuthController {
 	@PostMapping("/getUser")
 	@ResponseBody
 	public TbAuthUser getUser(HttpServletRequest request){
-		return (TbAuthUser) request.getSession().getAttribute("kachi_user");
+		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
 	
 	@PostMapping("/logout")
 	@ResponseBody
 	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
-		request.getSession().removeAttribute("kachi_user");
-		Cookie cookie = new Cookie("kachi_user","");
+		request.getSession().removeAttribute(IConstant.SESSION_USER_NAME);
+		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
 		return IConstant.MSG_OPERATE_SUCCESS;

@@ -21,5 +21,7 @@ public class IConstant {
 	public final static ReturnMsg MSG_OPERATE_ERROR = new ReturnMsg(CODE_ERROR, "操作失败！");
 	public final static ReturnMsg MSG_OPERATE_UNKNOW = new ReturnMsg(CODE_UNKNOW, "未知错误！");
 	
+	public final static String SESSION_USER_NAME = "kachi_user";
+	
 	
 }

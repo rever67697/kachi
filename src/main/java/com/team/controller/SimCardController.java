@@ -28,17 +28,17 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getSimCardByPool/{cpId}")
-	public ResultList getSimCardByPool(@PathVariable("cpId")int cpId){
+	public ResultList getSimCardByPool(@PathVariable("cpId")Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
 	
 	@PostMapping("/getSimCard")
-	public ResultList getSimCard(String departmentId,String cpId,String number,String status,int page,int rows){
+	public ResultList getSimCard(Integer departmentId,Integer cpId,String number,Integer status,int page,int rows){
 		return simCardService.getSimCard(departmentId, cpId, number, status, page, rows);
 	}
 	
 	@PostMapping("/getCardOutlineInfo")
-	public ReturnMsg getPoolOutlineInfo(String departmentId){
+	public ReturnMsg getPoolOutlineInfo(Integer departmentId){
 		return simCardService.getOutlineInfo(departmentId);
 	}
 	

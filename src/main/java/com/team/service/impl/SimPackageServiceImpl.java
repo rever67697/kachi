@@ -40,11 +40,11 @@ public class SimPackageServiceImpl implements SimPackageService{
 	/**
 	 * 查找卡套餐信息
 	 */
-	public ResultList getSimPackage(String status, String name, int page, int rows) {
+	public ResultList getSimPackage(Integer status, String name, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
-		map.put("status", CommonUtil.putInteger(status));
+		map.put("status", status);
 		List<SimPackage> list = simPackageDao.getSimPackage(map);
 		PageInfo<SimPackage> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);
@@ -67,12 +67,12 @@ public class SimPackageServiceImpl implements SimPackageService{
 	}
 
 	@Override
-	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow) {
+	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow) {
 		int count = 0;
 		if(simPackage.getId()!=null){
 			count = simPackageDao.updatePackage(simPackage);
-			if(!(simPackage.getMaxFlow()+"").equals(compareFlow)
-					|| !(simPackage.getMaxRoamFlow()+"").equals(compareRoamFlow)){
+			if(!(simPackage.getMaxFlow()).equals(compareFlow)
+					|| !(simPackage.getMaxRoamFlow()).equals(compareRoamFlow)){
 				//需要更新流量大小
 				flowMonthDao.updateMonthFlowByPackage(simPackage);
 			}

@@ -54,8 +54,9 @@ public class CommonController {
 	}
 	
 	@PostMapping("/getSimPoolDic")
-	public ReturnMsg getSimPoolDic(){
-		return commonService.getSimPoolDic(null);
+	public ReturnMsg getSimPoolDic(HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return commonService.getSimPoolDic(departmentId);
 	}
 
 	@GetMapping("/downloadFile")

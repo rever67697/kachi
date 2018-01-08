@@ -20,12 +20,12 @@ public class SimPackageController {
 	private SimPackageService simPackageService;
 	
 	@PostMapping("/getSimPackage")
-	public ResultList getSimPackage(String status,String name,int page,int rows){
+	public ResultList getSimPackage(Integer status,String name,int page,int rows){
 		return simPackageService.getSimPackage(status, name, page, rows);
 	}
 	
 	@PostMapping("/savePackage")
-	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow){
+	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow){
 		return simPackageService.savePackage(simPackage,compareFlow,compareRoamFlow);
 	} 
 	

@@ -10,10 +10,10 @@ import com.team.vo.ReturnMsg;
  */
 public interface SimPackageService {
 
-	public ResultList getSimPackage(String status,String name,int page,int rows);
+	public ResultList getSimPackage(Integer status,String name,int page,int rows);
 	
 	public ReturnMsg deletePackage(Integer id);
 	
-	public ReturnMsg savePackage(SimPackage simPackage,String compareFlow,String compareRoamFlow);
+	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow);
 	
 }

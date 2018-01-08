@@ -7,7 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.poi.ss.usermodel.Cell;
+
+import com.team.model.auth.TbAuthUser;
 
 /**
  * 创建日期：2017-12-19下午6:39:34
@@ -208,5 +212,9 @@ public class CommonUtil {
 		int g = fc + random.nextInt(bc - fc);
 		int b = fc + random.nextInt(bc - fc);
 		return new Color(r, g, b);
+	}
+	
+	public static TbAuthUser getUser(HttpServletRequest request){
+		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
 }

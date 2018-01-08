@@ -17,7 +17,6 @@ import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
-import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 
 /**
@@ -37,15 +36,16 @@ public class SimPoolServiceImpl implements SimPoolService{
 	/**
 	 * 根据代理商id查找其所有的卡池
 	 */
-	public ResultList getSimPoolByDeparment(String departmentId,String spid,String name,String isActive,int page,int rows) {
+	public ResultList getSimPoolByDeparment(Integer departmentId,Integer spid,String name,Integer isActive,
+			int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", CommonUtil.putInteger(departmentId));
-		map.put("spid", CommonUtil.putInteger(spid));
+		map.put("departmentId", departmentId);
+		map.put("spid", spid);
 		map.put("name", name);
-		map.put("isActive", CommonUtil.putInteger(isActive));
+		map.put("isActive", isActive);
 		List<SimPool> list = simPoolDao.getSimPoolByDeparment(map);
-		PageInfo<SimPool> pageInfo = new PageInfo<>(list);
+		PageInfo<SimPool> pageInfo = new PageInfo<SimPool>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
