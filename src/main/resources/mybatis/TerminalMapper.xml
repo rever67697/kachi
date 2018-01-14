@@ -58,8 +58,9 @@
 		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
 		        #{ssid,jdbcType=VARCHAR}, #{wifiPassword,jdbcType=VARCHAR}, #{licFix,jdbcType=VARCHAR}, 
 		        #{usedVpn,jdbcType=INTEGER}, #{usedSoft,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-		        #{meid,jdbcType=VARCHAR}, #{saleType,jdbcType=INTEGER}, #{resetWifi,jdbcType=INTEGER}, 
-	            #{androidVersion,jdbcType=VARCHAR}
+		        #{meid,jdbcType=VARCHAR}
+		        <!-- , #{saleType,jdbcType=INTEGER}, #{resetWifi,jdbcType=INTEGER}, 
+	            #{androidVersion,jdbcType=VARCHAR} -->
 	     	   )
   	</insert>
 	
@@ -82,10 +83,10 @@
 	      USEDVPN = #{usedVpn,jdbcType=INTEGER},
 	      USEDSOFT = #{usedSoft,jdbcType=INTEGER},
 	      departmentId = #{departmentId,jdbcType=INTEGER},
-	      MEID = #{meid,jdbcType=VARCHAR},
-	      SALETYPE = #{saleType,jdbcType=INTEGER},
+	      MEID = #{meid,jdbcType=VARCHAR}
+	      <!-- ,SALETYPE = #{saleType,jdbcType=INTEGER},
 	      resetWiFi = #{resetWifi,jdbcType=INTEGER},
-	      androidVersion = #{androidVersion,jdbcType=VARCHAR}
+	      androidVersion = #{androidVersion,jdbcType=VARCHAR} -->
 	    where ID = #{id,jdbcType=INTEGER}
   	</update>
 </mapper>

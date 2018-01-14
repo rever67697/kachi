@@ -50,17 +50,20 @@ public class Terminal implements Serializable{
 	
 	private String meid;//WCDMA的MEID
 	
+	private String departmentName;
+	
+	private String countryName;
+	
+	private Long allowFlow;//剩余流量
+	
+	/******以下几个没有了？*******/
 	private Integer saleType;//销售类型
 	
 	private Integer resetWifi;//是否重置wifi：0：不重置；1：重置
 	
 	private String androidVersion;
 	
-	private String departmentName;
 	
-	private String countryName;
-	
-	private Long allowFlow;//剩余流量
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date validityDate;//有效期截止时间

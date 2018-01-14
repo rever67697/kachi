@@ -45,6 +45,9 @@ public class TerminalServiceImpl implements TerminalService{
 	 */
 	public ResultList getTerminalByDeparment(Integer departmentId, Integer tsid,
 			Integer status,Integer activated, int page, int rows) {
+		//对departmentid=0的特殊处理
+		if(departmentId!=null && departmentId == 0)departmentId=null;
+		
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
