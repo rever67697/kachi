@@ -11,13 +11,18 @@
 	<select id="getTerminalByDeparment" resultType="com.team.model.Terminal" parameterType="java.util.Map">
 		select r.*,
 			  t.name departmentName,
-			  ifnull(k.namecn,k.countryname) countryName
+			  ifnull(k.namecn,k.countryname) countryName,
+			  f.allowFlow,
+			  f.validityDate,
+			  f.note
 		from m_terminal r
 		left join m_department t
 		on r.departmentId=t.id
 		   and t.status=0
 		left join m_country k 
 		on k.countrycode=r.homeLocation
+		left join m_flow_balance f
+		on r.tsid=f.tsid
 		where 1=1
 		<include refid="departmentId"/>
 		<if test="tsid!=null" >  

@@ -17,7 +17,7 @@
 	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
 		    <table class="table kc-outline">
 		    	<tr>
-		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount"></div><div>卡池总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="simPoolCount" onclick="$('#tt').tabs('select','卡池设备');"></div><div>卡池总数</div></td>
 		    		<td><div class="kc-outline-number ligh-blue" id="onlinePoolCount"></div><div>在线卡池</div></td>
 		    		<td><div class="kc-outline-number gray" id="offlinePoolCount"></div><div>离线卡池</div></td>
 		    		<td><div class="kc-outline-number ligh-blue" id="cardSlotCount"></div><div>卡槽总数</div></td>
@@ -25,9 +25,22 @@
 		    	<tr>
 		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>已插卡数</div></td>
 		    		<td><div class="kc-outline-number red" id="noCardCount"></div><div>未插卡数</div></td>
-		    		<td></td><td></td>
+		    		<td></td>
+		    		<td><span id="refreshtime"></span><br/><span>刷新时间</span></td>
 		    	</tr>
 		    </table>
+		    <div id="cardSlotInfo" class="easyui-panel" collapsible="true" title="卡槽信息" style="padding-top:10px;padding-left:5px;overflow:hidden" iconCls="icon icon--60--360">
+		    	<div id="cardSlot1">
+		    		<div class="title"></div>
+			    	<span class="boxDesc"></span>
+			    	<div class="card_container" ></div>
+		    	</div>
+		    	<div id="cardSlot2">
+		    		<div class="title"></div>
+			    	<span class="boxDesc"></span>
+			    	<div class="card_container" ></div>
+		    	</div>
+		    </div>
 	    </div>
 	    <div title="卡池设备" iconCls="icon icon-device" >
 		  	<form id="queryForm">
@@ -96,8 +109,12 @@
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-search',
-				  		text:'查看卡情况',
+				  		text:'查看卡槽情况',
 				  		handler: doCardsInfo
+				  	  },'-',{
+				  		iconCls: 'icon-add',
+				  		text:'新增卡池',
+				  		handler: doAdd
 				  	  },'-',{
 				  		iconCls: 'icon-edit',
 				  		text:'调整归属商',
@@ -115,11 +132,13 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
-			height:window.innerHeight*0.845
+			height:window.innerHeight-80,
+			onLoadSuccess:function(){v_loaded=true;}
 		};
   
 	$(function(){
-		getCardPoolInfo();
+		refresh();
+		var timer = setInterval(refresh,2*60*1000);
 	
 		$('#dg').datagrid(options);
 		
@@ -154,10 +173,19 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             $.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+             showCardSolt(rowData,$('#cardsDialog'));
+             $('#cardsDialog').dialog('open');
+        }
+        else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
+  	}
+  	
+  	function showCardSolt(rowData,obj){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
              	var cardList = data.rows;
              	if(cardList){
-             		$('.card_container').html('');
+             		$('.card_container',obj).html('');
              		var total = rowData.type?rowData.type:cardList.length;
              		var count = 0;
              		for(var i = 0;i < total;i++){
@@ -166,7 +194,7 @@
              				box = kcJs.fn.getCardStatus(cardList[count].status);
              				count ++;
              			}
-             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container'))
+             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container',$(obj)))
              			.tooltip({
 						    position: 'top',
 						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
@@ -177,15 +205,10 @@
 						    }
 						});	;
              		}
-             		$('.title').html(rowData.name+' （'+rowData.type+'）');
-             		$('.boxDesc').html(kcJs.fn.getBoxTxt());
-             		$('#cardsDialog').dialog('open');
+             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）');
+            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt());
              	}
              });
-        }
-        else {
-            $.messager.alert("提示", "请选择其中一条信息", "info");
-        }
   	}
   	
   	function doModifyDept(){
@@ -247,6 +270,40 @@
 		    	}
   			}); 
   		}
+  	}
+  	var v_loaded=false;
+  	function refresh(){
+  		getCardPoolInfo();
+  		refreshCardSlot();
+  		$('#refreshtime').text(new Date().format('hh:mm:ss'));
+  	}
+  	
+	var timer2 = setInterval(function(){
+		if(v_loaded){
+			clearInterval(timer2);
+			refreshCardSlot();
+		}
+	},1000);
+  	
+  	function refreshCardSlot(){
+  		if(v_loaded){
+  			var rows = $('#dg').datagrid('getRows');
+	  		if(rows){
+	  			for(var i = 0;i < rows.length;i++){
+	  				if(i==0){
+	  					showCardSolt(rows[i],$('#cardSlot1'));
+	  				}
+	  				if(i==1){
+	  					showCardSolt(rows[i],$('#cardSlot2'));
+	  					break;
+	  				}
+	  			}
+	  		}
+  		}
+  	}
+  	
+  	function doAdd(){
+  		
   	}
   </script>
 </html>

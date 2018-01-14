@@ -1,6 +1,9 @@
 package com.team.model;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 终端基础信息	m_terminal
@@ -56,6 +59,37 @@ public class Terminal implements Serializable{
 	private String departmentName;
 	
 	private String countryName;
+	
+	private Long allowFlow;//剩余流量
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date validityDate;//有效期截止时间
+	
+	private String note;//备注
+
+	public Long getAllowFlow() {
+		return allowFlow;
+	}
+
+	public void setAllowFlow(Long allowFlow) {
+		this.allowFlow = allowFlow;
+	}
+
+	public Date getValidityDate() {
+		return validityDate;
+	}
+
+	public void setValidityDate(Date validityDate) {
+		this.validityDate = validityDate;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
 
 	public Terminal() {
 		super();

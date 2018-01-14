@@ -96,26 +96,29 @@
 			         		var status = kcJs.fn.getTerminalStatus(value);
 			         		return status?('<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>'):'';
 			         	}},
-			         	{field:'activated',title:'是否激活',width:80,formatter:function(value,rec,index){
+			         	{field:'activated',title:'是否激活',width:60,formatter:function(value,rec,index){
 			         		value+='';
 			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
-			         	{field:'model',title:'终端型号',width:100},
-			         	{field:'sVersion',title:'软件版本',width:100},
-			         	{field:'upLog',title:'是否上传日志',width:100,formatter:function(value,rec,index){
+			         	{field:'model',title:'终端型号',width:80},
+			         	{field:'sVersion',title:'软件版本',width:60},
+			         	{field:'upLog',title:'是否上传日志',width:75,formatter:function(value,rec,index){
 			         		value+='';
 			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
-			         	{field:'usedVpn',title:'是否支持VPN',width:80,formatter:function(value,rec,index){
+			         	{field:'usedVpn',title:'是否支持VPN',width:75,formatter:function(value,rec,index){
 			         		value+='';
 			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
-			         	{field:'usedSoft',title:'是否支持软卡',width:80,formatter:function(value,rec,index){
+			         	{field:'usedSoft',title:'是否支持软卡',width:75,formatter:function(value,rec,index){
 			         		value+='';
 			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
-			         	{field:'departmentName',title:'所属部门',width:150},
-			         	{field:'countryName',title:'所在地区',width:150}
+			         	{field:'departmentName',title:'所属部门',width:120},
+			         	{field:'countryName',title:'所在地区',width:80},
+			         	{field:'allowFlow',title:'剩余流量(KB)',width:100},
+			         	{field:'validityDate',title:'有效期截止时间',width:100},
+			         	{field:'note',title:'备注',width:85}
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-add',
@@ -150,7 +153,7 @@
 			pageList:[15,30],
 			rownumbers:true,
 			scrollbarSize:0,
-			height:window.innerHeight*0.905
+			height:window.innerHeight-50
 		};
 	var dl_options={
 			columns:[[
