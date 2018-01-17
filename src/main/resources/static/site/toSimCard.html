@@ -113,20 +113,7 @@
 			         	{field:'cpChannelId',title:'卡池通道',width:80},
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-search',
-				  		text:'查看详细',
-				  		handler: doDetail
-				  	  },'-',{
-				  		iconCls: 'icon-edit',
-				  		text:'修改',
-				  		handler: doModify
-				  	  },'-',{
-				  		iconCls: 'icon-cancel',
-				  		text:'删除',
-				  		handler: doDelete
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getSimCard',
 			iconCls:'icon-tip',
 			nowrap:false,

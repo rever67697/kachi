@@ -120,32 +120,7 @@
 			         	{field:'validityDate',title:'有效期截止时间',width:100},
 			         	{field:'note',title:'备注',width:85}
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-add',
-				  		text:'添加',
-				  		handler: doAdd
-				  	  },'-',{
-				  		iconCls: 'icon-export_xls',
-				  		text:'excel上传',
-				  		handler: doUpload
-				  	  },'-',{
-				  		iconCls: 'icon-edit',
-				  		text:'修改',
-				  		handler: doModify
-				  	  },'-',{
-				  		iconCls: 'icon-search',
-				  		text:'查看历史',
-				  		handler: doHistory
-				  	  },'-',{
-				  		iconCls: 'icon-nkey',
-				  		text:'查看占用流量卡',
-				  		handler: doCard
-				  	  },'-',{
-				  		iconCls: 'icon-cancel',
-				  		text:'删除',
-				  		handler: doDelete
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getTerminalByDept',
 			iconCls:'icon-tip',
 			nowrap:false,
@@ -314,7 +289,7 @@
 			$('#uploadDialog').dialog('close');
 			$('#dg').datagrid('loading');
 			$.ajaxFileUpload({
-				url:kcJs.fn.getContextPath()+'/uploadTerminalByExcel',
+				url:kcJs.fn.getContextPath()+'/uploadTerminal',
 				secureuri : false,
 				fileElementId : 'file',
 				dataType:'json',

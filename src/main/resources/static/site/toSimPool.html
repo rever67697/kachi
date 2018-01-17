@@ -107,24 +107,7 @@
 			         	{field:'port',title:'卡池端口',width:80},
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-search',
-				  		text:'查看卡槽情况',
-				  		handler: doCardsInfo
-				  	  },'-',{
-				  		iconCls: 'icon-add',
-				  		text:'新增卡池',
-				  		handler: doAdd
-				  	  },'-',{
-				  		iconCls: 'icon-edit',
-				  		text:'调整归属商',
-				  		handler: doModifyDept
-				  	  },'-',{
-				  		iconCls: 'icon-add',
-				  		text:'预分配卡池',
-				  		handler: doGivePool
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getSimPoolByDept',
 			iconCls:'icon-tip',
 			nowrap:false,
@@ -182,7 +165,7 @@
   	}
   	
   	function showCardSolt(rowData,obj){
-  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool/'+rowData.id,function(data){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool',{cpId:rowData.id},function(data){
              	var cardList = data.rows;
              	if(cardList){
              		$('.card_container',obj).html('');
@@ -283,7 +266,7 @@
 			clearInterval(timer2);
 			refreshCardSlot();
 		}
-	},1000);
+	},100);
   	
   	function refreshCardSlot(){
   		if(v_loaded){

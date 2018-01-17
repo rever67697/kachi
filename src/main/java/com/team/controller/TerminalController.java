@@ -49,8 +49,8 @@ public class TerminalController {
 		return terminalService.saveTerminal(terminal);
 	} 
 	
-	@PostMapping("/uploadTerminalByExcel")
-	public ReturnMsg uploadTerminalByExcel(MultipartFile file){
+	@PostMapping("/uploadTerminal")
+	public ReturnMsg uploadTerminal(MultipartFile file){
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<Terminal> list = (List<Terminal>) returnMsg.getData();

@@ -70,24 +70,7 @@
 			         	{field:'mcNumber',title:'短信中心号码',width:100},
 			         	{field:'detail',title:'详情',width:200},
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-add',
-				  		text:'添加',
-				  		handler: doAdd
-				  	  },'-',{
-				  		iconCls: 'icon-export_xls',
-				  		text:'excel上传',
-				  		handler: doUpload
-				  	  },'-',{
-				  		iconCls: 'icon-edit',
-				  		text:'修改',
-				  		handler: doModify
-				  	  },'-',{
-				  		iconCls: 'icon-cancel',
-				  		text:'删除',
-				  		handler: doDelete
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getChannelCard',
 			iconCls:'icon-tip',
 			nowrap:false,
@@ -182,7 +165,7 @@
 			$('#uploadDialog').dialog('close');
 			$('#dg').datagrid('loading');
 			$.ajaxFileUpload({
-				url:kcJs.fn.getContextPath()+'/uploadChannelCardByExcel',
+				url:kcJs.fn.getContextPath()+'/uploadChannelCard',
 				secureuri : false,
 				fileElementId : 'file',
 				dataType:'json',

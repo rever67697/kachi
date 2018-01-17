@@ -27,8 +27,8 @@ public class SimCardController {
 	 *@return
 	 *return
 	 */
-	@GetMapping("/getSimCardByPool/{cpId}")
-	public ResultList getSimCardByPool(@PathVariable("cpId")Integer cpId){
+	@GetMapping("/getSimCardByPool")
+	public ResultList getSimCardByPool(Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
 	

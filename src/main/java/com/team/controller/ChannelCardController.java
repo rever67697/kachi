@@ -48,8 +48,8 @@ public class ChannelCardController {
 		return channelCardService.saveChannelCard(channelCard);
 	}
 	
-	@PostMapping("/uploadChannelCardByExcel")
-	public ReturnMsg uploadChannelCardByExcel(MultipartFile file){
+	@PostMapping("/uploadChannelCard")
+	public ReturnMsg uploadChannelCard(MultipartFile file){
 		ReturnMsg returnMsg = channelCardService.getChannelCardList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<ChannelCard> list = (List<ChannelCard>) returnMsg.getData();

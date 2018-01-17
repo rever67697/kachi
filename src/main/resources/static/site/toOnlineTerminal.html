@@ -59,16 +59,7 @@
 			         	{field:'runVersion',title:'当前版本',width:100},
 			         	{field:'countryName',title:'国家',width:100}
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-search',
-				  		text:'查看详细',
-				  		handler: doDetail
-				  	  },'-',{
-				  		iconCls: 'icon-cancel',
-				  		text:'终端下线',
-				  		handler: doDelete
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getTerminalSimList',
 			iconCls:'icon-tip',
 			nowrap:false,

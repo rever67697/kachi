@@ -142,6 +142,40 @@ var kcJs=
 				html+='<span class="boxdesc" style="background:'+c_status[o][1]+'"></span>&nbsp;'+c_status[o][0];
 			}
 			return html;
+		},
+		searchParams:function searchParams(url) {
+			var ret = {};
+			var match;
+			var plus   = /\+/g;
+			var reg = /([^\?&=]+)=([^&]*)/g;
+			var decode = function(s) { 
+				return decodeURIComponent(s.replace(plus, " ")); 
+			};
+			while( match = reg.exec(url) ) ret[decode(match[1])] = decode(match[2]);			    
+			return ret;
+		},
+		getFunctions:function(){
+			var id = this.searchParams(location.href).id;
+			if(id){
+				var funs = [];
+				$.ajaxSetup({async : false}); 
+				$.post(this.getContextPath()+'/getFunctions',{id:id},function(data){
+					if(data && data.code=='200' && data.data){
+						
+						for(var i = 0;i<data.data.length;i++){
+							var o = data.data[i];
+							funs.push({
+								  		iconCls: o.iconCls,
+								  		text:o.name,
+								  		handler: o.funDesc
+								  	  });
+							if(i<data.data.length-1)funs.push('-');
+						}
+					}
+				});
+				$.ajaxSetup({async : true}); 
+				return funs;
+			}
 		}
 	};
 	return {fn:_FUNC};

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.team.dao.AuthDao;
 import com.team.model.auth.TbAuthMenu;
 import com.team.service.AuthService;
+import com.team.util.IConstant;
+import com.team.vo.ReturnMsg;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -16,9 +18,9 @@ public class AuthServiceImpl implements AuthService{
 	@Autowired
 	private AuthDao authDao;
 	
-	public List<TbAuthMenu> queryMenuByUser(){
+	public List<TbAuthMenu> getMenuByUser(){
 		List<TbAuthMenu> menu = new ArrayList<TbAuthMenu>();
-		List<TbAuthMenu> list = authDao.queryMenuByRoleId();
+		List<TbAuthMenu> list = authDao.getMenuByRoleId();
 		for (TbAuthMenu m : list) {
 			if(m.getParentId() == 0){
 				menu.add(m);
@@ -45,6 +47,13 @@ public class AuthServiceImpl implements AuthService{
 		}
 		return menu;
 	}
-	
+
+	@Override
+	public ReturnMsg getFunByUser(Integer id) {
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		returnMsg.setData(authDao.getFunByRoleId(id));
+		return returnMsg;
+	}
+
 	
 }

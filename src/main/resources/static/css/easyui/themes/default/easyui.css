@@ -1948,6 +1948,7 @@ body{border:1px solid transparent;overflow:hidden}
 .table td input,.table td select{border:1px solid #ccc;width:90%;padding:3px;line-height:18px;border-radius:4px;min-width:120px}
 .table td select{width:93%}
 #tabs .panel-body {overflow:hidden}
+.kc-outline{margin-bottom:20px}
 .kc-outline td{padding-left:20px;height:100px;width:25%}
 .kc-outline-number{border-radius:50px;font-weight:bold;color:#fff;display:inline-block;padding:10px 12px;font-size:20px;min-width:35px;text-align:center}
 .kc-outline-number+div{font-size:15px;margin-top:10px}

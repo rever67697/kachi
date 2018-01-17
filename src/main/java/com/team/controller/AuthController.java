@@ -31,7 +31,7 @@ public class AuthController {
 	@PostMapping("/getMenu")
 	@ResponseBody
 	public Object getMenu(){
-		return authService.queryMenuByUser();
+		return authService.getMenuByUser();
 	}
 	
 	@PostMapping("/login")
@@ -77,6 +77,12 @@ public class AuthController {
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
 		return IConstant.MSG_OPERATE_SUCCESS;
+	}
+	
+	@PostMapping("/getFunctions")
+	@ResponseBody
+	public ReturnMsg getFunctions(Integer id){
+		return authService.getFunByUser(id);
 	}
 	
 }

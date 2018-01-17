@@ -62,20 +62,7 @@
 			         		return value?value:"不限";
 			         	}}
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-add',
-				  		text:'添加',
-				  		handler: doAdd
-				  	  },'-',{
-				  		iconCls: 'icon-edit',
-				  		text:'修改',
-				  		handler: doModify
-				  	  },'-',{
-				  		iconCls: 'icon-cancel',
-				  		text:'删除',
-				  		handler: doDelete
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getSimPackage',
 			iconCls:'icon-tip',
 			nowrap:false,
