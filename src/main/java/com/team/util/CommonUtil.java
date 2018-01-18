@@ -4,13 +4,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.ss.usermodel.Cell;
 
+import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthUser;
 
 /**
@@ -216,5 +219,68 @@ public class CommonUtil {
 	
 	public static TbAuthUser getUser(HttpServletRequest request){
 		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
+	}
+	
+	/**********构建树结构**********/
+	public static List<TbAuthPermission> bulidTree(List<TbAuthPermission> list,boolean needAttribute){
+		List<TbAuthPermission> tree = new ArrayList<TbAuthPermission>();
+		if(listNotBlank(list))
+		for (TbAuthPermission node : list) {
+			if(node.getParentId() == 0){
+				tree.add(node);
+				buid(list,node,needAttribute);
+			}
+		}
+		return tree;
+	}
+	
+	public static void buid(List<TbAuthPermission> list,TbAuthPermission node,boolean needAttribute){
+		List<TbAuthPermission> children = getChildrens(list,node);
+		if(listNotBlank(children)){
+			node.setChildren(children);
+			for (TbAuthPermission child : children) {
+				if(needAttribute){
+					child.getAttributes().put("isMenu", child.getIsMenu()==1?true:false);
+					child.getAttributes().put("url", child.getUrl());
+					child.getAttributes().put("funDesc", child.getFunDesc());
+					child.getAttributes().put("orderNum", child.getOrderNum());
+					child.getAttributes().put("parentId", child.getOrderNum());
+				}
+				buid(list,child,needAttribute);
+			}
+		}
+	}
+	
+	public static List<TbAuthPermission> getChildrens(List<TbAuthPermission> list,TbAuthPermission node){
+		List<TbAuthPermission> children = new ArrayList<>();
+		for (TbAuthPermission child : list) {
+			if(child.getParentId() == node.getId()){
+				children.add(child);
+			}
+		}
+		return children;
+	}
+	/******************************************/
+	
+	/**
+	 * 判断集合是否为空
+	 *@param list
+	 *@return
+	 *return
+	 */
+	public static boolean listNotBlank(List<?> list){
+		if(list != null && list.size()>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean validateUser(TbAuthUser user,String passWord){
+		if(user != null && MD5Utils.encrypt(passWord).equals(user.getPassWord())){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

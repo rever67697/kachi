@@ -56,7 +56,7 @@ public class LoginFilter implements Filter{
 			if(ok){
 				arg2.doFilter(arg0, arg1);
 			}else{
-				if(request.getCookies()!=null)
+				/*if(request.getCookies()!=null)
 				for (Cookie cookie : request.getCookies()) {
 					if(IConstant.SESSION_USER_NAME.equals(cookie.getName())){
 						user = new TbAuthUser();
@@ -65,7 +65,7 @@ public class LoginFilter implements Filter{
 						arg2.doFilter(arg0, arg1);
 						return;
 					}
-				}
+				}*/
 				response.sendRedirect(request.getContextPath()+"/site/login.html");
 			}
 		}else{

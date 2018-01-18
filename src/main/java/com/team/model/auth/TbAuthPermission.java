@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TbAuthMenu implements Serializable{
+public class TbAuthPermission implements Serializable{
 	private Integer id;
 	private Integer parentId;
-	private String name;
+	private String text;
 	private String url;
 	private Integer orderNum;
 	private String iconCls;
@@ -17,7 +17,7 @@ public class TbAuthMenu implements Serializable{
 	private String funDesc;
 	
 	private Map<String, Object> attributes = new HashMap<String, Object>();
-	private List<TbAuthMenu> children = new ArrayList<TbAuthMenu>();
+	private List<TbAuthPermission> children = new ArrayList<TbAuthPermission>();
 	
 	public Integer getId() {
 		return id;
@@ -35,12 +35,12 @@ public class TbAuthMenu implements Serializable{
 		this.parentId = parentId;
 	}
 
-	public String getName() {
-		return name;
+	public String getText() {
+		return text;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getUrl() {
@@ -91,17 +91,17 @@ public class TbAuthMenu implements Serializable{
 		this.attributes = attributes;
 	}
 
-	public List<TbAuthMenu> getChildren() {
+	public List<TbAuthPermission> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<TbAuthMenu> children) {
+	public void setChildren(List<TbAuthPermission> children) {
 		this.children = children;
 	}
 
 	@Override
 	public String toString() {
-		return "Menu [id=" + id + ", parentId=" + parentId + ", name=" + name
+		return "Menu [id=" + id + ", parentId=" + parentId + ", text=" + text
 				+ ", url=" + url + ", orderNum=" + orderNum + ", iconCls="
 				+ iconCls + ", attributes=" + attributes + ", children="
 				+ children + "]";

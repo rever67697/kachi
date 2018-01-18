@@ -160,11 +160,11 @@
 		menulist +='<ul style="padding-left:5px;">';
         $.each(n.children, function(j, o) {
         	menulist += '<li><div><a href="javascript:void(0)" rel="' + kcJs.fn.getContextPath()+'/'+o.url + '?id='+o.id+'"><span class="icon '+o.iconCls+'" >&nbsp;</span>'
-        	menulist += '<span class="nav leftMenuSel">' +o.name + '</span></a></div></li> ';
+        	menulist += '<span class="nav leftMenuSel">' +o.text + '</span></a></div></li> ';
         });
 		menulist += '</ul>';
 		$('#nav').accordion('add', {
-            title: '<span class="accordionCls">'+n.name+'</span>',
+            title: '<span class="accordionCls">'+n.text+'</span>',
 			//title:n.menuname,
             content: menulist,
             iconCls: 'icon ' + n.iconCls,
@@ -194,8 +194,10 @@
 	
 		//选中第一个子菜单
 		var panels = $('#nav').accordion('panels');
-		var t = panels[0].panel('options').title;
-	    $('#nav').accordion('select', t);
+		if(panels && panels[0]){
+			var t = panels[0].panel('options').title;
+	    	$('#nav').accordion('select', t);
+		}
 	}
 	
 	function logout(){

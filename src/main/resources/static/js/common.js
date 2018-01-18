@@ -166,7 +166,7 @@ var kcJs=
 							var o = data.data[i];
 							funs.push({
 								  		iconCls: o.iconCls,
-								  		text:o.name,
+								  		text:o.text,
 								  		handler: o.funDesc
 								  	  });
 							if(i<data.data.length-1)funs.push('-');

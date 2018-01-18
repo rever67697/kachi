@@ -1,6 +1,8 @@
 package com.team.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
-import com.team.service.impl.AuthServiceImpl;
+import com.team.service.auth.impl.AuthServiceImpl;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
@@ -28,22 +31,20 @@ public class AuthController {
 	@Autowired
 	private AuthServiceImpl authService;
 	
-	@PostMapping("/getMenu")
-	@ResponseBody
-	public Object getMenu(){
-		return authService.getMenuByUser();
-	}
-	
 	@PostMapping("/login")
 	@ResponseBody
-	public ReturnMsg login(TbAuthUser user,String code,HttpServletRequest request,
+	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
 			HttpServletResponse response){
 		ReturnMsg returnMsg = null;
 		String msg = "";
 		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
 		if(verificationCode != null && verificationCode.equals(code)){
-			if("admin".equals(user.getUserName()) && "123".equals(user.getPassWord())){
-				user.setDepartmentId(0);
+			//根据用户名查询用户实体
+			TbAuthUser user = authService.getUserByName(userName);
+			if(CommonUtil.validateUser(user,passWord)){
+				//验证通过
+				List<TbAuthRole> roles = authService.getRolesByUser(user);
+				user.setRoles(roles);
 				request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
 				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getUserName());
 				cookie.setMaxAge(60*60*24*7);//7天有效
@@ -62,6 +63,21 @@ public class AuthController {
 		}
 		return returnMsg;
 	}
+	
+	@PostMapping("/getMenu")
+	@ResponseBody
+	public Object getMenu(HttpServletRequest request){
+		TbAuthUser user = getUser(request);
+		return authService.getMenuByUser(user);
+	}
+	
+	
+	@PostMapping("/getPermissionTree")
+	@ResponseBody
+	public Object getPermissionTree(){
+		return authService.getPermissionTree();
+	}
+	
 	
 	@PostMapping("/getUser")
 	@ResponseBody

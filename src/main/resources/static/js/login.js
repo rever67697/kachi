@@ -14,7 +14,7 @@ $(function(){
 			doLogin();
 		}
 	});
-	
+	$.ajaxSetup({async : false}); 
 });
 
 function checkLogin() {
@@ -40,6 +40,7 @@ function checkLogin() {
 }
 
 function doLogin() {
+	console.log(1);
 	var bl=checkLogin();
 	if(bl) {
 		checked=$('#savePwd')[0].checked;
@@ -55,7 +56,7 @@ function doLogin() {
 		var loginName=$('[name=userName]').val();
 		var passWord=$('[name=passWord]').val();
 		var code=$('[name=code]').val();
-		$.post(getContextPath()+'/login',$('#loginForm').serializeObject(),function(data){
+		$.post(getContextPath()+'/login',{userName:loginName,passWord:passWord,code:code},function(data){
 			if(data && data.code=='200'){
 				window.location.href=getContextPath()+'/site/index.html';
 			}else{
