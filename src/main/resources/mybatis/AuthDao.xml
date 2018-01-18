@@ -15,11 +15,16 @@
 		order by parent_id,order_num
 	</select>
 	
-	<select id="getFunByRoleId" resultType="com.team.model.auth.TbAuthPermission">
-		select * 
-		from tb_auth_permission 
-		where parent_id=#{parentId,jdbcType=INTEGER}
-		  and is_menu=0
+	<select id="getFunByRole" resultType="com.team.model.auth.TbAuthPermission" parameterType="java.util.Map">
+		select p.* 
+		from tb_auth_permission p,
+			 tb_auth_role_permission rp
+		where p.id=rp.permission_id
+		  and p.status=0 
+		  and p.is_menu=0
+		  and rp.status=0
+		  and rp.role_id in(<foreach collection="list" item="item" separator=",">#{item.id,jdbcType=INTEGER}</foreach>)
+		  and p.parent_id=#{parentId,jdbcType=VARCHAR}
 		order by order_num
 	</select>
 	
@@ -48,7 +53,7 @@
 			   r.name,
 			   r.code
 		from tb_auth_role r,
-				 tb_auth_user_role ur
+			 tb_auth_user_role ur
 		where r.id=ur.role_id
 		  and r.`status`=0
 		  and ur.`status`=0

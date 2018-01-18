@@ -276,11 +276,25 @@ public class CommonUtil {
 		}
 	}
 	
+	/**
+	 * 验证用户是否正确，MD5加密后密码和数据的密文比较
+	 *@param user
+	 *@param passWord
+	 *@return
+	 *return
+	 */
 	public static boolean validateUser(TbAuthUser user,String passWord){
 		if(user != null && MD5Utils.encrypt(passWord).equals(user.getPassWord())){
 			return true;
 		}else{
 			return false;
 		}
+	}
+	
+	public static Integer changeDepartmentId(Integer departmentId){
+		if(departmentId != null && departmentId==0){
+			return null;
+		}
+		return departmentId;
 	}
 }

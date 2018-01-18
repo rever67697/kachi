@@ -97,8 +97,8 @@ public class AuthController {
 	
 	@PostMapping("/getFunctions")
 	@ResponseBody
-	public ReturnMsg getFunctions(Integer id){
-		return authService.getFunByUser(id);
+	public ReturnMsg getFunctions(HttpServletRequest request,Integer id){
+		return authService.getFunByUser(getUser(request),id);
 	}
 	
 }

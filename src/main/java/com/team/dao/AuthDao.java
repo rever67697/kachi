@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +15,7 @@ public interface AuthDao {
 	
 	public List<TbAuthPermission> getMenuByRole(List<TbAuthRole> list);
 	
-	public List<TbAuthPermission> getFunByRoleId(@Param("parentId")Integer parentId);
+	public List<TbAuthPermission> getFunByRole(Map<String, Object> map);
 	
 	public List<TbAuthPermission> getAllPermission();
 	

@@ -1,7 +1,8 @@
 package com.team.service.auth.impl;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,12 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public ReturnMsg getFunByUser(Integer id) {
+	public ReturnMsg getFunByUser(TbAuthUser user,Integer id) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		returnMsg.setData(authDao.getFunByRoleId(id));
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("parentId", id);
+		map.put("list", user.getRoles());
+		returnMsg.setData(authDao.getFunByRole(map));
 		return returnMsg;
 	}
 

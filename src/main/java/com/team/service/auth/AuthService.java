@@ -14,7 +14,7 @@ public interface AuthService {
 	
 	public List<TbAuthPermission> getMenuByUser(TbAuthUser user);
 	
-	public ReturnMsg getFunByUser(Integer id);
+	public ReturnMsg getFunByUser(TbAuthUser user,Integer id);
 	
 	public List<TbAuthPermission> getPermissionTree();
 	

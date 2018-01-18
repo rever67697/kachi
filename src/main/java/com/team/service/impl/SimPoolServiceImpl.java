@@ -17,6 +17,7 @@ import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 
 /**
@@ -40,7 +41,7 @@ public class SimPoolServiceImpl implements SimPoolService{
 			int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", departmentId);
+		map.put("departmentId", CommonUtil.changeDepartmentId(departmentId));
 		map.put("spid", spid);
 		map.put("name", name);
 		map.put("isActive", isActive);
@@ -58,9 +59,9 @@ public class SimPoolServiceImpl implements SimPoolService{
 	 */
 	public ReturnMsg getOutlineInfo(Integer departmentId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<OutlineInfo> list = simPoolDao.getOutlineInfo(departmentId);
+		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.changeDepartmentId(departmentId));
 		OutlineInfo info = null;
-		if(list!=null&&list.size()>0){
+		if(CommonUtil.listNotBlank(list)){
 			info = list.get(0);
 			info.setOfflinePoolCount(info.getSimPoolCount()-info.getOnlinePoolCount());
 			returnMsg.setData(info);
