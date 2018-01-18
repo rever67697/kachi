@@ -11,11 +11,13 @@ public class TbAuthUser implements Serializable{
 	
 	private Integer id;
 
-	private String userName;
-	
-	private String loginName;
+	private String name;
 	
 	private String passWord;
+	
+	private String phoneNumber;
+	
+	private String sex; 
 	
 	private Integer departmentId;
 	
@@ -23,28 +25,20 @@ public class TbAuthUser implements Serializable{
 	
 	private List<TbAuthRole> roles;
 
-	public Integer getDepartmentId() {
-		return departmentId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setDepartmentId(Integer departmentId) {
-		this.departmentId = departmentId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getName() {
+		return name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getLoginName() {
-		return loginName;
-	}
-
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassWord() {
@@ -53,6 +47,30 @@ public class TbAuthUser implements Serializable{
 
 	public void setPassWord(String passWord) {
 		this.passWord = passWord;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Integer getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
 	}
 
 	public String getDepartmentName() {
@@ -71,12 +89,4 @@ public class TbAuthUser implements Serializable{
 		this.roles = roles;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
 }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
-import com.team.service.auth.impl.AuthServiceImpl;
+import com.team.service.auth.TbAuthRoleService;
+import com.team.service.auth.TbAuthPermissionService;
+import com.team.service.auth.TbAuthUserService;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
@@ -26,10 +28,16 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @Controller
-public class AuthController {
+public class LoginController {
 	
 	@Autowired
-	private AuthServiceImpl authService;
+	private TbAuthRoleService tbAuthRoleService;
+	
+	@Autowired
+	private TbAuthUserService tbAuthUserService;
+	
+	@Autowired
+	private TbAuthPermissionService tbAuthPermissionService;
 	
 	@PostMapping("/login")
 	@ResponseBody
@@ -40,13 +48,13 @@ public class AuthController {
 		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
 		if(verificationCode != null && verificationCode.equals(code)){
 			//根据用户名查询用户实体
-			TbAuthUser user = authService.getUserByName(userName);
+			TbAuthUser user = tbAuthUserService.getUserByName(userName);
 			if(CommonUtil.validateUser(user,passWord)){
 				//验证通过
-				List<TbAuthRole> roles = authService.getRolesByUser(user);
+				List<TbAuthRole> roles = tbAuthRoleService.getRolesByUser(user);
 				user.setRoles(roles);
 				request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
-				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getUserName());
+				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getName());
 				cookie.setMaxAge(60*60*24*7);//7天有效
 				response.addCookie(cookie);
 			}else{
@@ -68,14 +76,14 @@ public class AuthController {
 	@ResponseBody
 	public Object getMenu(HttpServletRequest request){
 		TbAuthUser user = getUser(request);
-		return authService.getMenuByUser(user);
+		return tbAuthPermissionService.getMenuByUser(user);
 	}
 	
 	
 	@PostMapping("/getPermissionTree")
 	@ResponseBody
 	public Object getPermissionTree(){
-		return authService.getPermissionTree();
+		return tbAuthPermissionService.getPermissionTree();
 	}
 	
 	
@@ -98,7 +106,7 @@ public class AuthController {
 	@PostMapping("/getFunctions")
 	@ResponseBody
 	public ReturnMsg getFunctions(HttpServletRequest request,Integer id){
-		return authService.getFunByUser(getUser(request),id);
+		return tbAuthPermissionService.getFunByUser(getUser(request),id);
 	}
 	
 }

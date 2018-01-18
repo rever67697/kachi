@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.auth.TbAuthUserDao">
+
+	<select id="getUserList" parameterType="java.util.Map" resultType="com.team.model.auth.TbAuthUser">
+		select c.id,
+			   c.name,
+			   c.departmentId,
+			   c.phonenumber,
+			   c.password,
+			   c.sex,
+			   d.name departmentName
+		from m_customer c,
+			 m_department d
+		where c.departmentid=d.id
+		  and d.status=0
+		<if test="status!=null">
+		  and c.status =#{status,jdbcType=INTEGER}
+		</if>
+		<if test="name!=null and name != ''">
+		  and c.name=#{name,jdbcType=VARCHAR}
+		</if>
+		<if test="departmentId!=null">
+		  and d.id=#{departmentId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+</mapper>

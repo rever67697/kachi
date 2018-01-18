@@ -11,15 +11,80 @@
 	<script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../../js/common.js"></script>
   </head>
-  <body>
-  	<ul id="tt"></ul>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+  	
+  	<div region="north" id="northDiv" style="height:45px;padding:0px;overflow-y:hidden;background:#FFF;" >
+		<form id="queryForm">
+	  		<table class="table">
+	  			<tr>
+	  				<th>登录名：</th><td><input name="name" placeholder="请输入登录名" /></td>
+	  				<th>代理商：</th><td><select name="departmentId" ></select></td>
+	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+	  			</tr>
+	  		</table>
+	  	</form>
+	</div>	
+	<div region="center" title="" style="overflow:hidden;background:#FFF;width:100%">
+		<table id="dg" ></table>
+	</div>
+	<div region="east" title="菜单权限"  style="width:500px;background:#FFF;" split="true" >
+		<div class="easyui-layout" fit="true">
+			<div region="north" style="height:35px;background:#fff;overflow:hidden;">
+		 		<div class="easyui-panel" style="padding:5px;">
+			        <a href="#" class="easyui-linkbutton"  iconCls="icon-ok" plain="true" onclick="javascript:ok();" >确定</a>
+			        	姓名:&nbsp;<label class="lb-username"></label>
+			        	<input type="hidden" id="userid" name="userid" />
+			    </div>
+			 </div>
+			 <div region="center" style="background:#fff;padding:5px 5px 15px 5px;">
+				<ul id="authtree" class="easyui-tree" checkbox="true" ></ul>
+			 </div>
+		</div>
+	</div>		
+  	
   </body>
   <script type="text/javascript">
+  	var options={
+			title:'用户列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'id',hidden:true},
+			         	{field:'name',title:'登录名',width:80},
+			         	{field:'sex',title:'性别',width:80,formatter:function(value,rec,index){
+			         		return value=='1'?'男':(value=='0'?'女':'');
+			         	}},
+			         	{field:'phoneNumber',title:'手机号码',width:120},
+			         	{field:'departmentName',title:'代理商',width:150}
+					]],
+			toolbar: [{"text":"授权","iconCls":"icon-ok",handler:grantPermission}],
+			url:kcJs.fn.getContextPath()+'/getUserList',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			scrollbarSize:0,
+			singleSelect:true,
+			fit:true,
+			onClickRow:function(index,row){
+  					$("#main-layout").layout("collapse","east");
+  			}
+		};
+  
+  	  function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	  }
+  
 	  $(function(){
+	  	$('#dg').datagrid(options);
+	  	$("#main-layout").layout("collapse","east");
+	  
 	  	$.post(kcJs.fn.getContextPath()+'/getPermissionTree',function(data){
-	  		data = changeData(data)
+	  		data = changeData(data);
 	  		if(data){
-	  			$('#tt').tree({
+	  			$('#authtree').tree({
 				    data:data,
 				    checkbox:true,
 				    onClick:function(node){
@@ -28,6 +93,19 @@
 				});
 	  		}
 	  	},'json');
+	  	
+	  	window.canExpand = false;	
+		$("#main-layout").layout('panel','east').panel({
+			onBeforeExpand:function(){
+				return window.canExpand;
+			},
+			onBeforeOpen:function(){
+				return window.canExpand;
+			},
+			onOpen:function(){
+				window.canExpand = false;
+			}
+		});
 	  });
 	  
 	  function changeData(data){
@@ -54,5 +132,36 @@
 	  		}
 	  	}
 	  }
+	  
+	  function grantPermission(){
+		var row = $("#dg").datagrid("getSelected");
+		if( row ){
+			var id = row['id'];
+			var name = row['name'];
+			$(".lb-username").html(name);
+			$("#userid").val(id);
+
+			//$('#authtree').tree('collapseAll');
+			var nodes = $('#authtree').tree('getChecked');
+			$(nodes).each(function(i,node){
+				$('#authtree').tree('uncheck', node.target);
+			});
+			
+			$.post(kcJs.fn.getContextPath()+"/getPermissionByUser",{id:id},function(data){
+				if(data){
+					$(data).each(function(i,o){
+						var node = $('#authtree').tree( 'find', o.id);
+						if(node && node.target) $('#authtree').tree('check', node.target);
+					});
+					window.canExpand = true;
+ 					$("#main-layout").layout("expand","east");
+				}
+			},'json');
+			
+		}else{
+			$.messager.alert('提示', "请选择用户后操作!", 'info');
+		}
+		
+	}
   </script>
 </html>	

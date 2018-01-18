@@ -1981,3 +1981,4 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 #simPoolCount{cursor:pointer}
 #refreshtime{font-size:20px;display:inline-block;margin-bottom:5px;color:rgb(87,181,227)}
 #refreshtime~span{font-size:15px;color:#666}
+.lb-username{color:rgb(0,0,255)}

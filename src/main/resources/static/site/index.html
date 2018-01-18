@@ -18,7 +18,7 @@
 	$(document).ready(function () {
 		$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
 			if(data){
-				$('.userName').text(data.userName);
+				$('.userName').text(data.name);
 				console.log(data);
 			}
 		},'json');

@@ -6,26 +6,31 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.team.dao.AuthDao;
+import com.team.dao.auth.TbAuthPermissionDao;
 import com.team.model.auth.TbAuthPermission;
-import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
-import com.team.service.auth.AuthService;
+import com.team.service.auth.TbAuthPermissionService;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
 
+/**
+ * 创建日期：2018-1-18下午10:19:11
+ * author:wuzhiheng
+ */
 @Service
-public class AuthServiceImpl implements AuthService{
-	
+@Transactional
+public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
+
 	@Autowired
-	private AuthDao authDao;
+	private TbAuthPermissionDao tbAuthPermissionDao;
 	
 	public List<TbAuthPermission> getMenuByUser(TbAuthUser user){
 		List<TbAuthPermission> list = null;
 		if(CommonUtil.listNotBlank(user.getRoles())){
-			list = authDao.getMenuByRole(user.getRoles());
+			list = tbAuthPermissionDao.getMenuByRole(user.getRoles());
 		}
 		
 		return  CommonUtil.bulidTree(list,false);
@@ -37,26 +42,21 @@ public class AuthServiceImpl implements AuthService{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("parentId", id);
 		map.put("list", user.getRoles());
-		returnMsg.setData(authDao.getFunByRole(map));
+		returnMsg.setData(tbAuthPermissionDao.getFunByRole(map));
 		return returnMsg;
 	}
 
 	@Override
 	public List<TbAuthPermission> getPermissionTree() {
-		List<TbAuthPermission> list = authDao.getAllPermission();
+		List<TbAuthPermission> list = tbAuthPermissionDao.getAllPermission();
 		return CommonUtil.bulidTree(list,true);
 	}
 
 	@Override
-	public TbAuthUser getUserByName(String name) {
-		List<TbAuthUser> list = authDao.getUserByName(name);
-		return CommonUtil.listNotBlank(list)?list.get(0):null;
+	public List<Integer> getPermissionByUser(Integer id) {
+		return tbAuthPermissionDao.getPermissionByUser(id);
 	}
 
-	@Override
-	public List<TbAuthRole> getRolesByUser(TbAuthUser user) {
-		return authDao.getRolesByUser(user.getId());
-	}
 
 	
 }
