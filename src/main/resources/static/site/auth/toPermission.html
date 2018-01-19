@@ -31,7 +31,7 @@
 		<div class="easyui-layout" fit="true">
 			<div region="north" style="height:35px;background:#fff;overflow:hidden;">
 		 		<div class="easyui-panel" style="padding:5px;">
-			        <a href="#" class="easyui-linkbutton"  iconCls="icon-ok" plain="true" onclick="javascript:ok();" >确定</a>
+			        <a href="#" class="easyui-linkbutton"  iconCls="icon-ok" plain="true" onclick="ok();" >确定</a>
 			        	姓名:&nbsp;<label class="lb-username"></label>
 			        	<input type="hidden" id="userid" name="userid" />
 			    </div>
@@ -64,6 +64,7 @@
 			pagination:true,
 			pageList:[15,30],
 			rownumbers:true,
+			striped:true,
 			scrollbarSize:0,
 			singleSelect:true,
 			fit:true,
@@ -141,7 +142,7 @@
 			$(".lb-username").html(name);
 			$("#userid").val(id);
 
-			//$('#authtree').tree('collapseAll');
+			$('#authtree').tree('collapseAll');
 			var nodes = $('#authtree').tree('getChecked');
 			$(nodes).each(function(i,node){
 				$('#authtree').tree('uncheck', node.target);
@@ -162,6 +163,30 @@
 			$.messager.alert('提示', "请选择用户后操作!", 'info');
 		}
 		
+	}
+	
+	function ok(){
+		var nodes = $('#authtree').tree('getChecked');
+		var ids = [];
+		for(var i=0;i<nodes.length;i++){
+			getIds(nodes[i],ids);
+		}
+		console.log(ids.length);
+	}
+	
+	function getIds(node,ids){
+		var add = true;
+		for(var i=0;i<ids.length;i++){
+			if(node.id==ids[i]){
+				add = false;
+				break;
+			}
+		}
+		if(add)	ids.push(node.id);
+		var parent = $('#authtree').tree( 'getParent', node.target);
+		if(parent){
+			getIds(parent,ids);
+		}
 	}
   </script>
 </html>	
