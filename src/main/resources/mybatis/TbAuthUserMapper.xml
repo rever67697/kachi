@@ -5,14 +5,7 @@
 <mapper namespace="com.team.dao.auth.TbAuthUserDao">
 
 	<select id="getUserList" parameterType="java.util.Map" resultType="com.team.model.auth.TbAuthUser">
-		select c.id,
-			   c.name,
-			   c.loginName,
-			   c.departmentId,
-			   c.phonenumber,
-			   c.password,
-			   c.sex,
-			   c.status,
+		select c.*,
 			   d.name departmentName
 		from m_customer c,
 			 m_department d

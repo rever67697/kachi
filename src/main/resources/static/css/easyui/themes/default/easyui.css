@@ -1,4 +1,4 @@
-*{padding:0;margin:0}
+*{margin:0}
 body{font-family:'微软雅黑'}
 .easyui-accordion div ul{list-style-type:none;margin:0px; padding:10px;}
 .easyui-accordion div ul li{ padding:0px;}
@@ -1982,3 +1982,8 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 #refreshtime{font-size:20px;display:inline-block;margin-bottom:5px;color:rgb(87,181,227)}
 #refreshtime~span{font-size:15px;color:#666}
 .lb-username{color:rgb(0,0,255)}
+.do-title{color:#1542A7;font-weight:800}
+.flag{color:red}
+.user-input{width:180px;height:20px;border-radius:4px;padding:3px;line-height:18px;border:1px solid #999;display:block;margin-right:10px}
+.user-select{height:28px;width:188px}
+.user-td{width:70px}

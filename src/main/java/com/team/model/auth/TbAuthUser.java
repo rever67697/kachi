@@ -21,6 +21,14 @@ public class TbAuthUser implements Serializable{
 	
 	private String sex; 
 	
+	private String qq;
+	
+	private String wechat;
+	
+	private Integer age;
+	
+	private String email;
+	
 	private Integer departmentId;
 	
 	private Integer status;
@@ -110,4 +118,37 @@ public class TbAuthUser implements Serializable{
 		this.status = status;
 	}
 
+	public String getQq() {
+		return qq;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	public String getWechat() {
+		return wechat;
+	}
+
+	public void setWechat(String wechat) {
+		this.wechat = wechat;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
 }

@@ -29,6 +29,82 @@
 	<div region="center" title="" style="overflow:hidden;background:#FFF;padding:0 2px">
 		<table id="dg" ></table>
 	</div>
+	
+	<div id="doDialog" class="easyui-dialog" title="添加用户" closed="true" modal="true"  icon="icon icon-key" style="width:620px;height:430px;padding: 5px;">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false" style="background: #fff;">
+				<form id="doForm">
+					<input type="hidden" name="id" id="id" />
+					<fieldset>
+						<legend>
+							<br/> <span  class="do-title">基本信息</span>
+						</legend>
+						<table>
+							<tr>
+								<td class="user-td">姓名：<span class="flag">*</span></td>
+								<td><input name="name" class="easyui-validatebox user-input" required="true" /></td>
+								<td class="user-td">性别：</td>
+								<td>
+									<label><input type="radio" name="sex" value="1" checked="checked"/>&nbsp;男性</label>
+									<label><input type="radio" name="sex" value="0" />&nbsp;女性</label>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+					<fieldset>
+						<legend>
+							<br/><span class="do-title">账号信息</span>
+						</legend>
+						<table>
+							<tr>
+								<td class="user-td">登录名：<span class="flag">*</span></td>
+								<td><input  name="loginName" class="easyui-validatebox user-input" required="true" /> </td>
+								<td class="user-td">所属部门：<span class="flag">*</span></td>
+								<td><select name="departmentId" class="easyui-validatebox user-input user-select" required="true"></select></td>
+							</tr>
+							<tr>
+								<td class="user-td">密码：<span class="flag">*</span></td>
+								<td><input  name="passWord" class="easyui-validatebox user-input" /></td>
+								<td class="user-td">确认密码：</td>
+								<td>
+									<input name="repeat_pwd"  class="user-input"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+					<fieldset>
+						<legend>
+							<br/><span class="do-title">其它信息</span>
+						</legend>
+						<table>
+							<tr>
+								<td class="user-td">手机号码：</td>
+								<td><input name="phoneNumber" class="user-input onlyNumber" /></td>
+								<td class="user-td">年龄：</td>
+								<td><input name="age" class="user-input onlyNumber" /></td>
+							</tr>
+							<tr>
+								<td class="user-td">QQ：</td>
+								<td><input name="qq" class="user-input onlyNumber"/></td>
+								<td class="user-td">微信：</td>
+								<td><input name="wechat" class="user-input"/></td>
+							</tr>
+							<tr>
+								<td class="user-td">邮箱：</td>
+								<td><input name="email"  class="easyui-validatebox user-input"  validType="email" class="user-input"/></td>
+							</tr>
+						</table>
+					</fieldset>
+				</form>
+			</div>
+			<div region="south" border="false" style="text-align: right; height: 30px; background: #fff;">
+				<a  class="easyui-linkbutton" icon="icon-ok"
+					href="javascript:void(0)" onclick="saveUser()"> 确定</a> <a
+					class="easyui-linkbutton" icon="icon-cancel"
+					href="javascript:void(0)" onclick="$('#doDialog').dialog('close')">取消</a>
+			</div>
+		</div>
+	</div>
   </body>
   <script type="text/javascript">
   	var options={
@@ -43,6 +119,10 @@
 			         		return value=='1'?'男':(value=='0'?'女':'');
 			         	}},
 			         	{field:'phoneNumber',title:'手机号码',width:120},
+			         	{field:'age',title:'年龄',width:80},
+			         	{field:'qq',title:'QQ',width:100},
+			         	{field:'wechat',title:'微信',width:100},
+			         	{field:'email',title:'邮箱',width:100},
 			         	{field:'departmentName',title:'代理商',width:150},
 			         	{field:'status',title:'用户状态',width:100,formatter:function(value){
 			         		var color = kcJs.fn.getColor((value+'')=="0"?"blue":"red");
@@ -77,6 +157,8 @@
 	  });
 	  
 	  function doAdd(){
+	  	$('#doForm')[0].reset();
+	  	$('#doDialog').dialog('open');
 	  }
 	  
 	  function doModify(){
@@ -86,6 +168,11 @@
 	  }
 	  
 	  function doUnlock(){
+	  }
+	  
+	  function saveUser(){
+	  	if($('#doForm').form('validate')){
+	  	}
 	  }
 	  
   </script>
