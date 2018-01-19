@@ -54,4 +54,20 @@
 		  and c.status=0
 		  and c.id=#{id,jdbcType=INTEGER}
 	</select>
+	
+	<update id="updateRolePermission">
+		update tb_auth_role_permission
+		set status=1
+		where status=0
+		  and role_id=#{roleId,jdbcType=INTEGER}
+	</update>
+	
+	<insert id="insertRolePermission" parameterType="java.util.Map">
+		insert into tb_auth_role_permission
+		(role_id,permission_id)
+		values
+		<foreach collection="array" item="item" separator=",">
+			(#{roleId,jdbcType=INTEGER},#{item,jdbcType=INTEGER})
+		</foreach>
+	</insert>
 </mapper>

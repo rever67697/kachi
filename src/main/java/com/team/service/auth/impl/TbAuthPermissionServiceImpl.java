@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.team.dao.auth.TbAuthPermissionDao;
+import com.team.dao.auth.TbAuthRoleDao;
 import com.team.model.auth.TbAuthPermission;
+import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthPermissionService;
 import com.team.util.CommonUtil;
@@ -26,6 +28,8 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 
 	@Autowired
 	private TbAuthPermissionDao tbAuthPermissionDao;
+	@Autowired
+	private TbAuthRoleDao tbAuthRoleDao;
 	
 	public List<TbAuthPermission> getMenuByUser(TbAuthUser user){
 		List<TbAuthPermission> list = null;
@@ -57,6 +61,39 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 		return tbAuthPermissionDao.getPermissionByUser(id);
 	}
 
+	@Override
+	public ReturnMsg grantPermission(Integer userId, String ids) {
+		ReturnMsg returnMsg = null;
+		if(userId != null){
+			Map<String, Object> map = new HashMap<String, Object>();
+			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+			
+			//1.找出用户的专属角色，没有则添加一个
+			List<TbAuthRole> roles = tbAuthRoleDao.getUserRole(userId);
+			TbAuthRole role = CommonUtil.listNotBlank(roles)?roles.get(0):null;
+			if(role==null){
+				role = new TbAuthRole("普通用户", "USER_"+userId);
+				tbAuthRoleDao.insertRole(role);
+				map.clear();
+				map.put("userId", userId);
+				map.put("roleId", role.getId());
+				tbAuthRoleDao.inserUserRole(map);
+				map.clear();
+			}
+			//2.插入角色-权限关系前，先把原本的关联关系清了
+			tbAuthPermissionDao.updateRolePermission(role.getId());
+			//3插入角色-权限的关联关系
+			if(!CommonUtil.StringIsNull(ids)){
+				map.put("roleId", role.getId());
+				map.put("array", ids.split(","));
+				tbAuthPermissionDao.insertRolePermission(map);
+			}
+		}else{
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
+		}
+		
+		return returnMsg;
+	}
 
 	
 }

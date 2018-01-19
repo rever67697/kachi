@@ -14,6 +14,20 @@ public class TbAuthRole implements Serializable{
 	
 	private String code;
 
+	public TbAuthRole() {
+		super();
+	}
+
+	/**
+	 * @param name
+	 * @param code
+	 */
+	public TbAuthRole(String name, String code) {
+		super();
+		this.name = name;
+		this.code = code;
+	}
+
 	public Integer getId() {
 		return id;
 	}

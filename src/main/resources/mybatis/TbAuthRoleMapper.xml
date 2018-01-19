@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.auth.TbAuthRoleDao">
+	
+	<select id="getRolesByUser" resultType="com.team.model.auth.TbAuthRole">
+		select r.id,
+			   r.name,
+			   r.code
+		from tb_auth_role r,
+			 tb_auth_user_role ur
+		where r.id=ur.role_id
+		  and r.`status`=0
+		  and ur.`status`=0
+		  and ur.user_id=#{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getUserRole" resultType="com.team.model.auth.TbAuthRole">
+		select r.*
+		from tb_auth_role r,
+			 tb_auth_user_role ur,
+			 m_customer c
+		where r.id=ur.role_id
+		  and ur.user_id=c.id
+		  and r.status=0
+		  and ur.status=0
+		  and c.status=0
+		  and c.id=#{id,jdbcType=INTEGER}
+		  and r.code=concat('USER_',#{id,jdbcType=INTEGER})
+	</select>
+	
+	<insert id="insertRole" parameterType="com.team.model.auth.TbAuthRole" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_auth_role
+		(name,code)
+		values
+		(#{name,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="inserUserRole" parameterType="java.util.Map">
+		insert into tb_auth_user_role
+		(user_id,role_id)
+		values
+		(#{userId,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER})
+		
+	</insert>
+	
+</mapper>

@@ -47,4 +47,20 @@ public interface TbAuthPermissionDao {
 	 */
 	public List<Integer> getPermissionByUser(@Param("id") Integer id);
 	
+	/**
+	 * 插入角色-权限关系前，先把原本的关联关系清了
+	 *@param roleId
+	 *@return
+	 *return
+	 */
+	public int updateRolePermission(@Param("roleId") Integer roleId);
+	
+	/**
+	 * 插入角色-权限的关联关系
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public int insertRolePermission(Map<String, Object> map);
+	
 }

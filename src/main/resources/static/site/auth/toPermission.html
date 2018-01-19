@@ -31,7 +31,7 @@
 		<div class="easyui-layout" fit="true">
 			<div region="north" style="height:35px;background:#fff;overflow:hidden;">
 		 		<div class="easyui-panel" style="padding:5px;">
-			        <a href="#" class="easyui-linkbutton"  iconCls="icon-ok" plain="true" onclick="ok();" >确定</a>
+			        <a href="#" class="easyui-linkbutton"  iconCls="icon-ok" plain="true" onclick="ok();" id="okBtn">确定</a>
 			        	姓名:&nbsp;<label class="lb-username"></label>
 			        	<input type="hidden" id="userid" name="userid" />
 			    </div>
@@ -88,6 +88,7 @@
 	  			$('#authtree').tree({
 				    data:data,
 				    checkbox:true,
+				    //cascadeCheck:false,
 				    onClick:function(node){
 				    	
 				    }
@@ -143,20 +144,36 @@
 			$("#userid").val(id);
 
 			$('#authtree').tree('collapseAll');
-			var nodes = $('#authtree').tree('getChecked');
-			$(nodes).each(function(i,node){
-				$('#authtree').tree('uncheck', node.target);
-			});
 			
+			$("#dg").datagrid("loading");
 			$.post(kcJs.fn.getContextPath()+"/getPermissionByUser",{id:id},function(data){
 				if(data){
+					//1.把用户拥有的权限选中
 					$(data).each(function(i,o){
 						var node = $('#authtree').tree( 'find', o.id);
 						if(node && node.target) $('#authtree').tree('check', node.target);
 					});
+					//2.由于级联的关系，要做特殊处理，为了显示正确
+					var nodes = $('#authtree').tree('getChecked');
+					if(nodes){
+						$(nodes).each(function(i,n){
+							var exists = false;
+							for(var i=0;i<data.length;i++){
+								if(data[i].id==n.id){
+									exists = true;
+									break;
+								}
+							}
+							if(!exists){
+								$('#authtree').tree('uncheck', n.target);
+							}
+						});
+					}
+					//3.展开树结构
 					window.canExpand = true;
  					$("#main-layout").layout("expand","east");
 				}
+				$("#dg").datagrid("loaded");
 			},'json');
 			
 		}else{
@@ -171,7 +188,15 @@
 		for(var i=0;i<nodes.length;i++){
 			getIds(nodes[i],ids);
 		}
-		console.log(ids.length);
+		$("#dg").datagrid("loading");
+		$('#okBtn').linkbutton('disable');
+		$.post(kcJs.fn.getContextPath()+'/grantPermission',{userId:$("#userid").val(),ids:ids.join(",")},function(data){
+			if(data){
+				$.messager.alert('提示',data.msg,'info');
+			}
+			$("#dg").datagrid("loaded");
+			$('#okBtn').linkbutton('enable');
+		});
 	}
 	
 	function getIds(node,ids){
