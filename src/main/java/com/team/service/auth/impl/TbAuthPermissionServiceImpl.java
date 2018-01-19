@@ -81,7 +81,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 				map.clear();
 			}
 			//2.插入角色-权限关系前，先把原本的关联关系清了
-			tbAuthPermissionDao.updateRolePermission(role.getId());
+			tbAuthPermissionDao.updateRolePermission(userId);
 			//3插入角色-权限的关联关系
 			if(!CommonUtil.StringIsNull(ids)){
 				map.put("roleId", role.getId());

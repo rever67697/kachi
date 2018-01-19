@@ -5,7 +5,7 @@
 <mapper namespace="com.team.dao.auth.TbAuthPermissionDao">
 
 	<select id="getMenuByRole" resultType="com.team.model.auth.TbAuthPermission" parameterType="com.team.model.auth.TbAuthRole">
-		select p.* 
+		select distinct p.* 
 		from tb_auth_permission p,
 			 tb_auth_role_permission rp
 		where p.id=rp.permission_id
@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="getFunByRole" resultType="com.team.model.auth.TbAuthPermission" parameterType="java.util.Map">
-		select p.* 
+		select distinct p.* 
 		from tb_auth_permission p,
 			 tb_auth_role_permission rp
 		where p.id=rp.permission_id
@@ -37,7 +37,7 @@
 	</select>
 	
 	<select id="getPermissionByUser" resultType="java.util.Map">
-		select p.id
+		select distinct p.id
 		from tb_auth_permission p,
 			 tb_auth_role_permission rp,
 			 tb_auth_role r,
@@ -59,7 +59,9 @@
 		update tb_auth_role_permission
 		set status=1
 		where status=0
-		  and role_id=#{roleId,jdbcType=INTEGER}
+		  and role_id in(select role_id 
+		  				 from tb_auth_user_role 
+		  				 where user_id=#{userId,jdbcType=INTEGER})
 	</update>
 	
 	<insert id="insertRolePermission" parameterType="java.util.Map">

@@ -19,6 +19,7 @@
 		$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
 			if(data){
 				$('.userName').text(data.name);
+				$('.departmentName').text(data.departmentName);
 				console.log(data);
 			}
 		},'json');
@@ -221,7 +222,8 @@
 			<div class="top-right">
 				<ul>
 					<li class="icon-q"><a href="javascript:logout()">退出登录</a></li>
-					<li class="icon-p">欢迎您：<a class="userName" href="javascript:;"></a></li>
+					<li class="icon-p">欢迎您：<a class="userName" href="javascript:void(0)"></a></li>
+					<li class="icon-o"><a class="departmentName" href="javascript:void(0)"></a></li>
 				</ul>
 			</div>
 		</div>

@@ -53,7 +53,7 @@ public interface TbAuthPermissionDao {
 	 *@return
 	 *return
 	 */
-	public int updateRolePermission(@Param("roleId") Integer roleId);
+	public int updateRolePermission(@Param("userId") Integer userId);
 	
 	/**
 	 * 插入角色-权限的关联关系
