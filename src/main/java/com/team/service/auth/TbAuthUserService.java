@@ -9,8 +9,8 @@ import com.team.vo.ResultList;
  */
 public interface TbAuthUserService {
 	
-	public TbAuthUser getUserByName(String name);
+	public TbAuthUser getUserByLoginName(String loginName);
 	
-	public ResultList getUserList(Integer status,String name,Integer departmentId,int page,int rows);
+	public ResultList getUserList(Integer status,String name,String loginName,Integer departmentId,int page,int rows);
 
 }

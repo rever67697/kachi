@@ -13,21 +13,22 @@
   </head>
   <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
   	
-  	<div region="north" id="northDiv" style="height:45px;padding:0px;overflow-y:hidden;background:#FFF;" >
+  	<div region="north" id="northDiv" style="height:45px;padding:0 2px;overflow-y:hidden;background:#FFF;" >
 		<form id="queryForm">
 	  		<table class="table">
 	  			<tr>
-	  				<th>登录名：</th><td><input name="name" placeholder="请输入登录名" /></td>
+	  				<th>登录名：</th><td><input name="loginName" placeholder="请输入登录名" /></td>
+	  				<th>姓名：</th><td><input name="name" placeholder="请输入姓名" /></td>
 	  				<th>代理商：</th><td><select name="departmentId" ></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
 	  		</table>
 	  	</form>
 	</div>	
-	<div region="center" title="" style="overflow:hidden;background:#FFF;width:100%">
+	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px">
 		<table id="dg" ></table>
 	</div>
-	<div region="east" title="菜单权限"  style="width:500px;background:#FFF;" split="true" >
+	<div region="east" title="菜单权限"  style="width:500px;background:#FFF" split="true" >
 		<div class="easyui-layout" fit="true">
 			<div region="north" style="height:35px;background:#fff;overflow:hidden;">
 		 		<div class="easyui-panel" style="padding:5px;">
@@ -50,8 +51,9 @@
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'id',hidden:true},
-			         	{field:'name',title:'登录名',width:80},
-			         	{field:'sex',title:'性别',width:80,formatter:function(value,rec,index){
+			         	{field:'loginName',title:'登录名',width:100},
+			         	{field:'name',title:'姓名',width:100},
+			         	{field:'sex',title:'性别',width:100,formatter:function(value,rec,index){
 			         		return value=='1'?'男':(value=='0'?'女':'');
 			         	}},
 			         	{field:'phoneNumber',title:'手机号码',width:120},

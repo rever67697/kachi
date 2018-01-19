@@ -13,6 +13,8 @@ public class TbAuthUser implements Serializable{
 
 	private String name;
 	
+	private String loginName;
+	
 	private String passWord;
 	
 	private String phoneNumber;
@@ -20,6 +22,8 @@ public class TbAuthUser implements Serializable{
 	private String sex; 
 	
 	private Integer departmentId;
+	
+	private Integer status;
 	
 	private String departmentName;
 	
@@ -39,6 +43,15 @@ public class TbAuthUser implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getPassWord() {
@@ -87,6 +100,14 @@ public class TbAuthUser implements Serializable{
 
 	public void setRoles(List<TbAuthRole> roles) {
 		this.roles = roles;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

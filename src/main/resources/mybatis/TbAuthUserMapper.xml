@@ -7,10 +7,12 @@
 	<select id="getUserList" parameterType="java.util.Map" resultType="com.team.model.auth.TbAuthUser">
 		select c.id,
 			   c.name,
+			   c.loginName,
 			   c.departmentId,
 			   c.phonenumber,
 			   c.password,
 			   c.sex,
+			   c.status,
 			   d.name departmentName
 		from m_customer c,
 			 m_department d
@@ -21,6 +23,9 @@
 		</if>
 		<if test="name!=null and name != ''">
 		  and c.name=#{name,jdbcType=VARCHAR}
+		</if>
+		<if test="loginName!=null and loginName != ''">
+		  and c.loginName=#{loginName,jdbcType=VARCHAR}
 		</if>
 		<if test="departmentId!=null">
 		  and d.id=#{departmentId,jdbcType=INTEGER}

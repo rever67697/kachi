@@ -18,9 +18,9 @@ public class TbAuthUserController {
 	private TbAuthUserService tbAuthUserService;
 	
 	@PostMapping("/getUserList")
-	public ResultList getUserList(Integer status, String name,
+	public ResultList getUserList(Integer status, String name,String loginName,
 			Integer departmentId,int page,int rows){
-		return tbAuthUserService.getUserList(status, name, departmentId, page, rows);
+		return tbAuthUserService.getUserList(status, name, loginName,departmentId, page, rows);
 	}
 	
 }

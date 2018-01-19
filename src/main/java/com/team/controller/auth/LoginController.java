@@ -1,4 +1,4 @@
-package com.team.controller;
+package com.team.controller.auth;
 
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class LoginController {
 		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
 		if(verificationCode != null && verificationCode.equals(code)){
 			//根据用户名查询用户实体
-			TbAuthUser user = tbAuthUserService.getUserByName(userName);
+			TbAuthUser user = tbAuthUserService.getUserByLoginName(userName);
 			if(CommonUtil.validateUser(user,passWord)){
 				//验证通过
 				List<TbAuthRole> roles = tbAuthRoleService.getRolesByUser(user);
