@@ -1987,3 +1987,4 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 .user-input{width:180px;height:20px;border-radius:4px;padding:3px;line-height:18px;border:1px solid #999;display:block;margin-right:10px}
 .user-select{height:28px;width:188px}
 .user-td{width:70px}
+fieldset{border:1px solid #999}
