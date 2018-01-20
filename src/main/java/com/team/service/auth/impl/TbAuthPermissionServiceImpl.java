@@ -74,7 +74,6 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 			if(role==null){
 				role = new TbAuthRole("普通用户", "USER_"+userId);
 				tbAuthRoleDao.insertRole(role);
-				map.clear();
 				map.put("userId", userId);
 				map.put("roleId", role.getId());
 				tbAuthRoleDao.inserUserRole(map);

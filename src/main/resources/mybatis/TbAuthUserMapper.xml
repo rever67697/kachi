@@ -25,4 +25,52 @@
 		</if>
 	</select>
 	
+	<select id="getUserCount" resultType="int">
+		select count(1)
+		from m_customer
+		where loginName=#{loginName,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="saveUser" parameterType="com.team.model.auth.TbAuthUser" useGeneratedKeys="true" keyProperty="id">
+		insert into m_customer
+		(name,loginname,password,sex,phonenumber,qq,wechat,email,age,status,departmentid)
+		values
+		(
+		 #{name,jdbcType=VARCHAR},
+		 #{loginName,jdbcType=VARCHAR},
+		 #{passWord,jdbcType=VARCHAR},
+		 #{sex,jdbcType=VARCHAR},
+		 #{phoneNumber,jdbcType=VARCHAR},
+		 #{qq,jdbcType=VARCHAR},
+		 #{wechat,jdbcType=VARCHAR},
+		 #{email,jdbcType=VARCHAR},
+		 #{age,jdbcType=INTEGER},
+		 0,
+		 #{departmentId,jdbcType=INTEGER}
+		 )
+	</insert>
+	
+	<update id="updateStatus" parameterType="com.team.model.auth.TbAuthUser">
+		update m_customer
+		set status=#{status,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}	
+	</update>
+	
+	<update id="updateUser" parameterType="com.team.model.auth.TbAuthUser">
+		update m_customer
+		set name=#{name,jdbcType=VARCHAR},
+			sex=#{sex,jdbcType=VARCHAR},
+			qq=#{qq,jdbcType=VARCHAR},
+			wechat=#{wechat,jdbcType=VARCHAR},
+			sex=#{sex,jdbcType=VARCHAR},
+			email=#{email,jdbcType=VARCHAR},
+			age=#{age,jdbcType=INTEGER},
+			phonenumber=#{phoneNumber,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER}	
+	</update>
+	
+	<delete id="deleteUser">
+		delete from m_customer
+		where id=#{id,jdbcType=INTEGER}
+	</delete>
 </mapper>

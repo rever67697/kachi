@@ -78,19 +78,12 @@ var kcJs=
 			$(obj).val(this.getDate(value,pattern||'yyyy-MM-dd'));
 		},
 		//给指定容器下的输入框自动填充数值
-		autoFillData:function(container,data,arr){
+		autoFillData:function(container,data){
 			var _this = this;
 			$('input,select',$(container)).each(function(i,o){
 	  			var name = $(this).attr('name');
 	  			if(name){
 	  				$(this).val(data[name]);
-	  				if(arr){
-	  					for(var i = 0;i < arr.length;i++){
-	  						if(name==arr[i]){
-	  							_this.formatInputDate($(this),data[name],'yyyy-MM-dd hh:mm:ss');
-	  						}
-	  					}
-	  				}
 	  			}
 	  		});
 		},

@@ -58,16 +58,18 @@
 						<table>
 							<tr>
 								<td class="user-td">登录名：<span class="flag">*</span></td>
-								<td><input  name="loginName" class="easyui-validatebox user-input" required="true" /> </td>
+								<td>
+									<input name="loginName" class="easyui-validatebox user-input" required="true" validType="valiLoginName"/> 
+								</td>
 								<td class="user-td">所属部门：<span class="flag">*</span></td>
 								<td><select name="departmentId" class="easyui-validatebox user-input user-select" required="true"></select></td>
 							</tr>
-							<tr>
+							<tr id="hidePwd">
 								<td class="user-td">密码：<span class="flag">*</span></td>
-								<td><input  name="passWord" class="easyui-validatebox user-input" /></td>
+								<td><input id="pwd" name="passWord" class="easyui-validatebox user-input" required="true"/></td>
 								<td class="user-td">确认密码：</td>
 								<td>
-									<input name="repeat_pwd"  class="user-input"/>
+									<input name="repeatPwd"  class="easyui-validatebox user-input" validType="equals['#pwd']" required="true"/>
 								</td>
 							</tr>
 						</table>
@@ -107,6 +109,25 @@
 	</div>
   </body>
   <script type="text/javascript">
+  	 $.ajaxSetup({async : false});
+	  $.extend($.fn.validatebox.defaults.rules, {
+	    equals: {
+			validator: function(value,param){
+				return value == $(param[0]).val();
+			},
+			message: '两次密码不一致'
+	    },
+	    valiLoginName:{
+            validator:function(value,param){
+                var type=false;
+                $.getJSON(kcJs.fn.getContextPath()+'/getUserCount',{loginName:value},function(data){
+                	type=(data==0);
+                });
+                return type;
+            },
+            message:'登录名已存在'
+        }
+	});
   	var options={
 			title:'用户列表',
 			queryParams:$('#queryForm').serializeObject(),
@@ -126,14 +147,15 @@
 			         	{field:'departmentName',title:'代理商',width:150},
 			         	{field:'status',title:'用户状态',width:100,formatter:function(value){
 			         		var color = kcJs.fn.getColor((value+'')=="0"?"blue":"red");
-			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=='0'?'正常':'无效')+'</div>';
+			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=='0'?'正常':'封锁')+'</div>';
 			         	}}
 					]],
 			toolbar: [
 					  {text:"添加",iconCls:"icon-add",handler:doAdd},'-',
 					  {text:"修改",iconCls:"icon-edit",handler:doModify},'-',
 					  {text:"封锁用户",iconCls:"icon-lock",handler:doLock},'-',
-					  {text:"解锁用户",iconCls:"icon-arrow-redo",handler:doUnlock}
+					  {text:"解锁用户",iconCls:"icon-arrow-redo",handler:doUnlock},'-',
+					  {text:"删除用户",iconCls:"icon-cancel",handler:doDelete}
 					 ],
 			url:kcJs.fn.getContextPath()+'/getUserList',
 			iconCls:'icon-tip',
@@ -143,10 +165,11 @@
 			rownumbers:true,
 			striped:true,
 			scrollbarSize:0,
-			//singleSelect:true,
+			singleSelect:true,
 			fit:true
 		};
   
+  	  var $loginName=null;
   	  function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
@@ -154,24 +177,97 @@
   
 	  $(function(){
 	  	$('#dg').datagrid(options);
+	  	$loginName = $('#loginName1').clone();
+	  	kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"needNull":false});
 	  });
 	  
 	  function doAdd(){
+        $("#doForm [name=loginName]").attr("validType","valiLoginName");
+		$("#doForm [name=passWord],#doForm [name=repeatPwd]").validatebox({ required: true });
+	  
 	  	$('#doForm')[0].reset();
+	  	$('#doForm [name=id]').val('');
+	  	$('#hidePwd').show();
+	  	$('#doForm [name=departmentId],#doForm [name=loginName]').attr('disabled',false);
 	  	$('#doDialog').dialog('open');
 	  }
 	  
 	  function doModify(){
+	  	var selectRows = $('#dg').datagrid("getSelections");
+	  	if(selectRows && selectRows.length==1){
+	        $("#doForm [name=loginName]").removeAttr("validType");
+	        $("#doForm [name=loginName]").removeAttr("required");
+	        $("#doForm [name=loginName]").removeAttr("class").addClass("user-input");
+			$("#doForm [name=passWord],#doForm [name=repeatPwd]").validatebox({required: false});
+			
+	  		$('#doForm')[0].reset();
+	  		$('#hidePwd').hide();
+	  		$('#doForm [name=departmentId],#doForm [name=loginName]').attr('disabled',true);
+		  	$('#doForm').form('load',selectRows[0]);
+		  	$('#doDialog').dialog({title:'修改用户'});
+		  	$('#doDialog').dialog('open');
+	  	}else{
+	  		$.messager.alert('提示','请选择其中一条数据','info');
+	  	}
+	  	
 	  }
 	  
 	  function doLock(){
+	  	var selectRows = $('#dg').datagrid("getSelections");
+	  	if(selectRows && selectRows.length==1){
+	  		updateStatus(selectRows[0].id,1);
+	  	}else{
+	  		$.messager.alert('提示','请选择其中一条数据','info');
+	  	}
 	  }
 	  
 	  function doUnlock(){
+	  	var selectRows = $('#dg').datagrid("getSelections");
+	  	if(selectRows && selectRows.length==1){
+	  		updateStatus(selectRows[0].id,0);
+	  	}else{
+	  		$.messager.alert('提示','请选择其中一条数据','info');
+	  	}
+	  }
+	  
+	  function doDelete(){
+	  	var selectRows = $('#dg').datagrid("getSelections");
+	  	if(selectRows && selectRows.length==1){
+	  		$('#dg').datagrid('loading');
+		  	$.post(kcJs.fn.getContextPath()+'/deleteUser',{id:selectRows[0].id},function(data){
+	  			$('#dg').datagrid('loaded');
+	  			if(data && data.code=='200'){
+	  				doQuery();
+	  			}
+	  			$.messager.alert('提示',data.msg,'info');
+	  		});
+	  	}else{
+	  		$.messager.alert('提示','请选择其中一条数据','info');
+	  	}
+	  }
+	  
+	  function updateStatus(id,status){
+	  	$('#dg').datagrid('loading');
+	  	$.post(kcJs.fn.getContextPath()+'/updateUserStatus',{id:id,status:status},function(data){
+  			$('#dg').datagrid('loaded');
+  			if(data && data.code=='200'){
+  				doQuery();
+  			}
+  			$.messager.alert('提示',data.msg,'info');
+  		});
 	  }
 	  
 	  function saveUser(){
 	  	if($('#doForm').form('validate')){
+  			$('#doDialog').dialog('close');
+	  		$('#dg').datagrid('loading');
+	  		$.post(kcJs.fn.getContextPath()+'/saveUser',$('#doForm').serializeObject(),function(data){
+	  			$('#dg').datagrid('loaded');
+	  			if(data && data.code=='200'){
+	  				doQuery();
+	  			}
+	  			$.messager.alert('提示',data.msg,'info');
+	  		});
 	  	}
 	  }
 	  
