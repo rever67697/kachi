@@ -1,5 +1,7 @@
 package com.team.controller.auth;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthUserService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -22,8 +25,9 @@ public class TbAuthUserController {
 	
 	@PostMapping("/getUserList")
 	public ResultList getUserList(Integer status, String name,String loginName,
-			Integer departmentId,int page,int rows){
-		return tbAuthUserService.getUserList(status, name, loginName,departmentId, page, rows);
+			Integer departmentId,int page,int rows,HttpServletRequest  request){
+		Integer dId = CommonUtil.getUser(request).getDepartmentId(); 
+		return tbAuthUserService.getUserList(status, name, loginName,departmentId,dId, page, rows);
 	}
 	
 	@PostMapping("/saveUser")

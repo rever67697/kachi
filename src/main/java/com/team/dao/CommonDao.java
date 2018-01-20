@@ -24,7 +24,7 @@ public interface CommonDao {
 	 *@return
 	 *return
 	 */
-	public List<Dictionary> getDepartmentDic();
+	public List<Dictionary> getDepartmentDic(@Param("departmentId") Integer departmentId);
 	
 	/**
 	 * 查找运营商

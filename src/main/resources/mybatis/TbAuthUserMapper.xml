@@ -23,6 +23,9 @@
 		<if test="departmentId!=null">
 		  and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
+		<if test="dId!=null">
+		  and (d.id=#{dId,jdbcType=INTEGER} or d.parentid = #{dId,jdbcType=INTEGER})
+		</if>
 	</select>
 	
 	<select id="getUserCount" resultType="int">

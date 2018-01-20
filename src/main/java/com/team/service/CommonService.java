@@ -10,7 +10,7 @@ public interface CommonService {
 
 	public ReturnMsg getCountryDic();
 	
-	public ReturnMsg getDepartmentDic();
+	public ReturnMsg getDepartmentDic(Integer departmentId);
 	
 	public ReturnMsg getOperatorDic(Integer countryCode);
 	

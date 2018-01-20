@@ -98,11 +98,15 @@ var kcJs=
 			$.each(option.data,function(i,o){
 				html += '<option value="'+o[option.value]+'" '+(option.defaultVal&&o[option.value]==option.defaultVal?"selected":"")+'>'+o[option.name]+'</option>';
 			});
-			$(option.container).html(html);
+			if(option.append){
+				$(option.container).append(html);
+			}else{
+				$(option.container).html(html);
+			}
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){
-			option = $.extend({"needNull":true,"queryParam":{}},option);
+			option = $.extend({"needNull":true,"queryParam":{},"append":false},option);
 			var _this = this;
 			$.post(this.getContextPath()+'/'+option.url,option.queryParam,function(data){
 				if(data && data.code=='200'){

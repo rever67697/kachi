@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.team.dao.CommonDao;
 import com.team.service.CommonService;
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.Dictionary;
 import com.team.vo.ReturnMsg;
@@ -39,9 +40,9 @@ public class CommonServiceImpl implements CommonService{
 	/**
 	 * 查找所有的代理商
 	 */
-	public ReturnMsg getDepartmentDic() {
+	public ReturnMsg getDepartmentDic(Integer departmentId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Dictionary> list =commonDao.getDepartmentDic();
+		List<Dictionary> list =commonDao.getDepartmentDic(CommonUtil.changeDepartmentId(departmentId));
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}

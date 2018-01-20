@@ -12,7 +12,8 @@ public interface TbAuthUserService {
 	
 	public TbAuthUser getUserByLoginName(String loginName);
 	
-	public ResultList getUserList(Integer status,String name,String loginName,Integer departmentId,int page,int rows);
+	public ResultList getUserList(Integer status,String name,String loginName,
+			Integer departmentId,Integer dId,int page,int rows);
 	
 	public ReturnMsg saveOrUpdateUser(TbAuthUser user);
 	

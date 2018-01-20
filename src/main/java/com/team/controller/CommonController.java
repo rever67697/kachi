@@ -44,8 +44,9 @@ public class CommonController {
 	}
 	
 	@PostMapping("/getDepartmentDic")
-	public ReturnMsg getDepartmentDic(){
-		return commonService.getDepartmentDic();
+	public ReturnMsg getDepartmentDic(HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return commonService.getDepartmentDic(departmentId);
 	}
 	
 	@PostMapping("/getOperatorDic")
