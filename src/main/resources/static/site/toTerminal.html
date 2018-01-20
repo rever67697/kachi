@@ -28,6 +28,8 @@
 		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
 	  					</select>
 	  				</td>
+	  				<th>所属部门：</th>
+	  				<td><select name="departmentId"><option value="">全部</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
 	  		</table>
@@ -75,7 +77,7 @@
 		  			<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>
 		  			<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
 		  			<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
-		  			<tr><th>代理商：</th><td><select name="departmentId"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
+		  			<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
 		  			<!-- <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
 		  			<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> -->
 		  			<tr style="height:10px"></tr>
@@ -121,7 +123,7 @@
 			         	{field:'note',title:'备注',width:85}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getTerminalByDept',
+			url:kcJs.fn.getContextPath()+'/getTerminalList',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -194,7 +196,7 @@
 		});
 		
 		kcJs.fn.initSelect({"container":$('[name=vCountryCode],[name=homeLocation]'),"url":'getCountryDic',"defaultVal":"156"});
-		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic'});
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"needNull":false,"append":true});
 		
 	});
 	

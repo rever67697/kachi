@@ -20,7 +20,7 @@ public interface SimPackageDao {
 	 *@return
 	 *return
 	 */
-	public List<SimPackage> getSimPackage(Map<String, Object> map);
+	public List<SimPackage> getPackageList(Map<String, Object> map);
 	
 	/**
 	 * 单条删除卡套餐

@@ -4,19 +4,24 @@
 
 	<sql id="departmentId">
 		<if test="departmentId!=null" >  
-         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+         	and d.id = #{departmentId,jdbcType=INTEGER}  
+        </if>
+	</sql>
+	
+	<sql id="dId">
+		<if test="dId!=null" >  
+         	and (d.id = #{dId,jdbcType=INTEGER}  or d.parentId = #{dId,jdbcType=INTEGER})
         </if>
 	</sql>
 
-	<select id="getSimPoolByDeparment" resultType="com.team.model.SimPool" parameterType="java.util.Map">
+	<select id="getSimPoolList" resultType="com.team.model.SimPool" parameterType="java.util.Map">
 		select r.*,
-			   t.name departmentName 
+			   d.name departmentName 
 		from m_simpool r
-		left join m_department t
-		on r.departmentId=t.id
-		   and t.status=0
+		left join m_department d
+		on r.departmentId=d.id
+		   and d.status=0
 		where 1=1
-		<include refid="departmentId"/>
 		<if test="spid!=null" >  
          	and r.spid = #{spid,jdbcType=INTEGER}  
         </if>
@@ -26,6 +31,7 @@
         <if test="name!=null and name!=''" >  
          	and r.name like concat('%',#{name,jdbcType=VARCHAR},'%')
         </if>
+        <include refid="dId"/>
         order by r.spid
 	</select> 
 	
@@ -36,10 +42,23 @@
 	</update>
 	
 	<select id="getOutlineInfo" resultType="com.team.vo.OutlineInfo">
-		select (select count(1) from m_simpool r where 1=1 <include refid="departmentId"/>) as simPoolCount,
-			   (select count(1) from m_simpool r where isActive=1 <include refid="departmentId"/>) as onlinePoolCount,
-			   (select sum(ifnull(type,0)) from m_simpool r where 1=1 <include refid="departmentId"/>) as cardSlotCount,
-			   (select count(1) from m_simpool r,m_simcard t where r.id=t.cpid <include refid="departmentId"/>) as simCardCount 
-		from dual
+		select count(1) as simPoolCount,
+			   sum(tt.active) as onlinePoolCount,
+		       sum(tt.type) as cardSlotCount,
+		  	   sum(tt.count) as simCardCount
+		from(
+			select p.id,
+						 case when p.isactive=1 then 1 else 0 end active,
+						 ifnull(type,0) type,
+						 count(1) count
+			from m_simpool p 
+			left join m_simcard c
+			on p.id=c.cpid
+			left join m_department d
+			on p.departmentId=d.id and d.status=0
+			where 1=1
+			<include refid="dId"/>
+			group by p.id,p.isactive,p.type
+		) tt
 	</select>
 </mapper>

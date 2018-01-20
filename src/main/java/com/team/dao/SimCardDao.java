@@ -47,7 +47,7 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public List<SimCard> getSimCard(Map<String, Object> map);
+	public List<SimCard> getSimCardList(Map<String, Object> map);
 	
 	/**
 	 * 查询流量卡总览信息
@@ -55,7 +55,7 @@ public interface SimCardDao {
 	 *@return
 	 *return
 	 */
-	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
+	public List<OutlineInfo> getOutlineInfo(@Param("dId")Integer dId);
 	
 	/**
 	 * 根据卡池id更新卡所属的代理商
@@ -73,12 +73,4 @@ public interface SimCardDao {
 	 */
 	public int updateCardStatus(List<Integer> list);
 	
-
-	/**
-	 * 根据条件寻找出sim卡列表
-	 *@param map
-	 *@return
-	 *return
-	 */
-	public List<SimCard> getSimCardInAppointCard(Map<String, Object> map);
 }

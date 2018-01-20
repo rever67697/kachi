@@ -11,7 +11,8 @@ import com.team.vo.ReturnMsg;
 
 public interface ChannelCardService {
 	
-  public ResultList getChannelCard(String number,Integer countryCode,Integer operatorCode, Integer status, int page,int rows);
+  public ResultList getChannelCardList(String number,Integer countryCode,Integer operatorCode, 
+		  Integer status, int page,int rows);
 
   public ReturnMsg deleteChannelCards(String ids);
 

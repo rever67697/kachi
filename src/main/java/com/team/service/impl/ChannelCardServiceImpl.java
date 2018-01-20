@@ -33,7 +33,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 	private ChannelCardDao channelCardDao;
 
 	@Override
-	public ResultList getChannelCard(String number,Integer countryCode, Integer operatorCode,
+	public ResultList getChannelCardList(String number,Integer countryCode, Integer operatorCode,
 			Integer status, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -41,7 +41,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 		map.put("countryCode", countryCode);
 		map.put("operatorCode", operatorCode);
 		map.put("status", status);
-		List<ChannelCard> list = channelCardDao.getChannelCard(map);
+		List<ChannelCard> list = channelCardDao.getChannelCardList(map);
 		PageInfo<ChannelCard> pageInfo = new PageInfo<ChannelCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}

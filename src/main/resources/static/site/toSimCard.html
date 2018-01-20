@@ -114,7 +114,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getSimCard',
+			url:kcJs.fn.getContextPath()+'/getSimCardList',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -139,6 +139,7 @@
 		});
 		
 		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
+		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
 	});
   
   	function doModify(){

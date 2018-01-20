@@ -24,7 +24,27 @@ public class SimPackage implements Serializable{
 	
 	private String mccs;//套餐支持的漫游国家，用,分隔，为空表示任何国家都可以使用
 	
+	private Integer departmentId;//部门id
+	
+	private String departmentName;//部门名称
+	
 	private String operatorName;//运营商名称
+
+	public Integer getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
 
 	public String getOperatorName() {
 		return operatorName;

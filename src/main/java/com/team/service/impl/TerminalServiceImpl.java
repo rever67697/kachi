@@ -43,19 +43,17 @@ public class TerminalServiceImpl implements TerminalService{
 	 *@return
 	 *return
 	 */
-	public ResultList getTerminalByDeparment(Integer departmentId, Integer tsid,
+	public ResultList getTerminalList(Integer departmentId,Integer dId, Integer tsid,
 			Integer status,Integer activated, int page, int rows) {
-		//对departmentid=0的特殊处理
-		if(departmentId!=null && departmentId == 0)departmentId=null;
-		
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
+		map.put("dId", CommonUtil.changeDepartmentId(dId));
 		map.put("tsid", tsid);
 		map.put("status", status);
 		map.put("activated", activated);
-		List<Terminal> list = terminalDao.getTerminalByDeparment(map);
-		PageInfo<Terminal> pageInfo = new PageInfo<>(list);
+		List<Terminal> list = terminalDao.getTerminalList(map);
+		PageInfo<Terminal> pageInfo = new PageInfo<Terminal>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 

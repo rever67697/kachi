@@ -32,10 +32,10 @@ public class ChannelCardController {
 	 * @param rows 一页的记录数
 	 * @return
 	 */
-	@PostMapping("/getChannelCard")
-	public ResultList getChannelCard(String number,Integer countryCode,Integer operatorCode, Integer status, 
+	@PostMapping("/getChannelCardList")
+	public ResultList getChannelCardList(String number,Integer countryCode,Integer operatorCode, Integer status, 
 			int page, int rows) {
-		return channelCardService.getChannelCard(number,countryCode, operatorCode, status, page, rows);
+		return channelCardService.getChannelCardList(number,countryCode, operatorCode, status, page, rows);
 	}
 
 	@PostMapping("/deleteChannelCards")

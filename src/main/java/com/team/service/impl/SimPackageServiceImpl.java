@@ -40,12 +40,13 @@ public class SimPackageServiceImpl implements SimPackageService{
 	/**
 	 * 查找卡套餐信息
 	 */
-	public ResultList getSimPackage(Integer status, String name, int page, int rows) {
+	public ResultList getPackageList(Integer dId,Integer status, String name, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
 		map.put("status", status);
-		List<SimPackage> list = simPackageDao.getSimPackage(map);
+		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		List<SimPackage> list = simPackageDao.getPackageList(map);
 		PageInfo<SimPackage> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}

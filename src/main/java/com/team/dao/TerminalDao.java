@@ -19,7 +19,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public List<Terminal> getTerminalByDeparment(Map<String, Object> map);
+	public List<Terminal> getTerminalList(Map<String, Object> map);
 	
 	/**
 	 * 根据id批量删除终端

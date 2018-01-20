@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.ChannelCardDao">
 
-	<select id="getChannelCard" resultType="com.team.model.ChannelCard" parameterType="java.util.Map">
+	<select id="getChannelCardList" resultType="com.team.model.ChannelCard" parameterType="java.util.Map">
 		select r.*
 			   ,ifnull(t.namecn,t.countryname) countryName
 			   ,case k.OPERATORNAMECN when 'China Mobile' then '中国移动' 

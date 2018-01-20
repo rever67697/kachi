@@ -26,6 +26,7 @@
 		<if test="dId!=null">
 		  and (d.id=#{dId,jdbcType=INTEGER} or d.parentid = #{dId,jdbcType=INTEGER})
 		</if>
+		order by d.id
 	</select>
 	
 	<select id="getUserCount" resultType="int">

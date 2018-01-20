@@ -52,6 +52,8 @@
 		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
 	  					</select>
 	  				</td>
+	  				<th>所属部门：</th>
+	  				<td><select name="departmentId"></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
 	  			</tr>
 	  		</table>
@@ -145,7 +147,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'countryName',title:'所在地区',width:120}
 					]],
-			url:kcJs.fn.getContextPath()+'/getTerminalByDept',
+			url:kcJs.fn.getContextPath()+'/getTerminalList',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -183,7 +185,7 @@
 				  		handler: selectCards
 				  	  }
 				  	 ],
-			url:kcJs.fn.getContextPath()+'/getSimCard',
+			url:kcJs.fn.getContextPath()+'/getSimCardList',
 			nowrap:false,
 			pagination:true,
 			pageList:[15,30],
@@ -209,7 +211,7 @@
  			width:1000,
  			height:400,
  			cache: false,
-			title : "选取终端编号【单击可选中】"
+			title : '选取终端编号<span style="color:red">【单击可选中】</span>'
 		});
 		
 		$('#cardDialog').dialog({
@@ -217,8 +219,11 @@
  			width:1000,
  			height:400,
  			cache: false,
-			title : "选取sim卡IMSI【可多选】"
+			title : '选取sim卡IMSI<span style="color:red">【可多选】</span>'
 		});
+		
+		kcJs.fn.initSelect({"container":$('[name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
 		
 	});
 	function doAdd(){//新增弹出窗

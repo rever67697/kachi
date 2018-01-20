@@ -58,12 +58,13 @@
 			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=="0"?"正常":"删除")+'</div>';
 			         	}},
 			         	{field:'level',title:'优先级',width:100},
-			         	{field:'mccs',title:'套餐支持的漫游国家',width:200,formatter:function(value,rec,index){
+			         	{field:'mccs',title:'套餐支持的漫游国家',width:150,formatter:function(value,rec,index){
 			         		return value?value:"不限";
-			         	}}
+			         	}},
+			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getSimPackage',
+			url:kcJs.fn.getContextPath()+'/getPackageList',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,

@@ -37,15 +37,15 @@ public class SimPoolServiceImpl implements SimPoolService{
 	/**
 	 * 根据代理商id查找其所有的卡池
 	 */
-	public ResultList getSimPoolByDeparment(Integer departmentId,Integer spid,String name,Integer isActive,
+	public ResultList getSimPoolList(Integer dId,Integer spid,String name,Integer isActive,
 			int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", CommonUtil.changeDepartmentId(departmentId));
+		map.put("dId", CommonUtil.changeDepartmentId(dId));
 		map.put("spid", spid);
 		map.put("name", name);
 		map.put("isActive", isActive);
-		List<SimPool> list = simPoolDao.getSimPoolByDeparment(map);
+		List<SimPool> list = simPoolDao.getSimPoolList(map);
 		PageInfo<SimPool> pageInfo = new PageInfo<SimPool>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
@@ -57,9 +57,9 @@ public class SimPoolServiceImpl implements SimPoolService{
 	 *@return
 	 *return
 	 */
-	public ReturnMsg getOutlineInfo(Integer departmentId) {
+	public ReturnMsg getOutlineInfo(Integer dId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.changeDepartmentId(departmentId));
+		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.changeDepartmentId(dId));
 		OutlineInfo info = null;
 		if(CommonUtil.listNotBlank(list)){
 			info = list.get(0);

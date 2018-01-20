@@ -27,17 +27,17 @@ public class SimPoolController {
 	@Autowired
 	private ReadPoolDeptService readPoolDeptService;
 	
-	@PostMapping("/getSimPoolByDept")
-	public ResultList getSimPoolByDeparment(Integer spid,String name,Integer isActive,
+	@PostMapping("/getSimPoolList")
+	public ResultList getSimPoolList(Integer spid,String name,Integer isActive,
 			int page,int rows,HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return simPoolService.getSimPoolByDeparment(departmentId,spid,name,isActive, page, rows);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return simPoolService.getSimPoolList(dId,spid,name,isActive, page, rows);
 	}
 	
 	@PostMapping("/getPoolOutlineInfo")
 	public ReturnMsg getPoolOutlineInfo(HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return simPoolService.getOutlineInfo(departmentId);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return simPoolService.getOutlineInfo(dId);
 	}
 	
 	@PostMapping("/giveSimPool")

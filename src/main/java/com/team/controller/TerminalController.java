@@ -32,11 +32,11 @@ public class TerminalController {
 	@Autowired
 	private TerminalSimService terminalSimService;
 	
-	@PostMapping("/getTerminalByDept")
-	public ResultList getTerminalByDeparment(Integer status,Integer tsid,Integer activated,
+	@PostMapping("/getTerminalList")
+	public ResultList getTerminalList(Integer departmentId,Integer status,Integer tsid,Integer activated,
 			int page,int rows,HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalService.getTerminalByDeparment(departmentId, tsid, status,activated, page, rows);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, page, rows);
 	}
 	
 	@PostMapping("/deleteTerminalByIds")

@@ -14,8 +14,8 @@
 			   name
 		from m_department
 		where status=0
-		<if test="departmentId != null">
-		  and (id=#{departmentId,jdbcType=INTEGER} or parentid=#{departmentId,jdbcType=INTEGER})
+		<if test="dId != null">
+		  and (id=#{dId,jdbcType=INTEGER} or parentid=#{dId,jdbcType=INTEGER})
 		</if>
 		order by id
 	</select>
@@ -39,12 +39,12 @@
 		select r.id value,
 			   r.name name 
 		from m_simpool r
-		left join m_department t
-		on r.departmentId=t.id
-		   and t.status=0
+		left join m_department d
+		on r.departmentId=d.id
+		   and d.status=0
 		where 1=1
-		<if test="departmentId!=null" >  
-         	and (t.id = #{departmentId,jdbcType=INTEGER}  or t.parentId= #{departmentId,jdbcType=INTEGER})
+		<if test="dId!=null" >  
+         	and (d.id = #{dId,jdbcType=INTEGER}  or d.parentId= #{dId,jdbcType=INTEGER})
         </if>
 	</select>
 </mapper>

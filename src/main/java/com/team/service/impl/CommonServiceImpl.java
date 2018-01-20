@@ -40,9 +40,9 @@ public class CommonServiceImpl implements CommonService{
 	/**
 	 * 查找所有的代理商
 	 */
-	public ReturnMsg getDepartmentDic(Integer departmentId) {
+	public ReturnMsg getDepartmentDic(Integer dId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Dictionary> list =commonDao.getDepartmentDic(CommonUtil.changeDepartmentId(departmentId));
+		List<Dictionary> list =commonDao.getDepartmentDic(CommonUtil.changeDepartmentId(dId));
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}
@@ -63,9 +63,9 @@ public class CommonServiceImpl implements CommonService{
 	}
 
 	@Override
-	public ReturnMsg getSimPoolDic(Integer departmentId) {
+	public ReturnMsg getSimPoolDic(Integer dId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<Dictionary> list =commonDao.getSimPoolDic(departmentId);
+		List<Dictionary> list =commonDao.getSimPoolDic(CommonUtil.changeDepartmentId(dId));
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
 		}

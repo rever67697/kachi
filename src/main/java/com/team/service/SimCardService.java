@@ -15,8 +15,9 @@ public interface SimCardService {
 	
 	public ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCard(Integer departmentId,Integer cpId,String number,Integer status,int page,int rows);
+	public ResultList getSimCardList(Integer departmentId,Integer dId,Integer cpId,String number,
+			Integer status,int page,int rows);
 	
-	public ReturnMsg getOutlineInfo(Integer departmentId);
+	public ReturnMsg getOutlineInfo(Integer dId);
 	
 }

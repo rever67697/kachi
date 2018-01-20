@@ -4,27 +4,31 @@
 
 	<sql id="departmentId">
 		<if test="departmentId!=null" >  
-         	and r.departmentId = #{departmentId,jdbcType=INTEGER}  
+         	and d.id = #{departmentId,jdbcType=INTEGER}  
+        </if>
+	</sql>
+	
+	<sql id="dId">
+		<if test="dId!=null" >  
+         	and (d.id = #{dId,jdbcType=INTEGER}  or d.parentId = #{dId,jdbcType=INTEGER})
         </if>
 	</sql>
 
-	<select id="getTerminalByDeparment" resultType="com.team.model.Terminal" parameterType="java.util.Map">
+	<select id="getTerminalList" resultType="com.team.model.Terminal" parameterType="java.util.Map">
 		select r.*,
-			  t.name departmentName,
+			  d.name departmentName,
 			  ifnull(k.namecn,k.countryname) countryName,
 			  f.allowFlow,
 			  f.validityDate,
 			  f.note
 		from m_terminal r
-		left join m_department t
-		on r.departmentId=t.id
-		   and t.status=0
+		left join m_department d
+		on r.departmentId=d.id and d.status=0
 		left join m_country k 
 		on k.countrycode=r.homeLocation
 		left join m_flow_balance f
 		on r.tsid=f.tsid
 		where 1=1
-		<include refid="departmentId"/>
 		<if test="tsid!=null" >  
          	and r.tsid = #{tsid,jdbcType=INTEGER}  
         </if>
@@ -34,6 +38,8 @@
 		<if test="activated!=null" >  
          	and r.activated = #{activated,jdbcType=INTEGER}  
         </if>
+        <include refid="departmentId"/>
+        <include refid="dId"/>
         order by r.tsid
 	</select> 
 	

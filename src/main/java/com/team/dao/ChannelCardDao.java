@@ -19,7 +19,7 @@ public interface ChannelCardDao {
    *@return
    *return
    */
-  public List<ChannelCard> getChannelCard(Map<String, Object> map);
+  public List<ChannelCard> getChannelCardList(Map<String, Object> map);
   
   /**
    * 插入单条副卡

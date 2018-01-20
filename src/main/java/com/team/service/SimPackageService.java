@@ -10,7 +10,7 @@ import com.team.vo.ReturnMsg;
  */
 public interface SimPackageService {
 
-	public ResultList getSimPackage(Integer status,String name,int page,int rows);
+	public ResultList getPackageList(Integer dId,Integer status,String name,int page,int rows);
 	
 	public ReturnMsg deletePackage(Integer id);
 	

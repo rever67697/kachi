@@ -45,8 +45,8 @@ public class CommonController {
 	
 	@PostMapping("/getDepartmentDic")
 	public ReturnMsg getDepartmentDic(HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getDepartmentDic(departmentId);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return commonService.getDepartmentDic(dId);
 	}
 	
 	@PostMapping("/getOperatorDic")
@@ -56,8 +56,8 @@ public class CommonController {
 	
 	@PostMapping("/getSimPoolDic")
 	public ReturnMsg getSimPoolDic(HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getSimPoolDic(departmentId);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return commonService.getSimPoolDic(dId);
 	}
 
 	@GetMapping("/downloadFile")

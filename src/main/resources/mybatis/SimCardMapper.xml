@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.SimCardDao">
+	
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
 
 	<select id="getSimCardByPool" resultType="com.team.model.SimCard">
 		select id,number,status,cpchannelId
@@ -14,7 +20,7 @@
 		exists (select 1 from m_simcard r where r.packageid=#{packageId,jdbcType=INTEGER})
 	</select>
 	
-	<select id="getSimCard" parameterType="java.util.Map" resultType="com.team.model.SimCard">
+	<select id="getSimCardList" parameterType="java.util.Map" resultType="com.team.model.SimCard">
 		select r.* 
 			   ,t.name packageName
 			   ,p.name simPoolName
@@ -28,9 +34,9 @@
 		left join m_simpackage t
 		on r.packageid=t.id
 		left join m_simpool p
-		on r.CPID=p.ID
-		left join m_department d
-		on r.departmentId=d.id
+		on r.cpid=p.id
+		left join m_department d 
+		on p.departmentId=d.id and d.status=0
 		left join m_operator o
 		on r.OPERATORCODE=o.OPERATORCODE
 		where 1=1
@@ -41,57 +47,29 @@
 			and r.status=#{status,jdbcType=INTEGER}
 		</if>
 		<if test="departmentId != null">
-			and r.departmentId=#{departmentId,jdbcType=INTEGER}
+			and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
 		<if test="number != null and number != ''">
 			and r.number=#{number,jdbcType=VARCHAR}
 		</if>
-		order by r.cpid,r.cpchannelid
-	</select>
-	
-	<select id="getSimCardInAppointCard" parameterType="java.util.Map" resultType="com.team.model.SimCard">
-		select r.* 
-			   ,t.name packageName
-			   ,p.name simPoolName
-			   ,d.name departmentName
-			   ,case o.OPERATORNAMECN when 'China Mobile' then '中国移动' 
-			 				 		  when 'China Unicom' then '中国联通' 
-			 				 		  when 'China Telecom' then '中国电信'
-							 		  when 'China Tietong' then '中国铁通' 
-							 else o.OPERATORNAMECN end operatorName
-		from m_simcard r
-		left join m_simpackage t
-		on r.packageid=t.id
-		left join m_simpool p
-		on r.CPID=p.ID
-		left join m_department d
-		on r.departmentId=d.id
-		left join m_operator o
-		on r.OPERATORCODE=o.OPERATORCODE
-		where r.status in (0,1)
-		<if test="cpid != null">
-			and r.cpid=#{cpId,jdbcType=INTEGER}
-		</if>
-		<if test="departmentId != null">
-			and r.departmentId=#{departmentId,jdbcType=INTEGER}
-		</if>
-		<if test="number != null and number != ''">
-			and r.number=#{number,jdbcType=VARCHAR}
-		</if>
+		<include refid="dId"></include>
 		order by r.cpid,r.cpchannelid
 	</select>
 	
 	<select id="getOutlineInfo"  resultType="com.team.vo.OutlineInfo">
 		select count(1) simCardCount,
-			   sum(case when status=0 then 1 else 0 end) onCardCount,
-	     	   sum(case when status=1 then 1 else 0 end) stopCardCount,
-               sum(case when status=2 then 1 else 0 end) appointCardCount,
-               sum(case when status=3 then 1 else 0 end) readCardCount,
-	           sum(case when status=4 then 1 else 0 end) offCardCount
+			   sum(case when r.status=0 then 1 else 0 end) onCardCount,
+	     	   sum(case when r.status=1 then 1 else 0 end) stopCardCount,
+               sum(case when r.status=2 then 1 else 0 end) appointCardCount,
+               sum(case when r.status=3 then 1 else 0 end) readCardCount,
+	           sum(case when r.status=4 then 1 else 0 end) offCardCount
 		from  m_simcard r
-		<if test="departmentId != null">
-			and r.departmentId=#{departmentId,jdbcType=INTEGER}
-		</if>
+		left join m_simpool p
+		on r.cpid=p.id
+		left join m_department d
+		on p.departmentid=d.id and d.status=0
+		where 1=1
+		<include refid="dId"></include>
 	</select>
 	
 	<delete id="deleteSimCard" parameterType="java.util.List">

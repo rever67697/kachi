@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimCardDao;
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
@@ -57,15 +58,16 @@ public class SimCardServiceImpl implements SimCardService{
 	/**
 	 * 根据条件寻找出sim卡列表
 	 */
-	public ResultList getSimCard(Integer departmentId, Integer cpId,
+	public ResultList getSimCardList(Integer departmentId,Integer dId, Integer cpId,
 			String number, Integer status, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
+		map.put("dId", CommonUtil.changeDepartmentId(dId));
 		map.put("cpId", cpId);
 		map.put("status", status);
 		map.put("number", number);
-		List<SimCard> list = simCardDao.getSimCard(map);
+		List<SimCard> list = simCardDao.getSimCardList(map);
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
@@ -74,9 +76,9 @@ public class SimCardServiceImpl implements SimCardService{
 	/**
 	 * 查询流量卡总览信息
 	 */
-	public ReturnMsg getOutlineInfo(Integer departmentId) {
+	public ReturnMsg getOutlineInfo(Integer dId) {
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		List<OutlineInfo> list = simCardDao.getOutlineInfo(departmentId);
+		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil.changeDepartmentId(dId));
 		OutlineInfo info = null;
 		if(list!=null&&list.size()>0){
 			info = list.get(0);
@@ -84,6 +86,5 @@ public class SimCardServiceImpl implements SimCardService{
 		}
 		return returnMsg;
 	}
-
 
 }

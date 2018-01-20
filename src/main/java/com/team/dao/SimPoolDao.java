@@ -21,7 +21,7 @@ public interface SimPoolDao {
 	 *@return
 	 *return
 	 */
-	public List<SimPool> getSimPoolByDeparment(Map<String, Object> map);
+	public List<SimPool> getSimPoolList(Map<String, Object> map);
 	
 	/**
 	 * 根据代理商查找卡池的总览信息
@@ -29,7 +29,7 @@ public interface SimPoolDao {
 	 *@return
 	 *return
 	 */
-	public List<OutlineInfo> getOutlineInfo(@Param("departmentId")Integer departmentId);
+	public List<OutlineInfo> getOutlineInfo(@Param("dId")Integer dId);
 	
 	/**
 	 * 更新卡池的代理商
