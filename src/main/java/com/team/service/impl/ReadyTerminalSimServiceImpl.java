@@ -56,13 +56,13 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 	}
 
 	@Override
-	public ReturnMsg saveReadyTerminalSim(Integer tsid,Integer type,String args) {
+	public ReturnMsg saveReadyTerminalSim(Integer tsid,Integer type,String args,Integer userId) {
 		int count = 0;
 		List<ReadyTerminalSim> list = new ArrayList<ReadyTerminalSim>();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (String string : args.split(";")) {
 			String[] params = string.split(",");
-			ReadyTerminalSim readyTerminalSim = new ReadyTerminalSim(tsid, CommonUtil.putLong(params[2]),CommonUtil.putInteger(params[1]), type, null);
+			ReadyTerminalSim readyTerminalSim = new ReadyTerminalSim(tsid, CommonUtil.putLong(params[2]),CommonUtil.putInteger(params[1]), type, userId);
 			list.add(readyTerminalSim);
 			ids.add(CommonUtil.putInteger(params[0]));
 		}

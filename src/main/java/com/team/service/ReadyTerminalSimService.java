@@ -12,6 +12,6 @@ public interface ReadyTerminalSimService {
 
   public ReturnMsg updateReadyTerminalSim(ReadyTerminalSim readyTerminalSim);
 
-  public ReturnMsg saveReadyTerminalSim(Integer tsid,Integer type,String args);
+  public ReturnMsg saveReadyTerminalSim(Integer tsid,Integer type,String args,Integer userId);
   
 }

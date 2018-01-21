@@ -27,6 +27,8 @@ public class ReadyTerminalSim implements Serializable {
 	private Integer operator;// 操作人
 
 	private Integer type;// 预指定类型
+	
+	private String operatorName;//操作人
 
 	public ReadyTerminalSim(Integer tsid,Long imsi,Integer lastStatus, Integer type, Integer operator) {
 		this.tsid = tsid;
@@ -35,9 +37,18 @@ public class ReadyTerminalSim implements Serializable {
 		this.type = type;
 		this.operator = operator;
 	}
-
+	
 	public ReadyTerminalSim() {
 		super();
+	}
+	
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
 	}
 
 	public Integer getId() {

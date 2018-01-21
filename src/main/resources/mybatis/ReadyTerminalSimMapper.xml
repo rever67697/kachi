@@ -4,8 +4,11 @@
 
 	<select id="getReadyTerminalSim" resultType="com.team.model.ReadyTerminalSim"
 		parameterType="java.util.Map">
-		select r.*
+		select r.*,
+			   c.name operatorName
 		from m_ready_terminal_sim r
+		left join m_customer c
+		on r.operator=c.id
 		where 1=1
 		<if test="tsid!=null ">
 			and r.tsid like #{tsid,jdbcType=INTEGER}
