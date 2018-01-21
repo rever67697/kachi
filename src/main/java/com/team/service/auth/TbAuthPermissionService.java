@@ -22,4 +22,8 @@ public interface TbAuthPermissionService {
 	
 	public ReturnMsg grantPermission(Integer userId,String ids);
 	
+	public ReturnMsg updateStatus(Integer id);
+	
+	public ReturnMsg saveOrUpdatePermission(TbAuthPermission permission);
+	
 }

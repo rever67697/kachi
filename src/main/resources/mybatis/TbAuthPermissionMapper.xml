@@ -72,4 +72,44 @@
 			(#{roleId,jdbcType=INTEGER},#{item,jdbcType=INTEGER})
 		</foreach>
 	</insert>
+	
+	<update id="updateStatus">
+		update tb_auth_permission
+		set status=1
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<insert id="insertPermission" parameterType="com.team.model.auth.TbAuthPermission" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_auth_permission
+		(parent_id,text,url,icon_cls,is_menu,order_num,fun_desc,status)
+		values
+		(#{parentId,jdbcType=INTEGER},
+		 #{text,jdbcType=VARCHAR},
+		 #{url,jdbcType=VARCHAR},
+		 #{iconCls,jdbcType=VARCHAR},
+		 #{isMenu,jdbcType=INTEGER},
+		 #{orderNum,jdbcType=INTEGER},
+		 #{funDesc,jdbcType=VARCHAR},
+		 0
+		 )
+	</insert>
+	
+	<update id="updatePermission" parameterType="com.team.model.auth.TbAuthPermission">
+		update tb_auth_permission
+		set text=#{text,jdbcType=VARCHAR},
+			url=#{url,jdbcType=VARCHAR},
+			icon_cls=#{iconCls,jdbcType=VARCHAR},
+			order_num=#{orderNum,jdbcType=INTEGER},
+			fun_desc=#{funDesc,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER} 
+	</update>
+	
+	<insert id="insertRP">
+		insert into tb_auth_role_permission
+		(role_id,permission_id)
+		select
+			  (select id from tb_auth_role where code='GROUP_ADMIN' and status=0),
+			  #{permissionId,jdbcType=INTEGER}
+		from dual 
+	</insert>
 </mapper>

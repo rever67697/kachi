@@ -94,5 +94,22 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 		return returnMsg;
 	}
 
+	@Override
+	public ReturnMsg updateStatus(Integer id) {
+		int count = tbAuthPermissionDao.updateStatus(id);
+		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+	}
+
+	@Override
+	public ReturnMsg saveOrUpdatePermission(TbAuthPermission permission) {
+		if(permission.getId()!=null){
+			tbAuthPermissionDao.updatePermission(permission);
+		}else{
+			tbAuthPermissionDao.insertPermission(permission);
+			tbAuthPermissionDao.insertRP(permission.getId());
+		}
+		return IConstant.MSG_OPERATE_SUCCESS;
+	}
+
 	
 }

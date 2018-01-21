@@ -236,16 +236,20 @@ public class CommonUtil {
 	
 	public static void buid(List<TbAuthPermission> list,TbAuthPermission node,boolean needAttribute){
 		List<TbAuthPermission> children = getChildrens(list,node);
+		if(needAttribute){
+			node.getAttributes().put("id", node.getId());
+			node.getAttributes().put("isMenu", node.getIsMenu());
+			node.getAttributes().put("isMenu2", node.getIsMenu());
+			node.getAttributes().put("url", node.getUrl());
+			node.getAttributes().put("funDesc", node.getFunDesc());
+			node.getAttributes().put("orderNum", node.getOrderNum());
+			node.getAttributes().put("parentId", node.getParentId());
+			node.getAttributes().put("text", node.getText());
+			node.getAttributes().put("icon", node.getIconCls());
+		}
 		if(listNotBlank(children)){
 			node.setChildren(children);
 			for (TbAuthPermission child : children) {
-				if(needAttribute){
-					child.getAttributes().put("isMenu", child.getIsMenu()==1?true:false);
-					child.getAttributes().put("url", child.getUrl());
-					child.getAttributes().put("funDesc", child.getFunDesc());
-					child.getAttributes().put("orderNum", child.getOrderNum());
-					child.getAttributes().put("parentId", child.getOrderNum());
-				}
 				buid(list,child,needAttribute);
 			}
 		}

@@ -63,4 +63,36 @@ public interface TbAuthPermissionDao {
 	 */
 	public int insertRolePermission(Map<String, Object> map);
 	
+	/**
+	 * 删除节点
+	 *@param id
+	 *@return
+	 *return
+	 */
+	public int updateStatus(@Param("id") Integer id);
+	
+	/**
+	 * 添加节点
+	 *@param permission
+	 *@return
+	 *return
+	 */
+	public int insertPermission(TbAuthPermission permission);
+	
+	/**
+	 * 更新节点
+	 *@param permission
+	 *@return
+	 *return
+	 */
+	public int updatePermission(TbAuthPermission permission);
+	
+	/**
+	 * 添加一个节点时候，添加系统管理员->这个节点的关联关系
+	 *@param permissionId
+	 *@return
+	 *return
+	 */
+	public int insertRP(@Param("permissionId") Integer permissionId);
+	
 }

@@ -331,10 +331,7 @@
 	  }
 	  
 	  function change(data){
-	  	if(data && data.children){
-	  		if(data.attributes.isMenu){
-	  			data.state="closed";
-	  		}
+	  	if(data){
 	  		data.iconCls="";
 	  		for(var i = 0; i < data.children.length;i++){
 	  			var obj = data.children[i];
@@ -343,6 +340,7 @@
 	  			}else{
 	  				delete obj.children;
 	  				obj.iconCls="";
+	  				data.state="closed";
 	  			}
 	  		}
 	  	}

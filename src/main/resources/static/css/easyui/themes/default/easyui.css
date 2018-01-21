@@ -1985,6 +1985,8 @@ table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radi
 .do-title{color:#1542A7;font-weight:800}
 .flag{color:red}
 .user-input{width:180px;height:20px;border-radius:4px;padding:3px;line-height:18px;border:1px solid #999;display:block;margin-right:10px}
+.user-input2{width:220px;height:20px;border-radius:4px;padding:3px;line-height:18px;border:1px solid #999;display:block}
 .user-select{height:28px;width:188px}
 .user-td{width:70px}
 fieldset{border:1px solid #999}
+.appTable td{padding-bottom:20px}
