@@ -8,7 +8,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.team.model.auth.TbAuthUser;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 
 /**
  * 创建日期：2017-12-14下午4:30:18

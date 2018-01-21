@@ -17,9 +17,6 @@
 		<if test="name!=null and name != ''">
 		  and c.name=#{name,jdbcType=VARCHAR}
 		</if>
-		<if test="loginName!=null and loginName != ''">
-		  and c.loginName=#{loginName,jdbcType=VARCHAR}
-		</if>
 		<if test="departmentId!=null">
 		  and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
@@ -32,16 +29,15 @@
 	<select id="getUserCount" resultType="int">
 		select count(1)
 		from m_customer
-		where loginName=#{loginName,jdbcType=VARCHAR}
+		where name=#{name,jdbcType=VARCHAR}
 	</select>
 	
 	<insert id="saveUser" parameterType="com.team.model.auth.TbAuthUser" useGeneratedKeys="true" keyProperty="id">
 		insert into m_customer
-		(name,loginname,password,sex,phonenumber,qq,wechat,email,age,status,departmentid)
+		(name,password,sex,phonenumber,qq,wechat,email,age,status,departmentid)
 		values
 		(
 		 #{name,jdbcType=VARCHAR},
-		 #{loginName,jdbcType=VARCHAR},
 		 #{passWord,jdbcType=VARCHAR},
 		 #{sex,jdbcType=VARCHAR},
 		 #{phoneNumber,jdbcType=VARCHAR},
@@ -62,8 +58,7 @@
 	
 	<update id="updateUser" parameterType="com.team.model.auth.TbAuthUser">
 		update m_customer
-		set name=#{name,jdbcType=VARCHAR},
-			sex=#{sex,jdbcType=VARCHAR},
+		set sex=#{sex,jdbcType=VARCHAR},
 			qq=#{qq,jdbcType=VARCHAR},
 			wechat=#{wechat,jdbcType=VARCHAR},
 			sex=#{sex,jdbcType=VARCHAR},

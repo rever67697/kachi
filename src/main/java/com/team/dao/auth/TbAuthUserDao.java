@@ -49,7 +49,7 @@ public interface TbAuthUserDao {
 	 *@return
 	 *return
 	 */
-	public int getUserCount(@Param("loginName") String loginName);
+	public int getUserCount(@Param("name") String name);
 	
 	/**
 	 * 删除用户

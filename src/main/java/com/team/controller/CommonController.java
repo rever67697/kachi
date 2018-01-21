@@ -45,12 +45,14 @@ public class CommonController {
 	
 	@PostMapping("/getDepartmentDic")
 	public ReturnMsg getDepartmentDic(HttpServletRequest request){
+		System.out.println(request.getSession().getMaxInactiveInterval());
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return commonService.getDepartmentDic(dId);
 	}
 	
 	@PostMapping("/getOperatorDic")
 	public ReturnMsg getOperatorDic(Integer countryCode){
+		System.out.println("countryCode=="+countryCode);
 		return commonService.getOperatorDic(countryCode);
 	}
 	

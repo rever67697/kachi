@@ -17,10 +17,9 @@
 		<form id="queryForm">
 	  		<table class="table">
 	  			<tr>
-	  				<th>登录名：</th><td><input name="loginName" placeholder="请输入登录名" /></td>
-	  				<th>姓名：</th><td><input name="name" placeholder="请输入姓名" /></td>
-	  				<th>代理商：</th><td><select name="departmentId" ><option value="">全部</option></select></td>
-	  				<th>账户状态：</th><td><select name="status" ><option value="">全部</option><option value="0">正常</option><option value="1">封锁</option></select></td>
+	  				<th>用户名：</th><td><input name="name" placeholder="请输入用户名" /></td>
+	  				<th>所属部门：</th><td><select name="departmentId" ><option value="">全部</option></select></td>
+	  				<th>用户状态：</th><td><select name="status" ><option value="">全部</option><option value="0">正常</option><option value="1">封锁</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
 	  		</table>
@@ -56,8 +55,8 @@
 						</legend>
 						<table>
 							<tr>
-								<td class="user-td">姓名：<span class="flag">*</span></td>
-								<td><input name="name" class="easyui-validatebox user-input" required="true" /></td>
+								<td class="user-td">用户名：<span class="flag">*</span></td>
+								<td><input name="name" class="easyui-validatebox user-input" required="true"  validType="valiLoginName"/></td>
 								<td class="user-td">性别：</td>
 								<td>
 									<label><input type="radio" name="sex" value="1" checked="checked"/>&nbsp;男性</label>
@@ -72,10 +71,10 @@
 						</legend>
 						<table>
 							<tr>
-								<td class="user-td">登录名：<span class="flag">*</span></td>
+								<!-- <td class="user-td">登录名：<span class="flag">*</span></td>
 								<td>
 									<input name="loginName" class="easyui-validatebox user-input" required="true" validType="valiLoginName"/> 
-								</td>
+								</td> -->
 								<td class="user-td">所属部门：<span class="flag">*</span></td>
 								<td><select name="departmentId" class="easyui-validatebox user-input user-select" required="true"></select></td>
 							</tr>
@@ -132,14 +131,14 @@
 	    valiLoginName:{
             validator:function(value,param){
                 var type=false;
-                $.getJSON(kcJs.fn.getContextPath()+'/getUserCount',{loginName:value},function(data){
+                $.getJSON(kcJs.fn.getContextPath()+'/getUserCount',{name:value},function(data){
                 	type=(data==0);
                 	console.log(data);
                 });
                 console.log(type);
                 return type;
             },
-            message:'登录名已存在'
+            message:'用户名已存在'
         },
 	    validPhone:{
             validator:function(value,param){
@@ -161,8 +160,8 @@
 			columns:[[
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'id',hidden:true},
-			         	{field:'loginName',title:'登录名',width:100},
-			         	{field:'name',title:'姓名',width:100},
+			         	//{field:'loginName',title:'登录名',width:100},
+			         	{field:'name',title:'用户名',width:100},
 			         	{field:'sex',title:'性别',width:100,formatter:function(value,rec,index){
 			         		return value=='1'?'男':(value=='0'?'女':'');
 			         	}},
@@ -171,7 +170,7 @@
 			         	{field:'qq',title:'QQ',width:100},
 			         	{field:'wechat',title:'微信',width:100},
 			         	{field:'email',title:'邮箱',width:100},
-			         	{field:'departmentName',title:'代理商',width:150},
+			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'status',title:'用户状态',width:100,formatter:function(value){
 			         		var color = kcJs.fn.getColor((value+'')=="0"?"blue":"red");
 			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+color+'">'+(value=='0'?'正常':'封锁')+'</div>';
@@ -232,27 +231,27 @@
 	  });
 	  
 	  function doAdd(){
-        $("#doForm [name=loginName]").attr("validType","valiLoginName");
+        $("#doForm [name=name]").attr("validType","valiLoginName");
 		$("#doForm [name=passWord],#doForm [name=repeatPwd]").validatebox({ required: true });
 	  
 	  	$('#doForm')[0].reset();
 	  	$('#doForm [name=id]').val('');
 	  	$('#hidePwd').show();
-	  	$('#doForm [name=departmentId],#doForm [name=loginName]').attr('disabled',false);
+	  	$('#doForm [name=departmentId],#doForm [name=name]').attr('disabled',false);
 	  	$('#doDialog').dialog('open');
 	  }
 	  
 	  function doModify(){
 	  	var selectRows = $('#dg').datagrid("getSelections");
 	  	if(selectRows && selectRows.length==1){
-	        $("#doForm [name=loginName]").removeAttr("validType");
-	        $("#doForm [name=loginName]").removeAttr("required");
-	        $("#doForm [name=loginName]").removeAttr("class").addClass("user-input");
+	        $("#doForm [name=name]").removeAttr("validType");
+	        $("#doForm [name=name]").removeAttr("required");
+	        $("#doForm [name=name]").removeAttr("class").addClass("user-input");
 			$("#doForm [name=passWord],#doForm [name=repeatPwd]").validatebox({required: false});
 			
 	  		$('#doForm')[0].reset();
 	  		$('#hidePwd').hide();
-	  		$('#doForm [name=departmentId],#doForm [name=loginName]').attr('disabled',true);
+	  		$('#doForm [name=departmentId],#doForm [name=name]').attr('disabled',true);
 		  	$('#doForm').form('load',selectRows[0]);
 		  	$('#doDialog').dialog({title:'修改用户'});
 		  	$('#doDialog').dialog('open');

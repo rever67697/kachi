@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -75,6 +77,17 @@ public class Application{
     public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) throws Exception {  
         return new DataSourceTransactionManager(dataSource);  
     }  
+    
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer(){
+     return new EmbeddedServletContainerCustomizer() {
+      @Override
+      public void customize(ConfigurableEmbeddedServletContainer container) {
+        container.setSessionTimeout(3600);//单位为S
+      }
+     };
+    }
+
     /**
      * 启动入口main方法
      */

@@ -10,16 +10,16 @@ import com.team.vo.ReturnMsg;
  */
 public interface TbAuthUserService {
 	
-	public TbAuthUser getUserByLoginName(String loginName);
+	public TbAuthUser getUserByName(String name);
 	
-	public ResultList getUserList(Integer status,String name,String loginName,
+	public ResultList getUserList(Integer status,String name,
 			Integer departmentId,Integer dId,int page,int rows);
 	
 	public ReturnMsg saveOrUpdateUser(TbAuthUser user);
 	
 	public ReturnMsg updateUserStatus(TbAuthUser user);
 	
-	public int getUserCount(String loginName);
+	public int getUserCount(String name);
 	
 	public ReturnMsg deleteUser(Integer id);
 	

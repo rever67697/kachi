@@ -24,10 +24,10 @@ public class TbAuthUserController {
 	private TbAuthUserService tbAuthUserService;
 	
 	@PostMapping("/getUserList")
-	public ResultList getUserList(Integer status, String name,String loginName,
+	public ResultList getUserList(Integer status, String name,
 			Integer departmentId,int page,int rows,HttpServletRequest  request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId(); 
-		return tbAuthUserService.getUserList(status, name, loginName,departmentId,dId, page, rows);
+		return tbAuthUserService.getUserList(status, name,departmentId,dId, page, rows);
 	}
 	
 	@PostMapping("/saveUser")
@@ -46,8 +46,8 @@ public class TbAuthUserController {
 	}
 	
 	@GetMapping("/getUserCount")
-	public int getUserCount(String loginName){
-		return tbAuthUserService.getUserCount(loginName);
+	public int getUserCount(String name){
+		return tbAuthUserService.getUserCount(name);
 	}
 	
 }

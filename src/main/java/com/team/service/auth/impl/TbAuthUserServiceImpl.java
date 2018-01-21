@@ -38,9 +38,9 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 	/**
 	 * 通过登录名查找用户信息
 	 */
-	public TbAuthUser getUserByLoginName(String loginName) {
+	public TbAuthUser getUserByName(String name) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("loginName", loginName);
+		map.put("name", name);
 		map.put("status", 0);
 		List<TbAuthUser> list = tbAuthUserDao.getUserList(map);
 		return CommonUtil.listNotBlank(list)?list.get(0):null;
@@ -50,13 +50,12 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 	/**
 	 * 根据条件查找用户列表
 	 */
-	public ResultList getUserList(Integer status, String name,String loginName,
+	public ResultList getUserList(Integer status, String name,
 			Integer departmentId,Integer dId,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", status);
 		map.put("name", name);
-		map.put("loginName", loginName);
 		map.put("departmentId", departmentId);
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
 		map.put("status", status);
@@ -94,8 +93,8 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 	}
 
 	@Override
-	public int getUserCount(String loginName) {
-		return tbAuthUserDao.getUserCount(loginName);
+	public int getUserCount(String name) {
+		return tbAuthUserDao.getUserCount(name);
 	}
 
 	@Override
