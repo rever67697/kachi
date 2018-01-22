@@ -43,4 +43,20 @@ public interface TbAuthRoleDao {
 	 */
 	public int inserUserRole(Map<String, Object> map);
 	
+	/**
+	 * 把管理员的角色赋予给用户
+	 *@param userId
+	 *@return
+	 *return
+	 */
+	public int inserAdminUserRole(@Param("userId") Integer userId);
+	
+	/**
+	 * 删除用户拥有的管理员角色
+	 *@param userId
+	 *@return
+	 *return
+	 */
+	public int deleteAdminUserRole(@Param("userId") Integer userId);
+	
 }

@@ -6,11 +6,16 @@
 
 	<select id="getUserList" parameterType="java.util.Map" resultType="com.team.model.auth.TbAuthUser">
 		select c.*,
-			   d.name departmentName
-		from m_customer c,
-			 m_department d
-		where c.departmentid=d.id
-		  and d.status=0
+			   d.name departmentName,
+			   case when ur.id is not null then 1 else 0 end isAdmin,
+			   case when ur.id is not null then 1 else 0 end isAdmin2
+		from m_customer c
+		inner join m_department d
+		on c.departmentid=d.id and d.status=0
+		left join tb_auth_user_role ur
+		on c.id=ur.user_id  and ur.status=0
+		and ur.role_id=(select id from tb_auth_role where code='GROUP_ADMIN' and status=0)
+		where 1=1
 		<if test="status!=null">
 		  and c.status =#{status,jdbcType=INTEGER}
 		</if>
@@ -64,7 +69,8 @@
 			sex=#{sex,jdbcType=VARCHAR},
 			email=#{email,jdbcType=VARCHAR},
 			age=#{age,jdbcType=INTEGER},
-			phonenumber=#{phoneNumber,jdbcType=VARCHAR}
+			phonenumber=#{phoneNumber,jdbcType=VARCHAR},
+			departmentid=#{departmentId,jdbcType=INTEGER}
 		where id=#{id,jdbcType=INTEGER}	
 	</update>
 	

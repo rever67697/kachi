@@ -42,7 +42,21 @@
 		(user_id,role_id)
 		values
 		(#{userId,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER})
-		
 	</insert>
+	
+	<insert id="inserAdminUserRole">
+		insert into tb_auth_user_role
+		(user_id,role_id)
+		select #{userId,jdbcType=INTEGER},
+			   (select id from tb_auth_role where code='GROUP_ADMIN' and status=0)
+		from dual
+	</insert>
+	
+	<update id="deleteAdminUserRole">
+		update tb_auth_user_role
+		set status=1
+		where role_id=(select id from tb_auth_role where code='GROUP_ADMIN' and status=0)
+		  and user_id=#{userId,jdbcType=INTEGER}
+	</update>
 	
 </mapper>

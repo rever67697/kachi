@@ -93,6 +93,6 @@ public interface TbAuthPermissionDao {
 	 *@return
 	 *return
 	 */
-	public int insertRP(@Param("permissionId") Integer permissionId);
+	public int insertAdminPermission(@Param("permissionId") Integer permissionId);
 	
 }

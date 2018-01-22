@@ -104,7 +104,7 @@
 		where id=#{id,jdbcType=INTEGER} 
 	</update>
 	
-	<insert id="insertRP">
+	<insert id="insertAdminPermission">
 		insert into tb_auth_role_permission
 		(role_id,permission_id)
 		select

@@ -106,7 +106,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 			tbAuthPermissionDao.updatePermission(permission);
 		}else{
 			tbAuthPermissionDao.insertPermission(permission);
-			tbAuthPermissionDao.insertRP(permission.getId());
+			tbAuthPermissionDao.insertAdminPermission(permission.getId());
 		}
 		return IConstant.MSG_OPERATE_SUCCESS;
 	}

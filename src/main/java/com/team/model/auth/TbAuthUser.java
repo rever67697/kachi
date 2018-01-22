@@ -33,7 +33,27 @@ public class TbAuthUser implements Serializable{
 	
 	private String departmentName;
 	
+	private Integer isAdmin;
+	
+	private Integer isAdmin2;
+	
 	private List<TbAuthRole> roles;
+
+	public Integer getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Integer isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public Integer getIsAdmin2() {
+		return isAdmin2;
+	}
+
+	public void setIsAdmin2(Integer isAdmin2) {
+		this.isAdmin2 = isAdmin2;
+	}
 
 	public Integer getId() {
 		return id;
