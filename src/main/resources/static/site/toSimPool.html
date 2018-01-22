@@ -121,6 +121,7 @@
 		};
   
 	$(function(){
+		$.ajaxSetup({async : false}); 
 		refresh();
 		var timer = setInterval(refresh,2*60*1000);
 	
@@ -218,6 +219,7 @@
   	function getCardPoolInfo(){
   		$.post(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
   			if(data && data.code=='200'){
+  				console.log(data.data);
   				var info = data.data;
   				$('#simPoolCount').text(info.simPoolCount);
   				$('#onlinePoolCount').text(info.onlinePoolCount);

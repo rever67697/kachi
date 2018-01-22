@@ -126,6 +126,7 @@
 		};
   
 	$(function(){
+		$.ajaxSetup({async : false}); 
 		getCardInfo();
 	
 		$('#dg').datagrid(options);
@@ -202,6 +203,7 @@
   	function getCardInfo(){
   		$.post(kcJs.fn.getContextPath()+'/getCardOutlineInfo',function(data){
   			if(data && data.code=='200'){
+  				console.log(data.data);
   				var info = data.data;
   				$('#simCardCount').text(info.simCardCount);
   				$('#onCardCount').text(info.onCardCount);
