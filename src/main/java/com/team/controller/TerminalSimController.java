@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.aop.PermissionLog;
 import com.team.service.TerminalSimService;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -13,6 +14,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("在线终端管理")
 public class TerminalSimController {
 	
 	@Autowired
@@ -24,6 +26,7 @@ public class TerminalSimController {
 	}
 	
 	@PostMapping("/deleteTerSimByIds")
+	@PermissionLog
 	public ReturnMsg deleteTerminalSimByIds(String ids){
 		return terminalSimService.deleteTerminalByIds(ids);
 	}

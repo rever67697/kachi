@@ -17,11 +17,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.web.context.request.RequestContextListener;
 
 import com.github.pagehelper.PageHelper;
 
@@ -78,7 +80,7 @@ public class Application{
         return new DataSourceTransactionManager(dataSource);  
     }  
     
-    @Bean
+    //@Bean
     public EmbeddedServletContainerCustomizer containerCustomizer(){
      return new EmbeddedServletContainerCustomizer() {
       @Override
@@ -88,6 +90,14 @@ public class Application{
      };
     }
 
+    /**
+     * RequestContextListener注册
+     */
+    @Bean
+    public ServletListenerRegistrationBean<RequestContextListener> requestContextListenerRegistration() {
+        return new ServletListenerRegistrationBean<RequestContextListener>(new RequestContextListener());
+    }
+    
     /**
      * 启动入口main方法
      */

@@ -305,13 +305,13 @@
 	 background:url('icons/delete.png') no-repeat; 
 }
 .icon-p{
-	background:url('icons/people.png') no-repeat; 
+	background:url('icons/people.png') no-repeat left center; 
 }
 .icon-q{
-	background:url('icons/quite.png') no-repeat; 
+	background:url('icons/quite.png') no-repeat left center; 
 }
 .icon-o{
-	background:url('icons/user1.png') no-repeat; 
+	background:url('icons/user1.png') no-repeat left center; 
 }
 
 

@@ -18,7 +18,7 @@ public interface TbAuthPermissionService {
 	
 	public List<TbAuthPermission> getPermissionTree();
 	
-	public List<Integer> getPermissionByUser(Integer id);
+	public List<TbAuthPermission> getPermissionByUser(Integer id);
 	
 	public ReturnMsg grantPermission(Integer userId,String ids);
 	

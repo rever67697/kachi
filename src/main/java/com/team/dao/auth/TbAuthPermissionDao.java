@@ -45,7 +45,7 @@ public interface TbAuthPermissionDao {
 	 *@return
 	 *return
 	 */
-	public List<Integer> getPermissionByUser(@Param("id") Integer id);
+	public List<TbAuthPermission> getPermissionByUser(@Param("id") Integer id);
 	
 	/**
 	 * 插入角色-权限关系前，先把原本的关联关系清了

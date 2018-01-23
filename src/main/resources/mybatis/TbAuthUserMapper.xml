@@ -78,4 +78,10 @@
 		delete from m_customer
 		where id=#{id,jdbcType=INTEGER}
 	</delete>
+	
+	<update id="modifyPwd" parameterType="com.team.model.auth.TbAuthUser">
+		update m_customer
+		set password=#{passWord,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
 </mapper>

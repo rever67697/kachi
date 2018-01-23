@@ -117,7 +117,7 @@
 			scrollbarSize:0,
 			height:window.innerHeight-80,
 			striped:true,
-			onLoadSuccess:function(){v_loaded=true;}
+			onLoadSuccess:function(data){v_loaded=true;}
 		};
   
 	$(function(){
@@ -168,32 +168,36 @@
   	
   	function showCardSolt(rowData,obj){
   		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool',{cpId:rowData.id},function(data){
-             	var cardList = data.rows;
-             	if(cardList){
-             		$('.card_container',obj).html('');
-             		var total = rowData.type?rowData.type:cardList.length;
-             		var count = 0;
-             		for(var i = 0;i < total;i++){
-             			var box = kcJs.fn.getCardStatus(5);
-             			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
-             				box = kcJs.fn.getCardStatus(cardList[count].status);
-             				count ++;
-             			}
-             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container',$(obj)))
-             			.tooltip({
-						    position: 'top',
-						    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
-						    onShow: function(){
-								$(this).tooltip('tip').css({
-									backgroundColor:$(this).attr('color'),
-								});
-						    }
-						});	;
+  				if(data && data.code=='200'){
+  					var cardList = data.data.rows;
+	             	if(cardList){
+	             		$('.card_container',obj).html('');
+	             		var total = rowData.type?rowData.type:cardList.length;
+	             		var count = 0;
+	             		for(var i = 0;i < total;i++){
+	             			var box = kcJs.fn.getCardStatus(5);
+	             			if((count < cardList.length) && ((i+1) == cardList[count].cpChannelId)){
+	             				box = kcJs.fn.getCardStatus(cardList[count].status);
+	             				count ++;
+	             			}
+	             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container',$(obj)))
+	             			.tooltip({
+							    position: 'top',
+							    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i+1)+'<br>状态：'+box[0]+'</div>',
+							    onShow: function(){
+									$(this).tooltip('tip').css({
+										backgroundColor:$(this).attr('color'),
+									});
+							    }
+							});	;
+	             		}
+	             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）').css('visibility','visible');
+	            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt());
              		}
-             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）').css('visibility','visible');
-            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt());
-             	}
-             });
+  				}else{
+  					$.messager.alert('提示',data.msg,'info');
+  				}
+        });
   	}
   	
   	function doModifyDept(){
@@ -219,7 +223,6 @@
   	function getCardPoolInfo(){
   		$.post(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
   			if(data && data.code=='200'){
-  				console.log(data.data);
   				var info = data.data;
   				$('#simPoolCount').text(info.simPoolCount);
   				$('#onlinePoolCount').text(info.onlinePoolCount);
@@ -227,6 +230,8 @@
   				$('#cardSlotCount').text(info.cardSlotCount);
   				$('#simCardCount').text(info.simCardCount);
   				$('#noCardCount').text(info.cardSlotCount-info.simCardCount);
+  			}else{
+  				$.messager.alert('提示',data.msg,'info');
   			}
   		},'json');
   	}

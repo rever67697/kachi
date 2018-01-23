@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.aop.PermissionLog;
 import com.team.model.SimPackage;
 import com.team.service.SimPackageService;
 import com.team.util.CommonUtil;
@@ -17,6 +18,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("套餐管理")
 public class SimPackageController {
 
 	@Autowired
@@ -29,13 +31,15 @@ public class SimPackageController {
 	}
 	
 	@PostMapping("/savePackage")
+	@PermissionLog
 	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow,HttpServletRequest request){
 		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
 		return simPackageService.savePackage(simPackage,compareFlow,compareRoamFlow);
 	} 
 	
 	@PostMapping("/deletePackageById")
-	public ReturnMsg deleteTerminalByIds(Integer id){
+	@PermissionLog
+	public ReturnMsg deletePackageById(Integer id){
 		return simPackageService.deletePackage(id);
 	}
 	

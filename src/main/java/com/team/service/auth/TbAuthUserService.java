@@ -23,4 +23,6 @@ public interface TbAuthUserService {
 	
 	public ReturnMsg deleteUser(Integer id);
 	
+	public ReturnMsg modifyPwd(TbAuthUser user,String oldPwd,String newPwd);
+	
 }

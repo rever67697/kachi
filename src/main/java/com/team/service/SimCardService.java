@@ -11,7 +11,7 @@ import com.team.vo.ReturnMsg;
  */
 public interface SimCardService {
 	
-	public ResultList getSimCardByPool(Integer cpId);
+	public ReturnMsg getSimCardByPool(Integer cpId);
 	
 	public ReturnMsg deleteSimCard(String ids);
 	

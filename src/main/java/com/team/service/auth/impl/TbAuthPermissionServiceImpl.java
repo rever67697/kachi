@@ -57,7 +57,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 	}
 
 	@Override
-	public List<Integer> getPermissionByUser(Integer id) {
+	public List<TbAuthPermission> getPermissionByUser(Integer id) {
 		return tbAuthPermissionDao.getPermissionByUser(id);
 	}
 

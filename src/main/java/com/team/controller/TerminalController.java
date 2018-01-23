@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team.aop.PermissionLog;
 import com.team.model.Terminal;
 import com.team.service.CostDayService;
 import com.team.service.TerminalService;
@@ -23,6 +24,8 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("终端管理")
+@SuppressWarnings("all")
 public class TerminalController {
 
 	@Autowired
@@ -40,16 +43,19 @@ public class TerminalController {
 	}
 	
 	@PostMapping("/deleteTerminalByIds")
+	@PermissionLog
 	public ReturnMsg deleteTerminalByIds(String ids){
 		return terminalService.deleteTerminalByIds(ids);
 	}
 	
 	@PostMapping("/saveTerminal")
+	@PermissionLog
 	public ReturnMsg saveTerminal(Terminal terminal){
 		return terminalService.saveTerminal(terminal);
 	} 
 	
 	@PostMapping("/uploadTerminal")
+	@PermissionLog
 	public ReturnMsg uploadTerminal(MultipartFile file){
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
 		if("200".equals(returnMsg.getCode())){
@@ -61,11 +67,13 @@ public class TerminalController {
 	} 
 	
 	@PostMapping("/getCostDayByTsid")
+	@PermissionLog
 	public ResultList getCostDayByTsid(Integer tsid,int page,int rows){
 		return costDayService.getCostDayByTsid(tsid, page, rows);
 	}
 	
 	@PostMapping("/getTerminalSimByTsid")
+	@PermissionLog
 	public ReturnMsg getTerminalSimByTsid(Integer tsid){
 		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 

@@ -1,7 +1,10 @@
 package com.team.controller.auth;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthRoleService;
@@ -53,6 +57,7 @@ public class LoginController {
 				//验证通过
 				List<TbAuthRole> roles = tbAuthRoleService.getRolesByUser(user);
 				user.setRoles(roles);
+				handlePermission(user.getId(),request);
 				request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
 				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getName());
 				cookie.setMaxAge(60*60*24*7);//7天有效
@@ -109,4 +114,15 @@ public class LoginController {
 		return tbAuthPermissionService.getFunByUser(getUser(request),id);
 	}
 	
+	private void handlePermission(Integer userId,HttpServletRequest request) {
+		List<TbAuthPermission> permission = tbAuthPermissionService.getPermissionByUser(userId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(CommonUtil.listNotBlank(permission)){
+			for (TbAuthPermission p : permission) {
+				if(p.getUrl()!=null&&!p.getUrl().equals(""))
+				map.put(p.getUrl(), p.getText());
+			}
+		}
+		request.getSession().setAttribute(IConstant.SESSION_PERMISSION_MAP, map);
+	}
 }

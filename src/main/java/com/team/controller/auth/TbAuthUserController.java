@@ -50,4 +50,10 @@ public class TbAuthUserController {
 		return tbAuthUserService.getUserCount(name);
 	}
 	
+	@PostMapping("/modifyPwd")
+	public ReturnMsg modifyPwd(HttpServletRequest request,String oldPwd,String newPwd){
+		TbAuthUser user = CommonUtil.getUser(request);
+		return tbAuthUserService.modifyPwd(user, oldPwd, newPwd);
+	}
+	
 }

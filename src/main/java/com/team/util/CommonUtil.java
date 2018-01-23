@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.team.model.auth.TbAuthUser;
  * 创建日期：2017-12-19下午6:39:34
  * author:wuzhiheng
  */
+@SuppressWarnings("all")
 public class CommonUtil {
 	private static char[] codes = { '1','2', '3', '4', '5', '6', '7', '8', '9','0'};
 	/**
@@ -295,10 +297,20 @@ public class CommonUtil {
 		}
 	}
 	
+	/**
+	 * 对全局的departmentid的作过滤
+	 *@param departmentId
+	 *@return
+	 *return
+	 */
 	public static Integer changeDepartmentId(Integer departmentId){
 		if(departmentId != null && departmentId==0){
 			return null;
 		}
 		return departmentId;
+	}
+	
+	public static Map<String, Object> getUserPermission(HttpServletRequest request){
+		return  (Map<String, Object>) request.getSession().getAttribute(IConstant.SESSION_PERMISSION_MAP);
 	}
 }

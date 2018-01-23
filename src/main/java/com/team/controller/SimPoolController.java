@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.aop.PermissionLog;
 import com.team.model.ReadPoolDept;
 import com.team.model.SimPool;
 import com.team.service.ReadPoolDeptService;
@@ -20,6 +21,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("卡池管理")
 public class SimPoolController {
 
 	@Autowired
@@ -41,11 +43,13 @@ public class SimPoolController {
 	}
 	
 	@PostMapping("/giveSimPool")
+	@PermissionLog
 	public ReturnMsg giveSimPool(ReadPoolDept readPoolDept){
 		return readPoolDeptService.saveReadPoolDept(readPoolDept);
 	}
 	
 	@PostMapping("/modifyDept")
+	@PermissionLog
 	public ReturnMsg modifyDept(SimPool simPool){
 		return simPoolService.modifyDept(simPool);
 	}

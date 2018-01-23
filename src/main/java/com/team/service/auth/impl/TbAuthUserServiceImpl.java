@@ -114,4 +114,19 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
 	}
 
+	@Override
+	public ReturnMsg modifyPwd(TbAuthUser user,String oldPwd, String newPwd) {
+		ReturnMsg returnMsg = null;
+		if(user.getPassWord().equals(MD5Utils.encrypt(oldPwd))){
+			newPwd = MD5Utils.encrypt(newPwd);
+			user.setPassWord(newPwd);
+			tbAuthUserDao.modifyPwd(user);
+			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		}else{
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg.setMsg("旧密码不正确");
+		}
+		return returnMsg;
+	}
+
 }

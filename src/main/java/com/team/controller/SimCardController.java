@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.aop.PermissionLog;
 import com.team.service.SimCardService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
@@ -18,6 +19,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("流量卡管理")
 public class SimCardController {
 
 	@Autowired
@@ -30,7 +32,8 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getSimCardByPool")
-	public ResultList getSimCardByPool(Integer cpId){
+	@PermissionLog(key="cpId_卡池编号")
+	public ReturnMsg getSimCardByPool(Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
 	
@@ -48,6 +51,7 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/deleteSimCard")
+	@PermissionLog
 	public ReturnMsg deleteSimCard(String ids){
 		return simCardService.deleteSimCard(ids);
 	}

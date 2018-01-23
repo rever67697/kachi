@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team.aop.PermissionLog;
 import com.team.model.ChannelCard;
 import com.team.service.ChannelCardService;
 import com.team.vo.ResultList;
@@ -17,6 +18,8 @@ import com.team.vo.ReturnMsg;
  * 
  */
 @RestController
+@PermissionLog("副卡管理")
+@SuppressWarnings("all")
 public class ChannelCardController {
 	
 	@Autowired
@@ -39,16 +42,19 @@ public class ChannelCardController {
 	}
 
 	@PostMapping("/deleteChannelCards")
+	@PermissionLog
 	public ReturnMsg deleteChannelCards(String ids){
 		return channelCardService.deleteChannelCards(ids);
 	}
 	
 	@PostMapping("/saveChannelCard")
+	@PermissionLog
 	public ReturnMsg saveChannelCard(ChannelCard channelCard){
 		return channelCardService.saveChannelCard(channelCard);
 	}
 	
 	@PostMapping("/uploadChannelCard")
+	@PermissionLog
 	public ReturnMsg uploadChannelCard(MultipartFile file){
 		ReturnMsg returnMsg = channelCardService.getChannelCardList(file);
 		if("200".equals(returnMsg.getCode())){

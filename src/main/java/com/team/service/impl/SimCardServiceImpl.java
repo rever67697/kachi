@@ -35,9 +35,11 @@ public class SimCardServiceImpl implements SimCardService{
 	/**
 	 * 根据卡池id找出其上面的卡
 	 */
-	public ResultList getSimCardByPool(Integer cpId) {
+	public ReturnMsg getSimCardByPool(Integer cpId) {
 		List<SimCard> list =simCardDao.getSimCardByPool(cpId);
-		return new ResultList(list!=null?list.size():0, list);
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		returnMsg.setData(new ResultList(list!=null?list.size():0, list));
+		return returnMsg;
 	}
 
 	@Override

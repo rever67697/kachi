@@ -36,8 +36,8 @@
 		order by parent_id,order_num 
 	</select>
 	
-	<select id="getPermissionByUser" resultType="java.util.Map">
-		select distinct p.id
+	<select id="getPermissionByUser" resultType="com.team.model.auth.TbAuthPermission">
+		select distinct p.id,p.text,p.url
 		from tb_auth_permission p,
 			 tb_auth_role_permission rp,
 			 tb_auth_role r,

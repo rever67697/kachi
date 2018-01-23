@@ -59,4 +59,12 @@ public interface TbAuthUserDao {
 	 */
 	public int deleteUser(@Param("id") Integer id);
 	
+	/**
+	 * 用户修改密码
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public int modifyPwd(TbAuthUser user);
+	
 }
