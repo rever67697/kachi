@@ -286,7 +286,7 @@
 	  	if(selectRows && selectRows.length==1){
 	  		$.messager.confirm('提示','是否确定删除？',function(r){if(r){
 	  			$('#dg').datagrid('loading');
-			  	$.post(kcJs.fn.getContextPath()+'/deleteUser',{id:selectRows[0].id},function(data){
+			  	$.post(kcJs.fn.getContextPath()+'/deleteUser',{id:selectRows[0].id,name:selectRows[0].name},function(data){
 		  			$('#dg').datagrid('loaded');
 		  			if(data && data.code=='200'){
 		  				doQuery();

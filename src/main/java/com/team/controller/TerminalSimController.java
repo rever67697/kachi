@@ -26,8 +26,8 @@ public class TerminalSimController {
 	}
 	
 	@PostMapping("/deleteTerSimByIds")
-	@PermissionLog
-	public ReturnMsg deleteTerminalSimByIds(String ids){
+	@PermissionLog(key="TSIDs_终端编号的集合")
+	public ReturnMsg deleteTerSimByIds(String ids){
 		return terminalSimService.deleteTerminalByIds(ids);
 	}
 	

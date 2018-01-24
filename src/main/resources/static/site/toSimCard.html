@@ -157,8 +157,10 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 ) {
   			var ids = [];
+  			var IMSIs = [];
   			for(var i = 0;i < selectRows.length;i++){
   				ids.push(selectRows[i].id);
+  				IMSIs.push(selectRows[i].imsi);
   				if(selectRows[i].status!=4){
   					$.messager.alert("提示", "只能删除状态为作废的SIM卡！", "info");
   					return;
@@ -167,7 +169,7 @@
   			$.messager.confirm('提示','是否确定删除？',function(r){
   				if(r){
   					$('#dg').datagrid('loading');
-		  			$.post(kcJs.fn.getContextPath()+'/deleteSimCard',{ids:ids.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/deleteSimCard',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
 		  				$('#dg').datagrid('loaded');
 			  			if(data && data.code=='200'){
 			  				$.messager.alert("提示", data.msg, "info");

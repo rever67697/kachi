@@ -31,14 +31,14 @@ public class SimPackageController {
 	}
 	
 	@PostMapping("/savePackage")
-	@PermissionLog
+	@PermissionLog(key="name_套餐名称;operatorCode_运营商编号;maxFlow_本国流量;maxRoamFlow_漫游流量")
 	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow,HttpServletRequest request){
 		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
 		return simPackageService.savePackage(simPackage,compareFlow,compareRoamFlow);
 	} 
 	
 	@PostMapping("/deletePackageById")
-	@PermissionLog
+	@PermissionLog(key="name_套餐名称")
 	public ReturnMsg deletePackageById(Integer id){
 		return simPackageService.deletePackage(id);
 	}

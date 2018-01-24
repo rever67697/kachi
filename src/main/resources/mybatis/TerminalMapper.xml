@@ -56,8 +56,8 @@
 	      IMEI, ACTIVATED, HOMELOCATION, 
 	      SSID, WIFIPASSWORD, LICFIX, 
 	      USEDVPN, USEDSOFT, departmentId, 
-	      MEID, SALETYPE, resetWiFi, 
-	      androidVersion)
+	      MEID<!-- , SALETYPE, resetWiFi, 
+	      androidVersion -->)
 	    values (#{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
 		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
 		        #{key,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{upLog,jdbcType=INTEGER}, 

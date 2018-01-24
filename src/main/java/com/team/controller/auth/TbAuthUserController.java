@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team.aop.PermissionLog;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthUserService;
 import com.team.util.CommonUtil;
@@ -18,6 +19,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@PermissionLog("用户管理")
 public class TbAuthUserController {
 
 	@Autowired
@@ -31,16 +33,19 @@ public class TbAuthUserController {
 	}
 	
 	@PostMapping("/saveUser")
+	@PermissionLog(key="name_用户名;departmentId_部门编号;id_用户id")
 	public ReturnMsg saveUser(TbAuthUser user){
 		return tbAuthUserService.saveOrUpdateUser(user);
 	}
 	
 	@PostMapping("/updateUserStatus")
+	@PermissionLog(key="name_用户名;status_状态;id_用户id")
 	public ReturnMsg updateUserStatus(TbAuthUser user){
 		return tbAuthUserService.updateUserStatus(user);
 	}
 	
 	@PostMapping("/deleteUser")
+	@PermissionLog(key="name_用户名")
 	public ReturnMsg deleteUser(Integer id){
 		return tbAuthUserService.deleteUser(id);
 	}

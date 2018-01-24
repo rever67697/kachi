@@ -21,4 +21,6 @@ public @interface PermissionLog {
 	String value() default "";
 	
 	String key() default "";
+	
+	boolean onlyLog() default false;
 }

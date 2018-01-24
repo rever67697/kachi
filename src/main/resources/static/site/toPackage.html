@@ -121,7 +121,8 @@
   			$.messager.confirm('提示','是否确定删除？',function(r){
   				if(r){
   					$('#dg').datagrid('loading');
-		  			$.post(kcJs.fn.getContextPath()+'/deletePackageById',{id:selectRows[0].id},function(data){
+  					var row = selectRows[0];
+		  			$.post(kcJs.fn.getContextPath()+'/deletePackageById',{id:row.id,name:row.name},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{

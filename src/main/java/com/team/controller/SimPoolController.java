@@ -43,13 +43,13 @@ public class SimPoolController {
 	}
 	
 	@PostMapping("/giveSimPool")
-	@PermissionLog
+	@PermissionLog(key="spid_卡池编号;departmentId_部门id")
 	public ReturnMsg giveSimPool(ReadPoolDept readPoolDept){
 		return readPoolDeptService.saveReadPoolDept(readPoolDept);
 	}
 	
 	@PostMapping("/modifyDept")
-	@PermissionLog
+	@PermissionLog(key="spid_卡池编号;name_卡池名称;departmentId_部门编号")
 	public ReturnMsg modifyDept(SimPool simPool){
 		return simPoolService.modifyDept(simPool);
 	}
