@@ -54,4 +54,10 @@ public class SimPoolController {
 		return simPoolService.modifyDept(simPool);
 	}
 	
+  @PostMapping("/saveSimPool")
+  @PermissionLog
+  public ReturnMsg savePackage(SimPool simPool, HttpServletRequest request) {
+    // simPool.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
+    return simPoolService.saveSimPool(simPool);
+  }
 }

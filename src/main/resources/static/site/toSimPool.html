@@ -83,6 +83,29 @@
 			  		</table>
 		    	</form>
 		  	</div>
+		  	<div id="poolDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  		<form id="poolForm">
+		  		<table class="table th-normal">
+		  			<tr><th>卡池编号：</th><td><input name="spid" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+		  			<tr><th>卡池IP：</th><td><input name="ip" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>卡池类型：</th><td><input name="type" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>活动状态：</th><td><select name="isActive"><option  value="1">正常</option><option value="0">暂停</option></select></td></tr>
+		  			<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
+		  			<tr><th>MAC：</th><td><input name="mac" class="easyui-validatebox" /></td></tr>
+		  			<tr><th>版本：</th><td><input name="version" class="easyui-validatebox" /></td></tr>
+		  			<tr><th>卡池名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>内网IP：</th><td><input name="inIp" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>外网IP：</th><td><input name="oupIp" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>端口：</th><td><input name="port" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+		  			<tr><th>卡池内网IP：</th><td><input name="sumIp" class="easyui-validatebox" required="true"/></td></tr>
+		  			<tr><th>卡池显示端口：</th><td><input name="webPort" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+		  			<tr><th>软件版本：</th><td><input name="lionVersion" class="easyui-validatebox" required="true"/></td></tr>
+<!-- 		  			<tr><th>代理商：</th><td><input name="departmentName" class="easyui-validatebox" required="true"/></td></tr> -->
+		  			<tr style="height:20px"></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="savePool()">提 交</a></td></tr>
+		  		</table>
+	  		</form>
+	  	</div>
 	    </div>
 	</div>
   </body>
@@ -149,6 +172,13 @@
    			height:250,
    			cache: false,
 			title : "调整代理商"
+		});
+		$('#poolDialog').dialog({
+			modal : true,
+   			width:400,
+   			height:650,
+   			cache: false,
+			title : "新增卡池"
 		});
 		
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":'--请选择--'});
@@ -248,7 +278,22 @@
   			}); 
   		}
   	}
-  	
+  	function savePool(){
+  		if($('#poolForm').form('validate')){
+  			$('#poolDialog').dialog('close');
+  			$('#dg').datagrid('loading');
+  			$.post(kcJs.fn.getContextPath()+'/saveSimPool',$('#poolForm').serializeObject(),function(data){
+  				if(data){
+  					$.messager.alert('提示',data.msg,'info');
+	    			if(data.code=='200'){
+	    				doQuery();
+	    			}else{
+	    				$('#dg').datagrid('loaded');
+	    			}
+		    	}
+  			}); 
+  		}
+  	}
   	function modifyData(){
   		if($('#doForm').form('validate')){
   			console.log($('#doForm').serializeObject());
@@ -294,7 +339,8 @@
   	}
   	
   	function doAdd(){
-  		
+  		$('#poolForm')[0].reset();
+  		$('#poolDialog').dialog('open');
   	}
   </script>
 </html>

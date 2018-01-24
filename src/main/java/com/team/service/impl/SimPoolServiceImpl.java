@@ -12,13 +12,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimCardDao;
 import com.team.dao.SimPoolDao;
-import com.team.vo.OutlineInfo;
-import com.team.vo.ResultList;
-import com.team.vo.ReturnMsg;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
+import com.team.vo.OutlineInfo;
+import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 
 /**
  * 创建日期：2017-12-18下午3:40:55
@@ -28,7 +28,9 @@ import com.team.util.IConstant;
 @Service
 public class SimPoolServiceImpl implements SimPoolService{
 
-	@Autowired
+
+
+  @Autowired
 	private SimPoolDao simPoolDao;
 	@Autowired
 	private SimCardDao simCardDao;
@@ -80,5 +82,19 @@ public class SimPoolServiceImpl implements SimPoolService{
 		}
 		return IConstant.MSG_OPERATE_ERROR;
 	}
+
+  @Override
+  /**
+   * 保存新增卡池
+   */
+  public ReturnMsg saveSimPool(SimPool simPool) {
+    int count = 0;
+    count = simPoolDao.insertSimPool(simPool);
+    if (count > 0) {
+      return IConstant.MSG_OPERATE_SUCCESS;
+    } else {
+      return IConstant.MSG_OPERATE_ERROR;
+    }
+  }
 
 }
