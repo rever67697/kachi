@@ -39,4 +39,6 @@ public interface SimPoolDao {
 	 */
 	public int updateDept(SimPool simPool);
 	
+	public int insertSimPool(SimPool simPool);
+	
 }

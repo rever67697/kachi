@@ -81,4 +81,15 @@ public class SimPoolServiceImpl implements SimPoolService{
 		return IConstant.MSG_OPERATE_ERROR;
 	}
 
+	@Override
+	public ReturnMsg saveSimPool(SimPool simPool) {
+		int count = 0;
+		count = simPoolDao.insertSimPool(simPool);
+		if (count > 0) {
+			return IConstant.MSG_OPERATE_SUCCESS;
+		} else {
+			return IConstant.MSG_OPERATE_ERROR;
+		}
+	}
+
 }

@@ -54,4 +54,10 @@ public class SimPoolController {
 		return simPoolService.modifyDept(simPool);
 	}
 	
+	@PostMapping("/saveSimPool")
+	@PermissionLog(key="name_卡池名称;spid_卡池编号;departmentId_部门编号")
+	public ReturnMsg saveSimPool(SimPool simPool) {
+		return simPoolService.saveSimPool(simPool);
+	}
+	
 }
