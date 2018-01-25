@@ -4,7 +4,6 @@ package com.team.controller.auth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.team.aop.KachiException;
+import com.team.aop.PermissionLog;
 import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
@@ -32,6 +33,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @Controller
+@PermissionLog("用户信息")
 public class LoginController {
 	
 	@Autowired
@@ -43,6 +45,7 @@ public class LoginController {
 	@Autowired
 	private TbAuthPermissionService tbAuthPermissionService;
 	
+	@PermissionLog(value="用户登录",key="userName_用户名",onlyLog=true)
 	@PostMapping("/login")
 	@ResponseBody
 	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
@@ -71,8 +74,7 @@ public class LoginController {
 		if(CommonUtil.StringIsNull(msg)){
 			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
 		}else{
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
-			returnMsg.setMsg(msg);
+			throw new KachiException(msg);
 		}
 		return returnMsg;
 	}
@@ -100,6 +102,7 @@ public class LoginController {
 	
 	@PostMapping("/logout")
 	@ResponseBody
+	@PermissionLog(value="退出登录",onlyLog=true)
 	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
 		request.getSession().removeAttribute(IConstant.SESSION_USER_NAME);
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");

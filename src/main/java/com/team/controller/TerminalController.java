@@ -43,13 +43,13 @@ public class TerminalController {
 	}
 	
 	@PostMapping("/deleteTerminalByIds")
-	@PermissionLog
+	@PermissionLog(key="TSIDs_终端编号的集合")
 	public ReturnMsg deleteTerminalByIds(String ids){
 		return terminalService.deleteTerminalByIds(ids);
 	}
 	
 	@PostMapping("/saveTerminal")
-	@PermissionLog
+	@PermissionLog(key="tsid_终端编号")
 	public ReturnMsg saveTerminal(Terminal terminal){
 		return terminalService.saveTerminal(terminal);
 	} 
@@ -67,13 +67,13 @@ public class TerminalController {
 	} 
 	
 	@PostMapping("/getCostDayByTsid")
-	@PermissionLog
+	@PermissionLog(key="tsid_终端编号")
 	public ResultList getCostDayByTsid(Integer tsid,int page,int rows){
 		return costDayService.getCostDayByTsid(tsid, page, rows);
 	}
 	
 	@PostMapping("/getTerminalSimByTsid")
-	@PermissionLog
+	@PermissionLog(key="tsid_终端编号")
 	public ReturnMsg getTerminalSimByTsid(Integer tsid){
 		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 

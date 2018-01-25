@@ -51,7 +51,7 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/deleteSimCard")
-	@PermissionLog
+	@PermissionLog(key="IMSIs_IMSI的集合")
 	public ReturnMsg deleteSimCard(String ids){
 		return simCardService.deleteSimCard(ids);
 	}

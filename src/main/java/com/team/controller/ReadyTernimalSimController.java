@@ -28,7 +28,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/saveReadyTerminalSim")
-	@PermissionLog
+	@PermissionLog(key="tsid_终端编号;args_卡信息")
 	public ReturnMsg saveReadyTerminalSim(Integer tsid, Integer type,
 			String args,HttpServletRequest request) {
 		Integer userId = CommonUtil.getUser(request).getId();

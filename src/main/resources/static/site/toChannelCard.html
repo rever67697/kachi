@@ -143,10 +143,12 @@
   				if(r){
   					$('#dg').datagrid('loading');
 		  			var ids = [];
+		  			var IMSIs=[];
 		  			for(var i = 0;i < selectRows.length;i++){
 		  				ids.push(selectRows[i].id);
+		  				IMSIs.push(selectRows[i].imsi);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteChannelCards',{ids:ids.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/deleteChannelCards',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{

@@ -269,10 +269,12 @@
   				if(r){
   					$('#dg').datagrid('loading');
 		  			var ids = [];
+		  			var TSIDs=[];
 		  			for(var i = 0;i < selectRows.length;i++){
 		  				ids.push(selectRows[i].id);
+		  				TSIDs.push(selectRows[i].tsid);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteTerminalByIds',{ids:ids.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/deleteTerminalByIds',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{

@@ -80,6 +80,11 @@ public class Application{
         return new DataSourceTransactionManager(dataSource);  
     }  
     
+    /**
+     * 配置session有效时间，这里默认是30min
+     *@return
+     *return
+     */
     //@Bean
     public EmbeddedServletContainerCustomizer containerCustomizer(){
      return new EmbeddedServletContainerCustomizer() {

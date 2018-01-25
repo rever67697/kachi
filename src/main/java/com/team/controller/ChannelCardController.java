@@ -42,13 +42,13 @@ public class ChannelCardController {
 	}
 
 	@PostMapping("/deleteChannelCards")
-	@PermissionLog
+	@PermissionLog(key="IMSIs_IMSI的集合")
 	public ReturnMsg deleteChannelCards(String ids){
 		return channelCardService.deleteChannelCards(ids);
 	}
 	
 	@PostMapping("/saveChannelCard")
-	@PermissionLog
+	@PermissionLog(key="imsi_IMSI")
 	public ReturnMsg saveChannelCard(ChannelCard channelCard){
 		return channelCardService.saveChannelCard(channelCard);
 	}
