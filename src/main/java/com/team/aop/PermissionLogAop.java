@@ -2,6 +2,7 @@ package com.team.aop;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +12,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.team.dao.auth.OperationLogDao;
+import com.team.model.auth.OperationLog;
+import com.team.model.auth.TbAuthUser;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
+import com.team.util.LogManager;
 
 /**
  * 业务拦截权限和记录日志
@@ -26,6 +30,9 @@ import com.team.util.IConstant;
 @Aspect
 @Component
 public class PermissionLogAop {
+	
+	@Autowired
+	private OperationLogDao operationLogDao;
 
 	@Pointcut(value="@annotation(com.team.aop.PermissionLog)")
 	public void cutService(){
@@ -37,10 +44,11 @@ public class PermissionLogAop {
 		MethodSignature ms = (MethodSignature) point.getSignature();
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = CommonUtil.getRequest();
+        TbAuthUser user = CommonUtil.getUser(request);
+        Map<String, Object> permission = CommonUtil.getUserPermission(request);
         
 		//1.执行方法之前，判断权限--onlyLog为true则代表这个只执行记录日志，不过滤权限，默认是false
-        Map<String, Object> permission = CommonUtil.getUserPermission(request);
         if(!logInfo.onlyLog()){
     		boolean ok = false;
     		for (Entry<String, Object> entry : permission.entrySet()) {
@@ -57,48 +65,54 @@ public class PermissionLogAop {
 		//2.执行目标方法
 		Object result = point.proceed();
 		
-		//3.记录日志
-		PermissionLog bussiness = point.getTarget().getClass().getAnnotation(PermissionLog.class);
-		if(bussiness==null || "".equals(bussiness.value())){
-			throw new Exception("记录日志需要在这个类上标志这个类的业务");
-		}
-		
-		StringBuilder message = new StringBuilder(bussiness.value()).append("-->");
-		
-		//注解在方法上，如果value没有值，那么在对应的权限里面找，注意，这种情况主要请求的路径和方法名一致
-		if("".equals(logInfo.value())){
-			String name = "";
-			for (Entry<String, Object> entry : permission.entrySet()) {
-				if(method.getName().equals(entry.getKey())){
-					name = entry.getValue().toString();
-					break;
+		//3.记录日志，如果用户为空则不记录
+		if(user!=null){
+			PermissionLog bussiness = point.getTarget().getClass().getAnnotation(PermissionLog.class);
+			String bussinesstype = bussiness.value();
+			if(bussiness==null || "".equals(bussinesstype)){
+				throw new Exception("记录日志需要在这个类上标志这个类的业务");
+			}
+			
+			String operation = "";
+			//注解在方法上，如果value没有值，那么在对应的权限里面找，注意，这种情况主要请求的路径和方法名一致
+			if("".equals(logInfo.value())){
+				for (Entry<String, Object> entry : permission.entrySet()) {
+					if(method.getName().equals(entry.getKey())){
+						operation = entry.getValue().toString();
+						break;
+					}
+				}
+				
+				if((operation.indexOf("添加") > -1 && !CommonUtil.StringIsNull(request.getParameter("id")))){
+					operation = operation.replace("添加", "修改");
+				}else if(operation.indexOf("修改") > -1 && CommonUtil.StringIsNull(request.getParameter("id"))){
+					operation = operation.replace("修改", "添加");
+				}
+				
+			}else{
+				operation = logInfo.value();
+			}
+			
+			//记录日志的额外信息，一般是指主要的参数是什么，key的格式的成对的key用‘_’分割，多个key用‘;’分割
+			StringBuilder desc = new StringBuilder();
+			if(!"".equals(logInfo.key())){
+				String[] Keygroup = logInfo.key().split(";");
+				for (String s : Keygroup) {
+					String[] key = s.split("_");
+					if(key.length==2)
+						desc.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
 				}
 			}
 			
-			if((name.indexOf("添加") > -1 && !CommonUtil.StringIsNull(request.getParameter("id")))){
-				name = name.replace("添加", "修改");
-			}else if(name.indexOf("修改") > -1 && CommonUtil.StringIsNull(request.getParameter("id"))){
-				name = name.replace("修改", "添加");
-			}
-			
-			message.append(name);
-		}else{
-			message.append(logInfo.value());
+			//下面是正式开启一个异步的任务来执行这个记录日志
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc.toString());
+			LogManager.me().executeLog(new TimerTask() {
+				@Override
+				public void run() {
+					operationLogDao.saveLog(operationLog);
+				}
+			});
 		}
-		
-		//记录日志的额外信息，一般是指主要的参数是什么，key的格式的成对的key用‘_’分割，多个key用‘;’分割
-		if(!"".equals(logInfo.key())){
-			String[] Keygroup = logInfo.key().split(";");
-			message.append("(");
-			for (String s : Keygroup) {
-				String[] key = s.split("_");
-				if(key.length==2)
-				message.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
-			}
-			message.append(")");
-		}
-		
-		System.out.println(message.toString());
 		
 		return result;
 	}

@@ -13,6 +13,8 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthUser;
@@ -312,5 +314,9 @@ public class CommonUtil {
 	
 	public static Map<String, Object> getUserPermission(HttpServletRequest request){
 		return  (Map<String, Object>) request.getSession().getAttribute(IConstant.SESSION_PERMISSION_MAP);
+	}
+	
+	public static HttpServletRequest getRequest(){
+		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 	}
 }
