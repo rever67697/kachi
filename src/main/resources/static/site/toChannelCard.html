@@ -111,6 +111,7 @@
   		//$('#doDialog [name=tsid]').attr('readOnly',false);
   		$('#doForm [name=countryCode]').val('156');
   		changeOperator();
+  		$('#doDialog').dialog({title:'添加副卡'});
   		$('#doDialog').dialog('open');
   	}
   	
@@ -127,6 +128,7 @@
              kcJs.fn.autoFillData($('#doDialog'),rowData);
              changeOperator();
              kcJs.fn.autoFillData($('#doDialog'),rowData);
+             $('#doDialog').dialog({title:'修改副卡'});
              $('#doDialog').dialog('open');
              $.ajaxSetup({async : false}); 
              //$('#doDialog [name=tsid]').attr('readOnly',true);

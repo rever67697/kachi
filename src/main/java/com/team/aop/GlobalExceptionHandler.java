@@ -14,12 +14,24 @@ import com.team.vo.ReturnMsg;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(KachiException.class)
+	/*@ExceptionHandler(KachiException.class)
 	@ResponseBody
 	public ReturnMsg noPermission(KachiException e){
 		e.printStackTrace();
 		ReturnMsg returnMsg = IConstant.MSG_OPERATE_UNKNOW;
+		System.out.println("KachiException");
 		returnMsg.setMsg(e.getMsg());
+		return returnMsg;
+	}*/
+	
+	@ExceptionHandler(Exception.class)
+	@ResponseBody
+	public ReturnMsg handler(Exception e){
+		e.printStackTrace();
+		ReturnMsg returnMsg = IConstant.MSG_OPERATE_UNKNOW;
+		if(e instanceof KachiException){
+			returnMsg.setMsg(((KachiException)e).getMsg());
+		}
 		return returnMsg;
 	}
 }

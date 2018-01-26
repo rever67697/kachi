@@ -29,7 +29,7 @@ public class SimPool implements Serializable{
 	
 	private String inIp;//SUM Controller内网IP
 	
-	private String oupIp;//SUM Controller外网IP
+	private String outIp;//SUM Controller外网IP
 	
 	private Integer port;//端口
 	
@@ -129,12 +129,13 @@ public class SimPool implements Serializable{
 		this.inIp = inIp;
 	}
 
-	public String getOupIp() {
-		return oupIp;
+
+	public String getOutIp() {
+		return outIp;
 	}
 
-	public void setOupIp(String oupIp) {
-		this.oupIp = oupIp;
+	public void setOutIp(String outIp) {
+		this.outIp = outIp;
 	}
 
 	public Integer getPort() {

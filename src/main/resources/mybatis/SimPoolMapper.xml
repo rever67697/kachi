@@ -64,7 +64,7 @@
 	
 	<insert id="insertSimPool" parameterType="com.team.model.SimPool">
   		insert into m_simpool 
- 		(spid,ip,type,isactive,departmentid,mac,version,name,inip,oupip,port,sumip,webport,lionversion)
+ 		(spid,ip,type,isactive,departmentid,mac,version,name,inip,outip,port,sumip,webport,lionversion)
  		values
  		(
  		 #{spid,jdbcType=INTEGER},
@@ -76,7 +76,7 @@
  		 #{version,jdbcType=VARCHAR},
  		 #{name,jdbcType=VARCHAR},
  		 #{inIp,jdbcType=VARCHAR},
- 		 #{oupIp,jdbcType=VARCHAR},
+ 		 #{outIp,jdbcType=VARCHAR},
  		 #{port,jdbcType=INTEGER},
  		 #{sumIp,jdbcType=VARCHAR},
  		 #{webPort,jdbcType=INTEGER},

@@ -98,6 +98,7 @@
   	function doAdd(){
   		$('#doForm')[0].reset();
   		$('#doDialog [name=id]').val('');
+  		$('#doDialog').dialog({title:'添加套餐'});
   		$('#doDialog').dialog('open');
   	}
   	
@@ -108,6 +109,7 @@
              kcJs.fn.autoFillData($('#doForm'),rowData);
              $('#doForm [name=compareFlow]').val(rowData.maxFlow);
              $('#doForm [name=compareRoamFlow]').val(rowData.maxRoamFlow);
+             $('#doDialog').dialog({title:'修改套餐'});
              $('#doDialog').dialog('open');
         }
         else {

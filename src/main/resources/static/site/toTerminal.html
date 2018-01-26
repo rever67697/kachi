@@ -209,6 +209,7 @@
   		$('#doForm')[0].reset();
   		$('#doDialog [name=id]').val('');
   		$('#doDialog [name=tsid]').attr('readOnly',false);
+  		$('#doDialog').dialog({title:'添加终端'});
   		$('#doDialog').dialog('open');
   	}
   	
@@ -221,6 +222,7 @@
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
              kcJs.fn.autoFillData($('#doDialog'),rowData);
+             $('#doDialog').dialog({title:'修改终端'});
              $('#doDialog').dialog('open');
              $('#doDialog [name=tsid]').attr('readOnly',true);
         }
