@@ -78,4 +78,10 @@ public class TerminalController {
 		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 
 	
+	@PostMapping("/updateTDepartment")
+	@PermissionLog(key="tsids_终端编号的集合;departmentId_部门编号")
+	public ReturnMsg updateTDepartment(String ids,Integer departmentId){
+		return terminalService.updateDepartment(ids, departmentId);
+	} 
+	
 }

@@ -85,6 +85,18 @@
 		  		</table>
 	  		</form>
 	  	</div>
+	  	
+	  	<div id="batchDialog" closed="true" style="padding:10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  		<form id="batchForm">
+	  			<input type="hidden" name="ids">
+		  		<table class="table th-normal">
+		  			<tr><th>终端编号集合：</th><td><input name="tsids" class="easyui-validatebox" required="true" readonly="readonly"/></td></tr>
+		  			<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
+		  			<tr style="height:10px"></tr>
+		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatch()">提 交</a></td></tr>
+		  		</table>
+	  		</form>
+	  	</div>
   </body>
   <script type="text/javascript">
   	var options={
@@ -193,6 +205,14 @@
    			height:400,
    			cache: false,
 			title : "添加/修改终端信息"
+		});
+		
+		$('#batchDialog').dialog({
+			modal : true,
+   			width:400,
+   			height:180,
+   			cache: false,
+			title : "批量分配"
 		});
 		
 		kcJs.fn.initSelect({"container":$('[name=vCountryCode],[name=homeLocation]'),"url":'getCountryDic',"defaultVal":"156"});
@@ -343,8 +363,36 @@
   	function downloadFile(){
   		window.location.href=kcJs.fn.getContextPath()+"/downloadFile?fileName="+encodeURIComponent(encodeURIComponent('终端.xlsx'));
   	}
-  	
   	function doBatch(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+  		if (selectRows.length > 0) {
+  			 var tsids=[];
+  			 var ids=[];
+  			 for(var i = 0;i < selectRows.length;i++){
+  			 	tsids.push(selectRows[i].tsid);
+  			 	ids.push(selectRows[i].id);
+  			 }
+  			 $('#batchForm [name=tsids]').val(tsids.join(","));
+  			 $('#batchForm [name=ids]').val(ids.join(","));
+             $('#batchDialog').dialog('open');
+        }else {
+            $.messager.alert("提示", "请选择至少一条信息", "info");
+        }
+  		
+  	}
+  	
+  	function saveBatch(){
+  		if($('#batchForm').form('validate')){
+  			$('#dg').datagrid('loading');
+  			$('#batchDialog').dialog('close');
+  			$.post(kcJs.fn.getContextPath()+'/updateTDepartment',$('#batchForm').serializeObject(),function(data){
+  				$.messager.alert('提示',data.msg);
+  				$('#dg').datagrid('loaded');
+  				if(data.code=='200' ){
+  					doQuery();
+  				}
+  			});
+  		}
   	}
   </script>
 </html>

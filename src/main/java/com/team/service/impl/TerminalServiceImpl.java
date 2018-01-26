@@ -155,5 +155,19 @@ public class TerminalServiceImpl implements TerminalService{
 		return IConstant.MSG_OPERATE_ERROR;
 	}
 
+	@Override
+	/**
+	 * 批量更改终端的额所属部门
+	 */
+	public ReturnMsg updateDepartment(String ids, Integer departmentId) {
+		if(!CommonUtil.StringIsNull(ids)){
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("ids", ids.split(","));
+			map.put("departmentId", departmentId);
+			terminalDao.updateDepartment(map);
+		}
+		return IConstant.MSG_OPERATE_SUCCESS;
+	}
+
 	
 }

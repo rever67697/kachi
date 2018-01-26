@@ -29,4 +29,6 @@ public interface TerminalService {
 	
 	public void insertBatch(List<Terminal> list);
 	
+	public ReturnMsg updateDepartment(String ids,Integer departmentId);
+	
 }

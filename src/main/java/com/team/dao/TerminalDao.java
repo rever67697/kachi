@@ -45,4 +45,12 @@ public interface TerminalDao {
 	 */
 	public int updateTerminalById(Terminal terminal);
 	
+	/**
+	 * 批量更改终端的额所属部门
+	 *@param map
+	 *@return
+	 *return
+	 */
+	public int updateDepartment(Map<String, Object> map);
+	
 }

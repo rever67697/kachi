@@ -95,4 +95,11 @@
 	      androidVersion = #{androidVersion,jdbcType=VARCHAR} -->
 	    where ID = #{id,jdbcType=INTEGER}
   	</update>
+  	
+  	<update id="updateDepartment" parameterType="java.util.Map">
+  		update m_terminal
+  		set departmentId=#{departmentId,jdbcType=INTEGER}
+  		where id in
+  		(<foreach collection="ids" separator="," item="item">#{item,jdbcType=INTEGER}</foreach>)
+  	</update>
 </mapper>
