@@ -21,5 +21,4 @@ import com.team.model.SimCard;
 public class MyTest {
 
 	
-	
 }

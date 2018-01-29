@@ -45,7 +45,6 @@ public class PermissionLogAop {
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
         HttpServletRequest request = CommonUtil.getRequest();
-        TbAuthUser user = CommonUtil.getUser(request);
         Map<String, Object> permission = CommonUtil.getUserPermission(request);
         
 		//1.执行方法之前，判断权限--onlyLog为true则代表这个只执行记录日志，不过滤权限，默认是false
@@ -66,6 +65,7 @@ public class PermissionLogAop {
 		Object result = point.proceed();
 		
 		//3.记录日志，如果用户为空则不记录
+		TbAuthUser user = CommonUtil.getUser(request);
 		if(user!=null){
 			PermissionLog bussiness = point.getTarget().getClass().getAnnotation(PermissionLog.class);
 			String bussinesstype = bussiness.value();
@@ -95,6 +95,7 @@ public class PermissionLogAop {
 			
 			//记录日志的额外信息，一般是指主要的参数是什么，key的格式的成对的key用‘_’分割，多个key用‘;’分割
 			StringBuilder desc = new StringBuilder();
+			String desc_str = "";
 			if(!"".equals(logInfo.key())){
 				String[] Keygroup = logInfo.key().split(";");
 				for (String s : Keygroup) {
@@ -102,10 +103,11 @@ public class PermissionLogAop {
 					if(key.length==2)
 						desc.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
 				}
+				desc_str = desc.substring(0, desc.lastIndexOf(" | "));
 			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc.toString());
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str);
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>审计调阅</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="../../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+  </head>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+  	
+  	<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+		<form id="queryForm">
+	  		<table class="table">
+	  			<tr>
+	  				<th>用户名：</th><td><input name="username" placeholder="请输入用户名" /></td>
+	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+	  			</tr>
+	  		</table>
+	  	</form>
+	</div>	
+	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+		<table id="dg" ></table>
+	</div>
+  </body>
+  <script type="text/javascript">
+  	var options={
+			title:'日志列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+			         	{field:'id',title:'id',hidden:true},
+			         	{field:'createtime',title:'时间',width:150},
+			         	{field:'username',title:'用户名',width:100},
+			         	{field:'bussinesstype',title:'业务类型',width:100},
+			         	{field:'operation',title:'具体操作',width:150},
+			         	{field:'desc',title:'关键内容',width:500}
+					]],
+			url:kcJs.fn.getContextPath()+'/getLogList',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[15,30],
+			rownumbers:true,
+			striped:true,
+			scrollbarSize:0,
+			fit:true
+		};
+  
+  	  function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	  }
+  	  
+	  $(function(){
+	  	$('#dg').datagrid(options);
+	  });
+	  
+	  
+  </script>
+</html>	

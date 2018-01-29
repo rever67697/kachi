@@ -22,5 +22,6 @@
 		<if test="username!=null and username!=''">
 			and username=#{username,jdbcType=VARCHAR}
 		</if>
+		order by createtime desc
 	</select>
 </mapper>
