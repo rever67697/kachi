@@ -4,10 +4,12 @@
 
 	<insert id="saveLog" parameterType="com.team.model.auth.OperationLog">
 		insert into sys_operation_log
-		(username,bussinesstype,operation,`desc`,createtime)
+		(username,departmentid,ip,bussinesstype,operation,`desc`,createtime)
 		values
 		( 
 		 #{username,jdbcType=VARCHAR},
+		 #{departmentid,jdbcType=INTEGER},
+		 #{ip,jdbcType=VARCHAR},
 		 #{bussinesstype,jdbcType=VARCHAR},
 		 #{operation,jdbcType=VARCHAR},
 		 #{desc,jdbcType=VARCHAR},

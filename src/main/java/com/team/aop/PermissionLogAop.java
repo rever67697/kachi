@@ -107,7 +107,7 @@ public class PermissionLogAop {
 			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str);
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str,user.getDepartmentId(),request.getRemoteAddr());
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {
