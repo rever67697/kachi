@@ -213,7 +213,7 @@
   	}
   	
   	function showCardSolt(rowData,obj){
-  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool',{cpId:rowData.id},function(data){
+  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool',{cpId:rowData.id,name:rowData.name},function(data){
   				if(data && data.code=='200'){
   					var cardList = data.data.rows;
 	             	if(cardList){

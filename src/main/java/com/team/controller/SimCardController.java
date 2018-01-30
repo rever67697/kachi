@@ -32,7 +32,7 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getSimCardByPool")
-	@PermissionLog(key="cpId_卡池编号")
+	@PermissionLog(key="cpId_卡池编号;name_卡池名称")
 	public ReturnMsg getSimCardByPool(Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
