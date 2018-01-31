@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>应用管理</title>
+    <title>部门管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link rel="stylesheet" type="text/css" href="../../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
@@ -12,25 +12,23 @@
 	<script type="text/javascript" src="../../js/common.js"></script>
   </head>
   <body class="easyui-layout" style="overflow-y: hidden" scroll="no" style="background-color:#FFF;">
-	<div region="west" split="true" style="width:450px;background-color:#FFF;padding-top:25px" title="应用树" >
-		<ul id="authtree" class="easyui-tree" ></ul>
+	<div region="west" split="true" style="width:450px;background-color:#FFF;padding-top:25px" title="部门树" >
+		<ul id="orgtree" class="easyui-tree" ></ul>
 	</div>
 	<div region="center" title="" style="overflow:hidden;background:#FFF;">
 		<div class="easyui-layout"  fit="true">
 			<div region="north" style="height:40px;padding:5px 0 0 5px;background-color:#FFF" >
-		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="addRootBtn">增加根菜单</a>
-		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" disabled="true" plain="true" id="addMenuBtn">增加子菜单</a>
-		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" disabled="true" plain="true" id="addFunBtn">增加功能</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="addRootBtn">增加根部门</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" disabled="true" plain="true" id="addMenuBtn">增加子部门</a>
 		        <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-remove" disabled="true" plain="true" id="delBtn">删除</a>
 		        <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-save" disabled="true" plain="true" id="saveBtn">保存</a>
 			</div>
 			<div region="center" style="background:#fff;overflow:hidden;">
 					<fieldset style="width:90%;height:95%;margin-left:15px;">
-						<legend style="color:blue;padding-top:15px;">菜单信息</legend>
+						<legend style="color:blue;padding-top:15px;">部门信息</legend>
 						<form id="doForm" >
 							<input type="hidden" name="id" />
 							<input type="hidden" name="parentId" />
-							<input type="hidden" name="isMenu"/>
 							<table class="appTable">
 								<tr>
 									<td style="width:100px;">名称：<span class="flag">*</span></td>
@@ -38,26 +36,12 @@
 									<input name="text" class="easyui-validatebox user-input2" required="true" />
 								</tr>
 								<tr>
-									<td>显示顺序：</td>
-									<td><input  name="orderNum"  type="text" class="user-input2 onlyNumber"/></td>
-								</tr>
-								<tr>
-									<td>链接路径：</td>
+									<td>简称：</td>
 									<td><input  name="url"  type="text" class="user-input2" /></td>
 								</tr>
 								<tr>
-									<td>图片路径：</td>
-									<td><input name="icon"  type="text" class="user-input2" /></td>
-								</tr>
-								<tr>
-									<td>功能方法：</td>
-									<td><input name="funDesc"  type="text" class="user-input2 "/></td>
-								</tr>
-								<tr>
-									<td>是否为菜单：</td>
-									<td><input name="isMenu2"  type="radio" value="1" disabled="disabled"/><label>&nbsp;是</label>&nbsp;&nbsp;&nbsp;&nbsp;
-										<input name="isMenu2"  type="radio" value="0" disabled="disabled"/><label>&nbsp;否</label>
-									</td>
+									<td>备注：</td>
+									<td><textarea name="funDesc"  class="user-input2 " style="height:50px"></textarea></td>
 								</tr>
 							</table>
 					</form>
@@ -73,10 +57,10 @@
 	  });
 	  
 	  function initTree(){
-	  	$.post(kcJs.fn.getContextPath()+'/getPermissionTree',function(data){
+	  	$.post(kcJs.fn.getContextPath()+'/getDepartmentList',function(data){
 	  		data = changeData(data);
 	  		if(data){
-	  			$('#authtree').tree({
+	  			$('#orgtree').tree({
 				    data:data,
 				    //checkbox:true,
 				    onClick:function(node){
@@ -96,16 +80,12 @@
 	  
 	  function change(data){
 	  	if(data){
-	  		data.iconCls="";
 	  		for(var i = 0; i < data.children.length;i++){
 	  			var obj = data.children[i];
 	  			if(obj.children && obj.children.length>0){
 	  				change(obj);
 	  			}else{
 	  				delete obj.children;
-	  				if(obj.isMenu=='1'){
-	  					obj.iconCls="";
-	  				}
 	  				data.state="closed";
 	  			}
 	  		}
@@ -115,56 +95,38 @@
 	function autoValid(node){
 		$('#doForm').form('load',node.attributes);
 		initBtn();
-		if(node.attributes.parentId=='0'){
+		if(!node.attributes.parentId){
 			$('#addMenuBtn').linkbutton('enable');
-			$('#addFunBtn').linkbutton('disable');
-		}else if($('authtree').tree('getParent',node.target).attributes.parentId=='0'){
-			$('#addMenuBtn').linkbutton('disable');
-			$('#addFunBtn').linkbutton('enable');
 		}
 	}
 	
 	function initBtn(){
 		$('#addMenuBtn').linkbutton('disable');
-		$('#addFunBtn').linkbutton('disable');
 		$('#delBtn').linkbutton('enable');
 		$('#saveBtn').linkbutton('enable');
 	}
 	
 	$('#addRootBtn').click(function(){
 		$('#doForm').form('clear');
-		$('[name=parentId]').val('0');
-		$('[name=isMenu]').val("1");
-		$('[name=isMenu2]')[0].checked=true;
-		$('#saveBtn').linkbutton('enable');
+		$('[name=parentId]').val('');
 		$('#delBtn').linkbutton('disable');
+		$('#saveBtn').linkbutton('enable');
 	});
 	
 	$('#addMenuBtn').click(function(){
 		$('#doForm').form('clear');
-		$('[name=parentId]').val($('#authtree').tree('getSelected').id);
-		$('[name=isMenu]').val("1");
-		$('[name=isMenu2]')[0].checked=true;
-		$('#delBtn').linkbutton('disable');
-	});
-	
-	$('#addFunBtn').click(function(){
-		$('#doForm').form('clear');
-		$('[name=parentId]').val($('#authtree').tree('getSelected').id);
-		$('[name=isMenu]').val("0");
-		$('[name=isMenu2]')[1].checked=true;
+		$('[name=parentId]').val($('#orgtree').tree('getSelected').id);
 		$('#delBtn').linkbutton('disable');
 	});
 	
 	$('#delBtn').click(function(){
-		var id= $('#authtree').tree('getSelected').id;
-		if(id){
+		var node= $('#orgtree').tree('getSelected');
+		if(node.id){
 			$.messager.confirm('提示','是否确定删除？',function(r){if(r){
-				$.post(kcJs.fn.getContextPath()+'/deletePermission',{id:id},function(data){
+				$.post(kcJs.fn.getContextPath()+'/deleteDepartment',{id:node.id,name:node.text},function(data){
 					$.messager.alert('提示',data.msg,'info');
 					initTree();
 					$('#addMenuBtn').linkbutton('disable');
-					$('#addFunBtn').linkbutton('disable');
 					$('#delBtn').linkbutton('disable');
 					$('#saveBtn').linkbutton('disable');
 					$('#doForm')[0].reset();
@@ -175,11 +137,10 @@
 	
 	$('#saveBtn').click(function(){
 		if($('#doForm').form('validate')){
-			$.post(kcJs.fn.getContextPath()+'/savePermission',$('#doForm').serializeObject(),function(data){
+			$.post(kcJs.fn.getContextPath()+'/savetDepartment',$('#doForm').serializeObject(),function(data){
 				$.messager.alert('提示',data.msg,'info');
 				initTree();
 				$('#addMenuBtn').linkbutton('disable');
-				$('#addFunBtn').linkbutton('disable');
 				$('#delBtn').linkbutton('disable');
 				$('#saveBtn').linkbutton('disable');
 				$('#doForm')[0].reset();

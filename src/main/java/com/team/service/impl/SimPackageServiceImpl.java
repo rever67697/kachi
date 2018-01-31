@@ -68,12 +68,11 @@ public class SimPackageServiceImpl implements SimPackageService{
 	}
 
 	@Override
-	public ReturnMsg savePackage(SimPackage simPackage,Integer compareFlow,Integer compareRoamFlow) {
+	public ReturnMsg savePackage(SimPackage simPackage,boolean isChange) {
 		int count = 0;
 		if(simPackage.getId()!=null){
 			count = simPackageDao.updatePackage(simPackage);
-			if(!(simPackage.getMaxFlow()).equals(compareFlow)
-					|| !(simPackage.getMaxRoamFlow()).equals(compareRoamFlow)){
+			if(isChange){
 				//需要更新流量大小
 				flowMonthDao.updateMonthFlowByPackage(simPackage);
 			}

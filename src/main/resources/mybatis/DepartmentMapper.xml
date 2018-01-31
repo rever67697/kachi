@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.auth.DepartmentDao">
+
+	<insert id="insert" parameterType="com.team.model.auth.Department">
+		insert into m_department
+		(name,abbr,status,parentid,note)
+		values
+		(
+		  #{name,jdbcType=VARCHAR},
+		  #{abbr,jdbcType=VARCHAR},
+		  0,
+		  #{parentId,jdbcType=INTEGER},
+		  #{note,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.team.model.auth.Department">
+		update m_department
+		set name=#{name,jdbcType=VARCHAR},
+			abbr=#{abbr,jdbcType=VARCHAR},
+			note=#{note,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="delete">
+		update m_department
+		set status=1
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<select id="list" resultType="com.team.model.auth.TbAuthPermission">
+		select id,
+			   case when id=parentid then null when id=0 then null else parentid end parentId,
+			   name text,
+			   abbr url,
+			   note funDesc 
+		from m_department
+		where status=0
+		order by id
+	</select>
+	
+</mapper>

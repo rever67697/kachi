@@ -28,6 +28,7 @@
 	  			<input type="hidden" name="id"/>
 	  			<input type="hidden" name="compareFlow"/>
 	  			<input type="hidden" name="compareRoamFlow"/>
+	  			<input type="hidden" name="isChange"/>
 		  		<table class="table th-normal">
 		  			<tr><th>套餐名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
 		  			<tr><th>运营商编号：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
@@ -141,19 +142,46 @@
   	
   	function saveData(){
   		if($('#doForm').form('validate')){
-  			$('#doDialog').dialog('close');
-  			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
-  				if(data){
-	    			$.messager.alert('提示',data.msg,'info');
-	    			if(data.code=='200'){
-	    				doQuery();
-	    			}else{
-	    				$('#dg').datagrid('loaded');
-	    			}
-	    		}
-	    		
-  			});
+  			//修改套餐
+  			var isChange = false;
+  			if($('#doForm [name=id]').val()){
+  				if(($('#doForm [name=compareFlow]').val() != $('#doForm [name=maxFlow]').val())
+  					|| ($('#doForm [name=compareRoamFlow]').val() != $('#doForm [name=maxRoamFlow]').val()))
+  						isChange = true;
+  			}
+  			$('#doForm [name=isChange]').val(isChange);
+  			//本地流量或者漫游流量已经前后发生改变
+  			if(isChange){
+  				$.messager.confirm('提示','改套餐的流量参数前后发生了改变，是否确定修改？',function(r){
+  					if(r){
+  						$('#doDialog').dialog('close');
+			  			$('#dg').datagrid('loading');
+			  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
+			  				if(data){
+				    			$.messager.alert('提示',data.msg,'info');
+				    			if(data.code=='200'){
+				    				doQuery();
+				    			}else{
+				    				$('#dg').datagrid('loaded');
+				    			}
+	    					}
+  						});
+  					}
+  				});
+  			}else{
+  				$('#doDialog').dialog('close');
+	  			$('#dg').datagrid('loading');
+	  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
+	  				if(data){
+		    			$.messager.alert('提示',data.msg,'info');
+		    			if(data.code=='200'){
+		    				doQuery();
+		    			}else{
+		    				$('#dg').datagrid('loaded');
+		    			}
+   					}
+				});
+  			}
   		}
   	}
   </script>

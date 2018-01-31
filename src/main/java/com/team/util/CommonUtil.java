@@ -229,12 +229,12 @@ public class CommonUtil {
 	public static List<TbAuthPermission> bulidTree(List<TbAuthPermission> list,boolean needAttribute){
 		List<TbAuthPermission> tree = new ArrayList<TbAuthPermission>();
 		if(listNotBlank(list))
-		for (TbAuthPermission node : list) {
-			if(node.getParentId() == 0){
-				tree.add(node);
-				buid(list,node,needAttribute);
+			for (TbAuthPermission node : list) {
+				if(node.getParentId()==null|| node.getParentId() == 0){
+					tree.add(node);
+					buid(list,node,needAttribute);
+				}
 			}
-		}
 		return tree;
 	}
 	

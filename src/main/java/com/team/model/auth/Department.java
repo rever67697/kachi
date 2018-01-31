@@ -1,4 +1,4 @@
-package com.team.model;
+package com.team.model.auth;
 
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ public class Department implements Serializable{
 	
 	private Integer status;//状态，0：正常；1：删除
 	
-	private Integer parentId;//'上级部门Id
+	private Integer parentId;//上级部门Id
 	
 	private String note;//备注
 
