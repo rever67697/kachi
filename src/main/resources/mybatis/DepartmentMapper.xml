@@ -26,7 +26,8 @@
 	<update id="delete">
 		update m_department
 		set status=1
-		where id=#{id,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER} 
+		   or parentid=#{id,jdbcType=INTEGER} 
 	</update>
 	
 	<select id="list" resultType="com.team.model.auth.TbAuthPermission">

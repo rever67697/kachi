@@ -129,4 +129,13 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 		return returnMsg;
 	}
 
+	@Override
+	public ReturnMsg resetPwd(Integer id) {
+		TbAuthUser user = new TbAuthUser();
+		user.setId(id);
+		user.setPassWord(MD5Utils.encrypt("888888"));
+		tbAuthUserDao.modifyPwd(user);
+		return IConstant.MSG_OPERATE_SUCCESS;
+	}
+
 }

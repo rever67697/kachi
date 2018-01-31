@@ -430,6 +430,31 @@
 			getIds(parent,ids);
 		}
 	}
-	  
+	
+	function doReset(){
+		var row = $("#dg").datagrid("getSelected");
+		if( row ){
+			if(row.status==1){
+				$.messager.alert('提示','用户被封锁，无法重置密码！','info');
+				return;
+			}
+		
+			var id = row['id'];
+			var name = row['name'];
+			
+			$.messager.confirm('提示','是否重置密码为 888888 ？',function(r){
+				if(r){
+					$("#dg").datagrid("loading");
+					$.post(kcJs.fn.getContextPath()+"/resetPwd",{id:id,name:name},function(data){
+						$.messager.alert('提示',data.msg,'info');
+						$("#dg").datagrid("loaded");
+					},'json');
+				}
+			});
+		}else{
+			$.messager.alert('提示', "请选择用户后操作!", 'info');
+		}
+		
+	}
   </script>
 </html>	

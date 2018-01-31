@@ -61,4 +61,10 @@ public class TbAuthUserController {
 		return tbAuthUserService.modifyPwd(user, oldPwd, newPwd);
 	}
 	
+	@PostMapping("/resetPwd")
+	@PermissionLog(key="name_用户名;id_用户id")
+	public ReturnMsg resetPwd(Integer id){
+		return tbAuthUserService.resetPwd(id);
+	}
+	
 }
