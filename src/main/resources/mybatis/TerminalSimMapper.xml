@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.TerminalSimDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<select id="getTerminalSimByTsid" resultType="com.team.model.TerminalSim">
 		select id, imsi, tsid, 
       		   mcc, groupkey, beattime, 
@@ -13,10 +19,15 @@
 	
 	<select id="getTerminalSimList" parameterType="java.util.Map" resultType="com.team.model.TerminalSim">
 		select r.*
-			  ,ifnull(t.namecn,t.countryname) countryName
+			  ,ifnull(c.namecn,c.countryname) countryName
+			  ,d.name departmentName
 		from m_terminal_sim r
-		left join m_country t
-		on t.countrycode=r.vcountrycode
+		left join m_country c
+		on c.countrycode=r.vcountrycode
+		left join m_terminal t
+		on t.tsid=r.tsid
+		left join m_department d
+		on t.departmentId=d.id and d.status=0
 		where 1=1
 		<if test="imsi!=null">
 			and r.imsi = #{imsi,jdbcType=BIGINT}
@@ -24,6 +35,10 @@
 		<if test="tsid!=null">
 			and r.tsid = #{tsid,jdbcType=INTEGER}
 		</if>
+		<if test="departmentId!=null">
+			and d.id = #{departmentId,jdbcType=INTEGER}
+		</if>
+		<include refid="dId"></include>
 		order by r.tsid
 	</select>
 	

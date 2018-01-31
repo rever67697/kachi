@@ -40,6 +40,16 @@ public class TerminalSim implements Serializable{
 	
 	private String countryName;//国家名称
 	
+	private String departmentName;
+	
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
 	public String getCountryName() {
 		return countryName;
 	}

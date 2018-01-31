@@ -2,6 +2,8 @@ package com.team.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team.aop.PermissionLog;
 import com.team.model.ChannelCard;
 import com.team.service.ChannelCardService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -36,9 +39,10 @@ public class ChannelCardController {
 	 * @return
 	 */
 	@PostMapping("/getChannelCardList")
-	public ResultList getChannelCardList(String number,Integer countryCode,Integer operatorCode, Integer status, 
-			int page, int rows) {
-		return channelCardService.getChannelCardList(number,countryCode, operatorCode, status, page, rows);
+	public ResultList getChannelCardList(Integer departmentId,String number,Integer countryCode,Integer operatorCode, Integer status, 
+			int page, int rows,HttpServletRequest request) {
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return channelCardService.getChannelCardList(departmentId,dId,number,countryCode, operatorCode, status, page, rows);
 	}
 
 	@PostMapping("/deleteChannelCards")

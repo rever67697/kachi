@@ -39,6 +39,8 @@ public class ChannelCard implements Serializable{
 	
 	private String operatorName;//运营商名称
 	
+	private String departmentName;
+	
 	public ChannelCard() {
 		super();
 	}
@@ -57,6 +59,14 @@ public class ChannelCard implements Serializable{
 		this.balance = balance;
 		this.status = status;
 		this.detail = detail;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 
 	public String getCountryName() {

@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.ChannelCardDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<select id="getChannelCardList" resultType="com.team.model.ChannelCard" parameterType="java.util.Map">
 		select r.*
 			   ,ifnull(t.namecn,t.countryname) countryName
@@ -10,11 +16,16 @@
 					 				  when 'China Telecom' then '中国电信'
 									  when 'China Tietong' then '中国铁通' 
 									  else OPERATORNAMECN end operatorName
+			   ,d.name departmentName
 		from m_channel_card r
 		left join m_country t
 		on r.countrycode=t.countrycode
 		left join m_operator k 
 	    on r.OPERATORCODE=k.OPERATORCODE
+	    left join m_simcard c
+	  	on r.imsi=c.imsi
+	  	left join m_department d
+		on c.departmentId=d.id and d.status=0
 		where 1=1
 		<if test="countryCode!=null" >  
          	and r.countrycode = #{countryCode,jdbcType=INTEGER}  
@@ -28,6 +39,10 @@
           <if test="status!=null" >  
          	and r.status = #{status,jdbcType=INTEGER}
         </if>
+        <if test="departmentId!=null">
+        	and d.id=#{departmentId,jdbcType=INTEGER}
+        </if>
+        <include refid="dId"></include>
 	</select> 
 	
 	<update id="deleteChannelCards" parameterType="java.util.List">

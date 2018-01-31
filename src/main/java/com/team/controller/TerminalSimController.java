@@ -1,11 +1,14 @@
 package com.team.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
 import com.team.service.TerminalSimService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -21,8 +24,9 @@ public class TerminalSimController {
 	private TerminalSimService terminalSimService;
 	
 	@PostMapping("/getTerminalSimList")
-	public ResultList getTerminalSimList(Integer tsid,Long imsi,int page,int rows){
-		return terminalSimService.getTerminalSimList(tsid, imsi, page, rows);
+	public ResultList getTerminalSimList(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return terminalSimService.getTerminalSimList(departmentId,dId,tsid, imsi, page, rows);
 	}
 	
 	@PostMapping("/deleteTerSimByIds")

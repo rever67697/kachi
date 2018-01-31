@@ -17,8 +17,9 @@
 	  		<table class="table">
 	  			<tr>
 	  				<th>副卡卡号：</th><td><input name="number" placeholder="请输入副卡卡号" class="onlyNumber"/></td>
-	  				<th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
-	  				<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
+	  				<th>所属部门：</th><td><select name="departmentId"></select></td>
+	  				<!-- <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
+	  				<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> -->
 	  				<th>副卡状态：</th><td><select name="status"><option value="">全部</option><option value="0">正常</option><option value="1">停用</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
@@ -65,10 +66,11 @@
  			         	}},
  			         	{field:'rechargeTime',title:'最后一次充值时间',width:140},
  			         	{field:'balance',title:'账户余额',width:80},
-			         	{field:'operatorName',title:'运营商',width:100},
+			         	{field:'operatorName',title:'运营商',width:80},
 			         	{field:'countryName',title:'国家',width:100},
 			         	{field:'mcNumber',title:'短信中心号码',width:100},
-			         	{field:'detail',title:'详情',width:200},
+			         	{field:'detail',title:'详情',width:150},
+			         	{field:'departmentName',title:'所属部门',width:120}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/getChannelCardList',
@@ -102,6 +104,7 @@
 		});
 		
 		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
 		
 	});
 	
