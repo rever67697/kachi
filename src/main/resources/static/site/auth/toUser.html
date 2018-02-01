@@ -197,6 +197,7 @@
   	  function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
+  		$("#main-layout").layout("collapse","east");
   	  }
   	  
 	  $(function(){
@@ -314,6 +315,7 @@
 	  	if($('#doForm').form('validate')){
   			$('#doDialog').dialog('close');
 	  		$('#dg').datagrid('loading');
+	  		$('#doForm [name=name]').attr('disabled',false);
 	  		$.post(kcJs.fn.getContextPath()+'/saveUser',$('#doForm').serializeObject(),function(data){
 	  			$('#dg').datagrid('loaded');
 	  			if(data && data.code=='200'){

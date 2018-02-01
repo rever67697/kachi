@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="../../js/common.js"></script>
   </head>
   <body class="easyui-layout" style="overflow-y: hidden" scroll="no" style="background-color:#FFF;">
+  	<input type="hidden" id="departmentId"/>
 	<div region="west" split="true" style="width:450px;background-color:#FFF;padding-top:25px" title="部门树" >
 		<ul id="orgtree" class="easyui-tree" ></ul>
 	</div>
@@ -53,6 +54,13 @@
   </body>
   <script type="text/javascript">
 	  $(function(){
+	  	$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
+			if(data){
+				$('#departmentId').val(data.departmentId);
+			}
+		},'json');
+		
+		
 	  	initTree();
 	  });
 	  
@@ -95,15 +103,36 @@
 	function autoValid(node){
 		$('#doForm').form('load',node.attributes);
 		initBtn();
-		if(!node.attributes.parentId){
-			$('#addMenuBtn').linkbutton('enable');
+		
+		var departmentId=$('#departmentId').val();
+		
+		if($('#departmentId').val()!=0){
+			//这里约定：当选中是一级部门并且node.id等于当前登录用户的部门id时，可以添加子部门
+			if(!node.attributes.parentId && node.id==departmentId){
+				$('#addMenuBtn').linkbutton('enable');
+				$('#delBtn').linkbutton('enable');
+				$('#saveBtn').linkbutton('enable');
+			}else if(node.id==departmentId || node.attributes.parentId==departmentId){//当选中的是二级部门并且是当前登录用户的部门id或者选中是一级部门的二级部门
+				$('#delBtn').linkbutton('enable');
+				$('#saveBtn').linkbutton('enable');
+			}
+		}else{
+			if(!node.attributes.parentId){
+				$('#addMenuBtn').linkbutton('enable');
+				$('#delBtn').linkbutton('enable');
+				$('#saveBtn').linkbutton('enable');
+			}else{
+				$('#delBtn').linkbutton('enable');
+				$('#saveBtn').linkbutton('enable');
+			}
 		}
+		
 	}
 	
 	function initBtn(){
 		$('#addMenuBtn').linkbutton('disable');
-		$('#delBtn').linkbutton('enable');
-		$('#saveBtn').linkbutton('enable');
+		$('#delBtn').linkbutton('disable');
+		$('#saveBtn').linkbutton('disable');
 	}
 	
 	$('#addRootBtn').click(function(){
@@ -114,21 +143,26 @@
 	});
 	
 	$('#addMenuBtn').click(function(){
+		if($('#addMenuBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		$('#doForm').form('clear');
 		$('[name=parentId]').val($('#orgtree').tree('getSelected').id);
 		$('#delBtn').linkbutton('disable');
+		$('#saveBtn').linkbutton('enable');
 	});
 	
 	$('#delBtn').click(function(){
+		if($('#delBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		var node= $('#orgtree').tree('getSelected');
 		if(node.id){
 			$.messager.confirm('提示','是否确定删除？',function(r){if(r){
 				$.post(kcJs.fn.getContextPath()+'/deleteDepartment',{id:node.id,name:node.text},function(data){
 					$.messager.alert('提示',data.msg,'info');
+					initBtn();
 					initTree();
-					$('#addMenuBtn').linkbutton('disable');
-					$('#delBtn').linkbutton('disable');
-					$('#saveBtn').linkbutton('disable');
 					$('#doForm')[0].reset();
 				},'json');
 			}});
@@ -136,13 +170,14 @@
 	});
 	
 	$('#saveBtn').click(function(){
+		if($('#saveBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		if($('#doForm').form('validate')){
 			$.post(kcJs.fn.getContextPath()+'/savetDepartment',$('#doForm').serializeObject(),function(data){
 				$.messager.alert('提示',data.msg,'info');
+				initBtn();
 				initTree();
-				$('#addMenuBtn').linkbutton('disable');
-				$('#delBtn').linkbutton('disable');
-				$('#saveBtn').linkbutton('disable');
 				$('#doForm')[0].reset();
 			},'json');
 		}

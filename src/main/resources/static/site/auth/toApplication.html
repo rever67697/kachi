@@ -141,6 +141,9 @@
 	});
 	
 	$('#addMenuBtn').click(function(){
+		if($('#addMenuBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		$('#doForm').form('clear');
 		$('[name=parentId]').val($('#authtree').tree('getSelected').id);
 		$('[name=isMenu]').val("1");
@@ -149,6 +152,9 @@
 	});
 	
 	$('#addFunBtn').click(function(){
+		if($('#addFunBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		$('#doForm').form('clear');
 		$('[name=parentId]').val($('#authtree').tree('getSelected').id);
 		$('[name=isMenu]').val("0");
@@ -157,6 +163,9 @@
 	});
 	
 	$('#delBtn').click(function(){
+		if($('#delBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		var id= $('#authtree').tree('getSelected').id;
 		if(id){
 			$.messager.confirm('提示','是否确定删除？',function(r){if(r){
@@ -174,6 +183,9 @@
 	});
 	
 	$('#saveBtn').click(function(){
+		if($('#saveBtn').hasClass('l-btn-disabled')){
+			return;
+		}
 		if($('#doForm').form('validate')){
 			$.post(kcJs.fn.getContextPath()+'/savePermission',$('#doForm').serializeObject(),function(data){
 				$.messager.alert('提示',data.msg,'info');
