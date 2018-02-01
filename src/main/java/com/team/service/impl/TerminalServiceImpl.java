@@ -86,6 +86,7 @@ public class TerminalServiceImpl implements TerminalService{
 			book = WorkbookFactory.create(file.getInputStream());
 			sheet = book.getSheetAt(0);
 			int total = sheet.getLastRowNum()+1;
+			Terminal terminal = null;
 			for (int i = 2; i < total; i++) {
 				row = sheet.getRow(i);
 				if(row == null || row.getCell(0) == null){
@@ -115,7 +116,7 @@ public class TerminalServiceImpl implements TerminalService{
 					Integer resetWifi = CommonUtil.getCellIntVal(row.getCell(19));
 					String androidVersion = CommonUtil.getCellStringVal(row.getCell(20));
 					
-					Terminal terminal = new Terminal(CommonUtil.getNewId(), tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated, 
+					terminal = new Terminal(CommonUtil.getNewId(), tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated, 
 							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, saleType, resetWifi, androidVersion);
 					list.add(terminal);
 				} catch (Exception e) {

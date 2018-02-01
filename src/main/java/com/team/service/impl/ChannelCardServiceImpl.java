@@ -78,6 +78,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 			book = WorkbookFactory.create(file.getInputStream());
 			sheet = book.getSheetAt(0);
 			int total = sheet.getLastRowNum()+1;
+			ChannelCard channelCard = null;
 			for (int i = 2; i < total; i++) {
 				row = sheet.getRow(i);
 				if(row == null || row.getCell(0) == null){
@@ -94,7 +95,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 					Double balance = CommonUtil.getCellDoubleVal(row.getCell(7));
 					String detail = CommonUtil.getCellStringVal(row.getCell(8));
 					
-					ChannelCard channelCard = new ChannelCard(imsi, number, iccid, operatorCode, countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail);
+					channelCard = new ChannelCard(imsi, number, iccid, operatorCode, countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail);
 					list.add(channelCard);
 				} catch (Exception e) {
 					returnMsg.setCode(IConstant.CODE_ERROR);
