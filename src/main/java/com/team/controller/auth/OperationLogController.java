@@ -18,7 +18,7 @@ public class OperationLogController {
 	private OperationLogService operationLogService;
 	
 	@PostMapping("/getLogList")
-	public ResultList getLogList(String username,int page,int rows){
-		return operationLogService.getLogList(username, page, rows);
+	public ResultList getLogList(String username,String bussinesstype,int page,int rows){
+		return operationLogService.getLogList(username,bussinesstype, page, rows);
 	}
 }

@@ -18,6 +18,7 @@
 	  		<table class="table">
 	  			<tr>
 	  				<th>用户名：</th><td><input name="username" placeholder="请输入用户名" /></td>
+	  				<th>业务类型：</th><td><select name="bussinesstype" ></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
 	  		</table>
@@ -59,6 +60,7 @@
   	  
 	  $(function(){
 	  	$('#dg').datagrid(options);
+	  	kcJs.fn.initDic_bussinesstype($('[name=bussinesstype]'));
 	  });
 	  
 	  
