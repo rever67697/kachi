@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,8 @@ import com.team.model.auth.TbAuthUser;
 @SuppressWarnings("all")
 public class CommonUtil {
 	private static char[] codes = { '1','2', '3', '4', '5', '6', '7', '8', '9','0'};
+	
+	private static DecimalFormat df = new DecimalFormat("0"); 
 	/**
 	 * 只要用作把Integer参数放进Map中，如果参数为空，返回null
 	 *@param str
@@ -58,6 +61,9 @@ public class CommonUtil {
 			if(index > -1 && index == str.length()-2){
 				str = str.replace(".0", "");
 			}
+			if(str.indexOf("E") > 0 && str.indexOf(".") > 0 ){
+				str = df.format(cell.getNumericCellValue());
+			}
 			return Integer.valueOf(str);
 		}
 		return null;
@@ -74,6 +80,9 @@ public class CommonUtil {
 			int index = str.indexOf(".0");
 			if(index > -1 && index == str.length()-2){
 				str = str.replace(".0", "");
+			}
+			if(str.indexOf("E") > 0 && str.indexOf(".") > 0 ){
+				str = df.format(cell.getNumericCellValue());
 			}
 			return Long.valueOf(str);
 		}

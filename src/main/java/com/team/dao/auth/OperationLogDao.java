@@ -1,8 +1,8 @@
 package com.team.dao.auth;
 
 import java.util.List;
+import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.team.model.auth.OperationLog;
 
@@ -14,5 +14,5 @@ public interface OperationLogDao {
 
 	public int saveLog(OperationLog log);
 	
-	public List<OperationLog> getLogList(@Param("username") String username);
+	public List<OperationLog> getLogList(Map<String, Object> map);
 }
