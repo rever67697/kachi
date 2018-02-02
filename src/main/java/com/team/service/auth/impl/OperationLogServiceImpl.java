@@ -25,12 +25,11 @@ public class OperationLogServiceImpl implements OperationLogService {
 	private OperationLogDao  operationLogDao;
 	
 	@Override
-	public ResultList getLogList(String username,String bussinesstype,int page,int rows) {
+	public ResultList getLogList(String username,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", username);
-		map.put("bussinesstype", bussinesstype);
-		List<OperationLog> list = operationLogDao.getLogList(map);
+		List<OperationLog> list = operationLogDao.getLogList(username);
 		PageInfo<OperationLog> pageInfo = new PageInfo<OperationLog>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}

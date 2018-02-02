@@ -10,5 +10,5 @@ import com.team.vo.ResultList;
  */
 public interface OperationLogService {
 
-	public ResultList getLogList(String username,String bussinesstype,int page,int rows);
+	public ResultList getLogList(String username,int page,int rows);
 }

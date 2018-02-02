@@ -33,7 +33,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @Controller
-@PermissionLog("登录信息")
+@PermissionLog("用户信息")
 public class LoginController {
 	
 	@Autowired

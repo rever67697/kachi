@@ -40,18 +40,6 @@ var kcJs=
     				"1":["一直指定",v_colors.green]
     };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
-    var dic_bussinesstype=[
-						   {value:"登录信息",name:"登录信息"},
-						   {value:"用户管理",name:"用户管理"},
-						   {value:"部门管理",name:"部门管理"},
-						   {value:"卡池管理",name:"卡池管理"},
-                           {value:"终端管理",name:"终端管理"},
-                           {value:"流量卡管理",name:"流量卡管理"},
-                           {value:"套餐管理",name:"套餐管理"},
-                           {value:"在线终端管理",name:"在线终端管理"},
-                           {value:"指定卡管理",name:"指定卡管理"},
-                           {value:"副卡管理",name:"副卡管理"},
-                          ];
 	_FUNC={
 		//获取项目根路径
 		getContextPath:function(fullUrl){
@@ -132,10 +120,6 @@ var kcJs=
 		//给select容器当0：否1：是初始化
 		initDic_noYes:function(obj){
 			this.initSelectOption({"container":obj,"data":dic_noYes});
-		},
-		//给日志select容器初始化
-		initDic_bussinesstype:function(obj){
-			this.initSelectOption({container:obj,data:dic_bussinesstype,needNull:true,nullDesc:"全部"});
 		},
 		//限定输入框只能输入数字类型
 		onlyNumber:function(obj){

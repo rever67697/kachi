@@ -17,15 +17,12 @@
 		 )
 	</insert>
 	
-	<select id="getLogList" resultType="com.team.model.auth.OperationLog" parameterType="java.util.Map">
+	<select id="getLogList" resultType="com.team.model.auth.OperationLog">
 		select *
 		from sys_operation_log
 		where 1=1
 		<if test="username!=null and username!=''">
 			and username=#{username,jdbcType=VARCHAR}
-		</if>
-		<if test="bussinesstype!=null and bussinesstype!=''">
-			and bussinesstype=#{bussinesstype,jdbcType=VARCHAR}
 		</if>
 		order by createtime desc
 	</select>
