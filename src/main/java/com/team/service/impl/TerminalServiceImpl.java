@@ -21,7 +21,6 @@ import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import com.team.model.Terminal;
 import com.team.service.TerminalService;
-import com.team.util.IConstant;
 import com.team.util.CommonUtil;
 
 /**
@@ -31,7 +30,7 @@ import com.team.util.CommonUtil;
  */
 @Transactional
 @Service
-public class TerminalServiceImpl implements TerminalService{
+public class TerminalServiceImpl extends BaseService implements TerminalService{
 
 	@Autowired
 	private TerminalDao terminalDao;
@@ -68,7 +67,7 @@ public class TerminalServiceImpl implements TerminalService{
 			list.add(Integer.valueOf(string));
 		}
 		int count = terminalDao.deleteTerminalByIds(list);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@SuppressWarnings("finally")
@@ -77,7 +76,7 @@ public class TerminalServiceImpl implements TerminalService{
 	 * 通过excel上传终端信息
 	 */
 	public ReturnMsg getTerminalList(MultipartFile file){
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		Workbook book = null;
 		Sheet sheet = null;
 		Row row = null;
@@ -121,13 +120,13 @@ public class TerminalServiceImpl implements TerminalService{
 							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, saleType, resetWifi, androidVersion);
 					list.add(terminal);
 				} catch (Exception e) {
-					returnMsg = IConstant.MSG_OPERATE_ERROR;
+					returnMsg = super.errorTip();
 					returnMsg.setMsg("第"+(row.getRowNum()+1)+"行数据格式错误，请检查！");
 					e.printStackTrace();
 				}
 			}
 		}catch (Exception e) {
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg = super.errorTip();
 			returnMsg.setMsg("无效的文件");
 			e.printStackTrace();
 		}finally{
@@ -151,10 +150,7 @@ public class TerminalServiceImpl implements TerminalService{
 		}else{
 			count = terminalDao.insertTerminal(terminal);
 		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -168,7 +164,7 @@ public class TerminalServiceImpl implements TerminalService{
 			map.put("departmentId", departmentId);
 			terminalDao.updateDepartment(map);
 		}
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return super.successTip();
 	}
 
 	

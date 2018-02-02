@@ -21,13 +21,12 @@ import com.team.dao.ChannelCardDao;
 import com.team.model.ChannelCard;
 import com.team.service.ChannelCardService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
 @Transactional
 @Service
-public class ChannelCardServiceImpl implements ChannelCardService {
+public class ChannelCardServiceImpl extends BaseService implements ChannelCardService {
 
 	@Autowired
 	private ChannelCardDao channelCardDao;
@@ -56,7 +55,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 			list.add(Integer.valueOf(string));
 		}
 		int count = channelCardDao.deleteChannelCards(list);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 	@SuppressWarnings("finally")
 	@Override
 	public ReturnMsg getChannelCardList(MultipartFile file) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		Workbook book = null;
 		Sheet sheet = null;
 		Row row = null;
@@ -98,13 +97,13 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 					channelCard = new ChannelCard(imsi, number, iccid, operatorCode, countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail);
 					list.add(channelCard);
 				} catch (Exception e) {
-					returnMsg = IConstant.MSG_OPERATE_ERROR;
+					returnMsg = super.errorTip();
 					returnMsg.setMsg("第"+(row.getRowNum()+1)+"行数据格式错误，请检查！");
 					e.printStackTrace();
 				}
 			}
 		}catch (Exception e) {
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg = super.errorTip();
 			returnMsg.setMsg("无效的文件");
 			e.printStackTrace();
 		}finally{
@@ -121,10 +120,7 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 		}else{
 			count = channelCardDao.insertChannelCard(channelCard);
 		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }

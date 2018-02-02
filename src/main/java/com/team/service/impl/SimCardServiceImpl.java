@@ -13,7 +13,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.SimCardDao;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -26,7 +25,7 @@ import com.team.service.SimCardService;
  */
 @Transactional
 @Service
-public class SimCardServiceImpl implements SimCardService{
+public class SimCardServiceImpl extends BaseService implements SimCardService{
 
 	@Autowired
 	private SimCardDao simCardDao;
@@ -37,7 +36,7 @@ public class SimCardServiceImpl implements SimCardService{
 	 */
 	public ReturnMsg getSimCardByPool(Integer cpId) {
 		List<SimCard> list =simCardDao.getSimCardByPool(cpId);
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		returnMsg.setData(new ResultList(list!=null?list.size():0, list));
 		return returnMsg;
 	}
@@ -53,7 +52,7 @@ public class SimCardServiceImpl implements SimCardService{
 			list.add(Integer.valueOf(string));
 		}
 		int count = simCardDao.deleteSimCard(list);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class SimCardServiceImpl implements SimCardService{
 	 * 查询流量卡总览信息
 	 */
 	public ReturnMsg getOutlineInfo(Integer dId) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil.changeDepartmentId(dId));
 		OutlineInfo info = null;
 		if(list!=null&&list.size()>0){

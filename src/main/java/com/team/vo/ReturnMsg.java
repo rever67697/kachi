@@ -22,6 +22,10 @@ public class ReturnMsg implements Serializable{
 		this.msg = msg;
 	}
 
+	public ReturnMsg(String code) {
+		super();
+		this.code = code;
+	} 
 	
 	public ReturnMsg(String code, String msg, Object data) {
 		super();

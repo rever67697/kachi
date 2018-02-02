@@ -15,6 +15,7 @@ import com.team.dao.auth.TbAuthUserDao;
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthUserService;
+import com.team.service.impl.BaseService;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.util.MD5Utils;
@@ -27,7 +28,7 @@ import com.team.vo.ReturnMsg;
  */
 @Service
 @Transactional
-public class TbAuthUserServiceImpl implements TbAuthUserService{
+public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserService{
 
 	@Autowired
 	private TbAuthUserDao tbAuthUserDao;
@@ -93,14 +94,14 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 			}
 		}
 		
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return super.successTip();
 	}
 
 
 	@Override
 	public ReturnMsg updateUserStatus(TbAuthUser user) {
 		int count= tbAuthUserDao.updateStatus(user);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 	@Override
 	public ReturnMsg deleteUser(Integer id) {
 		int count= tbAuthUserDao.deleteUser(id);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -121,10 +122,9 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 			newPwd = MD5Utils.encrypt(newPwd);
 			user.setPassWord(newPwd);
 			tbAuthUserDao.modifyPwd(user);
-			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+			returnMsg = super.successTip();
 		}else{
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
-			returnMsg.setMsg("旧密码不正确");
+			returnMsg = new ReturnMsg(IConstant.CODE_ERROR,"旧密码不正确");
 		}
 		return returnMsg;
 	}
@@ -135,7 +135,7 @@ public class TbAuthUserServiceImpl implements TbAuthUserService{
 		user.setId(id);
 		user.setPassWord(MD5Utils.encrypt("888888"));
 		tbAuthUserDao.modifyPwd(user);
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return super.successTip();
 	}
 
 }

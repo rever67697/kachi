@@ -15,7 +15,6 @@ import com.team.dao.TerminalSimDao;
 import com.team.model.TerminalSim;
 import com.team.service.TerminalSimService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -26,7 +25,7 @@ import com.team.vo.ReturnMsg;
  */
 @Transactional
 @Service
-public class TerminalSimServiceImpl implements TerminalSimService{
+public class TerminalSimServiceImpl extends BaseService implements TerminalSimService{
 	
 	@Autowired
 	private TerminalSimDao terminalSimDao;
@@ -40,7 +39,7 @@ public class TerminalSimServiceImpl implements TerminalSimService{
 	 */
 	public ReturnMsg getTerminalSimByTsid(Integer tsid) {
 		List<TerminalSim> list = terminalSimDao.getTerminalSimByTsid(tsid);
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list.get(0));
 		}
@@ -68,7 +67,7 @@ public class TerminalSimServiceImpl implements TerminalSimService{
 			list.add(Integer.valueOf(string));
 		}
 		int count = terminalSimDao.deleteTerminalByIds(list);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }

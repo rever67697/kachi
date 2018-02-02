@@ -72,7 +72,7 @@ public class LoginController {
 			msg = "验证码错误！";
 		}
 		if(CommonUtil.StringIsNull(msg)){
-			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+			returnMsg = new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 		}else{
 			throw new KachiException(msg);
 		}
@@ -108,7 +108,7 @@ public class LoginController {
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getFunctions")

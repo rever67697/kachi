@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.team.dao.CommonDao;
 import com.team.service.CommonService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.Dictionary;
 import com.team.vo.ReturnMsg;
 
@@ -18,7 +17,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @Service
-public class CommonServiceImpl implements CommonService{
+public class CommonServiceImpl extends BaseService implements CommonService{
 	
 	@Autowired
 	private CommonDao commonDao;
@@ -28,7 +27,7 @@ public class CommonServiceImpl implements CommonService{
 	 * 查找所有的国家代码字典
 	 */
 	public ReturnMsg getCountryDic() {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<Dictionary> list =commonDao.getCountryDic();
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
@@ -41,7 +40,7 @@ public class CommonServiceImpl implements CommonService{
 	 * 查找所有的代理商
 	 */
 	public ReturnMsg getDepartmentDic(Integer dId) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<Dictionary> list =commonDao.getDepartmentDic(CommonUtil.changeDepartmentId(dId));
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
@@ -54,7 +53,7 @@ public class CommonServiceImpl implements CommonService{
 	 * 查找运营商
 	 */
 	public ReturnMsg getOperatorDic(Integer countryCode) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<Dictionary> list =commonDao.getOperatorDic(countryCode);
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);
@@ -64,7 +63,7 @@ public class CommonServiceImpl implements CommonService{
 
 	@Override
 	public ReturnMsg getSimPoolDic(Integer dId) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<Dictionary> list =commonDao.getSimPoolDic(CommonUtil.changeDepartmentId(dId));
 		if(list != null && list.size() > 0){
 			returnMsg.setData(list);

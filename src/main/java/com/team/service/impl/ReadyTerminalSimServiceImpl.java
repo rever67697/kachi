@@ -16,13 +16,12 @@ import com.team.dao.SimCardDao;
 import com.team.model.ReadyTerminalSim;
 import com.team.service.ReadyTerminalSimService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
 @Transactional
 @Service
-public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
+public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTerminalSimService {
 	
 	@Autowired
 	private ReadyTerminalSimDao readyTerminalSimDao;
@@ -51,8 +50,7 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 			list.add(Integer.valueOf(string));
 		}
 		int count = readyTerminalSimDao.delete(list);
-		return count > 0 ? IConstant.MSG_OPERATE_SUCCESS
-				: IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -72,8 +70,7 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 			//更新卡表卡状态为指定
 			simCardDao.updateCardStatus(ids);
 		}
-		return count > 0 ? IConstant.MSG_OPERATE_SUCCESS
-				: IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -82,8 +79,7 @@ public class ReadyTerminalSimServiceImpl implements ReadyTerminalSimService {
 		if (readyTerminalSim.getId() != null) {
 			count = readyTerminalSimDao.update(readyTerminalSim);
 		}
-		return count > 0 ? IConstant.MSG_OPERATE_SUCCESS
-				: IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }

@@ -9,8 +9,8 @@ import com.team.dao.auth.DepartmentDao;
 import com.team.model.auth.Department;
 import com.team.model.auth.TbAuthPermission;
 import com.team.service.auth.DepartmentService;
+import com.team.service.impl.BaseService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
 
 /**
@@ -18,7 +18,7 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @Service
-public class DepartmentServiceImpl implements DepartmentService {
+public class DepartmentServiceImpl extends BaseService implements DepartmentService {
 
 	@Autowired
 	private DepartmentDao departmentDao;
@@ -36,13 +36,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 		}else{
 			departmentDao.insert(d);
 		}
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return super.successTip();
 	}
 
 	@Override
 	public ReturnMsg delete(Integer id) {
 		int count = departmentDao.delete(id);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }
