@@ -87,6 +87,7 @@ public class TerminalServiceImpl implements TerminalService{
 			sheet = book.getSheetAt(0);
 			int total = sheet.getLastRowNum()+1;
 			Terminal terminal = null;
+			
 			for (int i = 2; i < total; i++) {
 				row = sheet.getRow(i);
 				if(row == null || row.getCell(0) == null){
