@@ -98,13 +98,13 @@ public class ChannelCardServiceImpl implements ChannelCardService {
 					channelCard = new ChannelCard(imsi, number, iccid, operatorCode, countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail);
 					list.add(channelCard);
 				} catch (Exception e) {
-					returnMsg.setCode(IConstant.CODE_ERROR);
+					returnMsg = IConstant.MSG_OPERATE_ERROR;
 					returnMsg.setMsg("第"+(row.getRowNum()+1)+"行数据格式错误，请检查！");
 					e.printStackTrace();
 				}
 			}
 		}catch (Exception e) {
-			returnMsg.setCode(IConstant.CODE_ERROR);
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
 			returnMsg.setMsg("无效的文件");
 			e.printStackTrace();
 		}finally{

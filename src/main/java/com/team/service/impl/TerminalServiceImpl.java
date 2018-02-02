@@ -121,13 +121,13 @@ public class TerminalServiceImpl implements TerminalService{
 							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, saleType, resetWifi, androidVersion);
 					list.add(terminal);
 				} catch (Exception e) {
-					returnMsg.setCode(IConstant.CODE_ERROR);
+					returnMsg = IConstant.MSG_OPERATE_ERROR;
 					returnMsg.setMsg("第"+(row.getRowNum()+1)+"行数据格式错误，请检查！");
 					e.printStackTrace();
 				}
 			}
 		}catch (Exception e) {
-			returnMsg.setCode(IConstant.CODE_ERROR);
+			returnMsg = IConstant.MSG_OPERATE_ERROR;
 			returnMsg.setMsg("无效的文件");
 			e.printStackTrace();
 		}finally{
