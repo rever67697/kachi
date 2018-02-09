@@ -17,8 +17,4 @@ public class BaseService {
 		return new ReturnMsg(IConstant.CODE_ERROR, IConstant.MSG_ERROR);
 	}
 	
-	protected ReturnMsg unknowTip(){
-		return new ReturnMsg(IConstant.CODE_UNKNOW, IConstant.MSG_UNKONW);
-	}
-	
 }

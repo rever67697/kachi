@@ -54,7 +54,7 @@
 			  				<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
 			  			<tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" /></td>
 			  				<th>PIN：</th><td><input name="pin"/></td></tr>
-			  			<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td>
+			  			<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
 			  				<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
 			  			<tr><th>卡套餐：</th><td><select name="packageId"></select></td>
 			  				<th>账期日：</th><td><input name="offPeriod"/></td></tr>
@@ -64,7 +64,7 @@
 			  				<th>所在卡池：</th><td><input name="simPoolName"/></td></tr>
 			  			<tr><th>卡池状态：</th><td><select name="cpStatus"></select></td>
 			  				<th>卡池通道编号：</th><td><input name="cpChannelId"/></td></tr>
-			  			<tr><th>国家：</th><td><select name="countryCode"></select></td>
+			  			<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
 			  				<th>省：</th><td><select name="provinceCode"></select></td></tr>
 			  			<tr><th>有效期截卡时间：</th><td><input name="expiryDate"/></td>
 			  				<th>插入时间：</th><td><input name="insertDate"/></td></tr>
@@ -80,12 +80,12 @@
 			  				<th>开卡日期：</th><td><input name="openDate"/></td></tr>
 			  			<tr><th>APN：</th><td><input name="opc"/></td>
 			  				<th>开卡日期：</th><td><input name="openDate"/></td></tr>
-			  			<tr><th>所属代理商：</th><td><select name="departmentId"></select></td>
+			  			<tr><th>所属代理商：</th><td><input name="departmentName" readonly="readonly"/></td>
 			  				<th>分组：</th><td><input name="groupPref"/></td></tr>
-			  			<tr><th>备注：</th><td><select name="note"></select></td>
+			  			<tr><th>备注：</th><td><input name="note"/></td>
 			  				<th></th><td></td></tr>
 			  			<tr style="height:10px"></tr>
-			  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			  			<tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 			  		</table>
 		  		</form>
 		  	</div>
@@ -135,18 +135,20 @@
 			modal : true,
    			width:800,
    			height:465,
-   			cache: false,
-			title : "查看/修改卡信息"
+   			cache: false
 		});
 		
 		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
 		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
+		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
 	});
   
   	function doModify(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+             $('#doBtn').show();
+             $('#doDialog').dialog({title:'修改卡信息'});
              $('#doDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息！", "info");
@@ -190,6 +192,8 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+             $('#doBtn').hide();
+             $('#doDialog').dialog({title:'查看卡信息'});
              $('#doDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息！", "info");

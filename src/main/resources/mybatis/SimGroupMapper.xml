@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.SimGroupDao">
+	
+	<select id="getSimGroupByImsi" resultType="com.team.model.SimGroup">
+		select * from m_sim_group
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</select>
+	
+	<delete id="delete" parameterType="java.util.Map">
+		delete from m_sim_group
+		where groupKey=#{groupKey,jdbcType=VARCHAR}
+		  and imsi=#{imsi,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert" parameterType="com.team.model.SimGroup">
+		insert into m_sim_group
+		(groupKey,imsi,status,chargeDate,departmentId,operatorCode,provinceCode,packageId,groupId)
+		values
+		(
+		  #{groupKey,jdbcType=VARCHAR},
+		  #{imsi,jdbcType=BIGINT},
+		  #{status,jdbcType=INTEGER},
+		  #{chargeDate,jdbcType=DATETIME},
+		  #{departmentId,jdbcType=INTEGER},
+		  #{operatorCode,jdbcType=INTEGER},
+		  #{provinceCode,jdbcType=INTEGER},
+		  #{packageId,jdbcType=INTEGER}
+		)
+	</insert>
+	
+</mapper>
