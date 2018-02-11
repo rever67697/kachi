@@ -1,5 +1,6 @@
 package com.team.service;
 
+import com.team.model.SimCard;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -19,5 +20,7 @@ public interface SimCardService {
 			Integer status,int page,int rows);
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
+
+	public ReturnMsg update(SimCard simCard);
 	
 }

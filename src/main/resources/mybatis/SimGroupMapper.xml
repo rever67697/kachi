@@ -21,7 +21,7 @@
 		  #{groupKey,jdbcType=VARCHAR},
 		  #{imsi,jdbcType=BIGINT},
 		  #{status,jdbcType=INTEGER},
-		  #{chargeDate,jdbcType=DATETIME},
+		  #{chargeDate,jdbcType=TIMESTAMP},
 		  #{departmentId,jdbcType=INTEGER},
 		  #{operatorCode,jdbcType=INTEGER},
 		  #{provinceCode,jdbcType=INTEGER},

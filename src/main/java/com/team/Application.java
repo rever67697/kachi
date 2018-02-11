@@ -1,5 +1,8 @@
 package com.team;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -21,6 +24,7 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.web.context.request.RequestContextListener;
@@ -42,7 +46,7 @@ public class Application{
     @Bean(name="dataSource", destroyMethod = "close", initMethod="init")  
     @ConfigurationProperties(prefix = "spring.datasource")  
     public DataSource dataSource() { 
-    	logger.info("-------------------- writeDataSource init ---------------------"); 
+    	logger.info("-------------------- writeDataSource init ---------------------");
         return DataSourceBuilder.create().type(dataSourceType).build();
     }
     
@@ -101,6 +105,26 @@ public class Application{
     @Bean
     public ServletListenerRegistrationBean<RequestContextListener> requestContextListenerRegistration() {
         return new ServletListenerRegistrationBean<RequestContextListener>(new RequestContextListener());
+    }
+
+    /**
+     * 注册日期绑定
+     * @return
+     */
+    @Bean
+    public Converter<String, Date> addNewConvert() {
+        return new Converter<String, Date>() {
+            @Override
+            public Date convert(String source) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = null;
+                try {
+                    date = sdf.parse((String) source);
+                } catch (ParseException e) {
+                }
+                return date;
+            }
+        };
     }
     
     /**

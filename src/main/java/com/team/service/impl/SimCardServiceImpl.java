@@ -112,6 +112,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return returnMsg;
 	}
 
+	@Override
+	public ReturnMsg update(SimCard simCard) {
+		simCardDao.update(simCard);
+		return super.successTip();
+	}
+
 	/**
 	 * 初始化一张卡到卡组,
 	 * 

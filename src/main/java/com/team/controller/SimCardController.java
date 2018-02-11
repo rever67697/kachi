@@ -3,6 +3,7 @@ package com.team.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.team.model.SimCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ public class SimCardController {
 
 	@Autowired
 	private SimCardService simCardService;
-	
+
 	/**
 	 * 根据卡池id找出对应的卡
 	 *@param cpId
@@ -54,6 +55,13 @@ public class SimCardController {
 	@PermissionLog(key="IMSIs_IMSI的集合")
 	public ReturnMsg deleteSimCard(String ids){
 		return simCardService.deleteSimCard(ids);
+	}
+
+	@PostMapping("/updateSimCard")
+	@PermissionLog(key="imsi_IMSI")
+	public ReturnMsg updateSimCard(SimCard simCard){
+
+		return simCardService.update(simCard);
 	}
 	
 }
