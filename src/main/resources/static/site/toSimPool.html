@@ -148,7 +148,7 @@
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
-			pageList:[15,30],
+			pageList:[20,30,50],
 			rownumbers:true,
 			scrollbarSize:0,
 			height:window.innerHeight-80,
@@ -235,7 +235,7 @@
 										backgroundColor:$(this).attr('color'),
 									});
 							    }
-							});	;
+							});
 	             		}
 	             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）').css('visibility','visible');
 	            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt());

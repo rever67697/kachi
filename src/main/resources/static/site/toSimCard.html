@@ -56,7 +56,7 @@
 			  				<th>PIN：</th><td><input name="pin"/></td></tr>
 			  			<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
 			  				<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
-			  			<tr><th>卡套餐：</th><td><select name="packageId"></select></td>
+			  			<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="true"></select></td>
 			  				<th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
 			  			<tr><th>账期持续时间：</th><td><input name="sustained" class="easyui-validatebox onlyNumber" required="true"/></td>
 			  				<th>协议类型：</th><td><input name="simmeProtocol"/></td></tr>
@@ -69,12 +69,12 @@
 			  			<tr><th>卡池状态：</th><td><select name="cpStatus" readonly="readonly"></select></td>
 			  				<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
 			  			<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
-			  				<th>省：</th><td><select name="provinceCode"></select></td></tr>
+			  				<th>省：</th><td><select name="provinceCode" class="easyui-validatebox" required="true"></select></td></tr>
 			  			<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly"/></td>
 			  				<th>插入时间：</th><td><input name="insertDate" readonly="readonly"/></td></tr>
 			  			<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
 			  				<th>VPNIP：</th><td><input name="vpnIp"/></td></tr>
-			  			<tr><th>VPN名称：</th><td><select name="vpnName"></select></td>
+			  			<tr><th>VPN名称：</th><td><input name="vpnName"/></td>
 			  				<th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
 			  			<tr><th>是否软卡：</th><td><select name="softType"></select></td>
 			  				<th>KI：</th><td><input name="ki"/></td></tr>
@@ -120,7 +120,7 @@
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
-			pageList:[15,30],
+			pageList:[20,30,50],
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
@@ -143,6 +143,10 @@
 		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
 		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
 		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
+		kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"nullDesc":""});
+		kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"nullDesc":""});
+		kcJs.fn.initDic_noYes($('#doForm [name=usedVpn],#doForm [name=softType]'));
+
 	});
   
   	function doModify(){

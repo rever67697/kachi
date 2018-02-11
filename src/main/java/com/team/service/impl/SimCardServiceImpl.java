@@ -128,13 +128,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		if (simCard == null)
 			return null;
 
-		long imsi = simCard.getImsi();
-		int departmentId = simCard.getDepartmentId(); // 为0表示自有的
-		int operatorCode = simCard.getOperatorCode();
-		int provinceId = simCard.getProvinceCode(); // 为0表示全国卡
-		int packageId = simCard.getPackageId();
+		Long imsi = simCard.getImsi();
+		Integer departmentId = simCard.getDepartmentId(); // 为0表示自有的
+		Integer operatorCode = simCard.getOperatorCode();
+		Integer provinceId = simCard.getProvinceCode(); // 为0表示全国卡
+		Integer packageId = simCard.getPackageId();
 
-		if (packageId <= 0) // 没有配置套餐，不初始化进缓存
+		if (packageId == null || packageId <= 0) // 没有配置套餐，不初始化进缓存
 			return null;
 
 		int groupId = getGroupHashCode(imsi, operatorCode);

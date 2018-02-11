@@ -39,6 +39,22 @@ public interface CommonDao {
 	 *return
 	 */
 	public List<Dictionary> getSimPoolDic(@Param("dId")Integer dId);
+
+	/**
+	 * 查找卡套餐
+	 *@return
+	 *return
+	 */
+	public List<Dictionary> getPackageDic(@Param("dId")Integer dId);
+
+	/**
+	 * 查找省份
+	 *@return
+	 *return
+	 */
+	public List<Dictionary> getProvinceDic();
+
+
 	
 	
 }
