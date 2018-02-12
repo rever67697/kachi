@@ -47,6 +47,7 @@ public class Application{
     @ConfigurationProperties(prefix = "spring.datasource")  
     public DataSource dataSource() { 
     	logger.info("-------------------- writeDataSource init ---------------------");        
+       
 	    return DataSourceBuilder.create().type(dataSourceType).build();
     }
     
