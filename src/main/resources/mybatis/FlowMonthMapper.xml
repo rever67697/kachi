@@ -16,4 +16,7 @@
 		]]>
 	</update>
 	
+	<update id="updateMonthFlowBySimCard" parameterType="com.team.model.FlowMonth">
+	</update>
+	
 </mapper>

@@ -2,6 +2,7 @@ package com.team.test;
 
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.schooner.MemCached.MemcachedItem;
+import com.team.model.SimCard;
 import com.team.model.SimPool;
+import com.team.service.CountryService;
 import com.team.service.SimPoolService;
 import com.team.util.Cache;
 import com.team.util.CacheFactory;
@@ -30,6 +33,8 @@ public class MyTest {
 	
 	@Autowired
 	private SimPoolService service;
+	@Autowired
+	private CountryService countryService;
 	
 	@Test
 	public void testMemcached(){
@@ -49,4 +54,9 @@ public class MyTest {
 		service.saveSimPool(simPool);
 	}
 	
+	@Test
+	public void testDate(){
+		//System.out.println(countryService.getRoamcountryDate(new Date(), 156, "yyyy-MM-dd HH:mm:ss"));
+		System.out.println(countryService.getRoamcountryDate(new Date(), 840, "yyyy-MM-dd HH:mm:ss"));
+	}
 }
