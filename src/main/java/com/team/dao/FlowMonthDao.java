@@ -1,6 +1,9 @@
 package com.team.dao;
 
+import com.team.model.FlowMonth;
 import com.team.model.SimPackage;
+
+import java.util.Map;
 
 /**
  * 月流量 m_flow_month
@@ -16,5 +19,19 @@ public interface FlowMonthDao {
 	 *return
 	 */
 	public int updateMonthFlowByPackage(SimPackage simPackage);
+
+	/**
+	 * 卡参数发生变化，需要重新计算卡的月流量
+	 * @param flowMonth
+	 * @return
+	 */
+	public int updateMonthFlowBySimCard(FlowMonth flowMonth);
+
+	/**
+	 * 获取当前卡的月流量信息
+	 * @param map
+	 * @return
+	 */
+	public FlowMonth get(Map<String,Object> map);
 	
 }

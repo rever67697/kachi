@@ -19,8 +19,7 @@ public class FlowMonth implements Serializable{
 	
 	private String number;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date date;//记录消费的年月
+	private String date;//记录消费的年月
 	
 	private Integer maxFlow;//本国流量最大使用流量额度
 	
@@ -32,7 +31,7 @@ public class FlowMonth implements Serializable{
 	private Date lastUpdateTime;//最后更新时间
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date accountPeriodStratDate;//本账期起始时间
+	private Date accountPeriodStartDate;//本账期起始时间
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodEndDate;//本帐期结束时间
@@ -77,14 +76,6 @@ public class FlowMonth implements Serializable{
 		this.number = number;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public Integer getMaxFlow() {
 		return maxFlow;
 	}
@@ -117,13 +108,6 @@ public class FlowMonth implements Serializable{
 		this.lastUpdateTime = lastUpdateTime;
 	}
 
-	public Date getAccountPeriodStratDate() {
-		return accountPeriodStratDate;
-	}
-
-	public void setAccountPeriodStratDate(Date accountPeriodStratDate) {
-		this.accountPeriodStratDate = accountPeriodStratDate;
-	}
 
 	public Date getAccountPeriodEndDate() {
 		return accountPeriodEndDate;
@@ -164,6 +148,21 @@ public class FlowMonth implements Serializable{
 	public void setOperatorCode(Integer operatorCode) {
 		this.operatorCode = operatorCode;
 	}
-	
-	
+
+
+	public Date getAccountPeriodStartDate() {
+		return accountPeriodStartDate;
+	}
+
+	public void setAccountPeriodStartDate(Date accountPeriodStartDate) {
+		this.accountPeriodStartDate = accountPeriodStartDate;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 }

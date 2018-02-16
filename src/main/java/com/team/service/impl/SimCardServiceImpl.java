@@ -1,11 +1,12 @@
 package com.team.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.team.dao.FlowDayDao;
+import com.team.dao.FlowMonthDao;
+import com.team.model.*;
+import com.team.service.CountryService;
+import com.team.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,17 +15,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.schooner.MemCached.MemcachedItem;
 import com.team.dao.SimCardDao;
-import com.team.util.Cache;
-import com.team.util.CacheFactory;
-import com.team.util.CommonUtil;
-import com.team.util.MConstant;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
-import com.team.model.GroupCacheSim;
-import com.team.model.Operator;
-import com.team.model.SimCard;
-import com.team.model.SimGroup;
 import com.team.service.OperatorService;
 import com.team.service.SimCardService;
 import com.team.service.SimGroupService;
@@ -44,7 +37,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	// 卡缓存
 	private static final Cache simCache = CacheFactory .getCache(MConstant.MEM_SIM);
 	// 卡最后月流量缓存
-	//private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
+	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
 
 	@Autowired
 	private SimCardDao simCardDao;
@@ -52,6 +45,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	private OperatorService operatorService;
 	@Autowired
 	private SimGroupService simGroupService;
+	@Autowired
+	private CountryService countryService;
+	@Autowired
+	private FlowMonthDao flowMonthDao;
+	@Autowired
+	private FlowDayDao flowDayDao;
 
 	@Override
 	/**
@@ -114,8 +113,61 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	@Override
 	public ReturnMsg update(SimCard simCard) {
+		//1.更新
 		simCardDao.update(simCard);
+		//2.如果卡的帐期或者持续时间发生变化，需要重新计算卡的月流量
+		//reCalculateFlowMonth(simCard);
+		//3.需要更新缓存里面的卡组信息
 		return super.successTip();
+	}
+
+	private void reCalculateFlowMonth(SimCard simCard) {
+		FlowMonth flowMonth = getNowFlowMonth(simCard);
+		//如果不为空则作处理
+		if(flowMonth != null){
+			convertFlowmonth(simCard,flowMonth);
+			flowMonthDao.updateMonthFlowBySimCard(flowMonth);
+			flowMonth = getNowFlowMonth(simCard);
+			simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(), flowMonth);
+		}
+	}
+
+	private void convertFlowmonth(SimCard simCard,FlowMonth flowMonth) {
+		Date nowDate = new Date();
+
+		int offperiod =simCard.getOffPeriod().intValue();
+		String strOffperiod = "" + offperiod;
+		if(offperiod < 10)
+			strOffperiod = "0" + offperiod;
+		Integer sustained = simCard.getSustained();
+
+		String nowMonth = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_Y_M);
+		Date offperiodDate = DateUtil.string2Date(nowMonth + "-" + strOffperiod, DateUtil.RB_DATE_Y_M_D);
+
+		String strNowRoamDate = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_FORMATER);
+		Date nowRoamDate =  DateUtil.string2Date(strNowRoamDate, DateUtil.RB_DATE_FORMATER);
+
+		if(offperiodDate.before(nowRoamDate)) {//账期日小于当前时间，则以账期日为起始时间
+			flowMonth.setAccountPeriodStartDate(offperiodDate);
+			Date endDate = DateUtil.calculate(offperiodDate,GregorianCalendar.MONTH, sustained);
+			flowMonth.setAccountPeriodEndDate(endDate);
+		} else {
+			flowMonth.setAccountPeriodEndDate(offperiodDate);
+			Date startDate = DateUtil.calculate(offperiodDate, GregorianCalendar.MONTH, 0-sustained);
+			flowMonth.setAccountPeriodStartDate(startDate);
+		}
+
+		String month = DateUtil.date2String(DateUtil.RB_DATE_Y_M, flowMonth.getAccountPeriodStartDate());
+		flowMonth.setDate(month);
+		flowMonth.setLastUpdateTime(new Date());
+		Map<String,Object> map = new HashMap<>();
+		map.put("imsi",simCard.getImsi());
+		map.put("date",flowMonth.getAccountPeriodStartDate());
+		FlowDay flowDay = flowDayDao.getUsedFlow(map);
+		flowMonth.setUsedFlow(flowDay.getFlow());
+		flowMonth.setUsedRoamFlow(flowDay.getRoamFlow());
+		flowMonth.setResidueFlow(flowMonth.getMaxFlow()-flowMonth.getUsedFlow());
+		flowMonth.setResidueRoamFlow(flowMonth.getMaxRoamFlow()-flowMonth.getUsedRoamFlow());
 	}
 
 	/**
@@ -295,7 +347,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 添加SIM卡到组缓存
 	 * 
 	 * @param groupKey
-	 * @param imsi
 	 * @return
 	 */
 	public SimGroup addSim2SimGroupCache(String groupKey, SimCard simCard) {
@@ -408,5 +459,45 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		groupCacheSim.setImsi(imsi);
 		groupCacheSim.setStatus(0);
 		return groupCacheSim;
+	}
+
+	/**
+	 * 获取当前卡的月流量
+	 * @param simCard
+	 * @return
+	 */
+	public FlowMonth getNowFlowMonth(SimCard simCard) {
+		if(simCard == null)
+			return null;
+		long imsi = simCard.getImsi();
+
+		//心跳时间对应的当地时间
+		String timeStr =  countryService.getRoamcountryDate(new Date(),simCard.getCountryCode(),"yyyy-MM-dd HH:mm:ss");
+		Date nowDate = DateUtil.string2Date(timeStr, "yyyy-MM-dd HH:mm:ss");
+
+
+		FlowMonth simFlowMonth = (FlowMonth)simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
+		if(simFlowMonth != null) {
+			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
+					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
+				return simFlowMonth;
+			}
+		}
+
+
+		simFlowMonth = getNowFlowMonthByDB(imsi,nowDate);
+		if(simFlowMonth != null) {
+			simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + imsi, simFlowMonth);
+			return simFlowMonth;
+		}
+
+		return simFlowMonth;
+	}
+
+	private FlowMonth getNowFlowMonthByDB(long imsi, Date nowDate) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("imsi",imsi);
+		map.put("nowDate",nowDate);
+		return flowMonthDao.get(map);
 	}
 }
