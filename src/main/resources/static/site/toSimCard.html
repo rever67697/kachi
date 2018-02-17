@@ -49,6 +49,11 @@
 		  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 		  		<form id="doForm">
 		  			<input type="hidden" name="id"/>
+					<input type="hidden" name="compareOffPeriod"/>
+					<input type="hidden" name="compareSustained"/>
+					<input type="hidden" name="comparePackage"/>
+					<input type="hidden" name="isChangePeriod"/>
+					<input type="hidden" name="isChangePackage"/>
 			  		<table class="table th-normal">
 			  			<tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
 			  				<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true" readonly="readonly"/></td></tr>
@@ -58,7 +63,10 @@
 			  				<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
 			  			<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="true"></select></td>
 			  				<th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-			  			<tr><th>账期持续时间：</th><td><input name="sustained" class="easyui-validatebox onlyNumber" required="true"/></td>
+						<tr><th>账期持续时间：</th><td><select name="sustained" class="easyui-validatebox" required="true">
+														<option value="1">1个月</option>
+														<option value="6">6个月</option>
+													 </select></td>
 			  				<th>协议类型：</th><td><input name="simmeProtocol"/></td></tr>
 			  			<tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">
 													<option value=""></option><option value="0">正常</option>
@@ -152,8 +160,13 @@
   	function doModify(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
-             kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+  		     var rowData = selectRows[0];
+             kcJs.fn.autoFillData($('#doDialog'),rowData);
              $('#doBtn').show();
+             $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
+             $('#doForm [name=compareSustained]').val(rowData.sustained);
+             $('#doForm [name=comparePackage]').val(rowData.packageId);
+             $('#doForm [name=countryCode]').attr('disabled',true);
              $('#doDialog').dialog({title:'修改卡信息'});
              $('#doDialog').dialog('open');
         }else {
@@ -199,6 +212,7 @@
   		if (selectRows.length > 0 && selectRows.length == 1) {
              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
              $('#doBtn').hide();
+             $('#doForm [name=countryCode]').attr('disabled',false);
              $('#doDialog').dialog({title:'查看卡信息'});
              $('#doDialog').dialog('open');
         }else {
@@ -228,15 +242,51 @@
 
   	function saveData() {
 		if($('#doForm').form('validate')) {
-		    $('#dg').datagrid('loading');
-		    $('#doDialog').dialog('close');
-			$.post(kcJs.fn.getContextPath()+'/updateSimCard',$('#doForm').serializeObject(),function(data){
-			    $('#dg').datagrid('loaded');
-			    $.messager.alert('提示',data.msg,'info');
-                if(data && data.code=='200'){
-                    $('#dg').datagrid('reload');
-                }
-            },'json');
+            var isChangePeriod = false;
+            var isChangePackage = false;
+            if($('#doForm [name=id]').val()){
+                if(($('#doForm [name=compareOffPeriod]').val() != $('#doForm [name=offPeriod]').val())
+                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=sustained]').val()))
+                    isChangePeriod = true;
+                if(($('#doForm [name=comparePackage]').val() != $('#doForm [name=packageId]').val()))
+                    isChangePackage = true;
+            }
+
+            $('#doForm [name=isChangePeriod]').val(isChangePeriod);
+            $('#doForm [name=isChangePackage]').val(isChangePackage);
+            //帐期日或者持续时间已经前后发生改变
+            if(isChangePeriod || isChangePackage){
+                $.messager.confirm('提示','帐期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
+                    if(r){
+                        $('#doDialog').dialog('close');
+                        $('#dg').datagrid('loading');
+                        $('#doForm [name=countryCode]').attr('disabled',false);
+                        $.post(kcJs.fn.getContextPath()+'/updateSimCard',$('#doForm').serializeObject(),function(data){
+                            if(data){
+                                $.messager.alert('提示',data.msg,'info');
+                                if(data.code=='200'){
+                                    doQuery();
+                                }else{
+                                    $('#dg').datagrid('loaded');
+                                }
+                            }
+                        });
+                    }
+                });
+            }else{
+                $('#doDialog').dialog('close');
+                $('#dg').datagrid('loading');
+                $.post(kcJs.fn.getContextPath()+'/updateSimCard',$('#doForm').serializeObject(),function(data){
+                    if(data){
+                        $.messager.alert('提示',data.msg,'info');
+                        if(data.code=='200'){
+                            doQuery();
+                        }else{
+                            $('#dg').datagrid('loaded');
+                        }
+                    }
+                });
+            }
         }
     }
   </script>

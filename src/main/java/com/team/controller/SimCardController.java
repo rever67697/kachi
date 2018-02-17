@@ -59,9 +59,9 @@ public class SimCardController {
 
 	@PostMapping("/updateSimCard")
 	@PermissionLog(key="imsi_IMSI")
-	public ReturnMsg updateSimCard(SimCard simCard){
+	public ReturnMsg updateSimCard(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
 
-		return simCardService.update(simCard);
+		return simCardService.update(simCard,isChangePeriod,isChangePackage);
 	}
 	
 }

@@ -39,7 +39,6 @@ public class MyTest {
 	@Test
 	public void testMemcached(){
 		String[] a = new String[]{"1","2","3"};
-		
 		Boolean ok = simGroupCache.set("wzh", a);
 		System.out.println(ok.toString());
 		a = (String[])simGroupCache.gets("wzh").getValue();
@@ -47,7 +46,7 @@ public class MyTest {
 		System.out.println(Arrays.toString(a));
 	}
 	
-	@Test
+	//@Test
 	public void testTX(){
 		SimPool simPool = new SimPool();
 		simPool.setName("wzh");
@@ -59,4 +58,5 @@ public class MyTest {
 		//System.out.println(countryService.getRoamcountryDate(new Date(), 156, "yyyy-MM-dd HH:mm:ss"));
 		System.out.println(countryService.getRoamcountryDate(new Date(), 840, "yyyy-MM-dd HH:mm:ss"));
 	}
+
 }

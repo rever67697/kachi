@@ -67,4 +67,9 @@
 		#{level,jdbcType=INTEGER},
 		#{mccs,jdbcType=VARCHAR},0,#{departmentId,jdbcType=INTEGER})
 	</insert>
+	
+	<select id="getPackage" resultType="com.team.model.SimPackage">
+		select * from m_simpackage
+		where id=#{id,jdbcType=INTEGER}
+	</select>
 </mapper>

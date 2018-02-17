@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.team.dao.FlowDayDao;
 import com.team.dao.FlowMonthDao;
+import com.team.dao.SimPackageDao;
 import com.team.model.*;
 import com.team.service.CountryService;
 import com.team.util.*;
@@ -51,6 +52,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	private FlowMonthDao flowMonthDao;
 	@Autowired
 	private FlowDayDao flowDayDao;
+	@Autowired
+	private SimPackageDao simPackageDao;
 
 	@Override
 	/**
@@ -112,58 +115,82 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	}
 
 	@Override
-	public ReturnMsg update(SimCard simCard) {
+	/**
+	 * isChangePeriod : 帐期参数是否发生变化
+	 * isChangePackage : 套餐参数是否发生变化
+	 */
+	public ReturnMsg update(SimCard simCard, boolean isChangePeriod, boolean isChangePackage) {
 		//1.更新
 		simCardDao.update(simCard);
+
 		//2.如果卡的帐期或者持续时间发生变化，需要重新计算卡的月流量
-		//reCalculateFlowMonth(simCard);
+		//reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
+
 		//3.需要更新缓存里面的卡组信息
 		return super.successTip();
 	}
 
-	private void reCalculateFlowMonth(SimCard simCard) {
-		FlowMonth flowMonth = getNowFlowMonth(simCard);
-		//如果不为空则作处理
-		if(flowMonth != null){
-			convertFlowmonth(simCard,flowMonth);
-			flowMonthDao.updateMonthFlowBySimCard(flowMonth);
-			flowMonth = getNowFlowMonth(simCard);
-			simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(), flowMonth);
+	private void reCalculateFlowMonth(SimCard simCard,boolean isChangePeriod, boolean isChangePackage) {
+		//两者只要有一个是true就操作
+		if(isChangePeriod || isChangePackage){
+			FlowMonth flowMonth = getNowFlowMonth(simCard);
+			//如果不为空则作处理
+			if(flowMonth != null){
+				convertFlowmonth(simCard,flowMonth,isChangePeriod,isChangePackage);
+				flowMonthDao.updateMonthFlowBySimCard(flowMonth);
+				flowMonth = getNowFlowMonth(simCard);
+				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(), flowMonth);
+			}
 		}
+
 	}
 
-	private void convertFlowmonth(SimCard simCard,FlowMonth flowMonth) {
+	private void convertFlowmonth(SimCard simCard, FlowMonth flowMonth, boolean isChangePeriod, boolean isChangePackage) {
 		Date nowDate = new Date();
+		flowMonth.setLastUpdateTime(new Date());
 
-		int offperiod =simCard.getOffPeriod().intValue();
-		String strOffperiod = "" + offperiod;
-		if(offperiod < 10)
-			strOffperiod = "0" + offperiod;
-		Integer sustained = simCard.getSustained();
+		//1。如果帐期发生了变化，需要重新计算帐期相关参数
+		if(isChangePeriod){
+			int offperiod =simCard.getOffPeriod().intValue();
+			String strOffperiod = "" + offperiod;
+			if(offperiod < 10)
+				strOffperiod = "0" + offperiod;
+			Integer sustained = simCard.getSustained();
 
-		String nowMonth = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_Y_M);
-		Date offperiodDate = DateUtil.string2Date(nowMonth + "-" + strOffperiod, DateUtil.RB_DATE_Y_M_D);
+			String nowMonth = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_Y_M);
+			Date offperiodDate = DateUtil.string2Date(nowMonth + "-" + strOffperiod, DateUtil.RB_DATE_Y_M_D);
 
-		String strNowRoamDate = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_FORMATER);
-		Date nowRoamDate =  DateUtil.string2Date(strNowRoamDate, DateUtil.RB_DATE_FORMATER);
+			String strNowRoamDate = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_FORMATER);
+			Date nowRoamDate =  DateUtil.string2Date(strNowRoamDate, DateUtil.RB_DATE_FORMATER);
 
-		if(offperiodDate.before(nowRoamDate)) {//账期日小于当前时间，则以账期日为起始时间
-			flowMonth.setAccountPeriodStartDate(offperiodDate);
-			Date endDate = DateUtil.calculate(offperiodDate,GregorianCalendar.MONTH, sustained);
-			flowMonth.setAccountPeriodEndDate(endDate);
-		} else {
-			flowMonth.setAccountPeriodEndDate(offperiodDate);
-			Date startDate = DateUtil.calculate(offperiodDate, GregorianCalendar.MONTH, 0-sustained);
-			flowMonth.setAccountPeriodStartDate(startDate);
+			if(offperiodDate.before(nowRoamDate)) {//账期日小于当前时间，则以账期日为起始时间
+				flowMonth.setAccountPeriodStartDate(offperiodDate);
+				Date endDate = DateUtil.calculate(offperiodDate,GregorianCalendar.MONTH, sustained);
+				flowMonth.setAccountPeriodEndDate(endDate);
+			} else {
+				flowMonth.setAccountPeriodEndDate(offperiodDate);
+				Date startDate = DateUtil.calculate(offperiodDate, GregorianCalendar.MONTH, 0-sustained);
+				flowMonth.setAccountPeriodStartDate(startDate);
+			}
+
+			String month = DateUtil.date2String(DateUtil.RB_DATE_Y_M, flowMonth.getAccountPeriodStartDate());
+			flowMonth.setDate(month);
 		}
 
-		String month = DateUtil.date2String(DateUtil.RB_DATE_Y_M, flowMonth.getAccountPeriodStartDate());
-		flowMonth.setDate(month);
-		flowMonth.setLastUpdateTime(new Date());
+		//2.如果套餐发生了变化，需要重新计算套餐的最大使用参数
+		if(isChangePackage){
+			SimPackage simPackage = simPackageDao.getPackage(simCard.getPackageId());
+			flowMonth.setMaxFlow(simPackage.getMaxFlow());
+			flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
+		}
+
+		//3.获取当月已使用的流量
 		Map<String,Object> map = new HashMap<>();
 		map.put("imsi",simCard.getImsi());
 		map.put("date",flowMonth.getAccountPeriodStartDate());
 		FlowDay flowDay = flowDayDao.getUsedFlow(map);
+
+		//4.重新计算本月的其他流量参数
 		flowMonth.setUsedFlow(flowDay.getFlow());
 		flowMonth.setUsedRoamFlow(flowDay.getRoamFlow());
 		flowMonth.setResidueFlow(flowMonth.getMaxFlow()-flowMonth.getUsedFlow());
@@ -487,7 +514,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		simFlowMonth = getNowFlowMonthByDB(imsi,nowDate);
 		if(simFlowMonth != null) {
-			simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + imsi, simFlowMonth);
+			//simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + imsi, simFlowMonth);
 			return simFlowMonth;
 		}
 

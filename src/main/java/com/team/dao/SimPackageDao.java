@@ -45,5 +45,11 @@ public interface SimPackageDao {
 	 *return
 	 */
 	public int insertPackage(SimPackage simPackage);
-	
+
+	/**
+	 * 获取某一个套餐信息
+	 * @param packageId
+	 * @return
+	 */
+    public SimPackage getPackage(Integer packageId);
 }
