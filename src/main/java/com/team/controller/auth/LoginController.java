@@ -50,7 +50,6 @@ public class LoginController {
 	@ResponseBody
 	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
 			HttpServletResponse response){
-		ReturnMsg returnMsg = null;
 		String msg = "";
 		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
 		if(verificationCode != null && verificationCode.equals(code)){
@@ -71,12 +70,10 @@ public class LoginController {
 		}else{
 			msg = "验证码错误！";
 		}
-		if(CommonUtil.StringIsNull(msg)){
-			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
-		}else{
+		if(!CommonUtil.StringIsNull(msg)){
 			throw new KachiException(msg);
 		}
-		return returnMsg;
+		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getMenu")
@@ -108,7 +105,7 @@ public class LoginController {
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getFunctions")

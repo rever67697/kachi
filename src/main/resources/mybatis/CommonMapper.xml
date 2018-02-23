@@ -2,49 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.CommonDao">
 
-	<select id="getCountryDic" resultType="com.team.vo.Dictionary">
+    <select id="getCountryDic" resultType="com.team.vo.Dictionary">
 		select countrycode value,
 			   namecn name
 		from m_country
 		order by case when countrycode=156 then 0 else 1 end 
 	</select>
 
-	<select id="getDepartmentDic" resultType="com.team.vo.Dictionary">
-		select id value,
-			   name
-		from m_department
-		where status=0
-		<if test="dId != null">
-		  and (id=#{dId,jdbcType=INTEGER} or parentid=#{dId,jdbcType=INTEGER})
-		</if>
-		order by id
-	</select>
-	
-	<select id="getOperatorDic" resultType="com.team.vo.Dictionary">
-		select OPERATORCODE value,
-			 concat(case OPERATORNAMECN when 'China Mobile' then '中国移动' 
-			 							when 'China Unicom' then '中国联通' 
-			 							when 'China Telecom' then '中国电信'
-										when 'China Tietong' then '中国铁通' 
-										else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
-		from m_operator 
-		where status=0
-		<if test="countryCode!=null">
-			and countrycode=#{countryCode,jdbcType=INTEGER}
-		</if>
-		order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc,OPERATORCODE
-	</select>
-	
-	<select id="getSimPoolDic" resultType="com.team.vo.Dictionary">
-		select r.id value,
-			   r.name name 
-		from m_simpool r
-		left join m_department d
-		on r.departmentId=d.id
-		   and d.status=0
-		where 1=1
-		<if test="dId!=null" >  
-         	and (d.id = #{dId,jdbcType=INTEGER}  or d.parentId= #{dId,jdbcType=INTEGER})
+    <select id="getDepartmentDic" resultType="com.team.vo.Dictionary">
+        select id value,
+        name
+        from m_department
+        where status=0
+        <if test="dId != null">
+            and (id=#{dId,jdbcType=INTEGER} or parentid=#{dId,jdbcType=INTEGER})
         </if>
+        order by id
+    </select>
+
+    <select id="getOperatorDic" resultType="com.team.vo.Dictionary">
+        select OPERATORCODE value,
+        concat(case OPERATORNAMECN when 'China Mobile' then '中国移动'
+        when 'China Unicom' then '中国联通'
+        when 'China Telecom' then '中国电信'
+        when 'China Tietong' then '中国铁通'
+        else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
+        from m_operator
+        where status=0
+        <if test="countryCode!=null">
+            and countrycode=#{countryCode,jdbcType=INTEGER}
+        </if>
+        order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc,OPERATORCODE
+    </select>
+
+    <select id="getSimPoolDic" resultType="com.team.vo.Dictionary">
+        select r.id value,
+        r.name name
+        from m_simpool r
+        left join m_department d
+        on r.departmentId=d.id
+        and d.status=0
+        where 1=1
+        <if test="dId!=null">
+            and (d.id = #{dId,jdbcType=INTEGER} or d.parentId= #{dId,jdbcType=INTEGER})
+        </if>
+    </select>
+
+    <select id="getPackageDic" resultType="com.team.vo.Dictionary">
+        select distinct p.id value,
+                        p.name
+        from m_simpackage p
+        left join m_department d
+        on (p.departmentId=d.id or p.departmentId=d.parentId) and d.status=0
+        where p.status=0
+        <if test="dId!=null">
+            and (d.id=#{dId,jdbcType=INTEGER} or d.parentId=#{dId,jdbcType=INTEGER})
+            or p.departmentId = 0
+        </if>
+        order by p.id
+    </select>
+
+    <select id="getProvinceDic" resultType="com.team.vo.Dictionary">
+		select id value,
+               namecn name
+        from m_province
+        order by sort
 	</select>
+
 </mapper>

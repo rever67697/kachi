@@ -16,7 +16,6 @@ import com.team.dao.SimPackageDao;
 import com.team.model.SimPackage;
 import com.team.service.SimPackageService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -27,7 +26,7 @@ import com.team.vo.ReturnMsg;
  */
 @Transactional
 @Service
-public class SimPackageServiceImpl implements SimPackageService{
+public class SimPackageServiceImpl extends BaseService implements SimPackageService{
 	
 	@Autowired
 	private SimPackageDao simPackageDao;
@@ -58,11 +57,11 @@ public class SimPackageServiceImpl implements SimPackageService{
 	public ReturnMsg deletePackage(Integer id) {
 		ReturnMsg returnMsg = null;
 		if(!CommonUtil.StringIsNull(simCardDao.getPackageExist(id))){
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg = super.errorTip();
 			returnMsg.setMsg("删除失败，有SIM卡正在使用该套餐！");
 		}else{
 			simPackageDao.deletePackage(id);
-			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+			returnMsg = super.successTip();
 		}
 		return returnMsg;
 	}
@@ -79,10 +78,7 @@ public class SimPackageServiceImpl implements SimPackageService{
 		}else{
 			count = simPackageDao.insertPackage(simPackage);
 		}
-		if(count > 0){
-			return IConstant.MSG_OPERATE_SUCCESS;
-		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }

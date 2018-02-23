@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.CountryDao">
+
+    <select id="getCountry" resultType="com.team.model.Country">
+    	select * from m_country
+    	where countryCode=#{countryCode,jdbcType=INTEGER}
+    </select>
+
+</mapper>

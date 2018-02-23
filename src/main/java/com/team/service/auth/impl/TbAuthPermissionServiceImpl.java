@@ -14,8 +14,8 @@ import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;
 import com.team.service.auth.TbAuthPermissionService;
+import com.team.service.impl.BaseService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
 
 /**
@@ -24,7 +24,7 @@ import com.team.vo.ReturnMsg;
  */
 @Service
 @Transactional
-public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
+public class TbAuthPermissionServiceImpl extends BaseService implements TbAuthPermissionService{
 
 	@Autowired
 	private TbAuthPermissionDao tbAuthPermissionDao;
@@ -42,7 +42,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 
 	@Override
 	public ReturnMsg getFunByUser(TbAuthUser user,Integer id) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("parentId", id);
 		map.put("list", user.getRoles());
@@ -66,7 +66,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 		ReturnMsg returnMsg = null;
 		if(userId != null){
 			Map<String, Object> map = new HashMap<String, Object>();
-			returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+			returnMsg = super.successTip();
 			
 			//1.找出用户的专属角色，没有则添加一个
 			List<TbAuthRole> roles = tbAuthRoleDao.getUserRole(userId);
@@ -88,7 +88,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 				tbAuthPermissionDao.insertRolePermission(map);
 			}
 		}else{
-			returnMsg = IConstant.MSG_OPERATE_ERROR;
+			returnMsg = super.errorTip();
 		}
 		
 		return returnMsg;
@@ -97,7 +97,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 	@Override
 	public ReturnMsg updateStatus(Integer id) {
 		int count = tbAuthPermissionDao.updateStatus(id);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class TbAuthPermissionServiceImpl implements TbAuthPermissionService{
 			tbAuthPermissionDao.insertPermission(permission);
 			tbAuthPermissionDao.insertAdminPermission(permission.getId());
 		}
-		return IConstant.MSG_OPERATE_SUCCESS;
+		return super.successTip();
 	}
 
 	

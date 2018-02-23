@@ -72,5 +72,7 @@ public interface SimCardDao {
 	 *return
 	 */
 	public int updateCardStatus(List<Integer> list);
+
+	public int update(SimCard simCard);
 	
 }

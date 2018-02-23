@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.team.dao.ReadPoolDeptDao;
 import com.team.model.ReadPoolDept;
 import com.team.service.ReadPoolDeptService;
-import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
 
 /**
@@ -16,7 +15,7 @@ import com.team.vo.ReturnMsg;
  */
 @Transactional
 @Service
-public class ReadPoolDeptServiceImpl implements ReadPoolDeptService{
+public class ReadPoolDeptServiceImpl extends BaseService implements ReadPoolDeptService{
 
 	@Autowired
 	private ReadPoolDeptDao readPoolDeptDao;
@@ -24,6 +23,6 @@ public class ReadPoolDeptServiceImpl implements ReadPoolDeptService{
 	@Override
 	public ReturnMsg saveReadPoolDept(ReadPoolDept readPoolDept) {
 		int count = readPoolDeptDao.saveReadPoolDept(readPoolDept);
-		return count>0?IConstant.MSG_OPERATE_SUCCESS:IConstant.MSG_OPERATE_ERROR;
+		return count>0?super.successTip():super.errorTip();
 	}
 }

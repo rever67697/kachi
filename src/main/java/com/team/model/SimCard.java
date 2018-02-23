@@ -391,7 +391,7 @@ public class SimCard implements Serializable{
 				+ ", openDate=" + openDate + ", departmentId=" + departmentId
 				+ ", groupPref=" + groupPref + ", note=" + note + "]";
 	}
-	
-	
-	
+
+
+
 }

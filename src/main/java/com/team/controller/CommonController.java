@@ -51,7 +51,6 @@ public class CommonController {
 	
 	@PostMapping("/getOperatorDic")
 	public ReturnMsg getOperatorDic(Integer countryCode){
-		System.out.println("countryCode=="+countryCode);
 		return commonService.getOperatorDic(countryCode);
 	}
 	
@@ -59,6 +58,17 @@ public class CommonController {
 	public ReturnMsg getSimPoolDic(HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return commonService.getSimPoolDic(dId);
+	}
+
+	@PostMapping("/getPackageDic")
+	public ReturnMsg getPackageDic(HttpServletRequest request){
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return commonService.getPackageDic(dId);
+	}
+
+	@PostMapping("/getProvinceDic")
+	public ReturnMsg getProvinceDic(){
+		return commonService.getProvinceDic();
 	}
 
 	@GetMapping("/downloadFile")

@@ -32,9 +32,9 @@
 							 else o.OPERATORNAMECN end operatorName
 		from m_simcard r
 		left join m_simpackage t
-		on r.packageid=t.id
+		on r.packageid=t.id and t.status=0
 		left join m_simpool p
-		on r.cpid=p.id
+		on r.cpid=p.id and p.ISACTIVE=1
 		left join m_department d 
 		on p.departmentId=d.id and d.status=0
 		left join m_operator o
@@ -92,5 +92,26 @@
 			#{item,jdbcType=INTEGER}
 		</foreach>
 		)
+	</update>
+
+	<update id="update" parameterType="com.team.model.SimCard">
+		update m_simcard
+		set	packageId = #{packageId,jdbcType=INTEGER},
+			offPeriod = #{offPeriod,jdbcType=INTEGER},
+			sustained = #{sustained,jdbcType=INTEGER},
+			simmeProtocol = #{simmeProtocol,jdbcType=VARCHAR},
+			status = #{status,jdbcType=INTEGER},
+			provinceCode = #{provinceCode,jdbcType=INTEGER},
+			usedVpn = #{usedVpn,jdbcType=INTEGER},
+			vpnIp = #{vpnIp,jdbcType=VARCHAR},
+			vpnName = #{vpnName,jdbcType=VARCHAR},
+			vpnPass = #{vpnPass,jdbcType=VARCHAR},
+			ki = #{ki,jdbcType=VARCHAR},
+			opc = #{opc,jdbcType=VARCHAR},
+			op = #{op,jdbcType=VARCHAR},
+			apn = #{apn,jdbcType=VARCHAR},
+			note = #{note,jdbcType=VARCHAR},
+			softType = #{softType,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
 	</update>
 </mapper>

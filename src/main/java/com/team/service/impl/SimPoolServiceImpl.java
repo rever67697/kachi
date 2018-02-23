@@ -18,7 +18,6 @@ import com.team.vo.ReturnMsg;
 import com.team.model.SimPool;
 import com.team.service.SimPoolService;
 import com.team.util.CommonUtil;
-import com.team.util.IConstant;
 
 /**
  * 创建日期：2017-12-18下午3:40:55
@@ -26,7 +25,7 @@ import com.team.util.IConstant;
  */
 @Transactional
 @Service
-public class SimPoolServiceImpl implements SimPoolService{
+public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 
 	@Autowired
 	private SimPoolDao simPoolDao;
@@ -58,7 +57,7 @@ public class SimPoolServiceImpl implements SimPoolService{
 	 *return
 	 */
 	public ReturnMsg getOutlineInfo(Integer dId) {
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_SUCCESS;
+		ReturnMsg returnMsg = super.successTip();
 		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.changeDepartmentId(dId));
 		OutlineInfo info = null;
 		if(CommonUtil.listNotBlank(list)){
@@ -76,20 +75,16 @@ public class SimPoolServiceImpl implements SimPoolService{
 	public ReturnMsg modifyDept(SimPool simPool) {
 		if(simPoolDao.updateDept(simPool) > 0){
 			simCardDao.updateCardDept(simPool);
-			return IConstant.MSG_OPERATE_SUCCESS;
+			return super.successTip();
 		}
-		return IConstant.MSG_OPERATE_ERROR;
+		return super.errorTip();
 	}
 
 	@Override
 	public ReturnMsg saveSimPool(SimPool simPool) {
 		int count = 0;
 		count = simPoolDao.insertSimPool(simPool);
-		if (count > 0) {
-			return IConstant.MSG_OPERATE_SUCCESS;
-		} else {
-			return IConstant.MSG_OPERATE_ERROR;
-		}
+		return count>0?super.successTip():super.errorTip();
 	}
 
 }

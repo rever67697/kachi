@@ -16,4 +16,25 @@
 		]]>
 	</update>
 	
+	<update id="updateMonthFlowBySimCard" parameterType="com.team.model.FlowMonth">
+		update m_flow_month
+		set date=#{date,jdbcType=VARCHAR},
+			accountPeriodStartDate = #{accountPeriodStartDate,jdbcType=TIMESTAMP},
+			accountPeriodEndDate = #{accountPeriodEndDate,jdbcType=TIMESTAMP},
+			usedFlow = #{usedFlow,jdbcType=INTEGER},
+			residueFlow = #{residueFlow,jdbcType=INTEGER},
+			usedRoamFlow = #{usedRoamFlow,jdbcType=INTEGER},
+			residueRoamFlow = #{residueRoamFlow,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="get" parameterType="java.util.Map" resultType="com.team.model.FlowMonth">
+		<![CDATA[
+		select * from m_flow_month
+		where accountPeriodStartDate <= #{nowDate,jdbcType=TIMESTAMP}
+		  and accountPeriodEndDate > #{nowDate,jdbcType=TIMESTAMP}
+		  and imsi=#{imsi,jdbcType=BIGINT}
+		]]>
+	</select>
+	
 </mapper>

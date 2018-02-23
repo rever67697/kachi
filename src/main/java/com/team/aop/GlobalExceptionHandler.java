@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public ReturnMsg handler(Exception e){
 		e.printStackTrace();
-		ReturnMsg returnMsg = IConstant.MSG_OPERATE_UNKNOW;
+		ReturnMsg returnMsg = new ReturnMsg(IConstant.CODE_UNKNOW, IConstant.MSG_UNKONW);
 		if(e instanceof KachiException){
 			returnMsg.setMsg(((KachiException)e).getMsg());
 		}
