@@ -81,7 +81,7 @@
 	
 	<insert id="insertPermission" parameterType="com.team.model.auth.TbAuthPermission" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_auth_permission
-		(parent_id,text,url,icon_cls,is_menu,order_num,fun_desc,status)
+		(parent_id,text,url,icon_cls,is_menu,order_num,fun_desc,status,create_time)
 		values
 		(#{parentId,jdbcType=INTEGER},
 		 #{text,jdbcType=VARCHAR},
@@ -90,7 +90,8 @@
 		 #{isMenu,jdbcType=INTEGER},
 		 #{orderNum,jdbcType=INTEGER},
 		 #{funDesc,jdbcType=VARCHAR},
-		 0
+		 0,
+		 now()
 		 )
 	</insert>
 	

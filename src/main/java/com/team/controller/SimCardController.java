@@ -58,7 +58,7 @@ public class SimCardController {
 	}
 
 	@PostMapping("/updateSimCard")
-	@PermissionLog(key="imsi_IMSI")
+	@PermissionLog(key="imsi_IMSI；isChangePeriod_帐期是否改变;isChangePackage_套餐是否改变")
 	public ReturnMsg updateSimCard(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
 
 		return simCardService.update(simCard,isChangePeriod,isChangePackage);
