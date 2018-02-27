@@ -256,7 +256,7 @@
             $('#doForm [name=isChangePackage]').val(isChangePackage);
             //帐期日或者持续时间已经前后发生改变
             if(isChangePeriod || isChangePackage){
-                $.messager.confirm('提示','帐期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
+                $.messager.confirm('提示','账期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
                     if(r){
                         $('#doDialog').dialog('close');
                         $('#dg').datagrid('loading');

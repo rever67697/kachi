@@ -2,6 +2,7 @@ package com.team.service.impl;
 
 import java.util.*;
 
+import com.hqrh.rw.common.model.GroupCacheSim;
 import com.team.dao.FlowDayDao;
 import com.team.dao.FlowMonthDao;
 import com.team.dao.SimPackageDao;
@@ -124,9 +125,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		simCardDao.update(simCard);
 
 		//2.如果卡的帐期或者持续时间发生变化，需要重新计算卡的月流量
-		//reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
+		reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 
 		//3.需要更新缓存里面的卡组信息
+		//initGroupSim2Cache(simCard);
 		return super.successTip();
 	}
 
@@ -138,8 +140,9 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			if(flowMonth != null){
 				convertFlowmonth(simCard,flowMonth,isChangePeriod,isChangePackage);
 				flowMonthDao.updateMonthFlowBySimCard(flowMonth);
-				flowMonth = getNowFlowMonth(simCard);
-				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(), flowMonth);
+				//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
+				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(),
+						CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));
 			}
 		}
 
@@ -147,7 +150,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	private void convertFlowmonth(SimCard simCard, FlowMonth flowMonth, boolean isChangePeriod, boolean isChangePackage) {
 		Date nowDate = new Date();
-		flowMonth.setLastUpdateTime(new Date());
+		flowMonth.setLastUpDatetime(new Date());
 
 		//1。如果帐期发生了变化，需要重新计算帐期相关参数
 		if(isChangePeriod){
@@ -502,9 +505,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		String timeStr =  countryService.getRoamcountryDate(new Date(),simCard.getCountryCode(),"yyyy-MM-dd HH:mm:ss");
 		Date nowDate = DateUtil.string2Date(timeStr, "yyyy-MM-dd HH:mm:ss");
 
-
-		FlowMonth simFlowMonth = (FlowMonth)simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
-		if(simFlowMonth != null) {
+		//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
+		Object object =  simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
+		FlowMonth simFlowMonth = null;
+		if(object != null) {
+			simFlowMonth = CommonUtil.convertBean(object,FlowMonth.class);
 			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
 					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
 				return simFlowMonth;

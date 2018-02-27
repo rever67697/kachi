@@ -3,6 +3,7 @@ package com.team.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.team.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,10 @@ public class OperatorServiceImpl implements OperatorService {
 	
 	@Override
 	public Operator getOperator(Integer operatorCode) {
-		Operator operator = (Operator)publicCache.get(MConstant.CACHE_OPERATOR_KEY_PREE + operatorCode);
-		if(operator != null)
-			return operator;
+		Operator operator = null;
+		Object object = publicCache.get(MConstant.CACHE_OPERATOR_KEY_PREE + operatorCode);
+		if(object != null)
+			return CommonUtil.convertBean(object, Operator.class);
 		
 		List<Operator> operatorList = operatorDao.getOperatorByCode(operatorCode);
 		if (operatorList.size() != 0)
@@ -42,7 +44,9 @@ public class OperatorServiceImpl implements OperatorService {
 		logger.debug("select Operator by sql,operatorCode:"+ operatorCode + "/" + operator);
 		
 		if(operator != null) {
-			publicCache.set(MConstant.CACHE_OPERATOR_KEY_PREE +  operatorCode, operator,new Date(1000*60*60*24));
+			publicCache.set(MConstant.CACHE_OPERATOR_KEY_PREE +  operatorCode,
+					CommonUtil.convertBean(operator, com.hqrh.rw.common.model.Operator.class),
+					new Date(1000*60*60*24));
 		}
 		
 		return operator;
