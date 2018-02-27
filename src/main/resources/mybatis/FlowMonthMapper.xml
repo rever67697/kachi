@@ -26,8 +26,8 @@
 			usedRoamFlow = #{usedRoamFlow,jdbcType=INTEGER},
 			residueRoamFlow = #{residueRoamFlow,jdbcType=INTEGER},
 			lastUpDatetime = #{lastUpDatetime,jdbcType=TIMESTAMP},
-			maxFlow = #{maxFlow,jdbcType=Integer},
-			maxRoamFlow = #{maxRoamFlow,jdbcType=Integer}
+			maxFlow = #{maxFlow,jdbcType=INTEGER},
+			maxRoamFlow = #{maxRoamFlow,jdbcType=INTEGER}
 		where id=#{id,jdbcType=INTEGER}
 	</update>
 

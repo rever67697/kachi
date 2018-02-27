@@ -128,7 +128,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 
 		//3.需要更新缓存里面的卡组信息
-		//initGroupSim2Cache(simCard);
+		initGroupSim2Cache(simCard);
 		return super.successTip();
 	}
 
@@ -321,7 +321,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			if (groupCacheSims != null) {
 				int size = groupCacheSims.size();
 				for (int i = size; i > 0; i--) {
-					GroupCacheSim gcs = groupCacheSims.get(i - 1);
+					GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSims.get(i - 1),GroupCacheSim.class);
 					if (gcs.getImsi() == imsi) { // 找到了要被删除的卡，从列表里去掉
 						logger.info("removeSimBySimGroupCache,groupKey: "
 								+ groupKey + "/ value:" + gcs);
@@ -389,12 +389,15 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		List<GroupCacheSim> groupCacheSims = null;
 
-		MemcachedItem item = (MemcachedItem) simCache.gets(groupKey);
+		MemcachedItem item = simCache.gets(groupKey);
 		if (item != null) {
 			groupCacheSims = (List<GroupCacheSim>) item.getValue();
 			if (groupCacheSims != null) {
-				for (GroupCacheSim sg : groupCacheSims) {
-					if (sg.getImsi() == imsi) { // 缓存有这张卡
+				for (int i = 0; i < groupCacheSims.size(); i++) {
+					//好鬼烦啊
+					GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSims.get(i),GroupCacheSim.class);
+					System.out.println(gcs);
+					if (gcs.getImsi() == imsi) { // 缓存有这张卡
 						simGroup = getSimGroupByDB(imsi);
 						if (simGroup == null) {
 							simGroup = addSimGroup2DB(groupKey, simCard);
@@ -402,6 +405,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 						return simGroup;
 					}
 				}
+
 				GroupCacheSim groupCacheSim = createGroupCacheSim(imsi);
 				groupCacheSims.add(groupCacheSim);
 

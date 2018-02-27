@@ -3,7 +3,10 @@ package com.team.test;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import com.hqrh.rw.common.model.GroupCacheSim;
+import com.schooner.MemCached.MemcachedItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ public class MyTest {
 	//组缓存
 	private static final Cache simGroupCache =CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
 	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
+	private static final Cache simCache = CacheFactory .getCache(MConstant.MEM_SIM);
 
 
 	@Autowired
@@ -57,6 +61,18 @@ public class MyTest {
 ////		BeanUtils.copyProperties(flowMonth,obj);
 //		flowMonth = CommonUtil.convertBean(obj,FlowMonth2.class);
 //		System.out.println(flowMonth);
+		List<GroupCacheSim> groupCacheSims = null;
+
+		MemcachedItem item = (MemcachedItem)simCache.gets("null_46001_29_10_4");
+		if (item != null) {
+			groupCacheSims = (List<GroupCacheSim>) item.getValue();
+			if (groupCacheSims != null) {
+				for (GroupCacheSim sg : groupCacheSims) {
+					System.out.println(sg);
+				}
+			}
+		}
+
 	}
 	
 	//@Test

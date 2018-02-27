@@ -16,7 +16,7 @@
 	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
 		    <table class="table kc-outline">
 		    	<tr>
-		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount"></div><div>卡总数</div></td>
+		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount" onclick="$('#tt').tabs('select','流量卡');"></div><div>卡总数</div></td>
 		    		<td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>
 		    		<td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>
 		    		<td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>
@@ -54,6 +54,7 @@
 					<input type="hidden" name="comparePackage"/>
 					<input type="hidden" name="isChangePeriod"/>
 					<input type="hidden" name="isChangePackage"/>
+					<input type="hidden" name="operatorCode"/>
 			  		<table class="table th-normal">
 			  			<tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
 			  				<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true" readonly="readonly"/></td></tr>
