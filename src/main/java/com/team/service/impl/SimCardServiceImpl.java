@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 /**
  * 创建日期：2017-12-19上午10:04:29 author:wuzhiheng
  */
+@SuppressWarnings("unchecked")
 @Transactional
 @Service
 public class SimCardServiceImpl extends BaseService implements SimCardService {
