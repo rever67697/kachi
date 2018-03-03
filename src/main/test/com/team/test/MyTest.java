@@ -3,16 +3,16 @@ package com.team.test;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
-import org.junit.Assert;
+import com.hqrh.rw.common.model.GroupCacheSim;
+import com.schooner.MemCached.MemcachedItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.schooner.MemCached.MemcachedItem;
-import com.team.model.SimCard;
 import com.team.model.SimPool;
 import com.team.service.CountryService;
 import com.team.service.SimPoolService;
@@ -30,7 +30,10 @@ public class MyTest {
 	
 	//组缓存
 	private static final Cache simGroupCache =CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
-	
+	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
+	private static final Cache simCache = CacheFactory .getCache(MConstant.MEM_SIM);
+
+
 	@Autowired
 	private SimPoolService service;
 	@Autowired
@@ -44,6 +47,32 @@ public class MyTest {
 		a = (String[])simGroupCache.gets("wzh").getValue();
 		
 		System.out.println(Arrays.toString(a));
+	}
+
+	@Test
+	public void testTmp(){
+//		FlowMonth flowMonth1 = new FlowMonth();
+//		flowMonth1.setId(10);
+//		Boolean ok = simFlowCache.set("FLOW_4600112343434",flowMonth1);
+//		System.out.println(ok);
+//		Object obj = simFlowCache.get("FLOW_4600112343434");
+//
+//		FlowMonth2 flowMonth = new FlowMonth2();
+////		BeanUtils.copyProperties(flowMonth,obj);
+//		flowMonth = CommonUtil.convertBean(obj,FlowMonth2.class);
+//		System.out.println(flowMonth);
+		List<GroupCacheSim> groupCacheSims = null;
+
+		MemcachedItem item = (MemcachedItem)simCache.gets("null_46001_29_10_4");
+		if (item != null) {
+			groupCacheSims = (List<GroupCacheSim>) item.getValue();
+			if (groupCacheSims != null) {
+				for (GroupCacheSim sg : groupCacheSims) {
+					System.out.println(sg);
+				}
+			}
+		}
+
 	}
 	
 	//@Test

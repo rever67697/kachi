@@ -2,6 +2,7 @@ package com.team.service.impl;
 
 import java.util.*;
 
+import com.hqrh.rw.common.model.GroupCacheSim;
 import com.team.dao.FlowDayDao;
 import com.team.dao.FlowMonthDao;
 import com.team.dao.SimPackageDao;
@@ -28,6 +29,7 @@ import org.apache.log4j.Logger;
 /**
  * 创建日期：2017-12-19上午10:04:29 author:wuzhiheng
  */
+@SuppressWarnings("unchecked")
 @Transactional
 @Service
 public class SimCardServiceImpl extends BaseService implements SimCardService {
@@ -124,9 +126,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		simCardDao.update(simCard);
 
 		//2.如果卡的帐期或者持续时间发生变化，需要重新计算卡的月流量
-		//reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
+		reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 
 		//3.需要更新缓存里面的卡组信息
+		initGroupSim2Cache(simCard);
 		return super.successTip();
 	}
 
@@ -138,8 +141,9 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			if(flowMonth != null){
 				convertFlowmonth(simCard,flowMonth,isChangePeriod,isChangePackage);
 				flowMonthDao.updateMonthFlowBySimCard(flowMonth);
-				flowMonth = getNowFlowMonth(simCard);
-				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(), flowMonth);
+				//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
+				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(),
+						CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));
 			}
 		}
 
@@ -147,7 +151,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	private void convertFlowmonth(SimCard simCard, FlowMonth flowMonth, boolean isChangePeriod, boolean isChangePackage) {
 		Date nowDate = new Date();
-		flowMonth.setLastUpdateTime(new Date());
+		flowMonth.setLastUpDatetime(new Date());
 
 		//1。如果帐期发生了变化，需要重新计算帐期相关参数
 		if(isChangePeriod){
@@ -318,7 +322,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			if (groupCacheSims != null) {
 				int size = groupCacheSims.size();
 				for (int i = size; i > 0; i--) {
-					GroupCacheSim gcs = groupCacheSims.get(i - 1);
+					GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSims.get(i - 1),GroupCacheSim.class);
 					if (gcs.getImsi() == imsi) { // 找到了要被删除的卡，从列表里去掉
 						logger.info("removeSimBySimGroupCache,groupKey: "
 								+ groupKey + "/ value:" + gcs);
@@ -386,12 +390,15 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		List<GroupCacheSim> groupCacheSims = null;
 
-		MemcachedItem item = (MemcachedItem) simCache.gets(groupKey);
+		MemcachedItem item = simCache.gets(groupKey);
 		if (item != null) {
 			groupCacheSims = (List<GroupCacheSim>) item.getValue();
 			if (groupCacheSims != null) {
-				for (GroupCacheSim sg : groupCacheSims) {
-					if (sg.getImsi() == imsi) { // 缓存有这张卡
+				for (int i = 0; i < groupCacheSims.size(); i++) {
+					//好鬼烦啊
+					GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSims.get(i),GroupCacheSim.class);
+					System.out.println(gcs);
+					if (gcs.getImsi() == imsi) { // 缓存有这张卡
 						simGroup = getSimGroupByDB(imsi);
 						if (simGroup == null) {
 							simGroup = addSimGroup2DB(groupKey, simCard);
@@ -399,6 +406,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 						return simGroup;
 					}
 				}
+
 				GroupCacheSim groupCacheSim = createGroupCacheSim(imsi);
 				groupCacheSims.add(groupCacheSim);
 
@@ -502,9 +510,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		String timeStr =  countryService.getRoamcountryDate(new Date(),simCard.getCountryCode(),"yyyy-MM-dd HH:mm:ss");
 		Date nowDate = DateUtil.string2Date(timeStr, "yyyy-MM-dd HH:mm:ss");
 
-
-		FlowMonth simFlowMonth = (FlowMonth)simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
-		if(simFlowMonth != null) {
+		//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
+		Object object =  simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
+		FlowMonth simFlowMonth = null;
+		if(object != null) {
+			simFlowMonth = CommonUtil.convertBean(object,FlowMonth.class);
 			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
 					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
 				return simFlowMonth;

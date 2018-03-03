@@ -1,10 +1,13 @@
-package com.team.model;
-/**
- * 创建日期：2018-2-9下午4:18:34
- * author:wuzhiheng
- */
-public class GroupCacheSim {
+package com.hqrh.rw.common.model;
 
+import java.io.Serializable;
+
+
+public class GroupCacheSim implements Serializable {
+
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 7441390994629271915L;
 	private long imsi;
 	private int status; //0:可以使用；1：已经被使用
@@ -25,4 +28,7 @@ public class GroupCacheSim {
 	public String toString() {
 		return "GroupCacheSim [imsi=" + imsi + ", status=" + status + "]";
 	}
+	
+	
+	
 }

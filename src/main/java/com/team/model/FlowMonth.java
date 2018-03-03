@@ -28,7 +28,7 @@ public class FlowMonth implements Serializable{
 	private Integer residueFlow;//本国流量剩余额度
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date lastUpdateTime;//最后更新时间
+	private Date lastUpDatetime;//最后更新时间
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodStartDate;//本账期起始时间
@@ -100,15 +100,6 @@ public class FlowMonth implements Serializable{
 		this.residueFlow = residueFlow;
 	}
 
-	public Date getLastUpdateTime() {
-		return lastUpdateTime;
-	}
-
-	public void setLastUpdateTime(Date lastUpdateTime) {
-		this.lastUpdateTime = lastUpdateTime;
-	}
-
-
 	public Date getAccountPeriodEndDate() {
 		return accountPeriodEndDate;
 	}
@@ -164,5 +155,34 @@ public class FlowMonth implements Serializable{
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	@Override
+	public String toString() {
+		return "FlowMonth{" +
+				"id=" + id +
+				", imsi=" + imsi +
+				", iccid='" + iccid + '\'' +
+				", number='" + number + '\'' +
+				", date='" + date + '\'' +
+				", maxFlow=" + maxFlow +
+				", usedFlow=" + usedFlow +
+				", residueFlow=" + residueFlow +
+				", lastUpDatetime=" + lastUpDatetime +
+				", accountPeriodStartDate=" + accountPeriodStartDate +
+				", accountPeriodEndDate=" + accountPeriodEndDate +
+				", maxRoamFlow=" + maxRoamFlow +
+				", usedRoamFlow=" + usedRoamFlow +
+				", residueRoamFlow=" + residueRoamFlow +
+				", operatorCode=" + operatorCode +
+				'}';
+	}
+
+	public Date getLastUpDatetime() {
+		return lastUpDatetime;
+	}
+
+	public void setLastUpDatetime(Date lastUpDatetime) {
+		this.lastUpDatetime = lastUpDatetime;
 	}
 }

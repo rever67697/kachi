@@ -25,7 +25,8 @@
 		  #{departmentId,jdbcType=INTEGER},
 		  #{operatorCode,jdbcType=INTEGER},
 		  #{provinceCode,jdbcType=INTEGER},
-		  #{packageId,jdbcType=INTEGER}
+		  #{packageId,jdbcType=INTEGER},
+		  #{groupId,jdbcType=INTEGER}
 		)
 	</insert>
 	
