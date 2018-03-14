@@ -105,7 +105,7 @@ public class LoginController {
 		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
 	
-	@PostMapping("/logout")
+	@GetMapping("/logout")
 	@ResponseBody
 	@PermissionLog(value="退出登录",onlyLog=true)
 	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
