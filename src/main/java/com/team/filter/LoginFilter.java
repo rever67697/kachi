@@ -21,7 +21,7 @@ import com.team.util.CommonUtil;
  * 创建日期：2017-12-14下午4:30:18
  * author:wuzhiheng
  */
-@Component
+//@Component
 public class LoginFilter implements Filter{
 
 	@Value("${filter.noFilterPath}")
