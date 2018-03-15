@@ -74,5 +74,8 @@ public interface SimCardDao {
 	public int updateCardStatus(List<Integer> list);
 
 	public int update(SimCard simCard);
-	
+
+	public int batchUpdate(SimCard simCard);
+
+	public List<Map<String,Object>> getSimCardListMap(Map<String,Object> map);
 }

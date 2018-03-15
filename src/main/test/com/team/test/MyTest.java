@@ -1,12 +1,13 @@
 package com.team.test;
 
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import com.hqrh.rw.common.model.GroupCacheSim;
 import com.schooner.MemCached.MemcachedItem;
+import com.team.dao.SimCardDao;
+import com.team.model.SimCard;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,27 @@ public class MyTest {
 	private SimPoolService service;
 	@Autowired
 	private CountryService countryService;
+
+	@Autowired
+	private SimCardDao simCardDao;
+
+	@Test
+	public void query(){
+		Map<String,Object> map = new HashMap<>();
+		map.put("number","262014546463587");
+		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
+		Field[] fields = SimCard.class.getDeclaredFields();
+
+		for (Map<String, Object> stringObjectMap : list) {
+			for (Field field : fields) {
+				System.out.println(field.getName() + " = " + stringObjectMap.get(field.getName().toUpperCase()));
+			}
+//			for (Map.Entry<String, Object> stringObjectEntry : stringObjectMap.entrySet()) {
+//				System.out.println(stringObjectEntry.getKey() + " = " + stringObjectEntry.getValue());
+//			}
+			break;
+		}
+	}
 	
 	@Test
 	public void testMemcached(){

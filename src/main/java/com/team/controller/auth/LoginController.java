@@ -104,16 +104,16 @@ public class LoginController {
 	public TbAuthUser getUser(HttpServletRequest request){
 		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
-	
+
 	@GetMapping("/logout")
-	@ResponseBody
 	@PermissionLog(value="退出登录",onlyLog=true)
-	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
+	public void logout(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		request.getSession().removeAttribute(IConstant.SESSION_USER_NAME);
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
-		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
+		response.sendRedirect(request.getContextPath()+"/site/login.html");
+		//return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getFunctions")

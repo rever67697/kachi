@@ -2,6 +2,7 @@ package com.team.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.team.model.SimCard;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import com.team.service.SimCardService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
+
+import java.io.*;
 
 /**
  * 创建日期：2017-12-18下午3:51:14
@@ -44,7 +47,58 @@ public class SimCardController {
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
 	}
-	
+
+	@GetMapping("/getCsv")
+	@PermissionLog
+	public void getCsv(Integer departmentId, Integer cpId, String number,
+					   Integer status, HttpServletRequest request, HttpServletResponse response) throws  Exception{
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+
+		File file = simCardService.getCsv(departmentId, dId,cpId, number, status);
+
+		response.reset();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/x-msdownload");// application/msexcel
+		response.setHeader("Content-Disposition", "attachment; filename="
+				+file.getName());
+		FileInputStream in = null;
+		BufferedInputStream bis = null;
+		BufferedOutputStream bos = null;
+		try {
+			in = new FileInputStream(file);
+			bis = new BufferedInputStream(in);
+			bos = new BufferedOutputStream(response.getOutputStream());
+			byte[] buff = new byte[1024];
+			int bytesRead;
+			while (-1 != (bytesRead = bis.read(buff))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (in != null)
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if (bis != null)
+				try {
+					bis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			if (bos != null)
+				try {
+					bos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		//return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
+	}
+
 	@PostMapping("/getCardOutlineInfo")
 	public ReturnMsg getPoolOutlineInfo(HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
