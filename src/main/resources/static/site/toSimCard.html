@@ -292,5 +292,10 @@
             }
         }
     }
+
+    function getCsv(){
+  	    var url = kcJs.fn.getContextPath()+'/getCsv?'+$('#queryForm').serialize();
+  	    window.location.href = url;
+	}
   </script>
 </html>

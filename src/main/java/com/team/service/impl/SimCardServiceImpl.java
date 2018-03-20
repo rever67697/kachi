@@ -1,5 +1,7 @@
 package com.team.service.impl;
 
+import java.io.*;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import com.hqrh.rw.common.model.GroupCacheSim;
@@ -98,6 +100,41 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		List<SimCard> list = simCardDao.getSimCardList(map);
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
+	}
+
+	@Override
+	public File getCsv(Integer departmentId, Integer dId, Integer cpId, String number, Integer status) throws  Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("departmentId", departmentId);
+		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("cpId", cpId);
+		map.put("status", status);
+		map.put("number", number);
+
+		Field[] fields = SimCard.class.getDeclaredFields();
+		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
+		File file = new File(System.currentTimeMillis()+".csv");
+//		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+		FileWriter writer = new FileWriter(file);
+		for (Field field : fields) {
+			writer.write("\""+field.getName()+"\",");
+		}
+		writer.write("\r\n");
+		if(CommonUtil.listNotBlank(list)){
+			for (Map<String, Object> stringObjectMap : list) {
+				for (Field field : fields) {
+					if (stringObjectMap.get(field.getName().toUpperCase()) != null){
+						writer.write("\""+stringObjectMap.get(field.getName().toUpperCase()).toString()+"\",");
+					}else{
+						writer.write("\" \",");
+					}
+				}
+				writer.write("\r\n");
+			}
+		}
+		writer.flush();
+		writer.close();
+		return  file;
 	}
 
 	@Override

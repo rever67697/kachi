@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,6 +77,12 @@ public class LoginController {
 		}
 		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
+
+	@GetMapping("/index")
+	public String index(Model model){
+		model.addAttribute("name","wzh");
+		return "index";
+	}
 	
 	@PostMapping("/getMenu")
 	@ResponseBody
@@ -96,16 +104,16 @@ public class LoginController {
 	public TbAuthUser getUser(HttpServletRequest request){
 		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
-	
-	@PostMapping("/logout")
-	@ResponseBody
+
+	@GetMapping("/logout")
 	@PermissionLog(value="退出登录",onlyLog=true)
-	public ReturnMsg logout(HttpServletRequest request,HttpServletResponse response){
+	public void logout(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		request.getSession().removeAttribute(IConstant.SESSION_USER_NAME);
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
-		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
+		response.sendRedirect(request.getContextPath()+"/site/login.html");
+		//return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getFunctions")

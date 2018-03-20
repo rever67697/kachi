@@ -58,7 +58,7 @@ function doLogin() {
 		var code=$('[name=code]').val();
 		$.post(getContextPath()+'/login',{userName:loginName,passWord:passWord,code:code},function(data){
 			if(data && data.code=='200'){
-				window.location.href=getContextPath()+'/site/index.html';
+				window.location.href=getContextPath()+'/index';
 			}else{
 				$('#msg').text(data.msg);
 				changeValidateCode();
