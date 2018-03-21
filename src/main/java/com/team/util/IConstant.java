@@ -26,5 +26,5 @@ public class IConstant {
 	public final static String SESSION_PERMISSION_MAP = "kachi_user_permission";
 	
 	public final static String NO_PERMISSION = "没有权限！";
-	
+
 }
