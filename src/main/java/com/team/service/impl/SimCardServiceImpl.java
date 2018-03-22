@@ -113,7 +113,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		Field[] fields = SimCard.class.getDeclaredFields();
 		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
-		File file = new File(System.currentTimeMillis()+".csv");
+		File parentFile = new File("csv");
+		if(!parentFile.exists()){
+			parentFile.mkdir();
+		}
+		File file = new File(parentFile,System.currentTimeMillis()+".csv");
+
 //		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 		FileWriter writer = new FileWriter(file);
 		for (Field field : fields) {

@@ -95,6 +95,10 @@ public class SimCardController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			if(file.exists()){
+				file.delete();
+			}
+//			file.deleteOnExit();
 		}
 		//return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
 	}

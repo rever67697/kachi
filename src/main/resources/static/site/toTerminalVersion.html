@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>终端版本</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+  </head>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+  	
+  	<!--<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">-->
+		<!--<form id="queryForm">-->
+	  		<!--<table class="table">-->
+	  			<!--<tr>-->
+	  				<!--<th>用户名：</th><td><input name="username" placeholder="请输入用户名" /></td>-->
+	  				<!--<th>业务类型：</th><td><select name="bussinesstype" ></select></td>-->
+	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+	  			<!--</tr>-->
+	  		<!--</table>-->
+	  	<!--</form>-->
+	<!--</div>	-->
+	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+		<table id="dg" ></table>
+	</div>
+  </body>
+  <script type="text/javascript">
+  	var options={
+			title:'终端版本列表',
+			//queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+			         	{field:'id',title:'id',hidden:true},
+			         	{field:'tVersion',title:'版本号',width:80},
+			         	{field:'oVersion',title:'旧版本号',width:80},
+			         	{field:'describe',title:'描述',width:200},
+			         	{field:'downUrl',title:'下载地址',width:200},
+			         	{field:'status',title:'状态',width:80},
+			         	{field:'type',title:'类型',width:80},
+			         	{field:'terminalList',title:'终端列表',width:200},
+			         	{field:'operatorMan',title:'操作人',width:80},
+			         	{field:'operatorTime',title:'操作时间',width:150}
+					]],
+			url:kcJs.fn.getContextPath()+'/tvList',
+			toolbar: kcJs.fn.getFunctions(),
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[30,45],
+			rownumbers:true,
+			striped:true,
+			scrollbarSize:0,
+			fit:true
+		};
+  
+  	  function doQuery(){
+  		//options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	  }
+  	  
+	  $(function(){
+	  	$('#dg').datagrid(options);
+	  	//kcJs.fn.initDic_bussinesstype($('[name=bussinesstype]'));
+	  });
+
+  	  function doModify() {
+		  alert("doModify");
+      }
+      
+      function doAdd() {
+          alert("doAdd");
+      }
+	  
+	  
+  </script>
+</html>	
