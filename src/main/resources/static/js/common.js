@@ -23,6 +23,10 @@ var kcJs=
 			  	  "2":["停用",v_colors.red],
 			  	  "3":["注销",v_colors.gray]
 	};
+    //终端版本状态
+    var tv_status={"0":["有效",v_colors.blue],
+			  	  "1":["无效",v_colors.red]
+	};
     //中国相关的运营商代码
     var d_mnc={"00":"中国移动",
     		 "01":"中国联通",
@@ -51,6 +55,7 @@ var kcJs=
                            {value:"在线终端管理",name:"在线终端管理"},
                            {value:"指定卡管理",name:"指定卡管理"},
                            {value:"副卡管理",name:"副卡管理"},
+                           {value:"App版本管理",name:"App版本管理"},
                           ];
 	_FUNC={
 		//获取项目根路径
@@ -73,6 +78,10 @@ var kcJs=
 		getTerminalStatus:function(o){
 			return t_status[o];
 		},
+		//获取终端版本状态信息
+		getTVStatus:function(o){
+			return tv_status[o];
+		},
 		//获取指定卡类型状态颜色映射
 		getReadyType:function(s){
 			return ready_type[s];
@@ -92,7 +101,7 @@ var kcJs=
 		//给指定容器下的输入框自动填充数值
 		autoFillData:function(container,data){
 			var _this = this;
-			$('input,select',$(container)).each(function(i,o){
+			$('input,select,textarea',$(container)).each(function(i,o){
 	  			var name = $(this).attr('name');
 	  			if(name){
 	  				$(this).val(data[name]);

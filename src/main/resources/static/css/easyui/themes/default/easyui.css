@@ -1944,8 +1944,8 @@ body{border:1px solid transparent;overflow:hidden}
 .table td,.table th{padding:2px 5px;border:1px solid #ccc}
 .table th{background:rgb(237,246,255);text-align:right;font-size:13px;font-weight:500}
 .table td input{height:20px}
-.table input,.table select{border:0}
-.table td input,.table td select{border:1px solid #ccc;width:90%;padding:3px;line-height:18px;border-radius:4px;
+.table input,.table select,.table textarea{border:0}
+.table td input,.table td select,.table textarea{border:1px solid #ccc;width:90%;padding:3px;line-height:18px;border-radius:4px;
 	min-width:120px;}
 .table td select{width:93%;height:28px}
 #tabs .panel-body {overflow:hidden}

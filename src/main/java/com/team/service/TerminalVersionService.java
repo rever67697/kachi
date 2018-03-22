@@ -1,6 +1,8 @@
 package com.team.service;
 
+import com.team.model.TerminalVersion;
 import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 
 /**
  * @Author : wuzhiheng
@@ -10,4 +12,6 @@ import com.team.vo.ResultList;
 public interface TerminalVersionService {
 
     ResultList list(int page,int rows);
+
+    ReturnMsg saveOrUpdate(TerminalVersion terminalVersion);
 }

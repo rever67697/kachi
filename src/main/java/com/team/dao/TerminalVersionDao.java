@@ -12,4 +12,8 @@ import java.util.List;
 public interface TerminalVersionDao {
 
     List<TerminalVersion> list();
+
+    int save(TerminalVersion terminalVersion);
+
+    int update(TerminalVersion terminalVersion);
 }

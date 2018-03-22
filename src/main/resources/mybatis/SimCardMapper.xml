@@ -47,7 +47,7 @@
 		left join m_simpackage t
 		on r.packageid=t.id and t.status=0
 		left join m_simpool p
-		on r.cpid=p.id and p.ISACTIVE=1
+		on r.cpid=p.spid and p.ISACTIVE=1
 		left join m_department d 
 		on p.departmentId=d.id and d.status=0
 		left join m_operator o

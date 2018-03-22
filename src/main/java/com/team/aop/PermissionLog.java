@@ -19,7 +19,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PermissionLog {
 	String value() default "";
-	
+
+	//以;分隔组，组内以_分隔，例如->"id_ID;name_姓名"
 	String key() default "";
 	
 	boolean onlyLog() default false;

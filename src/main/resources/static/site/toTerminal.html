@@ -150,15 +150,15 @@
 						//{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'id',hidden:true},
 			         	{field:'tsid',title:'终端编号',width:80},
-			         	{field:'date',title:'时间（所在国家）',width:100},
-			         	{field:'date',title:'时间（北京时间）',width:100},
+			         	{field:'date',title:'时间（所在国家）',width:150},
+			         	{field:'date',title:'时间（北京时间）',width:150},
 			         	{field:'duration',title:'使用时长（分钟）',width:100},
 			         	{field:'flow',title:'使用流量',width:70},
 			         	{field:'cost',title:'超额费用',width:70},
 			         	{field:'rxFlow',title:'下行流量',width:70},
 			         	{field:'txFlow',title:'上行流量',width:70},
 			         	{field:'additionalFlow',title:'超额流量',width:70},
-			         	{field:'isLocal',title:'是否在归属地',width:100,formatter:function(value,rec,index){
+			         	{field:'isLocal',title:'是否在归属地',width:80,formatter:function(value,rec,index){
 			         		value+='';
 			         		return value?(value=='0'?'是':'否'):'';
 			         	}},

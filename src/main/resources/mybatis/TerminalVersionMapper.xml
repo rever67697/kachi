@@ -4,6 +4,35 @@
     
     <select id="list" resultType="com.team.model.TerminalVersion">
         select * from m_terminal_version
+        order by tVersion desc
     </select>
+    
+    <insert id="save" parameterType="com.team.model.TerminalVersion">
+        insert into m_terminal_version
+        (tVersion,oVersion,`describe`,downUrl,status,`type`,operatorMan,operatorTime)
+        VALUES
+        (
+          #{tVersion,jdbcType=VARCHAR},
+          #{oVersion,jdbcType=VARCHAR},
+          #{describe,jdbcType=VARCHAR},
+          #{downUrl,jdbcType=VARCHAR},
+          #{status,jdbcType=INTEGER},
+          #{type,jdbcType=INTEGER},
+          #{operatorMan,jdbcType=VARCHAR},
+          #{operatorTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
 
+    <update id="update" parameterType="com.team.model.TerminalVersion">
+        update m_terminal_version
+        set tVersion = #{tVersion,jdbcType=VARCHAR},
+            oVersion = #{oVersion,jdbcType=VARCHAR},
+            `describe` = #{describe,jdbcType=VARCHAR},
+            downUrl = #{downUrl,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            `type` = #{type,jdbcType=INTEGER},
+            operatorMan = #{operatorMan,jdbcType=VARCHAR},
+            operatorTime = #{operatorTime,jdbcType=TIMESTAMP}
+        where id=#{id,jdbcType=INTEGER}
+    </update>
 </mapper>

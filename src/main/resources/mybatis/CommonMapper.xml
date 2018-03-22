@@ -36,7 +36,7 @@
     </select>
 
     <select id="getSimPoolDic" resultType="com.team.vo.Dictionary">
-        select r.id value,
+        select r.spid value,
         r.name name
         from m_simpool r
         left join m_department d

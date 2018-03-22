@@ -27,22 +27,46 @@
 	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
 		<table id="dg" ></table>
 	</div>
+
+	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+		<form id="doForm">
+			<input type="hidden" name="id"/>
+			<table class="table th-normal">
+				<tr><th>版本号：</th><td><input name="tVersion" class="easyui-validatebox" required="true"/></td></tr>
+				<tr><th>源版本号：</th><td><input name="oVersion" class="easyui-validatebox" required="true"/></td></tr>
+				<tr><th>下载地址：</th><td><input name="downUrl" class="easyui-validatebox" required="true"/></td></tr>
+				<tr><th>状态：</th><td><select name="status"><option value="0">有效</option><option value="1">无效</option></select></td></tr>
+				<tr><th>类型：</th><td><select name="type" ><option value="0">升级所有设备</option><option value="1">根据终端列表升级</option></select></td></tr>
+				<tr><th>终端列表：</th><td><textarea name="terminalList" placeholder="以英文逗号分割"></textarea></td></tr>
+				<tr><th>更新描述：</th><td><textarea name="describe"></textarea></tr>
+				<tr style="height:20px"></tr>
+				<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			</table>
+		</form>
+	</div>
   </body>
   <script type="text/javascript">
   	var options={
 			title:'终端版本列表',
 			//queryParams:$('#queryForm').serializeObject(),
 			columns:[[
-			         	{field:'id',title:'id',hidden:true},
+						{field:'ck',checkbox:true},
+						{field:'id',title:'id',hidden:true},
 			         	{field:'tVersion',title:'版本号',width:80},
-			         	{field:'oVersion',title:'旧版本号',width:80},
-			         	{field:'describe',title:'描述',width:200},
+			         	{field:'oVersion',title:'源版本号',width:80},
+			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
+                            var status = kcJs.fn.getTVStatus(value);
+                            return status?('<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>'):'';
+                        }},
+			         	{field:'describe',title:'更新描述',width:200},
 			         	{field:'downUrl',title:'下载地址',width:200},
-			         	{field:'status',title:'状态',width:80},
-			         	{field:'type',title:'类型',width:80},
+			         	{field:'type',title:'类型',width:110,formatter:function(value,rec,index){
+                            value+='';
+                            return value?(value=='0'?'升级所有设备':(value=='1'?'根据终端列表升级':'')):'';
+                        }},
 			         	{field:'terminalList',title:'终端列表',width:200},
 			         	{field:'operatorMan',title:'操作人',width:80},
-			         	{field:'operatorTime',title:'操作时间',width:150}
+			         	{field:'operatorTime',title:'操作时间',width:120}
 					]],
 			url:kcJs.fn.getContextPath()+'/tvList',
 			toolbar: kcJs.fn.getFunctions(),
@@ -58,22 +82,56 @@
   
   	  function doQuery(){
   		//options.queryParams = $('#queryForm').serializeObject();
-  		$('#dg').datagrid(options);
+		  $('#dg').datagrid(options);
+
   	  }
-  	  
+
 	  $(function(){
 	  	$('#dg').datagrid(options);
 	  	//kcJs.fn.initDic_bussinesstype($('[name=bussinesstype]'));
+		  $('#doDialog').dialog({
+			  modal : true,
+			  width:450,
+			  height:380,
+			  cache: false
+		  });
 	  });
 
   	  function doModify() {
-		  alert("doModify");
+          var selectRows = $('#dg').datagrid("getSelections");
+          if (selectRows.length > 0 && selectRows.length == 1) {
+              kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+              $('#doDialog').dialog({title:'修改'});
+              $('#doDialog').dialog('open');
+          }else {
+              $.messager.alert("提示", "请选择其中一条信息！", "info");
+          }
+
       }
       
       function doAdd() {
-          alert("doAdd");
+          $('#doForm')[0].reset();
+          $('#doDialog').dialog({title:'添加'});
+          $('#doDialog').dialog('open');
       }
 	  
+      function saveData() {
+          if($('#doForm').form('validate')){
+              $('#doDialog').dialog('close');
+              $('#dg').datagrid('loading');
+              $.post(kcJs.fn.getContextPath()+'/saveTV',$('#doForm').serializeObject(),function(data){
+                  if(data){
+                      $.messager.alert('提示',data.msg,'info');
+                      if(data.code=='200'){
+                          doQuery();
+                      }else{
+                          $('#dg').datagrid('loaded');
+                      }
+                  }
+
+              });
+          }
+      }
 	  
   </script>
 </html>	

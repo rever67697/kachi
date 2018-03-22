@@ -8,6 +8,7 @@ import com.team.model.TerminalVersion;
 import com.team.service.TerminalVersionService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class TerminalVersionServiceImpl implements TerminalVersionService {
+public class TerminalVersionServiceImpl extends  BaseService implements TerminalVersionService {
 
     @Autowired
     private TerminalVersionDao terminalVersionDao;
@@ -35,6 +36,17 @@ public class TerminalVersionServiceImpl implements TerminalVersionService {
         List<TerminalVersion> list = terminalVersionDao.list();
         PageInfo<TerminalVersion> pageInfo = new PageInfo<TerminalVersion>(list);
         return new ResultList(pageInfo.getTotal(), list);
+    }
+
+    @Override
+    public ReturnMsg saveOrUpdate(TerminalVersion terminalVersion) {
+        int count = 0;
+        if(terminalVersion.getId()!=null){
+            count = terminalVersionDao.update(terminalVersion);
+        }else{
+            count = terminalVersionDao.save(terminalVersion);
+        }
+        return count>0?super.successTip():super.errorTip();
     }
 
 
