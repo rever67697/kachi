@@ -1,6 +1,7 @@
 package com.team.service;
 
 import com.team.model.SimCard;
+import com.team.model.SimGroup;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
@@ -28,5 +29,7 @@ public interface SimCardService {
 	public ReturnMsg getOutlineInfo(Integer dId);
 
 	public ReturnMsg update(SimCard simCard, boolean isChangePeriod, boolean isChangePackage);
+
+	public SimGroup initGroupSim2Cache(SimCard simCard);
 	
 }

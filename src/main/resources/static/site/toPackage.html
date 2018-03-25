@@ -65,7 +65,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getPackageList',
+			url:kcJs.fn.getContextPath()+'/package/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -125,7 +125,7 @@
   				if(r){
   					$('#dg').datagrid('loading');
   					var row = selectRows[0];
-		  			$.post(kcJs.fn.getContextPath()+'/deletePackageById',{id:row.id,name:row.name},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/package/delete',{id:row.id,name:row.name},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{
@@ -156,7 +156,7 @@
   					if(r){
   						$('#doDialog').dialog('close');
 			  			$('#dg').datagrid('loading');
-			  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
+			  			$.post(kcJs.fn.getContextPath()+'/package/save',$('#doForm').serializeObject(),function(data){
 			  				if(data){
 				    			$.messager.alert('提示',data.msg,'info');
 				    			if(data.code=='200'){
@@ -171,7 +171,7 @@
   			}else{
   				$('#doDialog').dialog('close');
 	  			$('#dg').datagrid('loading');
-	  			$.post(kcJs.fn.getContextPath()+'/savePackage',$('#doForm').serializeObject(),function(data){
+	  			$.post(kcJs.fn.getContextPath()+'/package/save',$('#doForm').serializeObject(),function(data){
 	  				if(data){
 		    			$.messager.alert('提示',data.msg,'info');
 		    			if(data.code=='200'){

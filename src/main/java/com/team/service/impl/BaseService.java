@@ -12,7 +12,11 @@ public class BaseService {
 	protected ReturnMsg successTip(){
 		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
-	
+
+	protected ReturnMsg successTip(Object object){
+		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS,object);
+	}
+
 	protected ReturnMsg errorTip(){
 		return new ReturnMsg(IConstant.CODE_ERROR, IConstant.MSG_ERROR);
 	}

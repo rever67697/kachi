@@ -73,7 +73,7 @@
 			         	{field:'departmentName',title:'所属部门',width:120}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getChannelCardList',
+			url:kcJs.fn.getContextPath()+'/channelCard/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -153,7 +153,7 @@
 		  				ids.push(selectRows[i].id);
 		  				IMSIs.push(selectRows[i].imsi);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteChannelCards',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/channelCard/delete',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{
@@ -173,7 +173,7 @@
 			$('#uploadDialog').dialog('close');
 			$('#dg').datagrid('loading');
 			$.ajaxFileUpload({
-				url:kcJs.fn.getContextPath()+'/uploadChannelCard',
+				url:kcJs.fn.getContextPath()+'/channelCard/upload',
 				secureuri : false,
 				fileElementId : 'file',
 				dataType:'json',
@@ -205,7 +205,7 @@
   		if($('#doForm').form('validate')){
   			$('#doDialog').dialog('close');
   			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/saveChannelCard',$('#doForm').serializeObject(),function(data){
+  			$.post(kcJs.fn.getContextPath()+'/channelCard/save',$('#doForm').serializeObject(),function(data){
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			if(data.code=='200'){

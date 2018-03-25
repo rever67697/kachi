@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @PermissionLog("终端管理")
+@RequestMapping("/terminal")
 @SuppressWarnings("all")
 public class TerminalController {
 
@@ -35,28 +37,28 @@ public class TerminalController {
 	@Autowired
 	private TerminalSimService terminalSimService;
 	
-	@PostMapping("/getTerminalList")
-	public ResultList getTerminalList(Integer departmentId,Integer status,Integer tsid,Integer activated,
+	@PostMapping("/list")
+	public ResultList list(Integer departmentId,Integer status,Integer tsid,Integer activated,
 			int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, page, rows);
 	}
 	
-	@PostMapping("/deleteTerminalByIds")
+	@PostMapping("/delete")
 	@PermissionLog(key="TSIDs_终端编号的集合")
-	public ReturnMsg deleteTerminalByIds(String ids){
+	public ReturnMsg delete(String ids){
 		return terminalService.deleteTerminalByIds(ids);
 	}
 	
-	@PostMapping("/saveTerminal")
+	@PostMapping("/save")
 	@PermissionLog(key="tsid_终端编号")
-	public ReturnMsg saveTerminal(Terminal terminal){
+	public ReturnMsg save(Terminal terminal){
 		return terminalService.saveTerminal(terminal);
 	} 
 	
-	@PostMapping("/uploadTerminal")
+	@PostMapping("/upload")
 	@PermissionLog
-	public ReturnMsg uploadTerminal(MultipartFile file){
+	public ReturnMsg upload(MultipartFile file){
 		ReturnMsg returnMsg = terminalService.getTerminalList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<Terminal> list = (List<Terminal>) returnMsg.getData();
@@ -66,21 +68,21 @@ public class TerminalController {
 		return returnMsg;
 	} 
 	
-	@PostMapping("/getCostDayByTsid")
+	@PostMapping("/getCostDay")
 	@PermissionLog(key="tsid_终端编号")
-	public ResultList getCostDayByTsid(Integer tsid,int page,int rows){
+	public ResultList getCostDay(Integer tsid,int page,int rows){
 		return costDayService.getCostDayByTsid(tsid, page, rows);
 	}
 	
-	@PostMapping("/getTerminalSimByTsid")
+	@PostMapping("/getSimcard")
 	@PermissionLog(key="tsid_终端编号")
-	public ReturnMsg getTerminalSimByTsid(Integer tsid){
+	public ReturnMsg getSimcard(Integer tsid){
 		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 
 	
-	@PostMapping("/updateTDepartment")
+	@PostMapping("/batchUpdate")
 	@PermissionLog(key="tsids_终端编号的集合;departmentId_部门编号")
-	public ReturnMsg updateTDepartment(String ids,Integer departmentId){
+	public ReturnMsg batchUpdate(String ids,Integer departmentId){
 		return terminalService.updateDepartment(ids, departmentId);
 	} 
 	

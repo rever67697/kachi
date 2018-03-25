@@ -216,13 +216,11 @@ function submit(){
     if($('#pwdForm').form('validate')){
         var oldPwd = $('[name=oldPwd]').val();
         var newPwd = $('[name=newPwd]').val();
-        $.post(kcJs.fn.getContextPath()+'/modifyPwd',{oldPwd:oldPwd,newPwd:newPwd},function(data){
+        $.post(kcJs.fn.getContextPath()+'/user/modifyPwd',{oldPwd:oldPwd,newPwd:newPwd},function(data){
             if(data && data.code=='200'){
                 $.messager.alert('提示','修改成功,将于3秒后退出登录','info');
                 setTimeout(function(){
-                    $.post(kcJs.fn.getContextPath()+'/logout',function(data){
-                        window.location.href=kcJs.fn.getContextPath()+'/site/login.html';
-                    },'json');
+                    window.location.href=kcJs.fn.getContextPath()+'/logout';
                 },3000);
             }else{
                 $.messager.alert('提示',data.msg,'info');

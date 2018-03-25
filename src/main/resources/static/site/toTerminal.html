@@ -61,7 +61,54 @@
 	  			<tr><td>国家编码</td><td><select name="vCountryCode"></select></td></tr>
 	  		</table>
 	  	</div>
-	  	
+
+
+		<!--<div id="doDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+			<!--<div id="main-layout" class="easyui-layout" fit="true">-->
+				<!--<div region="center" border="false" style="background: #fff;">-->
+					<!--<div id="tabs-info" class="easyui-tabs">-->
+						<!--<div title="基本信息" style="padding:0 10px 10px 10px;">-->
+							<!--<form id="doForm">-->
+								<!--<input type="hidden" name="id"/>-->
+								<!--<table class="table th-normal">-->
+									<!--<tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>-->
+									<!--<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>-->
+									<!--<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>-->
+									<!--<tr><th>终端状态：</th><td><select name="status">-->
+										<!--<option value="0">正常</option><option value="1">未初始化</option>-->
+										<!--<option value="2">停用</option><option value="3">注销</option>-->
+									<!--</select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>-->
+									<!--<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>-->
+									<!--<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>-->
+									<!--<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>-->
+									<!--<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>-->
+									<!--<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>-->
+									<!--&lt;!&ndash; <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>-->
+                                    <!--<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> &ndash;&gt;-->
+									<!--&lt;!&ndash;<tr style="height:10px"></tr>&ndash;&gt;-->
+									<!--&lt;!&ndash;<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>&ndash;&gt;-->
+								<!--</table>-->
+							<!--</form>-->
+
+						<!--</div>-->
+						<!--<div title="充值" style="padding:0 10px 10px 10px;">-->
+								<!--<table class="table th-normal">-->
+									<!--<tr><th>剩余流量：</th><td><input value="10000"/></td><td><select><option value="">充值流量</option><option>1G</option><option>5G</option></select></td></tr>-->
+									<!--<tr><th>有效期截止时间：</th><td><input value="2018-03-24"/></td><td><select><option value="">充值日期</option><option>7天</option><option>15天</option></select></td></tr>-->
+								<!--</table>-->
+						<!--</div>-->
+					<!--</div>-->
+
+
+
+				<!--</div>-->
+				<!--<div region="south" split="false" border="false" style="text-align: right; height: 40px; background: #fff">-->
+
+					<!--<a  class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" onclick="saveUser()" style="margin-top:10px"> 确定</a>-->
+					<!--<a	class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)" onclick="$('#doDialog').dialog('close')" style="margin-right:10px">取消</a>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
 	  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 	  		<form id="doForm">
 	  			<input type="hidden" name="id"/>
@@ -135,7 +182,7 @@
 			         	{field:'note',title:'备注',width:85}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getTerminalList',
+			url:kcJs.fn.getContextPath()+'/terminal/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -164,7 +211,7 @@
 			         	}},
 			         	{field:'countryName',title:'所在国家',width:100}
 					]],
-			url:kcJs.fn.getContextPath()+'/getCostDayByTsid',
+			url:kcJs.fn.getContextPath()+'/terminal/getCostDay',
 			nowrap:false,
 			pagination:true,
 			pageList:[20,30,50],
@@ -267,7 +314,7 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             $.post(kcJs.fn.getContextPath()+'/getTerminalSimByTsid',{tsid:rowData.tsid},function(data){
+             $.post(kcJs.fn.getContextPath()+'/terminal/getSimcard',{tsid:rowData.tsid},function(data){
 				if(data && data.code && data.code == '200'){
 					if(data.data && data.data.id){
 						kcJs.fn.autoFillData($('#cardDialog'),data.data);
@@ -296,7 +343,7 @@
 		  				ids.push(selectRows[i].id);
 		  				TSIDs.push(selectRows[i].tsid);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteTerminalByIds',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/terminal/delete',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{
@@ -316,7 +363,7 @@
 			$('#uploadDialog').dialog('close');
 			$('#dg').datagrid('loading');
 			$.ajaxFileUpload({
-				url:kcJs.fn.getContextPath()+'/uploadTerminal',
+				url:kcJs.fn.getContextPath()+'/terminal/upload',
 				secureuri : false,
 				fileElementId : 'file',
 				dataType:'json',
@@ -347,7 +394,7 @@
   		if($('#doForm').form('validate')){
   			$('#doDialog').dialog('close');
   			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/saveTerminal',$('#doForm').serializeObject(),function(data){
+  			$.post(kcJs.fn.getContextPath()+'/terminal/save',$('#doForm').serializeObject(),function(data){
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			if(data.code=='200'){
@@ -385,7 +432,7 @@
   		if($('#batchForm').form('validate')){
   			$('#dg').datagrid('loading');
   			$('#batchDialog').dialog('close');
-  			$.post(kcJs.fn.getContextPath()+'/updateTDepartment',$('#batchForm').serializeObject(),function(data){
+  			$.post(kcJs.fn.getContextPath()+'/terminal/batchUpdate',$('#batchForm').serializeObject(),function(data){
   				$.messager.alert('提示',data.msg);
   				$('#dg').datagrid('loaded');
   				if(data.code=='200' ){

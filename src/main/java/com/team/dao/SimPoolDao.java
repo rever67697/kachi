@@ -37,8 +37,10 @@ public interface SimPoolDao {
 	 *@return
 	 *return
 	 */
-	public int updateDept(SimPool simPool);
+	public int update(SimPool simPool);
 	
 	public int insertSimPool(SimPool simPool);
+
+	public SimPool getOne(@Param("id") Integer id);
 	
 }

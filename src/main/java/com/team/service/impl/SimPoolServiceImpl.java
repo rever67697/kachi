@@ -72,13 +72,23 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 	/**
 	 * 根据卡池id更新卡池的代理商，顺带更新卡池下流量卡的代理商
 	 */
-	public ReturnMsg modifyDept(SimPool simPool) {
-		if(simPoolDao.updateDept(simPool) > 0){
-			simCardDao.updateCardDept(simPool);
-			return super.successTip();
+	public ReturnMsg update(SimPool simPool) {
+		//首先判断前后的departmendId是否改变
+		SimPool old = simPoolDao.getOne(simPool.getId());
+		Boolean flag = false;
+		if(!simPool.getDepartmentId().equals(old.getDepartmentId())){
+			flag = true;
 		}
-		return super.errorTip();
+
+		//更新卡池信息
+		simPoolDao.update(simPool);
+		//如果departmentId发生变化，需要顺带更新卡池下流量卡的代理商
+		if(flag){
+			simCardDao.updateCardDept(simPool);
+		}
+		return super.successTip(flag);
 	}
+
 
 	@Override
 	public ReturnMsg saveSimPool(SimPool simPool) {

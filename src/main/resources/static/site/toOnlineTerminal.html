@@ -62,7 +62,7 @@
 			         	{field:'departmentName',title:'所属部门',width:120}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getTerminalSimList',
+			url:kcJs.fn.getContextPath()+'/terminalSim/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -105,7 +105,7 @@
 		  				ids.push(selectRows[i].id);
 		  				TSIDs.push(selectRows[i].tsid);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteTerSimByIds',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{

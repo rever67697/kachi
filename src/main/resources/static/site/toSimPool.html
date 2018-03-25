@@ -73,10 +73,10 @@
 		    <div id="doDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<form id="doForm">
 		    		<input type="hidden" name="id">
-		    		<table class="table readOnly">
-			  			<tr><td>卡池编号</td><td><input name="spid"/></td></tr>
+		    		<table class="table">
+			  			<tr><td>卡池编号</td><td><input name="spid" readonly="readonly"/></td></tr>
 			  			<tr><td>卡池名称</td><td><input name="name"/></td></tr>
-			  			<tr><td>卡池类型</td><td><input name="type"/></td></tr>
+			  			<tr><td>卡池类型</td><td><input name="type" readonly="readonly"/></td></tr>
 			  			<tr><td>所属部门</td><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
 			  			<tr style="height:10px"></tr>
 		  				<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="modifyData()">提 交</a></td></tr>
@@ -144,7 +144,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getSimPoolList',
+			url:kcJs.fn.getContextPath()+'/simpool/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -214,7 +214,7 @@
   	}
   	
   	function showCardSolt(rowData,obj){
-  		$.getJSON(kcJs.fn.getContextPath()+'/getSimCardByPool',{cpId:rowData.spid,name:rowData.name},function(data){
+  		$.getJSON(kcJs.fn.getContextPath()+'/simcard/getByPool',{cpId:rowData.spid,name:rowData.name},function(data){
   				if(data && data.code=='200'){
   					var cardList = data.data.rows;
 	             	if(cardList){
@@ -268,7 +268,7 @@
 	}
   	
   	function getCardPoolInfo(){
-  		$.post(kcJs.fn.getContextPath()+'/getPoolOutlineInfo',function(data){
+  		$.post(kcJs.fn.getContextPath()+'/simpool/outlineInfo',function(data){
   			if(data && data.code=='200'){
   				var info = data.data;
   				$('#simPoolCount').text(info.simPoolCount);
@@ -287,7 +287,7 @@
   		if($('#giveForm').form('validate')){
   			$('#giveDialog').dialog('close');
   			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/giveSimPool',$('#giveForm').serializeObject(),function(data){
+  			$.post(kcJs.fn.getContextPath()+'/simpool/give',$('#giveForm').serializeObject(),function(data){
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			$('#dg').datagrid('loaded');
@@ -301,7 +301,7 @@
   			console.log($('#doForm').serializeObject());
   			$('#doDialog').dialog('close');
   			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/modifyDept',$('#doForm').serializeObject(),function(data){
+  			$.post(kcJs.fn.getContextPath()+'/simpool/update',$('#doForm').serializeObject(),function(data){
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			doQuery();
@@ -344,7 +344,7 @@
    		if($('#poolForm').form('validate')){
    			$('#poolDialog').dialog('close');
    			$('#dg').datagrid('loading');
-   			$.post(kcJs.fn.getContextPath()+'/saveSimPool',$('#poolForm').serializeObject(),function(data){
+   			$.post(kcJs.fn.getContextPath()+'/simpool/save',$('#poolForm').serializeObject(),function(data){
    				if(data){
    					$.messager.alert('提示',data.msg,'info');
  	    			if(data.code=='200'){

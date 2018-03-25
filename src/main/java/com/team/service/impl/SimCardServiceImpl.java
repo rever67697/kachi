@@ -171,7 +171,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 
 		//3.需要更新缓存里面的卡组信息
-		initGroupSim2Cache(simCard);
+		//initGroupSim2Cache(simCard);
 		return super.successTip();
 	}
 
@@ -249,6 +249,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @param simCard
 	 * @return
 	 */
+	@Override
 	public SimGroup initGroupSim2Cache(SimCard simCard) {
 		if (simCard == null)
 			return null;

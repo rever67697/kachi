@@ -8,6 +8,7 @@ import com.team.model.SimCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
@@ -24,6 +25,7 @@ import java.io.*;
  */
 @RestController
 @PermissionLog("流量卡管理")
+@RequestMapping("/simcard")
 public class SimCardController {
 
 	@Autowired
@@ -35,14 +37,14 @@ public class SimCardController {
 	 *@return
 	 *return
 	 */
-	@GetMapping("/getSimCardByPool")
+	@GetMapping("/getByPool")
 	@PermissionLog(key="cpId_卡池编号;name_卡池名称")
-	public ReturnMsg getSimCardByPool(Integer cpId){
+	public ReturnMsg getByPool(Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
 	
-	@PostMapping("/getSimCardList")
-	public ResultList getSimCard(Integer departmentId,Integer cpId,String number,
+	@PostMapping("/list")
+	public ResultList list(Integer departmentId,Integer cpId,String number,
 			Integer status,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
@@ -103,23 +105,25 @@ public class SimCardController {
 		//return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
 	}
 
-	@PostMapping("/getCardOutlineInfo")
-	public ReturnMsg getPoolOutlineInfo(HttpServletRequest request){
+	@PostMapping("/outlineInfo")
+	public ReturnMsg outlineInfo(HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return simCardService.getOutlineInfo(dId);
 	}
 	
-	@PostMapping("/deleteSimCard")
+	@PostMapping("/delete")
 	@PermissionLog(key="IMSIs_IMSI的集合")
-	public ReturnMsg deleteSimCard(String ids){
+	public ReturnMsg delete(String ids){
 		return simCardService.deleteSimCard(ids);
 	}
 
-	@PostMapping("/updateSimCard")
+	@PostMapping("/update")
 	@PermissionLog(key="imsi_IMSI;isChangePeriod_账期是否改变;isChangePackage_套餐是否改变")
-	public ReturnMsg updateSimCard(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
-
-		return simCardService.update(simCard,isChangePeriod,isChangePackage);
+	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
+		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
+		//更新缓存
+		simCardService.initGroupSim2Cache(simCard);
+		return returnMsg;
 	}
 	
 }

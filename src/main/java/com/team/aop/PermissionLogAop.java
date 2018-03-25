@@ -21,6 +21,7 @@ import com.team.model.auth.TbAuthUser;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.util.LogManager;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 业务拦截权限和记录日志
@@ -45,16 +46,18 @@ public class PermissionLogAop {
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
         HttpServletRequest request = CommonUtil.getRequest();
-        Map<String, Object> permission = CommonUtil.getUserPermission(request);
-        
+		System.out.println(request.getRequestURI());
+		Map<String, Object> permission = CommonUtil.getUserPermission(request);
+
+		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 		//1.执行方法之前，判断权限--onlyLog为true则代表这个只执行记录日志，不过滤权限，默认是false
         if(!logInfo.onlyLog()){
     		boolean ok = false;
     		for (Entry<String, Object> entry : permission.entrySet()) {
-    			if(method.getName().equals(entry.getKey())){
-    				ok=true;
+    			if(uri.matches(entry.getKey())){
+					ok=true;
     				break;
-    			}
+				}
     		}
     		if(!ok){
     			throw new KachiException(IConstant.NO_PERMISSION);
@@ -70,14 +73,14 @@ public class PermissionLogAop {
 			PermissionLog bussiness = point.getTarget().getClass().getAnnotation(PermissionLog.class);
 			String bussinesstype = bussiness.value();
 			if(bussiness==null || "".equals(bussinesstype)){
-				throw new Exception("记录日志需要在这个类上标志这个类的业务");
+				throw new RuntimeException("记录日志需要在这个类上标志这个类的业务");
 			}
-			
+
 			String operation = "";
 			//注解在方法上，如果value没有值，那么在对应的权限里面找，注意，这种情况主要请求的路径和方法名一致
 			if("".equals(logInfo.value())){
 				for (Entry<String, Object> entry : permission.entrySet()) {
-					if(method.getName().equals(entry.getKey())){
+					if(uri.matches(entry.getKey())){
 						operation = entry.getValue().toString();
 						break;
 					}
@@ -117,5 +120,9 @@ public class PermissionLogAop {
 		}
 		
 		return result;
+	}
+
+	public static void main(String[] args){
+		System.out.println("/simcard/getByPool".matches("simcard/getByPool"));
 	}
 }

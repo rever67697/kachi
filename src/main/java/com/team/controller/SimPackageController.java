@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
@@ -19,27 +20,28 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @PermissionLog("套餐管理")
+@RequestMapping("/package")
 public class SimPackageController {
 
 	@Autowired
 	private SimPackageService simPackageService;
 	
-	@PostMapping("/getPackageList")
-	public ResultList getSimPackage(Integer status,String name,int page,int rows,HttpServletRequest request){
+	@PostMapping("/list")
+	public ResultList list(Integer status,String name,int page,int rows,HttpServletRequest request){
 		Integer dId= CommonUtil.getUser(request).getDepartmentId();
 		return simPackageService.getPackageList(dId,status, name, page, rows);
 	}
 	
-	@PostMapping("/savePackage")
+	@PostMapping("/save")
 	@PermissionLog(key="name_套餐名称;operatorCode_运营商编号;maxFlow_本国流量;maxRoamFlow_漫游流量;isChange_流量参数是否改变")
-	public ReturnMsg savePackage(SimPackage simPackage,boolean isChange,HttpServletRequest request){
+	public ReturnMsg save(SimPackage simPackage,boolean isChange,HttpServletRequest request){
 		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
 		return simPackageService.savePackage(simPackage,isChange);
 	} 
 	
-	@PostMapping("/deletePackageById")
+	@PostMapping("/delete")
 	@PermissionLog(key="name_套餐名称")
-	public ReturnMsg deletePackageById(Integer id){
+	public ReturnMsg delete(Integer id){
 		return simPackageService.deletePackage(id);
 	}
 	

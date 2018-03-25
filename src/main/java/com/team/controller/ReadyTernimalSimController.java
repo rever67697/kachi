@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
@@ -15,33 +16,34 @@ import com.team.vo.ReturnMsg;
 
 @RestController
 @PermissionLog("指定卡管理")
+@RequestMapping("/readyTerminalSim")
 public class ReadyTernimalSimController {
 	
 	@Autowired
 	private ReadyTerminalSimService ReadyTerminalSimService;
 
-	@PostMapping("/getReadyTerminalSim")
-	public ResultList getReadyTerminalSim(Integer tsid, Long imsi, int page,
+	@PostMapping("/list")
+	public ResultList list(Integer tsid, Long imsi, int page,
 			int rows) {
 		return ReadyTerminalSimService.getReadyTerminalSim(tsid, imsi, page,
 				rows);
 	}
 
-	@PostMapping("/saveReadyTerminalSim")
+	@PostMapping("/save")
 	@PermissionLog(key="tsid_终端编号;args_卡信息")
-	public ReturnMsg saveReadyTerminalSim(Integer tsid, Integer type,
+	public ReturnMsg save(Integer tsid, Integer type,
 			String args,HttpServletRequest request) {
 		Integer userId = CommonUtil.getUser(request).getId();
 		return ReadyTerminalSimService.saveReadyTerminalSim(tsid, type, args,userId);
 	}
 
-	@PostMapping("/updateReadyTerminalSim")
-	public ReturnMsg updateReadyTerminalSim(ReadyTerminalSim readyTerminalSim) {
+	@PostMapping("/update")
+	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
 		return ReadyTerminalSimService.updateReadyTerminalSim(readyTerminalSim);
 	}
 
-	@PostMapping("/deleteReadyTerminalSim")
-	public ReturnMsg deleteReadyTerminalSim(String ids) {
+	@PostMapping("/delete")
+	public ReturnMsg deleteRedeleteadyTerminalSim(String ids) {
 		return ReadyTerminalSimService.deleteReadyTerminalSim(ids);
 	}
 }

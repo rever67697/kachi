@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
@@ -20,31 +21,32 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @PermissionLog("用户管理")
+@RequestMapping("/user")
 public class TbAuthUserController {
 
 	@Autowired
 	private TbAuthUserService tbAuthUserService;
 	
-	@PostMapping("/getUserList")
+	@PostMapping("/list")
 	public ResultList getUserList(Integer status, String name,
 			Integer departmentId,int page,int rows,HttpServletRequest  request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId(); 
 		return tbAuthUserService.getUserList(status, name,departmentId,dId, page, rows);
 	}
 	
-	@PostMapping("/saveUser")
+	@PostMapping("/save")
 	@PermissionLog(key="name_用户名;departmentId_部门编号;id_用户id")
 	public ReturnMsg saveUser(TbAuthUser user){
 		return tbAuthUserService.saveOrUpdateUser(user);
 	}
 	
-	@PostMapping("/updateUserStatus")
+	@PostMapping("/update")
 	@PermissionLog(key="name_用户名;status_状态;id_用户id")
 	public ReturnMsg updateUserStatus(TbAuthUser user){
 		return tbAuthUserService.updateUserStatus(user);
 	}
 	
-	@PostMapping("/deleteUser")
+	@PostMapping("/delete")
 	@PermissionLog(key="name_用户名")
 	public ReturnMsg deleteUser(Integer id){
 		return tbAuthUserService.deleteUser(id);

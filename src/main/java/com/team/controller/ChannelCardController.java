@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @PermissionLog("副卡管理")
+@RequestMapping("/channelCard")
 @SuppressWarnings("all")
 public class ChannelCardController {
 	
@@ -38,26 +40,26 @@ public class ChannelCardController {
 	 * @param rows 一页的记录数
 	 * @return
 	 */
-	@PostMapping("/getChannelCardList")
+	@PostMapping("/list")
 	public ResultList getChannelCardList(Integer departmentId,String number,Integer countryCode,Integer operatorCode, Integer status, 
 			int page, int rows,HttpServletRequest request) {
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return channelCardService.getChannelCardList(departmentId,dId,number,countryCode, operatorCode, status, page, rows);
 	}
 
-	@PostMapping("/deleteChannelCards")
+	@PostMapping("/delete")
 	@PermissionLog(key="IMSIs_IMSI的集合")
 	public ReturnMsg deleteChannelCards(String ids){
 		return channelCardService.deleteChannelCards(ids);
 	}
 	
-	@PostMapping("/saveChannelCard")
+	@PostMapping("/save")
 	@PermissionLog(key="imsi_IMSI")
 	public ReturnMsg saveChannelCard(ChannelCard channelCard){
 		return channelCardService.saveChannelCard(channelCard);
 	}
 	
-	@PostMapping("/uploadChannelCard")
+	@PostMapping("/upload")
 	@PermissionLog
 	public ReturnMsg uploadChannelCard(MultipartFile file){
 		ReturnMsg returnMsg = channelCardService.getChannelCardList(file);

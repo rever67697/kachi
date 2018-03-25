@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.aop.PermissionLog;
@@ -18,18 +19,19 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @PermissionLog("在线终端管理")
+@RequestMapping("/terminalSim")
 public class TerminalSimController {
 	
 	@Autowired
 	private TerminalSimService terminalSimService;
 	
-	@PostMapping("/getTerminalSimList")
+	@PostMapping("/list")
 	public ResultList getTerminalSimList(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return terminalSimService.getTerminalSimList(departmentId,dId,tsid, imsi, page, rows);
 	}
 	
-	@PostMapping("/deleteTerSimByIds")
+	@PostMapping("/delete")
 	@PermissionLog(key="TSIDs_终端编号的集合")
 	public ReturnMsg deleteTerSimByIds(String ids){
 		return terminalSimService.deleteTerminalByIds(ids);

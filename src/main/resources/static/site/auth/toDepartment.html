@@ -65,7 +65,7 @@
 	  });
 	  
 	  function initTree(){
-	  	$.post(kcJs.fn.getContextPath()+'/getDepartmentList',function(data){
+	  	$.post(kcJs.fn.getContextPath()+'/department/list',function(data){
 	  		data = changeData(data);
 	  		if(data){
 	  			$('#orgtree').tree({
@@ -159,7 +159,7 @@
 		var node= $('#orgtree').tree('getSelected');
 		if(node.id){
 			$.messager.confirm('提示','是否确定删除？',function(r){if(r){
-				$.post(kcJs.fn.getContextPath()+'/deleteDepartment',{id:node.id,name:node.text},function(data){
+				$.post(kcJs.fn.getContextPath()+'/department/delete',{id:node.id,name:node.text},function(data){
 					$.messager.alert('提示',data.msg,'info');
 					initBtn();
 					initTree();
@@ -174,7 +174,7 @@
 			return;
 		}
 		if($('#doForm').form('validate')){
-			$.post(kcJs.fn.getContextPath()+'/savetDepartment',$('#doForm').serializeObject(),function(data){
+			$.post(kcJs.fn.getContextPath()+'/department/save',$('#doForm').serializeObject(),function(data){
 				$.messager.alert('提示',data.msg,'info');
 				initBtn();
 				initTree();

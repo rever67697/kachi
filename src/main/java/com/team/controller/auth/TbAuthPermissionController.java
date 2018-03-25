@@ -2,6 +2,7 @@ package com.team.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.model.auth.TbAuthPermission;
@@ -13,27 +14,28 @@ import com.team.vo.ReturnMsg;
  * author:wuzhiheng
  */
 @RestController
+@RequestMapping("/permission")
 public class TbAuthPermissionController {
 
 	@Autowired
 	private TbAuthPermissionService tbAuthPermissionService;
 	
-	@PostMapping("/getPermissionByUser")
+	@PostMapping("/getByUser")
 	public Object getPermissionByUser(Integer id){
 		return tbAuthPermissionService.getPermissionByUser(id);
 	}
 	
-	@PostMapping("/grantPermission")
+	@PostMapping("/grant")
 	public ReturnMsg grantPermission(Integer userId,String ids){
 		return tbAuthPermissionService.grantPermission(userId, ids);
 	}
 	
-	@PostMapping("/deletePermission")
+	@PostMapping("/delete")
 	public ReturnMsg deletePermission(Integer id){
 		return tbAuthPermissionService.updateStatus(id);
 	}
 	
-	@PostMapping("/savePermission")
+	@PostMapping("/save")
 	public ReturnMsg savePermission(TbAuthPermission permission,String icon){
 		permission.setIconCls(icon);
 		return tbAuthPermissionService.saveOrUpdatePermission(permission);

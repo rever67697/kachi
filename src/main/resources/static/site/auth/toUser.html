@@ -133,7 +133,7 @@
 	    valiLoginName:{
             validator:function(value,param){
                 var type=false;
-                $.getJSON(kcJs.fn.getContextPath()+'/getUserCount',{name:value},function(data){
+                $.getJSON(kcJs.fn.getContextPath()+'/user/getUserCount',{name:value},function(data){
                 	type=(data==0);
                 	console.log(data);
                 });
@@ -179,7 +179,7 @@
 			         	}}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/getUserList',
+			url:kcJs.fn.getContextPath()+'/user/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -287,7 +287,7 @@
 	  	if(selectRows && selectRows.length==1){
 	  		$.messager.confirm('提示','是否确定删除？',function(r){if(r){
 	  			$('#dg').datagrid('loading');
-			  	$.post(kcJs.fn.getContextPath()+'/deleteUser',{id:selectRows[0].id,name:selectRows[0].name},function(data){
+			  	$.post(kcJs.fn.getContextPath()+'/user/delete',{id:selectRows[0].id,name:selectRows[0].name},function(data){
 		  			$('#dg').datagrid('loaded');
 		  			if(data && data.code=='200'){
 		  				doQuery();
@@ -302,7 +302,7 @@
 	  
 	  function updateStatus(id,status){
 	  	$('#dg').datagrid('loading');
-	  	$.post(kcJs.fn.getContextPath()+'/updateUserStatus',{id:id,status:status},function(data){
+	  	$.post(kcJs.fn.getContextPath()+'/user/update',{id:id,status:status},function(data){
   			$('#dg').datagrid('loaded');
   			if(data && data.code=='200'){
   				doQuery();
@@ -316,7 +316,7 @@
   			$('#doDialog').dialog('close');
 	  		$('#dg').datagrid('loading');
 	  		$('#doForm [name=name]').attr('disabled',false);
-	  		$.post(kcJs.fn.getContextPath()+'/saveUser',$('#doForm').serializeObject(),function(data){
+	  		$.post(kcJs.fn.getContextPath()+'/user/save',$('#doForm').serializeObject(),function(data){
 	  			$('#dg').datagrid('loaded');
 	  			if(data && data.code=='200'){
 	  				doQuery();
@@ -365,7 +365,7 @@
 			$('#authtree').tree('collapseAll');
 			
 			$("#dg").datagrid("loading");
-			$.post(kcJs.fn.getContextPath()+"/getPermissionByUser",{id:id},function(data){
+			$.post(kcJs.fn.getContextPath()+"/permission/getByUser",{id:id},function(data){
 				if(data){
 					//1.把用户拥有的权限选中
 					$(data).each(function(i,o){
@@ -409,7 +409,7 @@
 		}
 		$("#dg").datagrid("loading");
 		$('#okBtn').linkbutton('disable');
-		$.post(kcJs.fn.getContextPath()+'/grantPermission',{userId:$("#userid").val(),ids:ids.join(",")},function(data){
+		$.post(kcJs.fn.getContextPath()+'/permission/grant',{userId:$("#userid").val(),ids:ids.join(",")},function(data){
 			if(data){
 				$.messager.alert('提示',data.msg,'info');
 			}
@@ -447,7 +447,7 @@
 			$.messager.confirm('提示','是否重置密码为 888888 ？',function(r){
 				if(r){
 					$("#dg").datagrid("loading");
-					$.post(kcJs.fn.getContextPath()+"/resetPwd",{id:id,name:name},function(data){
+					$.post(kcJs.fn.getContextPath()+"/user/resetPwd",{id:id,name:name},function(data){
 						$.messager.alert('提示',data.msg,'info');
 						$("#dg").datagrid("loaded");
 					},'json');

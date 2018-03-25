@@ -16,8 +16,8 @@ public interface SimPoolService {
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
 	
-	public ReturnMsg modifyDept(SimPool simPool);
-	
+	public ReturnMsg update(SimPool simPool);
+
 	public ReturnMsg saveSimPool(SimPool simPool);
 	
 }

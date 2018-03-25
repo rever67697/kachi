@@ -33,12 +33,24 @@
         </if>
         <include refid="dId"/>
         order by r.spid
-	</select> 
+	</select>
+
+	<select id="getOne" resultType="com.team.model.SimPool">
+		select * from m_simpool
+		where id=#{id,jdbcType=INTEGER}
+	</select>
 	
-	<update id="updateDept" parameterType="com.team.model.SimPool">
+	<update id="update" parameterType="com.team.model.SimPool">
 		update m_simpool
-		set departmentId= #{departmentId,jdbcType=INTEGER}  
-		where id= #{id,jdbcType=INTEGER}  
+		<set>
+			<if test="departmentId!=null">
+				 departmentId = #{departmentId,jdbcType=INTEGER},
+			</if>
+			<if test="name!=null and name!=''">
+				 name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id= #{id,jdbcType=INTEGER}
 	</update>
 	
 	<select id="getOutlineInfo" resultType="com.team.vo.OutlineInfo">

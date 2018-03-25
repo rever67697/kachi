@@ -107,7 +107,7 @@
 				  		handler: doAdd
 				  	  }
 				  	 ],
-			url:kcJs.fn.getContextPath()+'/getReadyTerminalSim',
+			url:kcJs.fn.getContextPath()+'/readyTerminalSim/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -147,7 +147,7 @@
 			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'countryName',title:'所在地区',width:120}
 					]],
-			url:kcJs.fn.getContextPath()+'/getTerminalList',
+			url:kcJs.fn.getContextPath()+'/terminal/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
@@ -185,7 +185,7 @@
 				  		handler: selectCards
 				  	  }
 				  	 ],
-			url:kcJs.fn.getContextPath()+'/getSimCardList',
+			url:kcJs.fn.getContextPath()+'/simcard/list',
 			nowrap:false,
 			pagination:true,
 			pageList:[15,30],
@@ -242,7 +242,7 @@
 		  			for(var i = 0;i < selectRows.length;i++){
 		  				ids.push(selectRows[i].id);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/deleteReadyTerminalSim',{ids:ids.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{ids:ids.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{
@@ -271,7 +271,7 @@
 			args = args.substr(0,args.length-1);
 			var tsid = $('#doForm [name=tsid]').val();
 			var type = $('#doForm [name=type]').val();
-			$.post(kcJs.fn.getContextPath()+'/saveReadyTerminalSim',{args:args,tsid:tsid,type:type},function(data){
+			$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/save',{args:args,tsid:tsid,type:type},function(data){
 				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
 	    			if(data.code=='200'){
