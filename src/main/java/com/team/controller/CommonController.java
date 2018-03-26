@@ -17,6 +17,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.team.service.CountryService;
+import com.team.vo.ResultList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -35,26 +37,28 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 public class CommonController {
-	
+
 	@Autowired
 	private CommonService commonService;
-	
+	@Autowired
+	private CountryService countryService;
+
 	@PostMapping("/getCountryDic")
 	public ReturnMsg getCountryDic(){
 		return commonService.getCountryDic();
 	}
-	
+
 	@PostMapping("/getDepartmentDic")
 	public ReturnMsg getDepartmentDic(HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return commonService.getDepartmentDic(dId);
 	}
-	
+
 	@PostMapping("/getOperatorDic")
 	public ReturnMsg getOperatorDic(Integer countryCode){
 		return commonService.getOperatorDic(countryCode);
 	}
-	
+
 	@PostMapping("/getSimPoolDic")
 	public ReturnMsg getSimPoolDic(HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
@@ -70,6 +74,11 @@ public class CommonController {
 	@PostMapping("/getProvinceDic")
 	public ReturnMsg getProvinceDic(@RequestParam(name = "countryCode",defaultValue = "156") Integer countryCode){
 		return commonService.getProvinceDic(countryCode);
+	}
+
+	@PostMapping("/countryList")
+	public ResultList countryList(String nameCn,int page,int rows){
+		return countryService.list(nameCn, page, rows);
 	}
 
 	@GetMapping("/downloadFile")
