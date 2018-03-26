@@ -26,14 +26,14 @@ public class TerminalSimController {
 	private TerminalSimService terminalSimService;
 	
 	@PostMapping("/list")
-	public ResultList getTerminalSimList(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
+	public ResultList list(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return terminalSimService.getTerminalSimList(departmentId,dId,tsid, imsi, page, rows);
 	}
 	
 	@PostMapping("/delete")
 	@PermissionLog(key="TSIDs_终端编号的集合")
-	public ReturnMsg deleteTerSimByIds(String ids){
+	public ReturnMsg delete(String ids){
 		return terminalSimService.deleteTerminalByIds(ids);
 	}
 	

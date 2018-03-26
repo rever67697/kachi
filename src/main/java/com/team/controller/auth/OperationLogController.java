@@ -9,6 +9,7 @@ import com.team.service.auth.OperationLogService;
 import com.team.vo.ResultList;
 
 /**
+ * 调阅审计
  * 创建日期：2018-1-29下午5:12:13
  * author:wuzhiheng
  */
@@ -20,7 +21,7 @@ public class OperationLogController {
 	private OperationLogService operationLogService;
 	
 	@PostMapping("/list")
-	public ResultList getLogList(String username,String bussinesstype,int page,int rows){
+	public ResultList list(String username,String bussinesstype,int page,int rows){
 		return operationLogService.getLogList(username,bussinesstype, page, rows);
 	}
 }

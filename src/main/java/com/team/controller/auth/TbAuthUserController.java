@@ -28,7 +28,7 @@ public class TbAuthUserController {
 	private TbAuthUserService tbAuthUserService;
 	
 	@PostMapping("/list")
-	public ResultList getUserList(Integer status, String name,
+	public ResultList list(Integer status, String name,
 			Integer departmentId,int page,int rows,HttpServletRequest  request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId(); 
 		return tbAuthUserService.getUserList(status, name,departmentId,dId, page, rows);
@@ -36,7 +36,7 @@ public class TbAuthUserController {
 	
 	@PostMapping("/save")
 	@PermissionLog(key="name_用户名;departmentId_部门编号;id_用户id")
-	public ReturnMsg saveUser(TbAuthUser user){
+	public ReturnMsg save(TbAuthUser user){
 		return tbAuthUserService.saveOrUpdateUser(user);
 	}
 	
@@ -48,7 +48,7 @@ public class TbAuthUserController {
 	
 	@PostMapping("/delete")
 	@PermissionLog(key="name_用户名")
-	public ReturnMsg deleteUser(Integer id){
+	public ReturnMsg delete(Integer id){
 		return tbAuthUserService.deleteUser(id);
 	}
 	

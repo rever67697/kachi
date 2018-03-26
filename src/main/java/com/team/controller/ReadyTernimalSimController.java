@@ -43,7 +43,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/delete")
-	public ReturnMsg deleteRedeleteadyTerminalSim(String ids) {
+	public ReturnMsg delete(String ids) {
 		return ReadyTerminalSimService.deleteReadyTerminalSim(ids);
 	}
 }

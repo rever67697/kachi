@@ -41,7 +41,7 @@ public class ChannelCardController {
 	 * @return
 	 */
 	@PostMapping("/list")
-	public ResultList getChannelCardList(Integer departmentId,String number,Integer countryCode,Integer operatorCode, Integer status, 
+	public ResultList list(Integer departmentId,String number,Integer countryCode,Integer operatorCode, Integer status,
 			int page, int rows,HttpServletRequest request) {
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return channelCardService.getChannelCardList(departmentId,dId,number,countryCode, operatorCode, status, page, rows);
@@ -49,19 +49,19 @@ public class ChannelCardController {
 
 	@PostMapping("/delete")
 	@PermissionLog(key="IMSIs_IMSI的集合")
-	public ReturnMsg deleteChannelCards(String ids){
+	public ReturnMsg delete(String ids){
 		return channelCardService.deleteChannelCards(ids);
 	}
 	
 	@PostMapping("/save")
 	@PermissionLog(key="imsi_IMSI")
-	public ReturnMsg saveChannelCard(ChannelCard channelCard){
+	public ReturnMsg save(ChannelCard channelCard){
 		return channelCardService.saveChannelCard(channelCard);
 	}
 	
 	@PostMapping("/upload")
 	@PermissionLog
-	public ReturnMsg uploadChannelCard(MultipartFile file){
+	public ReturnMsg upload(MultipartFile file){
 		ReturnMsg returnMsg = channelCardService.getChannelCardList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<ChannelCard> list = (List<ChannelCard>) returnMsg.getData();

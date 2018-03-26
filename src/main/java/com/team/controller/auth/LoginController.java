@@ -84,9 +84,14 @@ public class LoginController {
 		model.addAttribute("name","wzh");
 		return "index";
 	}
-	
+
 	@PostMapping("/getMenu")
 	@ResponseBody
+	/**
+	 *权限管理，获取index页面的左侧菜单
+	 * @param request
+	 * @return
+	 */
 	public Object getMenu(HttpServletRequest request){
 		TbAuthUser user = getUser(request);
 		return tbAuthPermissionService.getMenuByUser(user);
@@ -95,6 +100,9 @@ public class LoginController {
 	
 	@PostMapping("/getPermissionTree")
 	@ResponseBody
+	/**
+	 * 构建菜单树
+	 */
 	public Object getPermissionTree(){
 		return tbAuthPermissionService.getPermissionTree();
 	}
@@ -119,6 +127,9 @@ public class LoginController {
 	
 	@PostMapping("/getFunctions")
 	@ResponseBody
+	/**
+	 * 权限管理，每跳到一个页面寻找功能
+	 */
 	public ReturnMsg getFunctions(HttpServletRequest request,Integer id){
 		return tbAuthPermissionService.getFunByUser(getUser(request),id);
 	}

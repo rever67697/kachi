@@ -10,6 +10,7 @@ import com.team.service.auth.TbAuthPermissionService;
 import com.team.vo.ReturnMsg;
 
 /**
+ * 菜单相关，权限
  * 创建日期：2018-1-19上午12:55:55
  * author:wuzhiheng
  */
