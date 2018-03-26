@@ -90,8 +90,8 @@
 			<form id="chargeForm">
 				<input type="hidden" name="oriFlow" />
 				<input type="hidden" name="oriDate"/>
-				<input type="hidden" name="chargeFlow" value="0"/>
-				<input type="hidden" name="chargeDate" value="0"/>
+				<input type="hidden" name="chargeFlow"/>
+				<input type="hidden" name="chargeDate"/>
 				<table class="table th-normal">
 					<tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
 					<tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true" readonly="readonly"/></td>
@@ -149,9 +149,13 @@
 			         	}},
 			         	{field:'departmentName',title:'所属部门',width:120},
 			         	{field:'countryName',title:'所在地区',width:80},
-			         	{field:'allowFlow',title:'剩余流量(KB)',width:100},
-			         	{field:'validityDate',title:'有效期截止时间',width:100},
-			         	{field:'note',title:'备注',width:85}
+			         	{field:'allowFlow',title:'剩余流量(KB)',width:100,formatter: function(value,row,index){
+                            return '<div class="chargeDiv">'+(value?value:'')+'</div>';
+                        }},
+			         	{field:'validityDate',title:'有效期截止时间',width:120,formatter: function(value,row,index){
+                            return '<div class="chargeDiv">'+(value?value:'')+'</div>';
+                        }},
+			         	{field:'note',title:'备注',width:140}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/terminal/list',
@@ -162,7 +166,14 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-50
+			height:window.innerHeight-50,
+        	onClickCell:function (rowIndex, field, value) {
+				if(field=='allowFlow' || field=='validityDate'){
+                    $('#dg').datagrid('clearSelections');
+                    $('#dg').datagrid('selectRow',rowIndex);
+                    doCharge();
+				}
+            }
 		};
 	var dl_options={
 			columns:[[
@@ -244,7 +255,9 @@
 
 		kcJs.fn.initSelect({"container":$('[name=vCountryCode],[name=homeLocation]'),"url":'getCountryDic',"defaultVal":"156"});
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"needNull":false,"append":true});
-		
+		kcJs.fn.initCharge($('#chargeForm [name=selectFlow]'),'flow');
+		kcJs.fn.initCharge($('#chargeForm [name=selectDate]'),'date');
+
 	});
 	
 	function doQuery(){
@@ -449,13 +462,13 @@
             },'json');
 		}
     }
-    
+
     function changeFlow() {
 		var oriFlow = $('#chargeForm [name=oriFlow]').val();
 		oriFlow = oriFlow?oriFlow:'0';
 		var selectFlow = $('#chargeForm [name=selectFlow]').val();
 
-		var autualFlow = parseInt(oriFlow)+parseInt(selectFlow);
+		var autualFlow = parseInt(oriFlow)+parseInt(selectFlow)*1048576;
 		$('#chargeForm [name=allowFlow]').val(autualFlow);
 		$('#chargeForm [name=chargeFlow]').val(selectFlow);
     }

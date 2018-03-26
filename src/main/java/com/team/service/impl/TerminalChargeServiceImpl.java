@@ -38,7 +38,9 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
             fLowBlanceDao.save(flowBalance);
         }
         //2.保存充值记录
-        terminalChargeRecordDao.save(record);
+        if(record.getChargeDate()!=null || record.getChargeDate()!=null){
+            terminalChargeRecordDao.save(record);
+        }
 
         return super.successTip();
     }

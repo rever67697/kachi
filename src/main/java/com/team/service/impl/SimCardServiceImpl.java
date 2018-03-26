@@ -38,7 +38,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	private Logger logger = Logger.getLogger(SimCardServiceImpl.class);
 	// 组缓存
-	//private static final Cache simGroupCache = CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
+	private static final Cache simGroupCache = CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
 	// 卡缓存
 	private static final Cache simCache = CacheFactory .getCache(MConstant.MEM_SIM);
 	// 卡最后月流量缓存
@@ -580,4 +580,80 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("nowDate",nowDate);
 		return flowMonthDao.get(map);
 	}
+
+
+	/**
+	 * 更新SIM卡状态的占用状态,0:空闲；1：占用
+	 * @param simCard
+	 * @return
+	 */
+	public boolean updateGroupSim2Cache(SimCard simCard,int status) {
+
+		if(simCard == null)
+			return false;
+
+		String groupKey = getGroupKeyByImsi(simCard.getImsi());
+		if(groupKey != null) {
+			Object obj =simGroupCache.gets(groupKey);
+			if(obj!=null){
+				logger.debug("get the simGroup: "+ groupKey + "/ " + obj);
+				MemcachedItem item =(MemcachedItem) obj;
+				if(item==null)
+					logger.warn(groupKey + "'s MemcachedItem is null");
+				long casUnique = item.casUnique;
+				List<GroupCacheSim>  groupSims =(List<GroupCacheSim>) item.getValue();
+				if(groupSims==null)
+					logger.debug("------------------->SimpleSimInfoList is null");
+				GroupCacheSim dtoValue = getCacheImsiInGroup(groupSims,simCard.getImsi());
+				if(dtoValue != null) {
+					logger.info("-------------> before " + dtoValue.getImsi() +"'s status: " + dtoValue.getStatus() +  "/asUnique: " + item.casUnique);
+					dtoValue.setStatus(status);
+					boolean cas = simGroupCache.cas(groupKey,groupSims,casUnique);
+					if(cas){
+						logger.debug("------------------------>update cache success,groupKey:" + groupKey + "/ groupSims: " + groupSims);
+						return  true;
+					}
+					else{
+						logger.warn("updateGroupSim2Cache fail! " + groupKey + " cas conflict: " + item.casUnique +", the simCard : " +simCard);
+					}
+				}else {
+					logger.warn("get GroupCacheSim is null, groupKey: " + groupKey + "/imsi: " + simCard.getImsi() + "/groupSims: " +  groupSims);
+				}
+			}else {
+				logger.warn("get SimGroup by Cache is null, groupKey: " + groupKey);
+			}
+		}else {
+			logger.warn("get groupKey by DB is null,  simCard: " + simCard);
+		}
+		initGroupSim2Cache(simCard);
+		return false;
+	}
+
+	/**
+	 * 从缓存组找到SIM卡
+	 * @param simGroup
+	 * @param imsi
+	 * @return
+	 */
+	public GroupCacheSim getCacheImsiInGroup(List<GroupCacheSim> simGroup,long imsi){
+
+		if(simGroup ==null || imsi <=0){
+			logger.error("simGroup or imsi is null" + ",imsi:" + imsi);
+		}
+
+		for(GroupCacheSim ssi : simGroup) {
+			if(ssi != null && imsi == ssi.getImsi()) {
+				return ssi;
+			}
+		}
+		return null;
+	}
 }
+//		for (int i = 0; i < simGroup.size(); i++) {
+//			//好鬼烦啊
+//			GroupCacheSim gcs = CommonUtil.convertBean(simGroup.get(i),GroupCacheSim.class);
+//			System.out.println(gcs);
+//			if (gcs!=null && gcs.getImsi() == imsi) { // 缓存有这张卡
+//				return gcs;
+//			}
+//		}

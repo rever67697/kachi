@@ -44,6 +44,7 @@ var kcJs=
     				"1":["一直指定",v_colors.green]
     };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
+    //日志分类
     var dic_bussinesstype=[
 						   {value:"登录信息",name:"登录信息"},
 						   {value:"用户管理",name:"用户管理"},
@@ -57,6 +58,27 @@ var kcJs=
                            {value:"副卡管理",name:"副卡管理"},
                            {value:"App版本管理",name:"App版本管理"},
                           ];
+	//终端充值--充值流量
+	var v_charge_flow=[
+		{"充值流量":0},
+		{"1G":1},
+		{"3G":3},
+		{"5G":4},
+		{"10G":10},
+		{"15G":15},
+		{"20G":20}
+	];
+	//终端充值--充值日期
+	var v_charge_date=[
+		{"充值日期":0},
+		{"1天":1},
+		{"3天":3},
+		{"5天":5},
+		{"7天":7},
+		{"15天":15},
+		{"30天":30}
+	];
+
 	_FUNC={
 		//获取项目根路径
 		getContextPath:function(fullUrl){
@@ -204,7 +226,18 @@ var kcJs=
 			var intMilliSec = n * 86400000;
 			var resultDate = new Date (Date.parse(date) + intMilliSec); //Date.parse()返回的是毫秒数
 			return resultDate.format("yyyy-MM-dd")+' 00:00:00'
-		}
+		},
+		//终端充值初始化type=flow/date
+		initCharge:function (obj,type) {
+			var _data = type=="flow"?v_charge_flow:v_charge_date,
+				_html = '';
+			$.each(_data,function (i,o) {
+				for(var i in o){
+					_html+='<option value="'+o[i]+'">'+i+'</option>';
+				}
+            });
+			$(obj).html(_html);
+        }
 
 	};
 	return {fn:_FUNC};
