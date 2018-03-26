@@ -23,27 +23,26 @@ public class ReadyTernimalSimController {
 	private ReadyTerminalSimService ReadyTerminalSimService;
 
 	@PostMapping("/list")
-	public ResultList list(Integer tsid, Long imsi, int page,
-			int rows) {
-		return ReadyTerminalSimService.getReadyTerminalSim(tsid, imsi, page,
-				rows);
+	public ResultList list(Integer tsid, Long imsi, int page,int rows) {
+		return ReadyTerminalSimService.list(tsid, imsi, page,rows);
 	}
 
 	@PostMapping("/save")
 	@PermissionLog(key="tsid_终端编号;args_卡信息")
-	public ReturnMsg save(Integer tsid, Integer type,
-			String args,HttpServletRequest request) {
+	public ReturnMsg save(Integer tsid, Integer type, String args,HttpServletRequest request) {
 		Integer userId = CommonUtil.getUser(request).getId();
-		return ReadyTerminalSimService.saveReadyTerminalSim(tsid, type, args,userId);
+		return ReadyTerminalSimService.save(tsid, type, args,userId);
 	}
 
 	@PostMapping("/update")
-	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
-		return ReadyTerminalSimService.updateReadyTerminalSim(readyTerminalSim);
+	public ReturnMsg update(ReadyTerminalSim readyTerminalSim,HttpServletRequest request) {
+		Integer operator = CommonUtil.getUser(request).getId();
+		readyTerminalSim.setOperator(operator);
+		return ReadyTerminalSimService.update(readyTerminalSim);
 	}
 
 	@PostMapping("/delete")
-	public ReturnMsg delete(String ids) {
-		return ReadyTerminalSimService.deleteReadyTerminalSim(ids);
+	public ReturnMsg delete(ReadyTerminalSim readyTerminalSim) {
+		return ReadyTerminalSimService.delete(readyTerminalSim);
 	}
 }

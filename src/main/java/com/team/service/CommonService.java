@@ -18,6 +18,6 @@ public interface CommonService {
 
 	public ReturnMsg getPackageDic(Integer dId);
 
-	public ReturnMsg getProvinceDic();
+	public ReturnMsg getProvinceDic(Integer countryCode);
 
 }

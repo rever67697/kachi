@@ -29,32 +29,30 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	private SimCardDao simCardDao;
 
 	@Override
-	public ResultList getReadyTerminalSim(Integer tsid, Long imsi, int page,
+	public ResultList list(Integer tsid, Long imsi, int page,
 			int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("imsi", imsi);
 		paramMap.put("tsid", tsid);
-		List<ReadyTerminalSim> list = readyTerminalSimDao
-				.getReadyTerminalSim(paramMap);
+		List<ReadyTerminalSim> list = readyTerminalSimDao.list(paramMap);
 		PageInfo<ReadyTerminalSim> pageInfo = new PageInfo<ReadyTerminalSim>(
 				list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
-	@Override
-	public ReturnMsg deleteReadyTerminalSim(String ids) {
-		String[] arr = ids.split(",");
-		List<Integer> list = new ArrayList<Integer>();
-		for (String string : arr) {
-			list.add(Integer.valueOf(string));
-		}
-		int count = readyTerminalSimDao.delete(list);
-		return count>0?super.successTip():super.errorTip();
-	}
+    @Override
+    public ReturnMsg delete(ReadyTerminalSim readyTerminalSim) {
+		//1。删除当前数据
+		readyTerminalSimDao.delete(readyTerminalSim);
+		//2。根据imsi更新卡的状态为指定前的状态
+		simCardDao.resetStatus(readyTerminalSim);
+        return super.successTip();
+    }
+
 
 	@Override
-	public ReturnMsg saveReadyTerminalSim(Integer tsid,Integer type,String args,Integer userId) {
+	public ReturnMsg save(Integer tsid,Integer type,String args,Integer userId) {
 		int count = 0;
 		List<ReadyTerminalSim> list = new ArrayList<ReadyTerminalSim>();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -74,7 +72,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	}
 
 	@Override
-	public ReturnMsg updateReadyTerminalSim(ReadyTerminalSim readyTerminalSim) {
+	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
 		int count = 0;
 		if (readyTerminalSim.getId() != null) {
 			count = readyTerminalSimDao.update(readyTerminalSim);

@@ -198,7 +198,14 @@ var kcJs=
 				$.ajaxSetup({async : true}); 
 				return funs;
 			}
+		},
+		getDiffDate:function (date, n){
+			//间隔的毫秒= n * 24 * 60 * 60 * 1000
+			var intMilliSec = n * 86400000;
+			var resultDate = new Date (Date.parse(date) + intMilliSec); //Date.parse()返回的是毫秒数
+			return resultDate.format("yyyy-MM-dd")+' 00:00:00'
 		}
+
 	};
 	return {fn:_FUNC};
 })(jQuery);	

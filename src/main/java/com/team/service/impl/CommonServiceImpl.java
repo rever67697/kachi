@@ -82,9 +82,9 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     }
 
     @Override
-    public ReturnMsg getProvinceDic() {
+    public ReturnMsg getProvinceDic(Integer countryCode) {
         ReturnMsg returnMsg = super.successTip();
-        List<Dictionary> list = commonDao.getProvinceDic();
+        List<Dictionary> list = commonDao.getProvinceDic(countryCode);
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }

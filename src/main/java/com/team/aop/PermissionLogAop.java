@@ -46,7 +46,6 @@ public class PermissionLogAop {
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
         HttpServletRequest request = CommonUtil.getRequest();
-		System.out.println(request.getRequestURI());
 		Map<String, Object> permission = CommonUtil.getUserPermission(request);
 
 		String uri = request.getRequestURI().replace(request.getContextPath(), "");

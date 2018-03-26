@@ -22,6 +22,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team.service.CommonService;
@@ -67,8 +68,8 @@ public class CommonController {
 	}
 
 	@PostMapping("/getProvinceDic")
-	public ReturnMsg getProvinceDic(){
-		return commonService.getProvinceDic();
+	public ReturnMsg getProvinceDic(@RequestParam(name = "countryCode",defaultValue = "156") Integer countryCode){
+		return commonService.getProvinceDic(countryCode);
 	}
 
 	@GetMapping("/downloadFile")

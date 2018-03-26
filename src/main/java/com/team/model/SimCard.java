@@ -85,7 +85,27 @@ public class SimCard implements Serializable{
 	private String departmentName;//代理商名称
 	
 	private String operatorName;//运营商名称
-	
+
+	private String countryName;//国家
+
+	private String provinceName;//省
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
 	public String getPackageName() {
 		return packageName;
 	}

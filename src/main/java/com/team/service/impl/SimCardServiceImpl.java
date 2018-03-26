@@ -89,14 +89,14 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 根据条件寻找出sim卡列表
 	 */
 	public ResultList getSimCardList(Integer departmentId, Integer dId,
-			Integer cpId, String number, Integer status, int page, int rows) {
+			Integer cpId, Long imsi, Integer status, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
 		map.put("cpId", cpId);
 		map.put("status", status);
-		map.put("number", number);
+		map.put("imsi", imsi);
 		List<SimCard> list = simCardDao.getSimCardList(map);
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);

@@ -64,7 +64,7 @@
 		<form id="queryForm_c">
 		  		<table class="table">
 		  			<tr>
-		  				<th>卡号：</th><td><input name="number" placeholder="请输入卡号" class="onlyNumber"/></td>
+		  				<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
 		  				<th>卡状态：</th>
 		  				<td><select name="status">
 		  						<option value="0">正常</option>
@@ -77,6 +77,21 @@
 		  		</table>
 		  	</form>
 		<div id="cardDg"></div>
+	</div>
+
+	<div id="updateDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+		<form id="updateForm">
+			<input type="hidden" name="id"/>
+			<table class="table th-normal">
+				<tr><th>终端编号：</th>
+					<td><input name="tsid" readonly="readonly" /></td></tr>
+				<tr><th>卡IMSI：</th>
+					<td><input name="imsi" readonly="readonly" /></td></tr>
+				<tr><th>指定类型：</th><td><select name="type"><option value="0">临时指定</option><option value="1">一直指定</option></select></tr>
+				<tr style="height:20px"></tr>
+				<tr><td colspan="2" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="updateData()">提 交</a></td></tr>
+			</table>
+		</form>
 	</div>
   </body>
   <script type="text/javascript">
@@ -101,12 +116,7 @@
 			         		return status?status[0]:'';
 			         	}},
 					]],
-			toolbar: [{
-				  		iconCls: 'icon-add',
-				  		text:'添加',
-				  		handler: doAdd
-				  	  }
-				  	 ],
+			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/readyTerminalSim/list',
 			iconCls:'icon-tip',
 			nowrap:false,
@@ -115,6 +125,7 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
+	  		singleSelect:true,
 			height:window.innerHeight-50
 		};
     var terminal_options={
@@ -164,20 +175,22 @@
 	var card_options={
 			queryParams:$('#queryForm_c').serializeObject(),
 			columns:[[
-						{field:'ck',checkbox:true}, 
-			         	{field:'id',title:'SIM卡id',hidden:true},
-			         	{field:'imsi',title:'imsi',width:120},
-			         	{field:'number',title:'卡号',width:120},
-			         	{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
-			         		var status = kcJs.fn.getCardStatus(value+'');
-			         		return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
-			         	}},
-			         	{field:'operatorName',title:'运营商',width:90},
-			         	{field:'packageName',title:'卡套餐',width:120},
-			         	{field:'expiryDate',title:'有效期截卡时间',width:150},
-			         	{field:'simPoolName',title:'所在卡池',width:100},
-			         	{field:'cpChannelId',title:'卡池通道',width:80},
-			         	{field:'departmentName',title:'所属部门',width:150}
+						{field:'ck',checkbox:true},
+						{field:'id',title:'SIM卡id',hidden:true},
+						{field:'imsi',title:'imsi',width:120},
+						{field:'number',title:'卡号',width:120},
+						{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
+							var status = kcJs.fn.getCardStatus(value+'');
+							return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
+						}},
+						{field:'operatorName',title:'运营商',width:100},
+						{field:'packageName',title:'卡套餐',width:100},
+						{field:'expiryDate',title:'有效期截卡时间',width:120},
+						{field:'simPoolName',title:'所在卡池',width:150},
+						{field:'cpChannelId',title:'卡池通道',width:70},
+						{field:'departmentName',title:'所属部门',width:150},
+						{field:'countryName',title:'国家',width:60},
+						{field:'provinceName',title:'省',width:60}
 					]],
 			toolbar: [{
 				  		iconCls: 'icon-save',
@@ -203,7 +216,7 @@
  			width:400,
  			height:300,
  			cache: false,
-			title : "添加指定卡信息"
+			title : "添加"
 		});
 		
 		$('#terminalDialog').dialog({
@@ -221,6 +234,14 @@
  			cache: false,
 			title : '选取sim卡IMSI<span style="color:red">【可多选】</span>'
 		});
+
+        $('#updateDialog').dialog({
+            modal : true,
+            width:400,
+            height:220,
+            cache: false,
+            title : "修改"
+        });
 		
 		kcJs.fn.initSelect({"container":$('[name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
@@ -339,6 +360,51 @@
 	function doQuery_c(){
 		card_options.queryParams = $('#queryForm_c').serializeObject();
 		$('#cardDg').datagrid(card_options);
+	}
+
+	function doUpdate() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            var rowData = $('#dg').datagrid("getSelected");
+            kcJs.fn.autoFillData($('#updateDialog'),rowData);
+            $('#updateDialog').dialog('open');
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息", "info");
+        }
+    }
+	
+	function updateData(){
+        $('#updateDialog').dialog('close');
+        $('#dg').datagrid('loading');
+        $.post(kcJs.fn.getContextPath()+'/readyTerminalSim/update',$('#updateForm').serializeObject(),function(data){
+            if(data){
+                $.messager.alert('提示',data.msg,'info');
+                if(data.code=='200'){
+                    doQuery();
+                }else{
+                    $('#dg').datagrid('loaded');
+                }
+            }
+        });
+    }
+
+    function doDelete(){
+	    $.messager.confirm('提示','是否确定删除?',function (r) {
+			if(r){
+				$('#dg').datagrid('loading');
+				var rowData = $('#dg').datagrid("getSelected");
+				$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{id:rowData.id,imsi:rowData.imsi,lastStatus:rowData.lastStatus},function(data){
+					if(data){
+						$.messager.alert('提示',data.msg,'info');
+						if(data.code=='200'){
+							doQuery();
+						}else{
+							$('#dg').datagrid('loaded');
+						}
+					}
+				});
+			}
+        })
 	}
   </script>
 </html>	

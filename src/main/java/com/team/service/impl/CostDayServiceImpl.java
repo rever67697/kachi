@@ -18,7 +18,6 @@ import com.team.vo.ResultList;
  * 创建日期：2017-12-22下午3:15:30
  * author:wuzhiheng
  */
-@Transactional
 @Service
 public class CostDayServiceImpl implements CostDayService{
 	

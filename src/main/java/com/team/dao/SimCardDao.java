@@ -3,6 +3,7 @@ package com.team.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.team.model.ReadyTerminalSim;
 import org.apache.ibatis.annotations.Param;
 
 import com.team.model.SimCard;
@@ -78,4 +79,11 @@ public interface SimCardDao {
 	public int batchUpdate(SimCard simCard);
 
 	public List<Map<String,Object>> getSimCardListMap(Map<String,Object> map);
+
+	/**
+	 * 删除指定卡时更新对应卡为指定前的状态
+	 * @param readyTerminalSim
+	 * @return
+	 */
+	public int resetStatus(ReadyTerminalSim readyTerminalSim);
 }

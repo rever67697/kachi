@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.FLowBalanceDao">
+
+	<select id="count" resultType="int">
+		select count(1)
+		from m_flow_balance
+		where tsid=#{tsid,jdbcType=INTEGER}
+  	</select>
+
+	<insert id="save" parameterType="com.team.model.FlowBalance">
+		insert into m_flow_balance
+		(tsid,allowFlow,validityDate,note)
+		values
+		(
+			#{tsid,jdbcType=INTEGER},
+			#{allowFlow,jdbcType=BIGINT},
+			#{validityDate,jdbcType=TIMESTAMP},
+			#{note,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.team.model.FlowBalance">
+		update m_flow_balance
+		set allowFlow = #{allowFlow,jdbcType=BIGINT},
+			validityDate = #{validityDate,jdbcType=TIMESTAMP},
+			note = #{note,jdbcType=VARCHAR}
+		where tsid=#{tsid,jdbcType=INTEGER}
+	</update>
+
+</mapper>

@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import com.team.dao.SimGroupDao;
 import com.team.model.SimGroup;
 import com.team.service.SimGroupService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 创建日期：2018-2-9下午4:09:05
  * author:wuzhiheng
  */
 @Service
+@Transactional
 public class SimGroupServiceImpl implements SimGroupService{
 
 	@Autowired

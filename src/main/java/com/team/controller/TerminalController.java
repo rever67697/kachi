@@ -1,10 +1,13 @@
 package com.team.controller;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.team.model.TerminalChargeRecord;
+import com.team.service.TerminalChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,8 @@ public class TerminalController {
 	private CostDayService costDayService;
 	@Autowired
 	private TerminalSimService terminalSimService;
+	@Autowired
+	private TerminalChargeService terminalChargeService;
 	
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId,Integer status,Integer tsid,Integer activated,
@@ -84,6 +89,14 @@ public class TerminalController {
 	@PermissionLog(key="tsids_终端编号的集合;departmentId_部门编号")
 	public ReturnMsg batchUpdate(String ids,Integer departmentId){
 		return terminalService.updateDepartment(ids, departmentId);
-	} 
+	}
+
+	@PostMapping("/charge")
+	@PermissionLog(key = "tsid_终端编号;chargeFlow_充值流量;allowFlow_剩余流量;chargeDate_充值天数;validityDate_有效期;note_备注")
+	public ReturnMsg charge(TerminalChargeRecord terminalChargeRecord,HttpServletRequest request){
+		terminalChargeRecord.setCreateDate(new Date());
+		terminalChargeRecord.setOperator(CommonUtil.getUser(request).getName());
+		return terminalChargeService.charge(terminalChargeRecord);
+	}
 	
 }

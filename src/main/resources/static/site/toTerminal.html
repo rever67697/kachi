@@ -62,53 +62,6 @@
 	  		</table>
 	  	</div>
 
-
-		<!--<div id="doDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">-->
-			<!--<div id="main-layout" class="easyui-layout" fit="true">-->
-				<!--<div region="center" border="false" style="background: #fff;">-->
-					<!--<div id="tabs-info" class="easyui-tabs">-->
-						<!--<div title="基本信息" style="padding:0 10px 10px 10px;">-->
-							<!--<form id="doForm">-->
-								<!--<input type="hidden" name="id"/>-->
-								<!--<table class="table th-normal">-->
-									<!--<tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>-->
-									<!--<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>-->
-									<!--<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>-->
-									<!--<tr><th>终端状态：</th><td><select name="status">-->
-										<!--<option value="0">正常</option><option value="1">未初始化</option>-->
-										<!--<option value="2">停用</option><option value="3">注销</option>-->
-									<!--</select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>-->
-									<!--<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>-->
-									<!--<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>-->
-									<!--<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>-->
-									<!--<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>-->
-									<!--<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>-->
-									<!--&lt;!&ndash; <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>-->
-                                    <!--<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> &ndash;&gt;-->
-									<!--&lt;!&ndash;<tr style="height:10px"></tr>&ndash;&gt;-->
-									<!--&lt;!&ndash;<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>&ndash;&gt;-->
-								<!--</table>-->
-							<!--</form>-->
-
-						<!--</div>-->
-						<!--<div title="充值" style="padding:0 10px 10px 10px;">-->
-								<!--<table class="table th-normal">-->
-									<!--<tr><th>剩余流量：</th><td><input value="10000"/></td><td><select><option value="">充值流量</option><option>1G</option><option>5G</option></select></td></tr>-->
-									<!--<tr><th>有效期截止时间：</th><td><input value="2018-03-24"/></td><td><select><option value="">充值日期</option><option>7天</option><option>15天</option></select></td></tr>-->
-								<!--</table>-->
-						<!--</div>-->
-					<!--</div>-->
-
-
-
-				<!--</div>-->
-				<!--<div region="south" split="false" border="false" style="text-align: right; height: 40px; background: #fff">-->
-
-					<!--<a  class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" onclick="saveUser()" style="margin-top:10px"> 确定</a>-->
-					<!--<a	class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)" onclick="$('#doDialog').dialog('close')" style="margin-right:10px">取消</a>-->
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
 	  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 	  		<form id="doForm">
 	  			<input type="hidden" name="id"/>
@@ -132,6 +85,25 @@
 		  		</table>
 	  		</form>
 	  	</div>
+
+		<div id="chargeDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+			<form id="chargeForm">
+				<input type="hidden" name="oriFlow" />
+				<input type="hidden" name="oriDate"/>
+				<input type="hidden" name="chargeFlow" value="0"/>
+				<input type="hidden" name="chargeDate" value="0"/>
+				<table class="table th-normal">
+					<tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
+					<tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true" readonly="readonly"/></td>
+						<td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option>/select></td></tr>
+					<tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox" required="true" readonly="readonly"/></td>
+						<td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>
+					<tr><th>备注：</th><td colspan="2"><input name="note" /></td></tr>
+					<tr style="height:10px"></tr>
+					<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="charge()">充 值</a></td></tr>
+				</table>
+			</form>
+		</div>
 	  	
 	  	<div id="batchDialog" closed="true" style="padding:10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 	  		<form id="batchForm">
@@ -261,7 +233,15 @@
    			cache: false,
 			title : "批量分配"
 		});
-		
+
+		$('#chargeDialog').dialog({
+			modal : true,
+   			width:500,
+   			height:230,
+   			cache: false,
+			title : "充值"
+		});
+
 		kcJs.fn.initSelect({"container":$('[name=vCountryCode],[name=homeLocation]'),"url":'getCountryDic',"defaultVal":"156"});
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"needNull":false,"append":true});
 		
@@ -441,5 +421,54 @@
   			});
   		}
   	}
+  	
+  	function doCharge() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            $('#chargeForm')[0].reset();
+			var rowData = selectRows[0];
+            kcJs.fn.autoFillData($('#chargeDialog'),rowData);
+            $('#chargeForm [name=oriFlow]').val(rowData.allowFlow);
+            $('#chargeForm [name=oriDate]').val(rowData.validityDate);
+            $('#chargeDialog').dialog('open');
+        }else {
+            $.messager.alert("提示", "请选择一条信息", "info");
+        }
+    }
+    
+    function charge() {
+		if($('#chargeForm').form('validate')){
+            $('#dg').datagrid('loading');
+            $('#chargeDialog').dialog('close');
+		    $.post(kcJs.fn.getContextPath()+'/terminal/charge',$('#chargeForm').serializeObject(),function (data) {
+                $.messager.alert('提示',data.msg);
+                $('#dg').datagrid('loaded');
+                if(data.code=='200' ){
+                    doQuery();
+                }
+            },'json');
+		}
+    }
+    
+    function changeFlow() {
+		var oriFlow = $('#chargeForm [name=oriFlow]').val();
+		oriFlow = oriFlow?oriFlow:'0';
+		var selectFlow = $('#chargeForm [name=selectFlow]').val();
+
+		var autualFlow = parseInt(oriFlow)+parseInt(selectFlow);
+		$('#chargeForm [name=allowFlow]').val(autualFlow);
+		$('#chargeForm [name=chargeFlow]').val(selectFlow);
+    }
+    
+    function changeDate() {
+        var oriDate = $('#chargeForm [name=oriDate]').val();
+        oriDate = oriDate?oriDate:(new Date().format('yyyy-MM-dd')+' 00:00:00');
+        var selectDate = $('#chargeForm [name=selectDate]').val();
+
+        var autualDate = kcJs.fn.getDiffDate(new Date(oriDate),selectDate);
+
+        $('#chargeForm [name=validityDate]').val(autualDate);
+        $('#chargeForm [name=chargeDate]').val(selectDate);
+    }
   </script>
 </html>

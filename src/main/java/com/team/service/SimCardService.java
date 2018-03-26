@@ -20,7 +20,7 @@ public interface SimCardService {
 	
 	public ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCardList(Integer departmentId,Integer dId,Integer cpId,String number,
+	public ResultList getSimCardList(Integer departmentId,Integer dId,Integer cpId,Long imsi,
 			Integer status,int page,int rows);
 
 	public File getCsv(Integer departmentId, Integer dId, Integer cpId, String number,

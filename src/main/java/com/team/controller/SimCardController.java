@@ -44,10 +44,10 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer cpId,String number,
+	public ResultList list(Integer departmentId,Integer cpId,Long imsi,
 			Integer status,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
+		return simCardService.getSimCardList(departmentId, dId,cpId, imsi, status, page, rows);
 	}
 
 	@GetMapping("/getCsv")

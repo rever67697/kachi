@@ -52,7 +52,7 @@ public interface CommonDao {
 	 *@return
 	 *return
 	 */
-	public List<Dictionary> getProvinceDic();
+	public List<Dictionary> getProvinceDic(@Param("countryCode") Integer countryCode);
 
 
 	

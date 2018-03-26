@@ -16,15 +16,15 @@ public interface ReadyTerminalSimDao {
    * @param map tsid，imsi
    * @return
    */
-  public List<ReadyTerminalSim> getReadyTerminalSim(Map<String, Object> map);
+  public List<ReadyTerminalSim> list(Map<String, Object> map);
 
   /**
-   * 根据id批量删除记录
+   * 根据id删除记录
    * 
-   * @param ids
+   * @param
    * @return
    */
-  public int delete(List<Integer> list);
+  public int delete(ReadyTerminalSim readyTerminalSim);
 
   /**
    * 插入记录

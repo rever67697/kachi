@@ -22,11 +22,7 @@
 
     <select id="getOperatorDic" resultType="com.team.vo.Dictionary">
         select OPERATORCODE value,
-        concat(case OPERATORNAMECN when 'China Mobile' then '中国移动'
-        when 'China Unicom' then '中国联通'
-        when 'China Telecom' then '中国电信'
-        when 'China Tietong' then '中国铁通'
-        else OPERATORNAMECN end,'（',OPERATORCODE,'）') name
+        concat(OPERATORNAMECN,'（',OPERATORCODE,'）') name
         from m_operator
         where status=0
         <if test="countryCode!=null">
@@ -66,6 +62,7 @@
 		select id value,
                namecn name
         from m_province
+        where countryCode=#{countryCode,jdbcType=INTEGER}
         order by sort
 	</select>
 

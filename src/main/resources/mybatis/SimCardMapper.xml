@@ -38,11 +38,9 @@
 			   ,t.name packageName
 			   ,p.name simPoolName
 			   ,d.name departmentName
-			   ,case o.OPERATORNAMECN when 'China Mobile' then '中国移动' 
-			 				 		  when 'China Unicom' then '中国联通' 
-			 				 		  when 'China Telecom' then '中国电信'
-							 		  when 'China Tietong' then '中国铁通' 
-							 else o.OPERATORNAMECN end operatorName
+			   ,o.OPERATORNAMECN operatorName
+			   ,ifnull(c.namecn,c.countryName) countryName
+			   ,ifnull(pr.namecn,r.provincecode) provinceName
 		from m_simcard r
 		left join m_simpackage t
 		on r.packageid=t.id and t.status=0
@@ -52,6 +50,10 @@
 		on p.departmentId=d.id and d.status=0
 		left join m_operator o
 		on r.OPERATORCODE=o.OPERATORCODE
+		left join m_country c
+		on r.countryCode = c.countryCode
+		left join m_province pr
+		on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
 		where 1=1
 		<if test="cpId != null">
 			and r.cpid=#{cpId,jdbcType=INTEGER}
@@ -62,8 +64,8 @@
 		<if test="departmentId != null">
 			and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
-		<if test="number != null and number != ''">
-			and r.number=#{number,jdbcType=VARCHAR}
+		<if test="imsi != null">
+			and r.imsi=#{imsi,jdbcType=BIGINT}
 		</if>
 		<include refid="dId"></include>
 		order by r.cpid,r.cpchannelid
@@ -102,23 +104,25 @@
 				,r.DEPARTMENTID
 				,r.GROUPPREF
 				,r.NOTE
-			   ,t.name PACKAGENAME
-			   ,p.name SIMPOOLNAME
-			   ,d.name DEPARTMENTNAME
-			   ,case o.OPERATORNAMECN when 'China Mobile' then '中国移动'
-			 				 		  when 'China Unicom' then '中国联通'
-			 				 		  when 'China Telecom' then '中国电信'
-							 		  when 'China Tietong' then '中国铁通'
-							 else o.OPERATORNAMECN end OPERATORNAME
+		,t.name packageName
+		,p.name simPoolName
+		,d.name departmentName
+		,o.OPERATORNAMECN operatorName
+		,ifnull(c.namecn,c.countryName) countryName
+		,ifnull(pr.namecn,r.provincecode) provinceName
 		from m_simcard r
 		left join m_simpackage t
 		on r.packageid=t.id and t.status=0
 		left join m_simpool p
-		on r.cpid=p.id and p.ISACTIVE=1
+		on r.cpid=p.spid and p.ISACTIVE=1
 		left join m_department d
 		on p.departmentId=d.id and d.status=0
 		left join m_operator o
 		on r.OPERATORCODE=o.OPERATORCODE
+		left join m_country c
+		on r.countryCode = c.countryCode
+		left join m_province pr
+		on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
 		where 1=1
 		<if test="cpId != null">
 			and r.cpid=#{cpId,jdbcType=INTEGER}
@@ -129,8 +133,8 @@
 		<if test="departmentId != null">
 			and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
-		<if test="number != null and number != ''">
-			and r.number=#{number,jdbcType=VARCHAR}
+		<if test="imsi != null">
+			and r.imsi=#{imsi,jdbcType=BIGINT}
 		</if>
 		<include refid="dId"></include>
 		order by r.cpid,r.cpchannelid
@@ -193,5 +197,11 @@
 			note = #{note,jdbcType=VARCHAR},
 			softType = #{softType,jdbcType=INTEGER}
 		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="resetStatus" parameterType="com.team.model.ReadyTerminalSim">
+		update m_simcard
+		set status = #{lastStatus,jdbcType=INTEGER}
+		where imsi = #{imsi,jdbcType=BIGINT}
 	</update>
 </mapper>
