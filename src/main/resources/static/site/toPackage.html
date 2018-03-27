@@ -24,25 +24,50 @@
   	</form>
   	<div id="dg"></div>
   	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-	  		<form id="doForm">
-	  			<input type="hidden" name="id"/>
-	  			<input type="hidden" name="compareFlow"/>
-	  			<input type="hidden" name="compareRoamFlow"/>
-	  			<input type="hidden" name="isChange"/>
-		  		<table class="table th-normal">
-		  			<tr><th>套餐名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
-					<tr><th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td></tr>
-		  			<tr><th>运营商编号：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
-		  			<tr><th>本国流量（KB）：</th><td><input name="maxFlow" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-		  			<tr><th>漫游流量：</th><td><input name="maxRoamFlow" class="easyui-numberbox" required="true"/></td></tr>
-		  			<tr><th>优先级：</th><td><input name="level" class="onlyNumber"/></td></tr>
-		  			<tr><th>状态：</th><td><select name="status"><option  value="0">正常</option><option value="1">删除</option></select></tr>
-		  			<tr><th>套餐支持的漫游国家：</th><td><input name="mccs"/></td></tr>
-		  			<tr style="height:20px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-		  		</table>
-	  		</form>
-	  	</div>
+		<form id="doForm">
+			<input type="hidden" name="id"/>
+			<input type="hidden" name="compareFlow"/>
+			<input type="hidden" name="compareRoamFlow"/>
+			<input type="hidden" name="isChange"/>
+			<table class="table th-normal">
+				<tr><th>套餐名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td></tr>
+				<tr><th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td></tr>
+				<tr><th>运营商编号：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
+				<tr><th>本国流量（KB）：</th><td><input name="maxFlow" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+				<tr><th>漫游流量：</th><td><input name="maxRoamFlow" class="easyui-numberbox" required="true"/></td></tr>
+				<tr><th>优先级：</th><td><input name="level" class="onlyNumber"/></td></tr>
+				<tr><th>状态：</th><td><select name="status"><option  value="0">正常</option><option value="1">删除</option></select></tr>
+				<tr><th>套餐支持的漫游国家：</th><td><textarea name="mccs" rows="2" placeholder="为空表示任何国家都可以使用" onclick="showCountry()"></textarea></td></tr>
+				<tr style="height:20px"></tr>
+				<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			</table>
+		</form>
+	</div>
+	<div id="countryDialog" closed="true" iconCls="icon-user">
+		<div class="easyui-layout" fit="true">
+			<div region="center" title="" style="background:#FFF">
+				<div id="selectedCountry" ></div>
+			</div>
+
+			<div region="east" title=""  style="width:450px;background:#FFF">
+				<div class="easyui-layout" fit="true">
+					<div region="north" style="height:41px;background:#fff;overflow:hidden;">
+						<form id="countryForm">
+							<table class="table" style="margin:0">
+								<tr>
+									<th>国家名称：</th><td><input name="nameCn" placeholder="请输入国家名称"/></td>
+									<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_c()">查 询</a></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<div region="center" style="background:#fff">
+						<div id="countryDg"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
   </body>
   <script type="text/javascript">
   	var options={
@@ -77,17 +102,78 @@
 			striped:true,
 			height:window.innerHeight-50
 		};
+
+    var options_c={
+        title:'国家列表<span style="color:red">【双击选中】</span>',
+		fit:true,
+        queryParams:$('#countryForm').serializeObject(),
+        columns:[[
+            {field:'id',title:'id',hidden:true},
+            {field:'countryCode',title:'国家编号',width:100},
+            {field:'nameCn',title:'中文名称',width:120},
+            {field:'nameEn',title:'英文名称',width:120}
+        ]],
+        url:kcJs.fn.getContextPath()+'/countryList',
+        iconCls:'icon-tip',
+        nowrap:false,
+        pagination:true,
+        pageList:[20,30,50],
+        rownumbers:true,
+        scrollbarSize:0,
+        striped:true,
+		onDblClickRow:function (rowIndex, rowData) {
+			var rows = $('#selectedCountry').datagrid('getRows');
+			var addStatus = true;
+			for(var i=0;i<rows.length;i++){
+			    if(rowData.countryCode == rows[i].countryCode){
+			        addStatus = false;
+			        break;
+				}
+			}
+			if(addStatus){
+			    $('#selectedCountry').datagrid('appendRow',{
+			        countryCode:rowData.countryCode,
+					nameCn:rowData.nameCn,
+					nameEn:rowData.nameEn
+				})
+			}else{
+			    $.messager.alert('提示','已存在','info');
+			}
+        }
+    };
   
 	$(function(){
 		$('#dg').datagrid(options);
 		
 		$('#doDialog').dialog({
 			modal : true,
-   			width:380,
-   			height:380,
+   			width:400,
+   			height:400,
    			cache: false,
 			title : "添加/修改卡套餐"
 		});
+
+        $('#countryDialog').dialog({
+            modal : true,
+            width:800,
+            height:400,
+            cache: false,
+            title : "选择支持的城市",
+			toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordCountry}]
+        });
+
+        $('#selectedCountry').datagrid({
+			fit:true,
+			columns:[[
+				{field:'op',title:'操作',width:60,formatter:function (v,r,i) {
+					return '<button class="btn-del" onclick="deleteCountry(\''+i+'\')">删除</button>'
+                }},
+                {field:'countryCode',title:'国家编号',width:60},
+                {field:'nameCn',title:'中文名称',width:90},
+                {field:'nameEn',title:'英文名称',width:120}
+			]]
+		});
+
         kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"needNull":false});
         kcJs.fn.initSelect({"container":$('[name=operatorCode]'),"url":'getOperatorDic',"needNull":false,"queryParam":{"countryCode":156}});
 	});
@@ -192,6 +278,57 @@
 			kcJs.fn.initSelect({"container":$('#doForm select[name=operatorCode]'),
 				"url":'getOperatorDic',"needNull":false,"queryParam":{countryCode:countryCode}});
 		}
+    }
+
+    function doQuery_c(){
+        options_c.queryParams = $('#countryForm').serializeObject();
+        $('#countryDg').datagrid(options_c);
+    }
+
+
+    function showCountry() {
+        //查询国家总列表
+        $('#countryForm')[0].reset();
+        doQuery_c();
+
+		//清空左侧数据
+		$('#selectedCountry').datagrid('loadData',{total:0,rows:[]});
+
+		//若原本的有数据，需要加载出来
+        var mccs = $('#doForm [name=mccs]').val();
+        if(mccs){
+            $.post(kcJs.fn.getContextPath()+'/countrySelectedList',{mccs:mccs},function (data) {
+				if(data && data.rows){
+				    for(var i=0;i<data.rows.length;i++){
+				        var rowData = data.rows[i];
+                        $('#selectedCountry').datagrid('appendRow',{
+                            countryCode:rowData.countryCode,
+                            nameCn:rowData.nameCn,
+                            nameEn:rowData.nameEn
+                        })
+					}
+				}
+            },'json');
+		}
+		//显示弹出框
+		$('#countryDialog').dialog('open');
+
+    }
+
+    function recordCountry() {
+		var rows = $('#selectedCountry').datagrid('getRows');
+		var countrys='';
+		for(var i=0;i<rows.length;i++){
+			countrys+=rows[i].countryCode;
+			if((i+1)<rows.length)
+				countrys+=',';
+		}
+		$('#doForm [name=mccs]').val(countrys);
+		$('#countryDialog').dialog('close');
+    }
+
+    function deleteCountry(index) {
+		$('#selectedCountry').datagrid('deleteRow',index);
     }
   </script>
 </html>

@@ -14,6 +14,8 @@ public interface CountryService {
 
 	ResultList list(String nameCn,int page,int rows);
 
+	ResultList getList(String mccs);
+
 	Country getCountry(Integer CountryCode);
 	
 	String getRoamcountryDate(Date date, Integer countryCode, String format);

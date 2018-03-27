@@ -13,6 +13,8 @@ public interface CountryDao {
 
 	List<Country> list(@Param("nameCn") String nameCn);
 
+	List<Country> getSelected(String[] list);
+
 	Country getCountry(Integer CountryCode);
 	
 }

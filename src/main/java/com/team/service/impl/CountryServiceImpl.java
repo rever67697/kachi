@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,17 @@ public class CountryServiceImpl implements CountryService {
 		List<Country> list = countryDao.list(nameCn);
 		PageInfo<Country> pageInfo = new PageInfo<Country>(list);
 		return new ResultList(pageInfo.getTotal(), list);
+    }
+
+    @Override
+    public ResultList getList(String mccs) {
+    	if(!CommonUtil.StringIsNull(mccs)){
+    		String[] code = mccs.split(",");
+			List<Country> list = countryDao.getSelected(code);
+			PageInfo<Country> pageInfo = new PageInfo<Country>(list);
+			return new ResultList(pageInfo.getTotal(), list);
+		}
+		return null;
     }
 
     @Override

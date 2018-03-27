@@ -6,8 +6,17 @@
         select * from m_country
         where 1=1
         <if test="nameCn!=null and nameCn!=''">
-            and nameCn=#{nameCn,jdbcType=VARCHAR}
+            and nameCn like concat('%',#{nameCn,jdbcType=VARCHAR},'%')
         </if>
+        order by countryCode
+    </select>
+    
+    <select id="getSelected" resultType="com.team.model.Country">
+        select * from m_country
+        where countryCode in 
+        <foreach collection="array" open="(" separator="," close=")" item="item">
+            #{item,jdbcType=INTEGER}
+        </foreach>
         order by countryCode
     </select>
 

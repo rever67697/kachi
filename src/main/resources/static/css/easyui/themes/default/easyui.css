@@ -1996,3 +1996,4 @@ fieldset{border:1px solid #999}
 .table .charge{width:110px}
 .chargeDiv{width:100%;margin:0 auto;height:25px;color:blue;
 	cursor: pointer;line-height: 25px;text-align: left}
+.btn-del{border:0;background:rgb(0,144,215);color: #fff;cursor: pointer;text-align:center;border-radius: 2px;height: 20px;line-height:20px;width:50px}

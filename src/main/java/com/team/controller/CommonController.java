@@ -81,6 +81,11 @@ public class CommonController {
 		return countryService.list(nameCn, page, rows);
 	}
 
+	@PostMapping("/countrySelectedList")
+	public ResultList countrySelectedList(String mccs){
+		return countryService.getList(mccs);
+	}
+
 	@GetMapping("/downloadFile")
 	public void downloadFile(String fileName,HttpServletResponse response,HttpServletRequest request) throws Exception{
 		fileName = URLDecoder.decode(fileName, "utf-8");
