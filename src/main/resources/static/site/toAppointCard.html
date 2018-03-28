@@ -30,7 +30,7 @@
 	  					<span class="btn-delete" onclick="showTerminal()">获取</span></td></tr>
 	  			<tr><th>卡IMSI：</th>
 	  				<td id="input_imsi"></td></tr>
-	  			<tr><th>指定类型：</th><td><select name="type"><option value="0">临时指定</option><option value="1">一直指定</option></select></tr>
+	  			<tr><th>指定类型：</th><td><select name="type"><option value="0">临时指定一次</option><option value="1">一直指定</option></select></tr>
 	  			<tr style="height:20px"></tr>
   			<tr><td colspan="2" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 	  		</table>
@@ -156,7 +156,10 @@
 			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
 			         	}},
 			         	{field:'departmentName',title:'所属部门',width:150},
-			         	{field:'countryName',title:'所在地区',width:120}
+			         	{field:'countryName',title:'所在地区',width:120},
+						{field:'allowFlow',title:'剩余流量(KB)',width:100},
+						{field:'validityDate',title:'有效期截止时间',width:120},
+						{field:'note',title:'备注',width:140}
 					]],
 			url:kcJs.fn.getContextPath()+'/terminal/list',
 			iconCls:'icon-tip',
@@ -253,30 +256,30 @@
 		$('#doDialog').dialog('open');
 	}
 	
-	function doDelete(){
-		var selectRows = $('#dg').datagrid("getSelections");
-		if (selectRows.length > 0) {
-			$.messager.confirm('提示','是否确定删除？',function(r){
-				if(r){
-					$('#dg').datagrid('loading');
-		  			var ids = [];
-		  			for(var i = 0;i < selectRows.length;i++){
-		  				ids.push(selectRows[i].id);
-		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{ids:ids.join(",")},function(data){
-		  				if(data && data.code && data.code == '200'){
-		  					doQuery();	
-		  				}else{
-		  					$('#dg').datagrid('loaded');
-		  				}
-		  				$.messager.alert("提示", data.msg, "info");
-		  			},'json');
-		  		}
-			});
-      }else {
-          $.messager.alert("提示", "请选择至少一条信息", "info");
-      }
-	}
+//	function doDelete(){
+//		var selectRows = $('#dg').datagrid("getSelections");
+//		if (selectRows.length > 0) {
+//			$.messager.confirm('提示','是否确定删除？',function(r){
+//				if(r){
+//					$('#dg').datagrid('loading');
+//		  			var ids = [];
+//		  			for(var i = 0;i < selectRows.length;i++){
+//		  				ids.push(selectRows[i].id);
+//		  			}
+//		  			$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{ids:ids.join(",")},function(data){
+//		  				if(data && data.code && data.code == '200'){
+//		  					doQuery();
+//		  				}else{
+//		  					$('#dg').datagrid('loaded');
+//		  				}
+//		  				$.messager.alert("提示", data.msg, "info");
+//		  			},'json');
+//		  		}
+//			});
+//      }else {
+//          $.messager.alert("提示", "请选择至少一条信息", "info");
+//      }
+//	}
 	
 	function saveData(){//新增保存
 		$('#doForm [name=imsi]').validatebox({
@@ -393,7 +396,7 @@
 			if(r){
 				$('#dg').datagrid('loading');
 				var rowData = $('#dg').datagrid("getSelected");
-				$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{id:rowData.id,imsi:rowData.imsi,lastStatus:rowData.lastStatus},function(data){
+				$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{id:rowData.id,imsi:rowData.imsi,lastStatus:rowData.lastStatus,tsid:rowData.tsid},function(data){
 					if(data){
 						$.messager.alert('提示',data.msg,'info');
 						if(data.code=='200'){

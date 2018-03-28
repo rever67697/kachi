@@ -40,9 +40,13 @@
 							    <option value="3">待激活</option><option value="4">作废</option>
 		  					</select></td>
 		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
-		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
-		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+		  				<td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 		  			</tr>
+					<tr>
+						<th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td>
+						<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
+		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
+					</tr>
 		  		</table>
 		  	</form>
 		  	<div id="dg"></div>
@@ -81,7 +85,7 @@
 								<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
 							<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
 								<th>省：</th><td><select name="provinceCode" class="easyui-validatebox" required="true"></select></td></tr>
-							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly"/></td>
+							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" /></td>
 								<th>插入时间：</th><td><input name="insertDate" readonly="readonly"/></td></tr>
 							<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
 								<th>VPNIP：</th><td><input name="vpnIp"/></td></tr>
@@ -92,7 +96,7 @@
 							<tr><th>OPC：</th><td><input name="opc"/></td>
 								<th>OP：</th><td><input name="op"/></td></tr>
 							<tr><th>APN：</th><td><input name="opc"/></td>
-								<th>开卡日期：</th><td><input name="openDate" readonly="readonly"/></td></tr>
+								<th>开卡日期：</th><td><input name="openDate"/></td></tr>
 							<tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
 								<th>分组：</th><td><input name="groupPref"/></td></tr>
 							<tr><th>备注：</th><td><input name="note"/></td>
@@ -101,12 +105,48 @@
 							<tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 						</table>
 					</form>
-				</div>
-		  	</div>
+			</div>
+			<div id="doBatchDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+				<p style="color:red">【温馨提示】：</p>
+				<p>1.所选的卡都为同一个运营商才能修改套餐。</p>
+				<p>2.所选的卡都为同一个国家才能修改省份。</p>
+				<p>3.不需要改的属性不要改动。</p>
+				<form id="doBatchForm">
+					<table class="table th-normal">
+						<tr><th>套餐：</th><td><select name="packageId"></select></td>
+							<th>卡状态：</th><td><select name="status">
+													<option value=""></option><option value="0">正常</option>
+													<option value="1">停用</option><option value="2">指定</option>
+													<option value="3">待激活</option><option value="4">作废</option>
+												</select></td></tr>
+						<tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>
+							<th>帐期持续时间：</th><td><select name="sustained">
+														<option value=""></option>
+														<option value="1">1个月</option>
+														<option value="6">6个月</option>
+													</select></td></tr>
+						<tr><th>是否支持VPN：</th><td><select name="usedVpn"><option value=""></option></select></td>
+							<th>是否软卡：</th><td><select name="softType"><option value=""></option></select></td></tr>
+						<tr><th>有效期截卡时间：</th><td><input name="expiryDate" /></td>
+							<th>开卡时间：</th><td><input name="openDate" /></td></tr>
+						<tr><th>省：</th><td><select name="provinceCode"></select></td>
+							<th></th><td></td></tr>
+						<tr style="height:10px"></tr>
+						<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>
+					</table>
+				</form>
+			</div>
 	    </div>
 	</div>
   </body>
   <script type="text/javascript">
+      $.fn.datebox.defaults.formatter = function(date){
+          var y = date.getFullYear();
+          var m = date.getMonth()+1;
+          var d = date.getDate();
+          return y+'-'+(m>10?'':'0')+m+'-'+(d>10?'':'0')+d+' 00:00:00';
+      }
+
   	$('#tt').css('height',window.innerHeight*0.999+'px');
   	var options={
 			title:'流量卡列表',
@@ -138,7 +178,7 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-80
+			height:window.innerHeight-105
 		};
   
 	$(function(){
@@ -150,16 +190,29 @@
 		$('#doDialog').dialog({
 			modal : true,
    			width:800,
-   			height:635,
+   			height:638,
    			cache: false
 		});
-		
+
+        $('#doBatchDialog').dialog({
+            modal : true,
+            width:800,
+            height:330,
+            cache: false,
+			title:'批量修改'
+        });
+
 		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
 		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
+		kcJs.fn.initSelect({"container":$('#queryForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
+
 		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
-		kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"nullDesc":""});
+		//kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"nullDesc":""});
 		kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":156},"nullDesc":""});
-		kcJs.fn.initDic_noYes($('#doForm [name=usedVpn],#doForm [name=softType]'));
+
+		kcJs.fn.initDic_noYes($('[name=usedVpn],[name=softType]'));
+
+		$('[name=expiryDate],[name=openDate]').datebox({required:false});
 
 	});
   
@@ -294,6 +347,87 @@
                 });
             }
         }
+    }
+
+    function doBatch() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0) {
+            $('#doBatchForm [name=packageId],#doBatchForm [name=provinceCode]').html('');
+
+			//1.判断这批卡是不是都是同一个运营商，根据imsi的前5位
+			//2.判断这批卡是不是都是同一个国家，根据前3位
+			var operatorArr=[];
+			var countryArr = [];
+			for(var i=0;i<selectRows.length;i++){
+			    var operatorCode = selectRows[i].operatorCode;
+                var countryCode = selectRows[i].countryCode;
+			    var isOperatorAdd = true;
+			    var isCountryAdd = true;
+				for(var j=0;j<operatorArr.length;j++){
+					if(operatorCode==operatorArr[j]){
+                        isOperatorAdd = false;
+						break;
+					}
+				}
+			    if(isOperatorAdd){
+				    operatorArr.push(operatorCode);
+			    }
+			    /**************************************/
+                for(var j=0;j<countryArr.length;j++){
+                    if(countryCode==countryArr[j]){
+                        isCountryAdd = false;
+                        break;
+                    }
+                }
+                if(isCountryAdd){
+                    countryArr.push(countryCode);
+                }
+			}
+			if(operatorArr.length==1){
+                kcJs.fn.initSelect({"container":$('#doBatchForm [name=packageId]'),"url":'getPackageDic',"nullDesc":"","queryParam":{operatorCode:operatorArr[0]}});
+			}
+			if(countryArr.length==1){
+                kcJs.fn.initSelect({"container":$('#doBatchForm [name=provinceCode]'),"url":'getProvinceDic',"nullDesc":"","queryParam":{countryCode:countryArr[0]}});
+			}
+            $('#doBatchDialog').dialog('open');
+        }else {
+            $.messager.alert("提示", "请选择至少一条信息！", "info");
+        }
+
+    }
+
+    function saveBatchData() {
+		var rows = $('#dg').datagrid('getSelections');
+		if(rows.length>0){
+		    $('#dg').datagrid('loading');
+		    $('#doBatchDialog').dialog('close');
+		    var ids = [];
+		    for(var i = 0;i<rows.length;i++){
+		        ids.push(rows[i].id);
+			}
+			var params = $('#doBatchForm').serializeObject();
+			params.ids=ids.join(",");
+			$.post(kcJs.fn.getContextPath()+"/simcard/batchUpdate",params,function (data) {
+                if(data){
+                    $.messager.alert('提示',data.msg,'info');
+                    if(data.code=='200'){
+                        doQuery();
+                    }else{
+                        $('#dg').datagrid('loaded');
+                    }
+                }
+            },'json');
+		}
+    }
+    
+    function changeOperator(){
+        var countryCode=$('#queryForm [name=countryCode]').val();
+        if(countryCode){
+            kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),
+                "url":'getOperatorDic',"nullDesc":"全部","queryParam":{countryCode:countryCode}});
+        }else{
+            $('#queryForm select[name=operatorCode]').html('<option value="">全部</option>')
+		}
     }
 
     function getCsv(){

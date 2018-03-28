@@ -40,7 +40,6 @@ function checkLogin() {
 }
 
 function doLogin() {
-	console.log(1);
 	var bl=checkLogin();
 	if(bl) {
 		checked=$('#savePwd')[0].checked;

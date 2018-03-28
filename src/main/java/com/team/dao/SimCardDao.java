@@ -76,8 +76,6 @@ public interface SimCardDao {
 
 	public int update(SimCard simCard);
 
-	public int batchUpdate(SimCard simCard);
-
 	public List<Map<String,Object>> getSimCardListMap(Map<String,Object> map);
 
 	/**
@@ -86,4 +84,25 @@ public interface SimCardDao {
 	 * @return
 	 */
 	public int resetStatus(ReadyTerminalSim readyTerminalSim);
+
+	/**
+	 * 批量更新simcard
+	 * @param map
+	 * @return
+	 */
+	public int batchUpdate(Map<String,Object> map);
+
+	/**
+	 * 根据id列表寻找列表
+	 * @param list
+	 * @return
+	 */
+	public List<SimCard> getByIds(List<Integer> list);
+
+	/**
+	 * 根据卡池编号查找列表
+	 * @param cpId
+	 * @return
+	 */
+	public List<SimCard> getByPool(@Param("cpId") Integer cpId);
 }

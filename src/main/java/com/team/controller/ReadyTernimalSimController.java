@@ -35,6 +35,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/update")
+	@PermissionLog(key = "type_类型")
 	public ReturnMsg update(ReadyTerminalSim readyTerminalSim,HttpServletRequest request) {
 		Integer operator = CommonUtil.getUser(request).getId();
 		readyTerminalSim.setOperator(operator);
@@ -42,6 +43,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/delete")
+	@PermissionLog(key = "tsid_终端编号;imsi_IMSI")
 	public ReturnMsg delete(ReadyTerminalSim readyTerminalSim) {
 		return ReadyTerminalSimService.delete(readyTerminalSim);
 	}

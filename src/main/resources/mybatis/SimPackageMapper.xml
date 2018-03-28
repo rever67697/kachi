@@ -12,8 +12,7 @@
 		</if>
 	</sql>
 
-	<select id="getPackageList" parameterType="java.util.Map"
-		resultType="com.team.model.SimPackage">
+	<select id="getPackageList" parameterType="java.util.Map" resultType="com.team.model.SimPackage">
 		select
 			<include refid="allColumn" />
 			,d.name departmentName

@@ -79,6 +79,19 @@ var kcJs=
 		{"30天":30}
 	];
 
+	//simcard批量操作可以修改的属性
+	var card_param=[
+		{k:"packageId",v:"套餐"},
+		{k:"offPeriod",v:"账期日"},
+		{k:"sustained",v:"账期持续时间"},
+		{k:"status",v:"卡状态"},
+		{k:"provinceCode",v:"省"},
+		{k:"expiryDate",v:"有效期截卡时间"},
+		{k:"usedVpn",v:"是否支持vpn"},
+		{k:"softType",v:"是否是软卡"},
+		{k:"openDate",v:"开卡日期"}
+	];
+
 	_FUNC={
 		//获取项目根路径
 		getContextPath:function(fullUrl){
@@ -162,7 +175,7 @@ var kcJs=
 		},
 		//给select容器当0：否1：是初始化
 		initDic_noYes:function(obj){
-			this.initSelectOption({"container":obj,"data":dic_noYes});
+			this.initSelectOption({"container":obj,"data":dic_noYes,"append":true,"needNull":false});
 		},
 		//给日志select容器初始化
 		initDic_bussinesstype:function(obj){
@@ -237,7 +250,8 @@ var kcJs=
 				}
             });
 			$(obj).html(_html);
-        }
+        },
+		//
 
 	};
 	return {fn:_FUNC};

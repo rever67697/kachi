@@ -88,28 +88,31 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	/**
 	 * 根据条件寻找出sim卡列表
 	 */
-	public ResultList getSimCardList(Integer departmentId, Integer dId,
-			Integer cpId, Long imsi, Integer status, int page, int rows) {
+	public ResultList getSimCardList(SimCard simCard,Integer dId,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", departmentId);
+		map.put("departmentId", simCard.getDepartmentId());
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
-		map.put("cpId", cpId);
-		map.put("status", status);
-		map.put("imsi", imsi);
+		map.put("cpId", simCard.getCpId());
+		map.put("status", simCard.getStatus());
+		map.put("imsi", simCard.getImsi());
+		map.put("countryCode",simCard.getCountryCode());
+		map.put("operatorCode",simCard.getOperatorCode());
 		List<SimCard> list = simCardDao.getSimCardList(map);
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
 	@Override
-	public File getCsv(Integer departmentId, Integer dId, Integer cpId, String number, Integer status) throws  Exception{
+	public File getCsv(SimCard simCard,Integer dId) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("departmentId", departmentId);
+		map.put("departmentId", simCard.getDepartmentId());
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
-		map.put("cpId", cpId);
-		map.put("status", status);
-		map.put("number", number);
+		map.put("cpId", simCard.getCpId());
+		map.put("status", simCard.getStatus());
+		map.put("imsi", simCard.getImsi());
+		map.put("countryCode",simCard.getCountryCode());
+		map.put("operatorCode",simCard.getOperatorCode());
 
 		Field[] fields = SimCard.class.getDeclaredFields();
 		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
@@ -171,7 +174,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 
 		//3.需要更新缓存里面的卡组信息
-		//initGroupSim2Cache(simCard);
+		initGroupSim2Cache(simCard);
 		return super.successTip();
 	}
 
@@ -309,7 +312,35 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return simGroup;
 	}
 
-	/**
+    @Override
+    public ReturnMsg batchUpdate(SimCard simCard, String ids) {
+		if(checkParams(simCard)){
+			//1.更新数据
+			Map<String,Object> map = new HashMap<>();
+			map.put("status",simCard.getStatus());
+			map.put("packageId",simCard.getPackageId());
+			map.put("offPeriod",simCard.getOffPeriod());
+			map.put("sustained",simCard.getSustained());
+			map.put("provinceCode",simCard.getProvinceCode());
+			map.put("expiryDate",simCard.getExpiryDate());
+			map.put("usedVpn",simCard.getUsedVpn());
+			map.put("softType",simCard.getSoftType());
+			map.put("openDate",simCard.getOpenDate());
+
+			List<Integer> list = new ArrayList<>();
+			for (String s : ids.split(",")) {
+				list.add(Integer.valueOf(s));
+			}
+			map.put("list",list);
+			simCardDao.batchUpdate(map);
+
+			//2.刷新缓存
+		}
+
+        return successTip();
+    }
+
+    /**
 	 * 根据IMSI算出SIM卡的卡组
 	 * 
 	 * @param imsi
@@ -648,6 +679,16 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 		return null;
 	}
+
+	private boolean checkParams(SimCard simCard){
+		if(simCard.getStatus()!=null || simCard.getPackageId()!=null || simCard.getSustained()!=null
+				|| simCard.getExpiryDate()!=null || simCard.getOpenDate()!=null || simCard.getProvinceCode()!=null
+				|| simCard.getOffPeriod()!=null || simCard.getUsedVpn()!=null || simCard.getSoftType()!=null ){
+			return true;
+		}
+		return false;
+	}
+
 }
 //		for (int i = 0; i < simGroup.size(); i++) {
 //			//好鬼烦啊

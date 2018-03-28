@@ -20,16 +20,16 @@ public interface SimCardService {
 	
 	public ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCardList(Integer departmentId,Integer dId,Integer cpId,Long imsi,
-			Integer status,int page,int rows);
+	public ResultList getSimCardList(SimCard simCard,Integer dId,int page,int rows);
 
-	public File getCsv(Integer departmentId, Integer dId, Integer cpId, String number,
-					   Integer status) throws Exception;
+	public File getCsv(SimCard simCard,Integer dId) throws Exception;
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
 
 	public ReturnMsg update(SimCard simCard, boolean isChangePeriod, boolean isChangePackage);
 
 	public SimGroup initGroupSim2Cache(SimCard simCard);
+
+	public ReturnMsg batchUpdate(SimCard simCard,String ids);
 	
 }

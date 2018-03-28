@@ -44,13 +44,16 @@
         </if>
     </select>
 
-    <select id="getPackageDic" resultType="com.team.vo.Dictionary">
+    <select id="getPackageDic" resultType="com.team.vo.Dictionary" parameterType="java.util.Map">
         select distinct p.id value,
                         p.name
         from m_simpackage p
         left join m_department d
         on (p.departmentId=d.id or p.departmentId=d.parentId) and d.status=0
         where p.status=0
+        <if test="operatorCode!=null">
+            and operatorCode = #{operatorCode,jdbcType=INTEGER}
+        </if>
         <if test="dId!=null">
             and (d.id=#{dId,jdbcType=INTEGER} or d.parentId=#{dId,jdbcType=INTEGER})
             or p.departmentId = 0
@@ -59,7 +62,7 @@
     </select>
 
     <select id="getProvinceDic" resultType="com.team.vo.Dictionary">
-		select id value,
+		select provincecode value,
                namecn name
         from m_province
         where countryCode=#{countryCode,jdbcType=INTEGER}

@@ -44,19 +44,17 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer cpId,Long imsi,
-			Integer status,int page,int rows,HttpServletRequest request){
+	public ResultList list(SimCard simCard,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getSimCardList(departmentId, dId,cpId, imsi, status, page, rows);
+		return simCardService.getSimCardList(simCard,dId, page, rows);
 	}
 
 	@GetMapping("/getCsv")
 	@PermissionLog
-	public void getCsv(Integer departmentId, Integer cpId, String number,
-					   Integer status, HttpServletRequest request, HttpServletResponse response) throws  Exception{
+	public void getCsv(SimCard simCard, HttpServletRequest request, HttpServletResponse response) throws  Exception{
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 
-		File file = simCardService.getCsv(departmentId, dId,cpId, number, status);
+		File file = simCardService.getCsv(simCard,dId);
 
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
@@ -100,9 +98,7 @@ public class SimCardController {
 			if(file.exists()){
 				file.delete();
 			}
-//			file.deleteOnExit();
 		}
-		//return simCardService.getSimCardList(departmentId, dId,cpId, number, status, page, rows);
 	}
 
 	@PostMapping("/outlineInfo")
@@ -122,8 +118,15 @@ public class SimCardController {
 	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
 		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
 		//更新缓存
-		simCardService.initGroupSim2Cache(simCard);
+//		simCardService.initGroupSim2Cache(simCard);
 		return returnMsg;
+	}
+
+	@PostMapping("/batchUpdate")
+	@PermissionLog(key = "status_卡状态;packageId_卡套餐;provinceCode_省;offPeriod_帐期日;sustained_账期持续时间;" +
+			"expiryDate_有效期截止时间;openDate_开卡时间;usedVpn_是否支持vpn;softType_是否软卡;ids_ids")
+	public ReturnMsg batchUpdate(SimCard simCard,String ids){
+		return simCardService.batchUpdate(simCard,ids);
 	}
 	
 }

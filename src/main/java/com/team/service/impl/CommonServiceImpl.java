@@ -1,6 +1,8 @@
 package com.team.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,9 +74,12 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     }
 
     @Override
-    public ReturnMsg getPackageDic(Integer dId) {
+    public ReturnMsg getPackageDic(Integer operatorCode,Integer dId) {
         ReturnMsg returnMsg = super.successTip();
-        List<Dictionary> list = commonDao.getPackageDic(CommonUtil.changeDepartmentId(dId));
+        Map<String,Object> map = new HashMap<>();
+        map.put("dId",CommonUtil.changeDepartmentId(dId));
+        map.put("operatorCode",operatorCode);
+        List<Dictionary> list = commonDao.getPackageDic(map);
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }

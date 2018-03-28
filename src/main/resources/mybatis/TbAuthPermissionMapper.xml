@@ -32,7 +32,8 @@
 	<select id="getAllPermission" resultType="com.team.model.auth.TbAuthPermission">
 		select * 
 		from tb_auth_permission
-		where status=0 
+		where status=0
+		  and is_special=0
 		order by parent_id,order_num 
 	</select>
 	
@@ -52,6 +53,7 @@
 		  and r.status=0
 		  and ur.status=0
 		  and c.status=0
+		  and p.is_special=0
 		  and c.id=#{id,jdbcType=INTEGER}
 	</select>
 	
@@ -81,7 +83,7 @@
 	
 	<insert id="insertPermission" parameterType="com.team.model.auth.TbAuthPermission" useGeneratedKeys="true" keyProperty="id">
 		insert into tb_auth_permission
-		(parent_id,text,url,icon_cls,is_menu,order_num,fun_desc,status,create_time)
+		(parent_id,text,url,icon_cls,is_menu,order_num,fun_desc,status,is_special,create_time)
 		values
 		(#{parentId,jdbcType=INTEGER},
 		 #{text,jdbcType=VARCHAR},
@@ -90,6 +92,7 @@
 		 #{isMenu,jdbcType=INTEGER},
 		 #{orderNum,jdbcType=INTEGER},
 		 #{funDesc,jdbcType=VARCHAR},
+		 0,
 		 0,
 		 now()
 		 )

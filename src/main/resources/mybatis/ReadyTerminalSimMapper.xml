@@ -16,6 +16,7 @@
 		<if test="imsi!=null ">
 			and r.imsi like #{imsi,jdbcType=BIGINT}
 		</if>
+		order by insertDate desc
 	</select>
 
 	<delete id="delete" parameterType="com.team.model.ReadyTerminalSim">

@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -45,7 +46,7 @@ public interface CommonDao {
 	 *@return
 	 *return
 	 */
-	public List<Dictionary> getPackageDic(@Param("dId")Integer dId);
+	public List<Dictionary> getPackageDic(Map<String,Object> map);
 
 	/**
 	 * 查找省份

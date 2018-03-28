@@ -66,9 +66,9 @@ public class CommonController {
 	}
 
 	@PostMapping("/getPackageDic")
-	public ReturnMsg getPackageDic(HttpServletRequest request){
+	public ReturnMsg getPackageDic(Integer operatorCode,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getPackageDic(dId);
+		return commonService.getPackageDic(operatorCode,dId);
 	}
 
 	@PostMapping("/getProvinceDic")
