@@ -335,6 +335,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			simCardDao.batchUpdate(map);
 
 			//2.刷新缓存
+			//2.1找出这一批卡，根据ids
+			List<SimCard> simCardList = simCardDao.getByIds(list);
+			for (SimCard card : simCardList) {
+				initGroupSim2Cache(card);
+			}
 		}
 
         return successTip();

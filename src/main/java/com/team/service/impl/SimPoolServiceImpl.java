@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.model.SimCard;
+import com.team.service.SimCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,8 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 	private SimPoolDao simPoolDao;
 	@Autowired
 	private SimCardDao simCardDao;
+	@Autowired
+	private SimCardService simCardService;
 	
 	@Override
 	/**
@@ -70,7 +74,7 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 
 	@Override
 	/**
-	 * 根据卡池id更新卡池的代理商，顺带更新卡池下流量卡的代理商
+	 * 根据卡池id更新卡池的代理商，顺带更新卡池下流量卡的代理商，需要刷新缓存
 	 */
 	public ReturnMsg update(SimPool simPool) {
 		//首先判断前后的departmendId是否改变
@@ -85,8 +89,15 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 		//如果departmentId发生变化，需要顺带更新卡池下流量卡的代理商
 		if(flag){
 			simCardDao.updateCardDept(simPool);
+
+			//更新缓存
+			List<SimCard> simCardList = simCardDao.getByPool(simPool.getSpid());
+			for (SimCard simCard : simCardList) {
+				simCardService.initGroupSim2Cache(simCard);
+			}
+
 		}
-		return super.successTip(flag);
+		return super.successTip();
 	}
 
 

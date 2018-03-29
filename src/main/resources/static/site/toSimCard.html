@@ -63,7 +63,7 @@
 						<input type="hidden" name="cpId"/>
 						<table class="table th-normal">
 							<tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
-								<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true" readonly="readonly"/></td></tr>
+								<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber"/></td></tr>
 							<tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>
 								<th>PIN：</th><td><input name="pin"/></td></tr>
 							<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
@@ -84,7 +84,7 @@
 							<tr><th>卡池状态：</th><td><select name="cpStatus"><option value=""></option><option  value="1">正常</option><option value="0">暂停</option></select></td>
 								<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
 							<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
-								<th>省：</th><td><select name="provinceCode" class="easyui-validatebox" required="true"></select></td></tr>
+								<th>省：</th><td><select name="provinceCode"></select></td></tr>
 							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" /></td>
 								<th>插入时间：</th><td><input name="insertDate" readonly="readonly"/></td></tr>
 							<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
@@ -107,9 +107,9 @@
 					</form>
 			</div>
 			<div id="doBatchDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-				<p style="color:red">【温馨提示】：</p>
-				<p>1.所选的卡都为同一个运营商才能修改套餐。</p>
-				<p>2.所选的卡都为同一个国家才能修改省份。</p>
+				<p style="color:red">【提示】：</p>
+				<p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>
+				<p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
 				<p>3.不需要改的属性不要改动。</p>
 				<form id="doBatchForm">
 					<table class="table th-normal">
@@ -208,19 +208,35 @@
 
 		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
 		//kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"nullDesc":""});
-		kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":156},"nullDesc":""});
+
 
 		kcJs.fn.initDic_noYes($('[name=usedVpn],[name=softType]'));
 
 		$('[name=expiryDate],[name=openDate]').datebox({required:false});
 
 	});
+
+      function doDetail(){
+          var selectRows = $('#dg').datagrid("getSelections");
+          if (selectRows.length > 0 && selectRows.length == 1) {
+              var rowData = selectRows[0];
+              initData(rowData);
+
+              $('#doBtn').hide();
+              $('#doForm [name=countryCode]').attr('disabled',false);
+              $('#doDialog').dialog({title:'查看卡信息'});
+              $('#doDialog').dialog('open');
+          }else {
+              $.messager.alert("提示", "请选择其中一条信息！", "info");
+          }
+      }
   
   	function doModify(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
   		     var rowData = selectRows[0];
-             kcJs.fn.autoFillData($('#doDialog'),rowData);
+			 initData(rowData);
+
              $('#doBtn').show();
              $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
              $('#doForm [name=compareSustained]').val(rowData.sustained);
@@ -232,6 +248,22 @@
             $.messager.alert("提示", "请选择其中一条信息！", "info");
         }
   	}
+
+  	function initData(rowData) {
+         $('#doForm [name=provinceCode],#doForm [name=packageId]').html('');
+		 var countryCode = rowData.countryCode;
+		 var operatorCode = rowData.operatorCode;
+		 //初始化下拉框--省
+		 if(countryCode){
+			 kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":countryCode},"nullDesc":""});
+		 }
+        //初始化下拉框--套餐
+		 if(operatorCode){
+             kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"queryParam":{"operatorCode":operatorCode},"nullDesc":""});
+		 }
+		 //填充数据
+         kcJs.fn.autoFillData($('#doDialog'),rowData);
+    }
   	
   	function doDelete(){
   		var selectRows = $('#dg').datagrid("getSelections");
@@ -265,20 +297,7 @@
             $.messager.alert("提示", "请选择至少一条信息！", "info");
         }
   	}
-  	
-  	function doDetail(){
-  		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0 && selectRows.length == 1) {
-             kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
-             $('#doBtn').hide();
-             $('#doForm [name=countryCode]').attr('disabled',false);
-             $('#doDialog').dialog({title:'查看卡信息'});
-             $('#doDialog').dialog('open');
-        }else {
-            $.messager.alert("提示", "请选择其中一条信息！", "info");
-        }
-  	}
-  	
+
   	function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
@@ -358,6 +377,8 @@
 			//2.判断这批卡是不是都是同一个国家，根据前3位
 			var operatorArr=[];
 			var countryArr = [];
+			var operatorNameArr = [];
+			var countryNameArr = [];
 			for(var i=0;i<selectRows.length;i++){
 			    var operatorCode = selectRows[i].operatorCode;
                 var countryCode = selectRows[i].countryCode;
@@ -371,6 +392,7 @@
 				}
 			    if(isOperatorAdd){
 				    operatorArr.push(operatorCode);
+                    operatorNameArr.push(selectRows[i].operatorName)
 			    }
 			    /**************************************/
                 for(var j=0;j<countryArr.length;j++){
@@ -381,13 +403,21 @@
                 }
                 if(isCountryAdd){
                     countryArr.push(countryCode);
+                    countryNameArr.push(selectRows[i].countryName)
                 }
 			}
 			if(operatorArr.length==1){
                 kcJs.fn.initSelect({"container":$('#doBatchForm [name=packageId]'),"url":'getPackageDic',"nullDesc":"","queryParam":{operatorCode:operatorArr[0]}});
+                $('#operatorTip').hide();
+			}else{
+                $('#operatorTip').html('【当选中的共有'+operatorArr.length+'个运营商：'+operatorNameArr[0]+'，'+operatorNameArr[1]+'...】').show();
 			}
+
 			if(countryArr.length==1){
                 kcJs.fn.initSelect({"container":$('#doBatchForm [name=provinceCode]'),"url":'getProvinceDic',"nullDesc":"","queryParam":{countryCode:countryArr[0]}});
+                $('#countryTip').hide();
+			}else{
+                $('#countryTip').html('【当选中的共有'+countryArr.length+'个国家：'+countryNameArr[0]+'，'+countryNameArr[1]+'...】').show();
 			}
             $('#doBatchDialog').dialog('open');
         }else {

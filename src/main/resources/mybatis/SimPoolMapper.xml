@@ -62,7 +62,7 @@
 			select p.id,
 				   case when p.isactive=1 then 1 else 0 end active,
 				   ifnull(type,0) type,
-				   count(1) count
+				   count(c.id) count
 			from m_simpool p 
 			left join m_simcard c
 			on p.spid=c.cpid

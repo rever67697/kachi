@@ -54,10 +54,6 @@ public class SimPoolController {
 	@PermissionLog(key="spid_卡池编号;name_卡池名称;departmentId_部门编号")
 	public ReturnMsg update(SimPool simPool){
 		ReturnMsg returnMsg =  simPoolService.update(simPool);
-		Boolean flag = true;
-		if(flag.equals((returnMsg.getData()))){
-			System.out.println("需要更新卡缓存");
-		}
 		return returnMsg;
 	}
 	

@@ -117,8 +117,6 @@ public class SimCardController {
 	@PermissionLog(key="imsi_IMSI;isChangePeriod_账期是否改变;isChangePackage_套餐是否改变")
 	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
 		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
-		//更新缓存
-//		simCardService.initGroupSim2Cache(simCard);
 		return returnMsg;
 	}
 
