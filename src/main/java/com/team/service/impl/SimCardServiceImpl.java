@@ -1,32 +1,31 @@
 package com.team.service.impl;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.util.*;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hqrh.rw.common.model.GroupCacheSim;
+import com.schooner.MemCached.MemcachedItem;
 import com.team.dao.FlowDayDao;
 import com.team.dao.FlowMonthDao;
+import com.team.dao.SimCardDao;
 import com.team.dao.SimPackageDao;
 import com.team.model.*;
 import com.team.service.CountryService;
+import com.team.service.OperatorService;
+import com.team.service.SimCardService;
+import com.team.service.SimGroupService;
 import com.team.util.*;
+import com.team.vo.OutlineInfo;
+import com.team.vo.ResultList;
+import com.team.vo.ReturnMsg;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.schooner.MemCached.MemcachedItem;
-import com.team.dao.SimCardDao;
-import com.team.vo.OutlineInfo;
-import com.team.vo.ResultList;
-import com.team.vo.ReturnMsg;
-import com.team.service.OperatorService;
-import com.team.service.SimCardService;
-import com.team.service.SimGroupService;
-
-import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.FileWriter;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * 创建日期：2017-12-19上午10:04:29 author:wuzhiheng
@@ -623,6 +622,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @param simCard
 	 * @return
 	 */
+	@Override
 	public boolean updateGroupSim2Cache(SimCard simCard,int status) {
 
 		if(simCard == null)
@@ -644,6 +644,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				if(dtoValue != null) {
 					logger.info("-------------> before " + dtoValue.getImsi() +"'s status: " + dtoValue.getStatus() +  "/asUnique: " + item.casUnique);
 					dtoValue.setStatus(status);
+					groupSims.add(dtoValue);
 					boolean cas = simGroupCache.cas(groupKey,groupSims,casUnique);
 					if(cas){
 						logger.debug("------------------------>update cache success,groupKey:" + groupKey + "/ groupSims: " + groupSims);
@@ -677,11 +678,21 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			logger.error("simGroup or imsi is null" + ",imsi:" + imsi);
 		}
 
-		for(GroupCacheSim ssi : simGroup) {
-			if(ssi != null && imsi == ssi.getImsi()) {
-				return ssi;
+		for (int i = 0; i < simGroup.size(); i++) {
+			//好鬼烦啊
+			GroupCacheSim gcs = CommonUtil.convertBean(simGroup.get(i),GroupCacheSim.class);
+			System.out.println(gcs);
+			if (gcs!=null && gcs.getImsi() == imsi) { // 缓存有这张卡
+				simGroup.remove(i);
+				return gcs;
 			}
 		}
+
+//		for(GroupCacheSim ssi : simGroup) {
+//			if(ssi != null && imsi == ssi.getImsi()) {
+//				return ssi;
+//			}
+//		}
 		return null;
 	}
 

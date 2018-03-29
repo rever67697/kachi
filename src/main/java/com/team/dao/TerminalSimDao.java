@@ -38,6 +38,13 @@ public interface TerminalSimDao {
 	 *return
 	 */
 	public int deleteTerminalByIds(List<Integer> ids);
+
+	/**
+	 * 根据id列表查找
+	 * @param ids
+	 * @return
+	 */
+	public List<TerminalSim> getByIds(List<Integer> ids);
 	
 	
 	

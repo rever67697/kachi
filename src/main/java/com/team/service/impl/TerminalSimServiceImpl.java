@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.dao.SimCardDao;
+import com.team.model.SimCard;
+import com.team.service.SimCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,10 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 	
 	@Autowired
 	private TerminalSimDao terminalSimDao;
+	@Autowired
+	private SimCardService simCardService;
+	@Autowired
+	private SimCardDao simCardDao;
 
 	@Override
 	/**
@@ -66,7 +73,15 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 		for (String string : arr) {
 			list.add(Integer.valueOf(string));
 		}
+		List<TerminalSim> terminalSimList  = terminalSimDao.getByIds(list);
 		int count = terminalSimDao.deleteTerminalByIds(list);
+
+		//释放simcard
+		for (TerminalSim terminalSim : terminalSimList) {
+			simCardService.updateGroupSim2Cache(simCardDao.getByImsi(terminalSim.getImsi()),1);
+		}
+
+
 		return count>0?super.successTip():super.errorTip();
 	}
 

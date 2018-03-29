@@ -253,4 +253,9 @@
 			#{item,jdbcType=INTEGER}
 		</foreach>
 	</update>
+	
+	<select id="getByImsi" resultType="com.team.model.SimCard">
+		select * from m_simcard
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</select>
 </mapper>

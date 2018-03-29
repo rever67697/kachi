@@ -1,10 +1,10 @@
 package com.team.cache;
 
+import com.danga.MemCached.SockIOPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.danga.MemCached.SockIOPool;
 import com.team.util.MConstant;
 
 /**

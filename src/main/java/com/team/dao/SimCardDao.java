@@ -105,4 +105,6 @@ public interface SimCardDao {
 	 * @return
 	 */
 	public List<SimCard> getByPool(@Param("cpId") Integer cpId);
+
+	public SimCard getByImsi(@Param("imsi") Long imsi);
 }

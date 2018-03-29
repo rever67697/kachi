@@ -31,5 +31,7 @@ public interface SimCardService {
 	public SimGroup initGroupSim2Cache(SimCard simCard);
 
 	public ReturnMsg batchUpdate(SimCard simCard,String ids);
+
+	public boolean updateGroupSim2Cache(SimCard simCard,int status);
 	
 }
