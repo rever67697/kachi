@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.team.model.ReadyTerminalSim;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author Wzq 指定卡管理数据库操作 2017年12月30日 上午11:31:47
@@ -41,5 +42,7 @@ public interface ReadyTerminalSimDao {
    * @return
    */
   public int update(ReadyTerminalSim readyTerminalSim);
+
+  public ReadyTerminalSim getBydId(@Param("id") Integer id);
 
 }

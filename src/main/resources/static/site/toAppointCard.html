@@ -82,11 +82,12 @@
 	<div id="updateDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 		<form id="updateForm">
 			<input type="hidden" name="id"/>
+			<input type="hidden" name="lastStatus"/>
 			<table class="table th-normal">
 				<tr><th>终端编号：</th>
 					<td><input name="tsid" readonly="readonly" /></td></tr>
 				<tr><th>卡IMSI：</th>
-					<td><input name="imsi" readonly="readonly" /></td></tr>
+					<td><input name="imsi" onclick="showCard(true)" readonly="readonly"/></td></tr>
 				<tr><th>指定类型：</th><td><select name="type"><option value="0">临时指定</option><option value="1">一直指定</option></select></tr>
 				<tr style="height:20px"></tr>
 				<tr><td colspan="2" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="updateData()">提 交</a></td></tr>
@@ -97,6 +98,13 @@
   <script type="text/javascript">
   var input_str = '<div><input type="hidden" name="idStatus" /><input name="imsi" readonly="readonly"/>'+
 	  			  '		<span class="btn-delete" onclick="showCard()">获取</span><span class="btn-delete" onclick="removeInput(this)">删除</span></div>';
+
+  var toolbar = [{
+      iconCls: 'icon-save',
+      text:'选取并关闭',
+      handler: selectCards
+  	}
+  ];
   var options={
 			title:'指定卡列表',
 			queryParams:$('#queryForm').serializeObject(),
@@ -217,7 +225,7 @@
 		$('#doDialog').dialog({
 			modal : true,
  			width:400,
- 			height:300,
+ 			height:230,
  			cache: false,
 			title : "添加"
 		});
@@ -325,11 +333,27 @@
 	function showTerminal(){
 		$('#terminalDialog').dialog('open');
 	}
-	
-	function showCard(){
+
+	/**选卡时候的弹框，single是为了标记针对修改卡重新选卡的标记，主要是修改toolbar和onclickRow属性**/
+	function showCard(single){
+	    if(single){
+            card_options.toolbar=null;
+            card_options.onClickRow=function(rowIndex, rowData){
+                $('#cardDialog').dialog('close');
+                $('#updateForm [name="imsi"]').val(rowData.imsi);
+                $('#updateForm [name="lastStatus"]').val(rowData.status);
+            }
+            $('#cardDialog').dialog({title:'选取sim卡IMSI<span style="color:red">【单击一行选中】</span>'})
+		}else {
+	        card_options.toolbar=toolbar;
+	        card_options.onClickRow=null;
+            $('#cardDialog').dialog({title:'选取sim卡IMSI<span style="color:red">【可多选】</span>'})
+        }
+		console.log(card_options);
 		$('#cardDg').datagrid(card_options);
 		$('#cardDialog').dialog('open');
 	}
+
 	
 	function selectCards(){
 		var selectRows = $('#cardDg').datagrid("getSelections");

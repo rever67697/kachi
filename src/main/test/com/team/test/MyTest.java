@@ -110,4 +110,12 @@ public class MyTest {
 		System.out.println(countryService.getRoamcountryDate(new Date(), 840, "yyyy-MM-dd HH:mm:ss"));
 	}
 
+	@Test
+	public void testSimGroup(){
+		MemcachedItem m  = simGroupCache.gets("0_46004_0_30_9");
+		List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
+		for (GroupCacheSim groupCacheSim : list) {
+			System.out.println(groupCacheSim);
+		}
+	}
 }

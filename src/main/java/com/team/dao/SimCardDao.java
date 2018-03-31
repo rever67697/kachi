@@ -107,4 +107,6 @@ public interface SimCardDao {
 	public List<SimCard> getByPool(@Param("cpId") Integer cpId);
 
 	public SimCard getByImsi(@Param("imsi") Long imsi);
+
+	public int updateByImsi(@Param("imsi") Long imsi);
 }

@@ -35,7 +35,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/update")
-	@PermissionLog(key = "type_类型")
+	@PermissionLog(key = "tsid_终端编号;imsi_IMSI;type_类型")
 	public ReturnMsg update(ReadyTerminalSim readyTerminalSim,HttpServletRequest request) {
 		Integer operator = CommonUtil.getUser(request).getId();
 		readyTerminalSim.setOperator(operator);

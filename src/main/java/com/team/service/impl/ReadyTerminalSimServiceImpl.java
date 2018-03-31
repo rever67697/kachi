@@ -1,9 +1,6 @@
 package com.team.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,6 +72,17 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
 		int count = 0;
 		if (readyTerminalSim.getId() != null) {
+			//1.获取原数据
+			ReadyTerminalSim old = readyTerminalSimDao.getBydId(readyTerminalSim.getId());
+
+			if(old !=null && !old.getImsi().equals(readyTerminalSim.getImsi())){
+
+				//如果imsi发生改变，需要把先更新之前卡的状态
+				simCardDao.resetStatus(old);
+
+				//把修改后的imsi的状态改为指定
+				simCardDao.updateByImsi(readyTerminalSim.getImsi());
+			}
 			count = readyTerminalSimDao.update(readyTerminalSim);
 		}
 		return count>0?super.successTip():super.errorTip();

@@ -16,7 +16,12 @@
 		<if test="imsi!=null ">
 			and r.imsi like #{imsi,jdbcType=BIGINT}
 		</if>
-		order by insertDate desc
+		order by tsid,insertDate desc
+	</select>
+
+	<select id="getBydId" resultType="com.team.model.ReadyTerminalSim">
+		select * from m_ready_terminal_sim
+		where id=#{id,jdbcType=INTEGER}
 	</select>
 
 	<delete id="delete" parameterType="com.team.model.ReadyTerminalSim">
@@ -44,7 +49,9 @@
 	<update id="update" parameterType="com.team.model.ReadyTerminalSim">
 		update m_ready_terminal_sim
 		set operator = #{operator,jdbcType=INTEGER},
-			type = #{type,jdbcType=INTEGER}
+			type = #{type,jdbcType=INTEGER},
+			imsi = #{imsi,jdbcType=BIGINT},
+			lastStatus=#{lastStatus,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 </mapper>

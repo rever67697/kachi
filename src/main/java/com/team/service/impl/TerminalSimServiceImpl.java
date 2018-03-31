@@ -78,7 +78,7 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 
 		//释放simcard
 		for (TerminalSim terminalSim : terminalSimList) {
-			simCardService.updateGroupSim2Cache(simCardDao.getByImsi(terminalSim.getImsi()),1);
+			simCardService.updateGroupSim2Cache(simCardDao.getByImsi(terminalSim.getImsi()),0);
 		}
 
 

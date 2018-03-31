@@ -189,6 +189,12 @@
 		</foreach>
 		)
 	</update>
+	
+	<update id="updateByImsi">
+		update m_simcard
+		set status=2
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</update>
 
 	<update id="update" parameterType="com.team.model.SimCard">
 		update m_simcard
