@@ -33,7 +33,7 @@
 			<input type="hidden" name="id"/>
 			<table class="table th-normal">
 				<tr><th>版本号：</th><td><input name="tVersion" class="easyui-validatebox" required="true"/></td></tr>
-				<tr><th>源版本号：</th><td><input name="oVersion" class="easyui-validatebox" required="true"/></td></tr>
+				<tr><th>源版本号：</th><td><input name="oVersion" class="easyui-validatebox"/></td></tr>
 				<tr><th>下载地址：</th><td><input name="downUrl" class="easyui-validatebox" required="true"/></td></tr>
 				<tr><th>状态：</th><td><select name="status"><option value="0">有效</option><option value="1">无效</option></select></td></tr>
 				<tr><th>类型：</th><td><select name="type" ><option value="0">升级所有设备</option><option value="1">根据终端列表升级</option></select></td></tr>
@@ -55,7 +55,7 @@
 				<div class="easyui-layout" fit="true">
 					<div region="north" style="height:44px;background:#fff;overflow:hidden;">
 						<form id="terminalForm">
-							<table class="table">
+							<table class="table" style="margin:0">
 								<tr>
 									<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
 									<th>终端状态：</th>

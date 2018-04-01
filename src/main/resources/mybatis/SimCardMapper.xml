@@ -199,6 +199,7 @@
 	<update id="update" parameterType="com.team.model.SimCard">
 		update m_simcard
 		set	packageId = #{packageId,jdbcType=INTEGER},
+			number = #{number,jdbcType=VARCHAR},
 			offPeriod = #{offPeriod,jdbcType=INTEGER},
 			sustained = #{sustained,jdbcType=INTEGER},
 			simmeProtocol = #{simmeProtocol,jdbcType=VARCHAR},
