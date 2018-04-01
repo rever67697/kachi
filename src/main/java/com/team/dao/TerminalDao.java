@@ -52,5 +52,12 @@ public interface TerminalDao {
 	 *return
 	 */
 	public int updateDepartment(Map<String, Object> map);
+
+	/**
+	 * 根据终端编号列表查询终端列表
+	 * @param list
+	 * @return
+	 */
+	public List<Terminal> getSelectedList(String[] list);
 	
 }

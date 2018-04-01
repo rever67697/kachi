@@ -43,6 +43,14 @@
         order by d.id,r.tsid
 	</select> 
 	
+	<select id="getSelectedList" resultType="com.team.model.Terminal">
+		select * from m_terminal
+		where tsid in
+		<foreach collection="array" item="item" separator="," open="(" close=")">
+			#{item,jdbcType=INTEGER}
+		</foreach>
+	</select>
+	
 	<update id="deleteTerminalByIds" parameterType="java.util.List">
 	    update m_terminal
 	    set status=3

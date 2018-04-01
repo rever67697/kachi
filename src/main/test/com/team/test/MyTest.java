@@ -8,6 +8,7 @@ import com.hqrh.rw.common.model.GroupCacheSim;
 import com.schooner.MemCached.MemcachedItem;
 import com.team.dao.SimCardDao;
 import com.team.model.SimCard;
+import com.team.service.SimCardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class MyTest {
 	private SimPoolService service;
 	@Autowired
 	private CountryService countryService;
+	@Autowired
+	private SimCardService simCardService;
 
 	@Autowired
 	private SimCardDao simCardDao;
@@ -117,5 +120,11 @@ public class MyTest {
 		for (GroupCacheSim groupCacheSim : list) {
 			System.out.println(groupCacheSim);
 		}
+	}
+
+	@Test
+	public void releaseCard(){
+		simCardService.updateGroupSim2Cache(simCardDao.getByImsi(460040458106549L),0);
+
 	}
 }

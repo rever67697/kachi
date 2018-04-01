@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.model.Country;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -56,7 +57,18 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
-	@Override
+    @Override
+    public ResultList getSelectedList(String terminalList) {
+		if(!CommonUtil.StringIsNull(terminalList)){
+			String[] code = terminalList.split(",");
+			List<Terminal> list = terminalDao.getSelectedList(code);
+			PageInfo<Terminal> pageInfo = new PageInfo<Terminal>(list);
+			return new ResultList(pageInfo.getTotal(), list);
+		}
+		return null;
+    }
+
+    @Override
 	/**
 	 * 根据id批量删除终端
 	 */

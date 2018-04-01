@@ -20,7 +20,9 @@ public interface TerminalService {
 	
 	public ResultList getTerminalList(Integer departmentId,Integer dId,Integer tsid,Integer status,
 			Integer activated,int page,int rows);
-	
+
+	public ResultList getSelectedList(String terminalList);
+
 	public ReturnMsg deleteTerminalByIds(String ids);
 	
 	public ReturnMsg saveTerminal(Terminal terminal);

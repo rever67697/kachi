@@ -98,5 +98,11 @@ public class TerminalController {
 		terminalChargeRecord.setOperator(CommonUtil.getUser(request).getName());
 		return terminalChargeService.charge(terminalChargeRecord);
 	}
-	
+
+	@PostMapping("/selectedList")
+	public ResultList selectedList(String terminalList){
+		return terminalService.getSelectedList(terminalList);
+	}
+
+
 }

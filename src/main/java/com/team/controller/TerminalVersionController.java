@@ -8,6 +8,7 @@ import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,17 +21,18 @@ import java.util.Date;
  */
 @RestController
 @PermissionLog("App版本管理")
+@RequestMapping("/tv")
 public class TerminalVersionController {
 
     @Autowired
     private TerminalVersionService terminalVersionService;
 
-    @PostMapping("/tvList")
+    @PostMapping("/list")
     public ResultList list(int page,int rows){
         return terminalVersionService.list(page,rows);
     }
 
-    @PostMapping("/saveTV")
+    @PostMapping("/save")
     @PermissionLog(key = "tVersion_目标版本号;oVersion_源版本号;downUrl_下载地址")
     public ReturnMsg saveTV(TerminalVersion terminalVersion, HttpServletRequest request){
         String operatorMan = CommonUtil.getUser(request).getName();

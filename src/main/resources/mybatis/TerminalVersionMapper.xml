@@ -9,7 +9,7 @@
     
     <insert id="save" parameterType="com.team.model.TerminalVersion">
         insert into m_terminal_version
-        (tVersion,oVersion,`describe`,downUrl,status,`type`,operatorMan,operatorTime)
+        (tVersion,oVersion,`describe`,downUrl,status,`type`,operatorMan,operatorTime,terminalList)
         VALUES
         (
           #{tVersion,jdbcType=VARCHAR},
@@ -19,7 +19,8 @@
           #{status,jdbcType=INTEGER},
           #{type,jdbcType=INTEGER},
           #{operatorMan,jdbcType=VARCHAR},
-          #{operatorTime,jdbcType=TIMESTAMP}
+          #{operatorTime,jdbcType=TIMESTAMP},
+          #{terminalList,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -32,7 +33,8 @@
             status = #{status,jdbcType=INTEGER},
             `type` = #{type,jdbcType=INTEGER},
             operatorMan = #{operatorMan,jdbcType=VARCHAR},
-            operatorTime = #{operatorTime,jdbcType=TIMESTAMP}
+            operatorTime = #{operatorTime,jdbcType=TIMESTAMP},
+            terminalList = #{terminalList,jdbcType=VARCHAR}
         where id=#{id,jdbcType=INTEGER}
     </update>
 </mapper>
