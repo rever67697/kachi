@@ -113,10 +113,17 @@ public class SimCardController {
 		return simCardService.deleteSimCard(ids);
 	}
 
+//	@PostMapping("/update")
+//	@PermissionLog(key="imsi_IMSI;isChangePeriod_账期是否改变;isChangePackage_套餐是否改变")
+//	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
+//		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
+//		return returnMsg;
+//	}
+
 	@PostMapping("/update")
-	@PermissionLog(key="imsi_IMSI;isChangePeriod_账期是否改变;isChangePackage_套餐是否改变")
-	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
-		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
+	@PermissionLog(key="imsi_IMSI")
+	public ReturnMsg update(SimCard simCard){
+		ReturnMsg returnMsg = simCardService.update(simCard);
 		return returnMsg;
 	}
 

@@ -337,6 +337,7 @@ public class CommonUtil {
 	 * @return 转换后的对象
 	 */
 	public static  <T1,T2> T2 convertBean(T1 orimodel, Class<T2> castClass) {
+		Class temp = castClass;
 		T2 returnModel = null;
 		try {
 			returnModel = castClass.newInstance();
@@ -364,8 +365,11 @@ public class CommonUtil {
 				Method setMethod = setpd.getWriteMethod();
 				setMethod.invoke(returnModel, transValue);
 			} catch (Exception e) {
-				throw  new RuntimeException("cast "+orimodel.getClass().getName()+"to "
-						+castClass.getName()+" failed");
+				//如果是integer转int类型的，报错跳过
+				if(!(setpd.getPropertyType().equals(int.class) && getpd.getPropertyType().equals(Integer.class))){
+					throw  new RuntimeException("cast "+temp.getClass().getName()+" to "
+							+castClass.getName()+" failed");
+				}
 			}
 		}
 		return returnModel;

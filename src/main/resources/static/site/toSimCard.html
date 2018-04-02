@@ -53,11 +53,11 @@
 		  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
 					<form id="doForm">
 						<input type="hidden" name="id"/>
-						<input type="hidden" name="compareOffPeriod"/>
-						<input type="hidden" name="compareSustained"/>
-						<input type="hidden" name="comparePackage"/>
-						<input type="hidden" name="isChangePeriod"/>
-						<input type="hidden" name="isChangePackage"/>
+						<!--<input type="hidden" name="compareOffPeriod"/>-->
+						<!--<input type="hidden" name="compareSustained"/>-->
+						<!--<input type="hidden" name="comparePackage"/>-->
+						<!--<input type="hidden" name="isChangePeriod"/>-->
+						<!--<input type="hidden" name="isChangePackage"/>-->
 						<input type="hidden" name="operatorCode"/>
 						<input type="hidden" name="departmentId"/>
 						<input type="hidden" name="cpId"/>
@@ -85,7 +85,7 @@
 								<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
 							<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
 								<th>省：</th><td><select name="provinceCode"></select></td></tr>
-							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" /></td>
+							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly"/></td>
 								<th>插入时间：</th><td><input name="insertDate" readonly="readonly"/></td></tr>
 							<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
 								<th>VPNIP：</th><td><input name="vpnIp"/></td></tr>
@@ -96,7 +96,7 @@
 							<tr><th>OPC：</th><td><input name="opc"/></td>
 								<th>OP：</th><td><input name="op"/></td></tr>
 							<tr><th>APN：</th><td><input name="opc"/></td>
-								<th>开卡日期：</th><td><input name="openDate"/></td></tr>
+								<th>开卡日期：</th><td><input name="openDate" readonly="readonly"/></td></tr>
 							<tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
 								<th>分组：</th><td><input name="groupPref"/></td></tr>
 							<tr><th>备注：</th><td><input name="note"/></td>
@@ -112,6 +112,7 @@
 				<p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
 				<p>3.不需要改的属性不要改动。</p>
 				<form id="doBatchForm">
+					<input type="hidden" name="id" value="-1"/>
 					<table class="table th-normal">
 						<tr><th>套餐：</th><td><select name="packageId"></select></td>
 							<th>卡状态：</th><td><select name="status">
@@ -178,7 +179,7 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-105
+			height:window.innerHeight-109
 		};
   
 	$(function(){
@@ -238,9 +239,9 @@
 			 initData(rowData);
 
              $('#doBtn').show();
-             $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
-             $('#doForm [name=compareSustained]').val(rowData.sustained);
-             $('#doForm [name=comparePackage]').val(rowData.packageId);
+//             $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
+//             $('#doForm [name=compareSustained]').val(rowData.sustained);
+//             $('#doForm [name=comparePackage]').val(rowData.packageId);
              $('#doForm [name=countryCode]').attr('disabled',true);
              $('#doDialog').dialog({title:'修改卡信息'});
              $('#doDialog').dialog('open');
@@ -320,22 +321,22 @@
 
   	function saveData() {
 		if($('#doForm').form('validate')) {
-            var isChangePeriod = false;
-            var isChangePackage = false;
-            if($('#doForm [name=id]').val()){
-                if(($('#doForm [name=compareOffPeriod]').val() != $('#doForm [name=offPeriod]').val())
-                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=sustained]').val()))
-                    isChangePeriod = true;
-                if(($('#doForm [name=comparePackage]').val() != $('#doForm [name=packageId]').val()))
-                    isChangePackage = true;
-            }
-
-            $('#doForm [name=isChangePeriod]').val(isChangePeriod);
-            $('#doForm [name=isChangePackage]').val(isChangePackage);
+//            var isChangePeriod = false;
+//            var isChangePackage = false;
+//            if($('#doForm [name=id]').val()){
+//                if(($('#doForm [name=compareOffPeriod]').val() != $('#doForm [name=offPeriod]').val())
+//                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=sustained]').val()))
+//                    isChangePeriod = true;
+//                if(($('#doForm [name=comparePackage]').val() != $('#doForm [name=packageId]').val()))
+//                    isChangePackage = true;
+//            }
+//
+//            $('#doForm [name=isChangePeriod]').val(isChangePeriod);
+//            $('#doForm [name=isChangePackage]').val(isChangePackage);
             //帐期日或者持续时间已经前后发生改变
-            if(isChangePeriod || isChangePackage){
-                $.messager.confirm('提示','账期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
-                    if(r){
+//            if(isChangePeriod || isChangePackage){
+//                $.messager.confirm('提示','账期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
+//                    if(r){
                         $('#doDialog').dialog('close');
                         $('#dg').datagrid('loading');
                         $('#doForm [name=countryCode]').attr('disabled',false);
@@ -349,22 +350,22 @@
                                 }
                             }
                         });
-                    }
-                });
-            }else{
-                $('#doDialog').dialog('close');
-                $('#dg').datagrid('loading');
-                $.post(kcJs.fn.getContextPath()+'/simcard/update',$('#doForm').serializeObject(),function(data){
-                    if(data){
-                        $.messager.alert('提示',data.msg,'info');
-                        if(data.code=='200'){
-                            doQuery();
-                        }else{
-                            $('#dg').datagrid('loaded');
-                        }
-                    }
-                });
-            }
+//                    }
+//                });
+//            }else{
+//                $('#doDialog').dialog('close');
+//                $('#dg').datagrid('loading');
+//                $.post(kcJs.fn.getContextPath()+'/simcard/update',$('#doForm').serializeObject(),function(data){
+//                    if(data){
+//                        $.messager.alert('提示',data.msg,'info');
+//                        if(data.code=='200'){
+//                            doQuery();
+//                        }else{
+//                            $('#dg').datagrid('loaded');
+//                        }
+//                    }
+//                });
+//            }
         }
     }
 

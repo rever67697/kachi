@@ -214,7 +214,9 @@
 			op = #{op,jdbcType=VARCHAR},
 			apn = #{apn,jdbcType=VARCHAR},
 			note = #{note,jdbcType=VARCHAR},
-			softType = #{softType,jdbcType=INTEGER}
+			softType = #{softType,jdbcType=INTEGER},
+			expiryDate = #{expiryDate,jdbcType=TIMESTAMP},
+			openDate = #{openDate,jdbcType=TIMESTAMP}
 		where id=#{id,jdbcType=INTEGER}
 	</update>
 	
@@ -264,5 +266,10 @@
 	<select id="getByImsi" resultType="com.team.model.SimCard">
 		select * from m_simcard
 		where imsi=#{imsi,jdbcType=BIGINT}
+	</select>
+
+	<select id="getById" resultType="com.team.model.SimCard">
+		select * from m_simcard
+		where id=#{id,jdbcType=INTEGER}
 	</select>
 </mapper>

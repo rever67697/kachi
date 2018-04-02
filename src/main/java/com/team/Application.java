@@ -121,6 +121,13 @@ public class Application{
                 try {
                     date = sdf.parse((String) source);
                 } catch (ParseException e) {
+                     sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    try {
+                        date = sdf.parse((String) source);
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
                 return date;
             }

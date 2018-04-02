@@ -109,4 +109,6 @@ public interface SimCardDao {
 	public SimCard getByImsi(@Param("imsi") Long imsi);
 
 	public int updateByImsi(@Param("imsi") Long imsi);
+
+	public SimCard getById(@Param("id") Integer id);
 }

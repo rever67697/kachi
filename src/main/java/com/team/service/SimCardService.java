@@ -26,7 +26,7 @@ public interface SimCardService {
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
 
-	public ReturnMsg update(SimCard simCard, boolean isChangePeriod, boolean isChangePackage);
+	public ReturnMsg update(SimCard simCard);
 
 	public SimGroup initGroupSim2Cache(SimCard simCard);
 
