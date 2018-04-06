@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.team.aop.PermissionLog;
+import com.team.annotation.PermissionLog;
 import com.team.model.ChannelCard;
 import com.team.service.ChannelCardService;
 import com.team.util.CommonUtil;

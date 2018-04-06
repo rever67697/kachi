@@ -161,7 +161,7 @@
 	           sum(case when r.status=4 then 1 else 0 end) offCardCount
 		from  m_simcard r
 		left join m_simpool p
-		on r.cpid=p.id
+		on r.cpid=p.spid
 		left join m_department d
 		on p.departmentid=d.id and d.status=0
 		where 1=1

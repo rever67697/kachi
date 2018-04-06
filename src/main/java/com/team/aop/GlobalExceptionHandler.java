@@ -1,5 +1,6 @@
 package com.team.aop;
 
+import com.team.exception.KachiException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -1,6 +1,6 @@
 package com.team.controller;
 
-import com.team.aop.PermissionLog;
+import com.team.annotation.PermissionLog;
 import com.team.model.TerminalVersion;
 import com.team.service.TerminalVersionService;
 import com.team.util.CommonUtil;

@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.team.annotation.PermissionLog;
+import com.team.exception.KachiException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,7 +23,6 @@ import com.team.model.auth.TbAuthUser;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.util.LogManager;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 业务拦截权限和记录日志
@@ -35,7 +36,7 @@ public class PermissionLogAop {
 	@Autowired
 	private OperationLogDao operationLogDao;
 
-	@Pointcut(value="@annotation(com.team.aop.PermissionLog)")
+	@Pointcut(value="@annotation(com.team.annotation.PermissionLog)")
 	public void cutService(){
 		
 	}

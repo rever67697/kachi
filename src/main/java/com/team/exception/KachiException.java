@@ -1,4 +1,4 @@
-package com.team.aop;
+package com.team.exception;
 /**
  * 创建日期：2018-1-23下午4:33:18
  * author:wuzhiheng

@@ -247,7 +247,7 @@ Calendar.prototype.show = function (dateControl, popuControl) {
 	this.bindData();
 
 	var xy = this.getAbsPoint(popuControl);
-	this.panel.style.left = (xy.x+4) + "px";
+	this.panel.style.left = (xy.x+2) + "px";
 	this.panel.style.top = (xy.y + dateControl.offsetHeight) + "px";
 	this.panel.style.visibility = "visible";
 };
@@ -324,7 +324,7 @@ String.prototype.toDate = function(delimiter, pattern) {
 	return new Date(y, m, d);
 };
 
-document.writeln('<div id="__calendarPanel" style="position:absolute;visibility:hidden;z-index:9999;background-color:#FFFFFF;border:1px solid #666666;width:200px;height:205px;">');
+document.writeln('<div id="__calendarPanel" style="position:absolute;visibility:hidden;z-index:9999;background-color:#FFFFFF;border:1px solid #666666;width:205px;height:210px;">');
 document.writeln('<iframe name="__calendarIframe" id="__calendarIframe" width="100%" height="100%" scrolling="no" frameborder="0" style="margin:0px;"><\/iframe>');
 var __ci = window.frames['__calendarIframe'];
 __ci.document.writeln('<!DOCTYPE html PUBLIC "-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd">');
@@ -340,7 +340,7 @@ __ci.document.writeln('select {font-size:12px;background-color:#EFEFEF;}');
 __ci.document.writeln('table {border:0px solid #CCCCCC;background-color:#FFFFFF}');
 __ci.document.writeln('th {font-size:12px;font-weight:normal;background-color:#FFFFFF;}');
 __ci.document.writeln('th.theader {font-weight:normal;background-color:#666666;color:#FFFFFF;width:24px;}');
-__ci.document.writeln('select.year {width:64px;}');
+__ci.document.writeln('select.year {width:75px;}');
 __ci.document.writeln('select.month {width:60px;}');
 __ci.document.writeln('td {font-size:12px;text-align:center;}');
 __ci.document.writeln('td.sat {color:#0000FF;background-color:#EFEFEF;}');

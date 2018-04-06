@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.team.aop.PermissionLog;
+import com.team.annotation.PermissionLog;
 import com.team.service.TerminalSimService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;

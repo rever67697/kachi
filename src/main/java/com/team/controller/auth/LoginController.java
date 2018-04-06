@@ -14,11 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.team.aop.KachiException;
-import com.team.aop.PermissionLog;
+import com.team.exception.KachiException;
+import com.team.annotation.PermissionLog;
 import com.team.model.auth.TbAuthPermission;
 import com.team.model.auth.TbAuthRole;
 import com.team.model.auth.TbAuthUser;

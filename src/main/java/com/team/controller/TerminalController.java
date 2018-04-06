@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.team.aop.PermissionLog;
+import com.team.annotation.PermissionLog;
 import com.team.model.Terminal;
 import com.team.service.CostDayService;
 import com.team.service.TerminalService;

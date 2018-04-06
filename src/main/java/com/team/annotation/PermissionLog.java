@@ -1,4 +1,4 @@
-package com.team.aop;
+package com.team.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
