@@ -8,9 +8,12 @@ import com.hqrh.rw.common.model.GroupCacheSim;
 import com.schooner.MemCached.MemcachedItem;
 import com.team.dao.SimCardDao;
 import com.team.model.SimCard;
+import com.team.model.SimPackage;
 import com.team.service.SimCardService;
+import com.team.util.CommonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -106,7 +109,7 @@ public class MyTest {
 		simPool.setName("wzh");
 		service.saveSimPool(simPool);
 	}
-	
+
 	@Test
 	public void testDate(){
 		//System.out.println(countryService.getRoamcountryDate(new Date(), 156, "yyyy-MM-dd HH:mm:ss"));
@@ -115,7 +118,7 @@ public class MyTest {
 
 	@Test
 	public void testSimGroup(){
-		MemcachedItem m  = simGroupCache.gets("0_46004_0_30_9");
+		MemcachedItem m  = simCache.gets("0_46004_0_30_9");
 		List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
 		for (GroupCacheSim groupCacheSim : list) {
 			System.out.println(groupCacheSim);
@@ -125,6 +128,28 @@ public class MyTest {
 	@Test
 	public void releaseCard(){
 		simCardService.updateGroupSim2Cache(simCardDao.getByImsi(460040458106549L),0);
+
+	}
+
+	@Test
+	public void testGetSimcard(){
+//		Object object = simGroupCache.get("SIM_460011498632926");
+		Object object = simCache.get("FLOW_DAY_460111103004282");
+
+		System.out.println(object);
+
+		com.hqrh.rw.common.model.SimCard simCard = new com.hqrh.rw.common.model.SimCard();
+
+//		BeanUtils.copyProperties(object,simCard);
+		System.out.println(CommonUtil.convertBean(object, com.hqrh.rw.common.model.SimCard.class));
+		System.out.println(CommonUtil.convertBean(object, SimCard.class));
+	}
+
+	@Test
+	public void testGetSimpackage(){
+		Object object = simCache.get(MConstant.CACHE_PACKAGE_KEY_PREF+"30");
+		SimPackage simPackage = CommonUtil.convertBean(object, SimPackage.class);
+		System.out.println(1);
 
 	}
 }

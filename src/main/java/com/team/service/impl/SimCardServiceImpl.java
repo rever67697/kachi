@@ -3,16 +3,11 @@ package com.team.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqrh.rw.common.model.GroupCacheSim;
+import com.hqrh.rw.common.model.GroupKey;
 import com.schooner.MemCached.MemcachedItem;
-import com.team.dao.FlowDayDao;
-import com.team.dao.FlowMonthDao;
-import com.team.dao.SimCardDao;
-import com.team.dao.SimPackageDao;
+import com.team.dao.*;
 import com.team.model.*;
-import com.team.service.CountryService;
-import com.team.service.OperatorService;
-import com.team.service.SimCardService;
-import com.team.service.SimGroupService;
+import com.team.service.*;
 import com.team.util.*;
 import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
@@ -52,11 +47,15 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	@Autowired
 	private CountryService countryService;
 	@Autowired
+	private GroupKeyService groupKeyService;
+	@Autowired
 	private FlowMonthDao flowMonthDao;
 	@Autowired
 	private FlowDayDao flowDayDao;
 	@Autowired
 	private SimPackageDao simPackageDao;
+	@Autowired
+	private TerminalSimDao terminalSimDao;
 
 	@Override
 	/**
@@ -79,7 +78,17 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		for (String string : arr) {
 			list.add(Integer.valueOf(string));
 		}
+		//获取卡列表
+		List<SimCard> simCardList = simCardDao.getByIds(list);
+
+		//删除卡
 		int count = simCardDao.deleteSimCard(list);
+
+		//删除缓存
+		for (SimCard simCard : simCardList) {
+			simCache.remove(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi());
+		}
+
 		return count > 0 ? super.successTip() : super.errorTip();
 	}
 
@@ -178,6 +187,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		//3.需要更新缓存里面的卡组信息
 		initGroupSim2Cache(simCard);
+
+		//4.更新卡缓存
+		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+		if(!bCached) {
+			logger.error("save SimCard to Cache is error! simCard: " + simCard);
+		}
 		return super.successTip();
 	}
 
@@ -292,9 +308,9 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 					return null;
 				}
 			}
-			simGroup = addSim2SimGroupCache(newKey, simCard);
+			simGroup = addSim2SimGroupCache(newKey, simCard,groupId);
 			if (simGroup == null) {
-				simGroup = addSim2SimGroupCache(newKey, simCard);
+				simGroup = addSim2SimGroupCache(newKey, simCard,groupId);
 				if (simGroup == null) {
 					logger.error("addSim2SimGroupCache is fail! newKey: "
 							+ newKey + "/ imsi: " + imsi);
@@ -302,9 +318,9 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				}
 			}
 		} else {
-			simGroup = addSim2SimGroupCache(newKey, simCard);
+			simGroup = addSim2SimGroupCache(newKey, simCard,groupId);
 			if (simGroup == null) {
-				simGroup = addSim2SimGroupCache(newKey, simCard);
+				simGroup = addSim2SimGroupCache(newKey, simCard,groupId);
 				if (simGroup == null) {
 					logger.error("oldKey is null,addSim2SimGroupCache is fail! newKey: "
 							+ newKey + "/ imsi: " + imsi);
@@ -351,9 +367,20 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			//刷新缓存
 			//获取更新后的simcard列表
 			List<SimCard> simCardList = simCardDao.getByIds(list);
+
 			for (SimCard card : simCardList) {
-				//刷新缓存
-				initGroupSim2Cache(card);
+
+				//更新卡缓存
+				boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+						CommonUtil.convertBean(card, com.hqrh.rw.common.model.SimCard.class));
+				if(!bCached) {
+					logger.error("save SimCard to Cache is error! simCard: " + simCard);
+				}
+
+				//更新卡组缓存
+				if(simCard.getPackageId() != null && simCard.getPackageId() != 0) {//TODO 只有一些特定字段发生变化时，才需要更新组缓存
+					initGroupSim2Cache(card);
+				}
 			}
 		}
 
@@ -505,7 +532,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 					if (gcs.getImsi() == imsi) { // 找到了要被删除的卡，从列表里去掉
 						logger.info("removeSimBySimGroupCache,groupKey: "
 								+ groupKey + "/ value:" + gcs);
-						groupCacheSims.remove(gcs);
+//						groupCacheSims.remove(gcs);
+						groupCacheSims.remove(i-1);//TODO  这里不能直接删除，因为不是同一个对象了，要根据索引下标删除
 						long casUnique = item.casUnique;
 						boolean update = simCache.cas(groupKey, groupCacheSims,
 								casUnique);
@@ -553,16 +581,43 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return resultcode;
 	}
 
+
+	/**
+	 * 如果分组的Key还没有使用，添加groupKey到数据库
+	 * @param key
+	 * @param simCard
+	 * @param groupId
+	 */
+	public void addGroupKey(String key, SimCard simCard, int groupId) {
+		if(key == null || simCard == null) {
+			logger.error("addGroupKey is Error, groupKey: "+ key + "/simCard: " + simCard );
+			return;
+		}
+
+		GroupKey groupKey =  groupKeyService.getGroupKey(key);
+		if(groupKey == null) {
+//			(String groupKey,int departmentId,int operatorCode,int provinceCode,int packageId,int groupId
+			groupKey = new GroupKey(key,simCard.getDepartmentId(),simCard.getOperatorCode()
+					,simCard.getProvinceCode(),simCard.getPackageId(),groupId);
+			groupKeyService.addGroupKey(groupKey);
+			logger.info("addGroupKey 2 db: " + groupKey);
+		}
+	}
+
 	/**
 	 * 添加SIM卡到组缓存
 	 * 
 	 * @param groupKey
 	 * @return
 	 */
-	public SimGroup addSim2SimGroupCache(String groupKey, SimCard simCard) {
+	public SimGroup addSim2SimGroupCache(String groupKey, SimCard simCard,int groupId) {
 		if (groupKey == null) {
 			return null;
 		}
+
+		//如果分组的Key还没有使用，添加到组Key表
+		addGroupKey(groupKey,simCard,groupId);
+
 		long imsi = simCard.getImsi();
 
 		SimGroup simGroup = null;
@@ -573,15 +628,39 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		if (item != null) {
 			groupCacheSims = (List<GroupCacheSim>) item.getValue();
 			if (groupCacheSims != null) {
+				//TODO 修改了接口
 				for (int i = 0; i < groupCacheSims.size(); i++) {
 					//好鬼烦啊
-					GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSims.get(i),GroupCacheSim.class);
-					System.out.println(gcs);
-					if (gcs.getImsi() == imsi) { // 缓存有这张卡
+					GroupCacheSim sg = CommonUtil.convertBean(groupCacheSims.get(i),GroupCacheSim.class);
+					System.out.println("addSim2SimGroupCache-->"+sg);
+					if (sg.getImsi() == imsi) { // 缓存有这张卡
 						simGroup = getSimGroupByDB(imsi);
 						if (simGroup == null) {
-							simGroup = addSimGroup2DB(groupKey, simCard);
+							simGroup = addSimGroup2DB(groupKey, simCard,groupId);
 						}
+
+						int usedSim = 0;
+						TerminalSim  terminalSim = getTerminalSimBySim(imsi);
+						if(terminalSim != null) {
+							usedSim = 1;
+						}
+						if(usedSim != sg.getStatus()) {
+							sg.setStatus(usedSim);
+							long casUnique = item.casUnique;
+							logger.debug("update groupCacheSim 1:  " + sg);
+
+							//TODO  修改了接口
+							groupCacheSims.remove(i);
+							groupCacheSims.add(sg);
+
+							boolean update = simGroupCache.cas(groupKey, groupCacheSims, casUnique);
+							if(!update) {
+								logger.error("update groupCacheSim fail! " + sg);
+							}
+						}else {
+							logger.debug("update groupCacheSim 1-1:  " + sg);
+						}
+
 						return simGroup;
 					}
 				}
@@ -590,12 +669,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				groupCacheSims.add(groupCacheSim);
 
 				long casUnique = item.casUnique;
-				boolean update = simCache.cas(groupKey, groupCacheSims,
-						casUnique);
+				logger.debug("update groupCacheSim 2:  " + groupCacheSim);
+				boolean update = simCache.cas(groupKey, groupCacheSims,casUnique);
 				if (!update) { // 更新缓存失败，再来一次
+					logger.error("update groupCacheSim fail! " + groupCacheSim);
 					return null;
 				} else {
-					simGroup = addSimGroup2DB(groupKey, simCard);
+					simGroup = addSimGroup2DB(groupKey, simCard,groupId);
 					return simGroup;
 				}
 			} else {
@@ -605,12 +685,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				groupCacheSims.add(groupCacheSim);
 
 				long casUnique = item.casUnique;
-				boolean update = simCache.cas(groupKey, groupCacheSims,
-						casUnique);
+				boolean update = simCache.cas(groupKey, groupCacheSims, casUnique);
 				if (!update) { // 更新缓存失败，再来一次
+					logger.error("update groupCacheSim fail! " + groupCacheSim);
 					return null;
 				} else {
-					simGroup = addSimGroup2DB(groupKey, simCard);
+					simGroup = addSimGroup2DB(groupKey, simCard,groupId);
 					return simGroup;
 				}
 			}
@@ -622,9 +702,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 			boolean update = simCache.add(groupKey, groupCacheSims);
 			if (!update) { // 更新缓存失败，再来一次
+				logger.debug("update groupCacheSim 3:  " + groupCacheSim);
 				return null;
 			} else {
-				simGroup = addSimGroup2DB(groupKey, simCard);
+				simGroup = addSimGroup2DB(groupKey, simCard,groupId);
 				return simGroup;
 			}
 		}
@@ -647,7 +728,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 *@return
 	 *return
 	 */
-	public SimGroup addSimGroup2DB(String groupKey,SimCard simCard) {
+	public SimGroup addSimGroup2DB(String groupKey,SimCard simCard,int groupId) {
 		SimGroup nSimGroup = new SimGroup();
 		nSimGroup.setImsi(simCard.getImsi());
 		nSimGroup.setGroupKey(groupKey);
@@ -658,20 +739,27 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		nSimGroup.setPackageId(simCard.getPackageId());
 		nSimGroup.setOperatorCode(simCard.getOperatorCode());
 		nSimGroup.setProvinceCode(simCard.getProvinceCode());
-		
+		nSimGroup.setGroupId(groupId);
+
 		simGroupService.insert(nSimGroup);
 		return nSimGroup;
 	}
-	
+
 	/**
 	 * 创建一个组缓存对象
 	 * @param imsi
 	 * @return
 	 */
-	public GroupCacheSim createGroupCacheSim(Long imsi) {
+	public GroupCacheSim createGroupCacheSim(long imsi) {
 		GroupCacheSim groupCacheSim = new GroupCacheSim();
 		groupCacheSim.setImsi(imsi);
-		groupCacheSim.setStatus(0);
+
+		TerminalSim  terminalSim = getTerminalSimBySim(imsi);
+		if(terminalSim == null) {
+			groupCacheSim.setStatus(0);
+		}else {
+			groupCacheSim.setStatus(1);
+		}
 		return groupCacheSim;
 	}
 
@@ -693,6 +781,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		Object object =  simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
 		FlowMonth simFlowMonth = null;
 		if(object != null) {
+			//TODO 修改了接口
 			simFlowMonth = CommonUtil.convertBean(object,FlowMonth.class);
 			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
 					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
@@ -795,6 +884,24 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 //			}
 //		}
 		return null;
+	}
+
+	public TerminalSim getTerminalSimBySim(long imsi) {
+		TerminalSim tSim = null;
+
+		List<TerminalSim> tSimList = terminalSimDao.getTerminalSimByImsi(imsi);
+		if (tSimList.size() != 0) {
+
+			if(tSimList.size() > 1) {
+				logger.error("get TerminalSim >1 ,imsi: " + imsi);
+			}
+			tSim = tSimList.get(0);
+
+		}
+		logger.debug("select TerminalSim by sql,imsi:"+ imsi + "/" + tSim);
+
+		return tSim;
+
 	}
 
 	private boolean checkParams(SimCard simCard){

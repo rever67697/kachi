@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.team.annotation.PermissionLog;
 import com.team.exception.KachiException;
+import com.team.util.IPUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -110,7 +111,7 @@ public class PermissionLogAop {
 			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str,user.getDepartmentId(),request.getRemoteAddr());
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str,user.getDepartmentId(), IPUtils.getIpAddr(request));
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {

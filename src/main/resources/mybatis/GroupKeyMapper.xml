@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.GroupKeyDao">
+
+	<select id="getGroupKey" resultType="com.hqrh.rw.common.model.GroupKey">
+		select * from m_group_key
+		where groupKey=#{groupKey,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="addGroupKey" parameterType="com.hqrh.rw.common.model.GroupKey">
+		insert into m_group_key
+		(groupKey,departmentId,operatorCode,provinceCode,packageId,groupId)
+		valus
+		(
+			#{groupKey,jdbcType=VARCHAR},
+			#{departmentId,jdbcType=INTEGER},
+			#{operatorCode,jdbcType=INTEGER},
+			#{provinceCode,jdbcType=INTEGER},
+			#{packageId,jdbcType=INTEGER},
+			#{groupId,jdbcType=INTEGER}
+		)
+	</insert>
+	
+</mapper>

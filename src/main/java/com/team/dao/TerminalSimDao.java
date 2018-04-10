@@ -21,6 +21,8 @@ public interface TerminalSimDao {
 	 *return
 	 */
 	public List<TerminalSim> getTerminalSimByTsid(@Param("tsid")Integer tsid);
+
+	public List<TerminalSim> getTerminalSimByImsi(@Param("imsi") Long imsi);
 	
 	
 	/**

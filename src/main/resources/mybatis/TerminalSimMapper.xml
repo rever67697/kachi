@@ -15,7 +15,16 @@
       		   ecardduration, runversion, vcountrycode
 		from m_terminal_sim
 		where tsid=#{tsid,jdbcType=INTEGER}
-	</select> 
+	</select>
+
+	<select id="getTerminalSimByImsi" resultType="com.team.model.TerminalSim">
+		select id, imsi, tsid,
+      		   mcc, groupkey, beattime,
+      		   date, reserve, ecardimsi,
+      		   ecardduration, runversion, vcountrycode
+		from m_terminal_sim
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</select>
 	
 	<select id="getTerminalSimList" parameterType="java.util.Map" resultType="com.team.model.TerminalSim">
 		select r.*
