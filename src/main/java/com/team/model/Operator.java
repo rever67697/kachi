@@ -23,7 +23,7 @@ public class Operator implements Serializable{
 	private Integer hasCard;
 	private String mcc;
 	private String mnc;
-	private Integer groupSize;
+	private int groupSize;
 	public Integer getId() {
 		return id;
 	}
@@ -102,10 +102,10 @@ public class Operator implements Serializable{
 	public void setMnc(String mnc) {
 		this.mnc = mnc;
 	}
-	public Integer getGroupSize() {
+	public int getGroupSize() {
 		return groupSize;
 	}
-	public void setGroupSize(Integer groupSize) {
+	public void setGroupSize(int groupSize) {
 		this.groupSize = groupSize;
 	}
 	

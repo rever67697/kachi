@@ -39,15 +39,7 @@ public class SimPool implements Serializable{
 	
 	private String lionVersion;//Controller软件版本
 	
-	private String departmentName;//代理商名称，bean额外加的，为了方便子啊页面上显示
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
+	private String departmentName;//代理商名称，bean额外加的，为了方便在页面上显示
 
 	public Integer getId() {
 		return id;
@@ -56,6 +48,7 @@ public class SimPool implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 
 	public Integer getSpid() {
 		return spid;
@@ -129,7 +122,6 @@ public class SimPool implements Serializable{
 		this.inIp = inIp;
 	}
 
-
 	public String getOutIp() {
 		return outIp;
 	}
@@ -169,6 +161,34 @@ public class SimPool implements Serializable{
 	public void setLionVersion(String lionVersion) {
 		this.lionVersion = lionVersion;
 	}
-	
-	
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	@Override
+	public String toString() {
+		return "SimPool{" +
+				"id=" + id +
+				", spid=" + spid +
+				", ip='" + ip + '\'' +
+				", type=" + type +
+				", isActive=" + isActive +
+				", departmentId=" + departmentId +
+				", mac='" + mac + '\'' +
+				", version='" + version + '\'' +
+				", name='" + name + '\'' +
+				", inIp='" + inIp + '\'' +
+				", outIp='" + outIp + '\'' +
+				", port=" + port +
+				", sumIp='" + sumIp + '\'' +
+				", webPort=" + webPort +
+				", lionVersion='" + lionVersion + '\'' +
+				", departmentName='" + departmentName + '\'' +
+				'}';
+	}
 }

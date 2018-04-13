@@ -10,7 +10,7 @@
 	<insert id="addGroupKey" parameterType="com.hqrh.rw.common.model.GroupKey">
 		insert into m_group_key
 		(groupKey,departmentId,operatorCode,provinceCode,packageId,groupId)
-		valus
+		values
 		(
 			#{groupKey,jdbcType=VARCHAR},
 			#{departmentId,jdbcType=INTEGER},

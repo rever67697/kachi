@@ -63,8 +63,6 @@ public class Terminal implements Serializable{
 	
 	private String androidVersion;
 	
-	
-	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date validityDate;//有效期截止时间
 	
@@ -128,22 +126,6 @@ public class Terminal implements Serializable{
 		this.saleType = saleType;
 		this.resetWifi = resetWifi;
 		this.androidVersion = androidVersion;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getCountryName() {
-		return countryName;
-	}
-
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
 	}
 
 	public Integer getId() {
@@ -296,6 +278,22 @@ public class Terminal implements Serializable{
 
 	public void setMeid(String meid) {
 		this.meid = meid;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
 	}
 
 	public Integer getSaleType() {

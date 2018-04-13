@@ -177,7 +177,7 @@
 	<update id="updateCardDept" parameterType="com.team.model.SimPool">
 		update m_simcard
 		set departmentId=#{departmentId,jdbcType=INTEGER}  
-		where cpId = #{id,jdbcType=INTEGER}
+		where cpId = #{spid,jdbcType=INTEGER}
 	</update>
 	
 	<update id="updateCardStatus" parameterType="java.util.List">
@@ -201,18 +201,18 @@
 		set	packageId = #{packageId,jdbcType=INTEGER},
 			number = #{number,jdbcType=VARCHAR},
 			offPeriod = #{offPeriod,jdbcType=INTEGER},
-			sustained = #{sustained,jdbcType=INTEGER},
-			simmeProtocol = #{simmeProtocol,jdbcType=VARCHAR},
+			suStained = #{suStained,jdbcType=INTEGER},
+			simMeProtocol = #{simMeProtocol,jdbcType=VARCHAR},
 			status = #{status,jdbcType=INTEGER},
 			provinceCode = #{provinceCode,jdbcType=INTEGER},
 			usedVpn = #{usedVpn,jdbcType=INTEGER},
-			vpnIp = #{vpnIp,jdbcType=VARCHAR},
+			vpnIP = #{vpnIP,jdbcType=VARCHAR},
 			vpnName = #{vpnName,jdbcType=VARCHAR},
 			vpnPass = #{vpnPass,jdbcType=VARCHAR},
 			ki = #{ki,jdbcType=VARCHAR},
 			opc = #{opc,jdbcType=VARCHAR},
 			op = #{op,jdbcType=VARCHAR},
-			apn = #{apn,jdbcType=VARCHAR},
+			APN = #{APN,jdbcType=VARCHAR},
 			note = #{note,jdbcType=VARCHAR},
 			softType = #{softType,jdbcType=INTEGER},
 			expiryDate = #{expiryDate,jdbcType=TIMESTAMP},
@@ -238,8 +238,8 @@
 			<if test="offPeriod!=null">
 				offPeriod=#{offPeriod,jdbcType=INTEGER},
 			</if>
-			<if test="sustained!=null">
-				sustained=#{sustained,jdbcType=INTEGER},
+			<if test="suStained!=null">
+				suStained=#{suStained,jdbcType=INTEGER},
 			</if>
 			<if test="provinceCode!=null">
 				provinceCode=#{provinceCode,jdbcType=INTEGER},

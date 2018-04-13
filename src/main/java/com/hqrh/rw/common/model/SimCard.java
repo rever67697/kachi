@@ -3,12 +3,32 @@ package com.hqrh.rw.common.model;
 import java.io.Serializable;
 import java.util.Date;
 
+
 public class SimCard implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7657756623557722785L;
+	
+	
+	//STATUS	int	11	0：正常；1:停用; 2：指定;3:待激活；4：作废
+
+	public static int STATUS_OK = 0;
+	public static int STATUS_STOP = 1;
+	public static int STATUS_READY = 2;
+	public static int STATUS_WAIT = 3;
+	public static int STATUS_CANCEL = 4;
+	
+	
+	//CPSTATUS	int	11	卡池状态，0：正常，1:待激活,2:拔出，3:超时, 4卡信息错误；6：初始化卡信息
+	public static int CPSTATUS_OK = 0;
+	public static int CPSTATUS_WAIT = 1;
+	public static int CPSTATUS_PULLOUT = 2;
+	public static int CPSTATUS_TIMEOUT = 3;
+	public static int CPSTATUS_FAULT = 4; //卡信息错误
+	public static int CPSTATUS_INIT = 6; //初始化卡信息
+
 	private int id;
 	private long imsi;
 	private String number;
@@ -38,7 +58,7 @@ public class SimCard implements Serializable {
 	private String op;
 	private String APN;
 	private Date openDate;
-	private int departmentId = 0;  //代理商
+	private Integer departmentId;  //代理商
 	private String groupPref;  //分组
 	private String note;
 	
@@ -245,10 +265,10 @@ public class SimCard implements Serializable {
 		this.openDate = openDate;
 	}
 	
-	public int getDepartmentId() {
+	public Integer getDepartmentId() {
 		return departmentId;
 	}
-	public void setDepartmentId(int departmentId) {
+	public void setDepartmentId(Integer departmentId) {
 		this.departmentId = departmentId;
 	}
 	

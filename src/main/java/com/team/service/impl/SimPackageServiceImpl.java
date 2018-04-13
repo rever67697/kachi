@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.util.Cache;
+import com.team.util.CacheFactory;
+import com.team.util.MConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +37,11 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	private SimCardDao simCardDao;
 	@Autowired
 	private FlowMonthDao flowMonthDao;
-	
+
+	//卡缓存
+	private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
+
+
 	@Override
 	/**
 	 * 查找卡套餐信息
@@ -55,12 +62,16 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	 * 单条删除卡套餐
 	 */
 	public ReturnMsg deletePackage(Integer id) {
-		ReturnMsg returnMsg = null;
+		ReturnMsg returnMsg;
 		if(!CommonUtil.StringIsNull(simCardDao.getPackageExist(id))){
 			returnMsg = super.errorTip();
 			returnMsg.setMsg("删除失败，有SIM卡正在使用该套餐！");
 		}else{
-			simPackageDao.deletePackage(id);
+			int count = simPackageDao.deletePackage(id);
+			if(count>0){
+				//删除缓存
+				simCache.remove(MConstant.CACHE_PACKAGE_KEY_PREF + id);
+			}
 			returnMsg = super.successTip();
 		}
 		return returnMsg;
@@ -78,7 +89,14 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 		}else{
 			count = simPackageDao.insertPackage(simPackage);
 		}
-		return count>0?super.successTip():super.errorTip();
+		if(count>0){
+			//更新缓存
+			simCache.set(MConstant.CACHE_PACKAGE_KEY_PREF + simPackage.getId(),
+					CommonUtil.convertBean(simPackage, com.hqrh.rw.common.model.SimPackage.class));
+
+			return super.successTip();
+		}
+		return super.errorTip();
 	}
 
 }

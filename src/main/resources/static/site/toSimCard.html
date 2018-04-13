@@ -69,13 +69,13 @@
 								<th>PIN：</th><td><input name="pin"/></td></tr>
 							<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
 								<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
-							<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="true"></select></td>
+							<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="false"></select></td>
 								<th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-							<tr><th>账期持续时间：</th><td><select name="sustained" class="easyui-validatebox" required="true">
+							<tr><th>账期持续时间：</th><td><select name="suStained" class="easyui-validatebox" required="true">
 															<option value="1">1个月</option>
 															<option value="6">6个月</option>
 														 </select></td>
-								<th>协议类型：</th><td><input name="simmeProtocol"/></td></tr>
+								<th>协议类型：</th><td><input name="simMeProtocol"/></td></tr>
 							<tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">
 														<option value=""></option><option value="0">正常</option>
 														<option value="1">停用</option><option value="2">指定</option>
@@ -89,14 +89,14 @@
 							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
 								<th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
 							<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
-								<th>VPNIP：</th><td><input name="vpnIp"/></td></tr>
+								<th>VPNIP：</th><td><input name="vpnIP"/></td></tr>
 							<tr><th>VPN名称：</th><td><input name="vpnName"/></td>
 								<th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
 							<tr><th>是否软卡：</th><td><select name="softType"></select></td>
 								<th>KI：</th><td><input name="ki"/></td></tr>
 							<tr><th>OPC：</th><td><input name="opc"/></td>
 								<th>OP：</th><td><input name="op"/></td></tr>
-							<tr><th>APN：</th><td><input name="opc"/></td>
+							<tr><th>APN：</th><td><input name="APN"/></td>
 								<th>插入时间：</th><td><input name="insertDate" readonly="readonly" /></td></tr>
 							<tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
 								<th>分组：</th><td><input name="groupPref"/></td></tr>
@@ -122,7 +122,7 @@
 													<option value="3">待激活</option><option value="4">作废</option>
 												</select></td></tr>
 						<tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>
-							<th>帐期持续时间：</th><td><select name="sustained">
+							<th>帐期持续时间：</th><td><select name="suStained">
 														<option value=""></option>
 														<option value="1">1个月</option>
 														<option value="6">6个月</option>
@@ -247,7 +247,7 @@
 
              $('#doBtn').show();
 //             $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
-//             $('#doForm [name=compareSustained]').val(rowData.sustained);
+//             $('#doForm [name=compareSustained]').val(rowData.suStained);
 //             $('#doForm [name=comparePackage]').val(rowData.packageId);
              $('#doForm [name=countryCode]').attr('disabled',true);
              $('#doDialog').dialog({title:'修改卡信息'});
@@ -332,7 +332,7 @@
 //            var isChangePackage = false;
 //            if($('#doForm [name=id]').val()){
 //                if(($('#doForm [name=compareOffPeriod]').val() != $('#doForm [name=offPeriod]').val())
-//                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=sustained]').val()))
+//                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=suStained]').val()))
 //                    isChangePeriod = true;
 //                if(($('#doForm [name=comparePackage]').val() != $('#doForm [name=packageId]').val()))
 //                    isChangePackage = true;

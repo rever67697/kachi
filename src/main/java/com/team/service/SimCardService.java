@@ -1,5 +1,6 @@
 package com.team.service;
 
+import com.team.dto.SimCardDTO;
 import com.team.model.SimCard;
 import com.team.model.SimGroup;
 import com.team.vo.ResultList;
@@ -20,7 +21,7 @@ public interface SimCardService {
 	
 	public ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCardList(SimCard simCard,Integer dId,int page,int rows);
+	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,int page,int rows);
 
 	public File getCsv(SimCard simCard,Integer dId) throws Exception;
 	
@@ -30,7 +31,7 @@ public interface SimCardService {
 
 	public SimGroup initGroupSim2Cache(SimCard simCard);
 
-	public ReturnMsg batchUpdate(SimCard simCard,String ids);
+	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids);
 
 	public boolean updateGroupSim2Cache(SimCard simCard,int status);
 	

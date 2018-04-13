@@ -4,6 +4,7 @@ package com.team.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.team.dto.SimCardDTO;
 import com.team.model.SimCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,7 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(SimCard simCard,int page,int rows,HttpServletRequest request){
+	public ResultList list(SimCardDTO simCard,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return simCardService.getSimCardList(simCard,dId, page, rows);
 	}
@@ -130,7 +131,7 @@ public class SimCardController {
 	@PostMapping("/batchUpdate")
 	@PermissionLog(key = "status_卡状态;packageId_卡套餐;provinceCode_省;offPeriod_帐期日;sustained_账期持续时间;" +
 			"expiryDate_有效期截止时间;openDate_开卡时间;usedVpn_是否支持vpn;softType_是否软卡;ids_ids")
-	public ReturnMsg batchUpdate(SimCard simCard,String ids){
+	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids){
 		return simCardService.batchUpdate(simCard,ids);
 	}
 	

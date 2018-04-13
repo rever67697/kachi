@@ -57,7 +57,7 @@
 		where ID = #{id,jdbcType=INTEGER}
 	</update>
 
-	<insert id="insertPackage" parameterType="com.team.model.SimPackage">
+	<insert id="insertPackage" parameterType="com.team.model.SimPackage" useGeneratedKeys="true" keyProperty="id">
 		insert into m_simpackage 
 		(NAME, OPERATORCODE,MAXFLOW, MAXROAMFLOW,LEVEL, MCCS,status,departmentid)
 		values 

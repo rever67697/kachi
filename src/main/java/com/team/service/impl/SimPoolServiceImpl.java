@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.team.model.SimCard;
 import com.team.service.SimCardService;
+import com.team.util.Cache;
+import com.team.util.CacheFactory;
+import com.team.util.MConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +38,9 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 	private SimCardDao simCardDao;
 	@Autowired
 	private SimCardService simCardService;
+
+	// 卡缓存
+	private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
 	
 	@Override
 	/**
@@ -80,7 +86,7 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 		//首先判断前后的departmendId是否改变
 		SimPool old = simPoolDao.getOne(simPool.getId());
 		Boolean flag = false;
-		if(!simPool.getDepartmentId().equals(old.getDepartmentId())){
+		if(simPool.getDepartmentId() != old.getDepartmentId()){
 			flag = true;
 		}
 
@@ -93,6 +99,13 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 			//更新缓存
 			List<SimCard> simCardList = simCardDao.getByPool(simPool.getSpid());
 			for (SimCard simCard : simCardList) {
+
+				//更新卡缓存
+				simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+						CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+
+
+				//更新卡组
 				simCardService.initGroupSim2Cache(simCard);
 			}
 

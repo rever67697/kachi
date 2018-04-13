@@ -30,30 +30,6 @@ public class SimPackage implements Serializable{
 	
 	private String operatorName;//运营商名称
 
-	public Integer getDepartmentId() {
-		return departmentId;
-	}
-
-	public void setDepartmentId(Integer departmentId) {
-		this.departmentId = departmentId;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getOperatorName() {
-		return operatorName;
-	}
-
-	public void setOperatorName(String operatorName) {
-		this.operatorName = operatorName;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -117,7 +93,45 @@ public class SimPackage implements Serializable{
 	public void setMccs(String mccs) {
 		this.mccs = mccs;
 	}
-	
-	
-	
+
+	public Integer getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
+
+	@Override
+	public String toString() {
+		return "SimPackage{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", operatorCode=" + operatorCode +
+				", maxFlow=" + maxFlow +
+				", maxRoamFlow=" + maxRoamFlow +
+				", status=" + status +
+				", level=" + level +
+				", mccs='" + mccs + '\'' +
+				", departmentId=" + departmentId +
+				", departmentName='" + departmentName + '\'' +
+				", operatorName='" + operatorName + '\'' +
+				'}';
+	}
 }

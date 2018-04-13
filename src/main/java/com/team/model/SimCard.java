@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**卡信息	m_simcard
  * 创建日期：2017-12-15下午2:52:39
@@ -29,9 +30,9 @@ public class SimCard implements Serializable{
 	
 	private Integer offPeriod;//账期日
 	
-	private Integer sustained;//账期持续时间：表示1个月；6：表示半年
+	private Integer suStained;//账期持续时间：表示1个月；6：表示半年
 	
-	private String simmeProtocol;//协议类型:2g:sim;3g:usim
+	private String simMeProtocol;//协议类型:2g:sim;3g:usim
 	
 	private Integer status;//0：正常；1：拨出；3：停机
 	
@@ -53,7 +54,7 @@ public class SimCard implements Serializable{
 	
 	private Integer usedVpn;//是否支持vpn
 	
-	private String vpnIp;//IP
+	private String vpnIP;//IP
 	
 	private String vpnName;
 	
@@ -66,8 +67,9 @@ public class SimCard implements Serializable{
 	private String opc;
 	
 	private String op;
-	
-	private String apn;
+
+	@JsonProperty("APN")
+	private String APN;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date openDate;//开卡日期
@@ -90,53 +92,6 @@ public class SimCard implements Serializable{
 
 	private String provinceName;//省
 
-	public String getCountryName() {
-		return countryName;
-	}
-
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
-	}
-
-	public String getProvinceName() {
-		return provinceName;
-	}
-
-	public void setProvinceName(String provinceName) {
-		this.provinceName = provinceName;
-	}
-
-	public String getPackageName() {
-		return packageName;
-	}
-
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
-
-	public String getSimPoolName() {
-		return simPoolName;
-	}
-
-	public void setSimPoolName(String simPoolName) {
-		this.simPoolName = simPoolName;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getOperatorName() {
-		return operatorName;
-	}
-
-	public void setOperatorName(String operatorName) {
-		this.operatorName = operatorName;
-	}
 
 	public Integer getId() {
 		return id;
@@ -179,7 +134,7 @@ public class SimCard implements Serializable{
 	}
 
 	public Integer getOperatorCode() {
-		return operatorCode;
+		return operatorCode!=null?operatorCode:0;
 	}
 
 	public void setOperatorCode(Integer operatorCode) {
@@ -195,7 +150,7 @@ public class SimCard implements Serializable{
 	}
 
 	public Integer getPackageId() {
-		return packageId;
+		return packageId!=null?packageId:0;
 	}
 
 	public void setPackageId(Integer packageId) {
@@ -203,28 +158,21 @@ public class SimCard implements Serializable{
 	}
 
 	public Integer getOffPeriod() {
-		return offPeriod;
+		return offPeriod!=null?offPeriod:0;
 	}
 
 	public void setOffPeriod(Integer offPeriod) {
 		this.offPeriod = offPeriod;
 	}
 
-	public Integer getSustained() {
-		return sustained;
+	public Integer getSuStained() {
+		return suStained!=null?suStained:0;
 	}
 
-	public void setSustained(Integer sustained) {
-		this.sustained = sustained;
+	public void setSuStained(Integer suStained) {
+		this.suStained = suStained;
 	}
 
-	public String getSimmeProtocol() {
-		return simmeProtocol;
-	}
-
-	public void setSimmeProtocol(String simmeProtocol) {
-		this.simmeProtocol = simmeProtocol;
-	}
 
 	public Integer getStatus() {
 		return status;
@@ -267,7 +215,7 @@ public class SimCard implements Serializable{
 	}
 
 	public Integer getProvinceCode() {
-		return provinceCode;
+		return provinceCode!=null?provinceCode:0;
 	}
 
 	public void setProvinceCode(Integer provinceCode) {
@@ -296,14 +244,6 @@ public class SimCard implements Serializable{
 
 	public void setUsedVpn(Integer usedVpn) {
 		this.usedVpn = usedVpn;
-	}
-
-	public String getVpnIp() {
-		return vpnIp;
-	}
-
-	public void setVpnIp(String vpnIp) {
-		this.vpnIp = vpnIp;
 	}
 
 	public String getVpnName() {
@@ -354,12 +294,28 @@ public class SimCard implements Serializable{
 		this.op = op;
 	}
 
-	public String getApn() {
-		return apn;
+	public String getSimMeProtocol() {
+		return simMeProtocol;
 	}
 
-	public void setApn(String apn) {
-		this.apn = apn;
+	public void setSimMeProtocol(String simMeProtocol) {
+		this.simMeProtocol = simMeProtocol;
+	}
+
+	public String getVpnIP() {
+		return vpnIP;
+	}
+
+	public void setVpnIP(String vpnIP) {
+		this.vpnIP = vpnIP;
+	}
+
+	public String getAPN() {
+		return APN;
+	}
+
+	public void setAPN(String APN) {
+		this.APN = APN;
 	}
 
 	public Date getOpenDate() {
@@ -371,7 +327,7 @@ public class SimCard implements Serializable{
 	}
 
 	public Integer getDepartmentId() {
-		return departmentId;
+		return departmentId!=null?departmentId:0;
 	}
 
 	public void setDepartmentId(Integer departmentId) {
@@ -394,20 +350,68 @@ public class SimCard implements Serializable{
 		this.note = note;
 	}
 
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getSimPoolName() {
+		return simPoolName;
+	}
+
+	public void setSimPoolName(String simPoolName) {
+		this.simPoolName = simPoolName;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
 	@Override
 	public String toString() {
 		return "SimCard [id=" + id + ", imsi=" + imsi + ", number=" + number
 				+ ", iccid=" + iccid + ", pin=" + pin + ", operatorCode="
 				+ operatorCode + ", mcNumber=" + mcNumber + ", packageId="
-				+ packageId + ", offPeriod=" + offPeriod + ", sustained="
-				+ sustained + ", simmeProtocol=" + simmeProtocol + ", status="
+				+ packageId + ", offPeriod=" + offPeriod + ", suStained="
+				+ suStained + ", simMeProtocol=" + simMeProtocol + ", status="
 				+ status + ", cpStatus=" + cpStatus + ", cPid=" + cpId
 				+ ", cpChannelId=" + cpChannelId + ", countryCode="
 				+ countryCode + ", provinceCode=" + provinceCode
 				+ ", expiryDate=" + expiryDate + ", insertDate=" + insertDate
-				+ ", usedVpn=" + usedVpn + ", vpnIp=" + vpnIp + ", vpnName="
+				+ ", usedVpn=" + usedVpn + ", vpnIP=" + vpnIP + ", vpnName="
 				+ vpnName + ", vpnPass=" + vpnPass + ", softType=" + softType
-				+ ", ki=" + ki + ", opc=" + opc + ", op=" + op + ", apn=" + apn
+				+ ", ki=" + ki + ", opc=" + opc + ", op=" + op + ", APN=" + APN
 				+ ", openDate=" + openDate + ", departmentId=" + departmentId
 				+ ", groupPref=" + groupPref + ", note=" + note + "]";
 	}
