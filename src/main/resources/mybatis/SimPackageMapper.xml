@@ -16,11 +16,7 @@
 		select
 			<include refid="allColumn" />
 			,d.name departmentName
-			,case OPERATORNAMECN when 'China Mobile' then '中国移动'
-								 when 'China Unicom' then '中国联通'
-								 when 'China Telecom' then '中国电信'
-								 when 'China Tietong' then '中国铁通'
-								 else OPERATORNAMECN end operatorName
+			,concat(OPERATORNAMECN,' (',r.operatorCode,')') operatorName
 		from m_simpackage r
 		left join m_department d
 		on r.departmentid=d.id and d.status=0

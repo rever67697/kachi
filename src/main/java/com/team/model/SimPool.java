@@ -21,7 +21,7 @@ public class SimPool implements Serializable{
 	
 	private Integer departmentId;//部门Id
 	
-	private String mac;
+	private String mac;//物理地址
 	
 	private String version;//版本
 	
@@ -38,8 +38,18 @@ public class SimPool implements Serializable{
 	private Integer webPort;//卡池显示端口
 	
 	private String lionVersion;//Controller软件版本
+
+	private String devId;//卡池内部编号
 	
 	private String departmentName;//代理商名称，bean额外加的，为了方便在页面上显示
+
+	public String getDevId() {
+		return devId;
+	}
+
+	public void setDevId(String devId) {
+		this.devId = devId;
+	}
 
 	public Integer getId() {
 		return id;

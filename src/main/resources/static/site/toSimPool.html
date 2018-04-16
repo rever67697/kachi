@@ -73,14 +73,50 @@
 		    <div id="doDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
 		    	<form id="doForm">
 		    		<input type="hidden" name="id">
-		    		<table class="table">
-			  			<tr><td>卡池编号</td><td><input name="spid" readonly="readonly"/></td></tr>
-			  			<tr><td>卡池名称</td><td><input name="name"/></td></tr>
-			  			<tr><td>卡池类型</td><td><input name="type" readonly="readonly"/></td></tr>
-			  			<tr><td>所属部门</td><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
-			  			<tr style="height:10px"></tr>
-		  				<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="modifyData()">提 交</a></td></tr>
-			  		</table>
+		    		<!--<table class="table">-->
+			  			<!--<tr><td>卡池编号</td><td><input name="spid" readonly="readonly"/></td></tr>-->
+			  			<!--<tr><td>卡池名称</td><td><input name="name"/></td></tr>-->
+			  			<!--<tr><td>卡池类型</td><td><input name="type" readonly="readonly"/></td></tr>-->
+			  			<!--<tr><td>所属部门</td><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>-->
+			  			<!--<tr style="height:10px"></tr>-->
+		  				<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="modifyData()">提 交</a></td></tr>-->
+			  		<!--</table>-->
+					<table class="table th-normal">
+						<tr>
+							<th>卡池编号：</th><td><input name="spid" class="easyui-validatebox onlyNumber" required="true"/></td>
+							<th>卡池名称：</th><td><input name="name" class="easyui-validatebox" required="true"/></td>
+						</tr>
+						<tr>
+							<th>卡池IP：</th><td><input name="ip" class="easyui-validatebox" required="true"/></td>
+							<th>端口：</th><td><input name="port" class="easyui-validatebox onlyNumber" required="true"/></td>
+						</tr>
+						<tr>
+							<th>卡池类型：</th><td><input name="type" class="easyui-validatebox" required="true" value="256"/></td>
+							<th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td>
+						</tr>
+						<tr>
+							<th>活动状态：</th><td><select name="isActive"><option  value="1">正常</option><option value="0">暂停</option></select></td>
+							<th>MAC：</th><td><input name="mac" class="easyui-validatebox" /></td>
+						</tr>
+						<tr>
+							<th>卡池内网IP：</th><td><input name="sumIp" class="easyui-validatebox" /></td>
+							<th>卡池显示端口：</th><td><input name="webPort" class="easyui-validatebox onlyNumber"/></td>
+						</tr>
+						<tr>
+							<th>内网IP：</th><td><input name="inIp" class="easyui-validatebox" /></td>
+							<th>外网IP：</th><td><input name="outIp" class="easyui-validatebox" /></td>
+						</tr>
+						<tr>
+							<th>版本：</th><td><input name="version" class="easyui-validatebox" /></td>
+							<th>软件版本：</th><td><input name="lionVersion" class="easyui-validatebox"/></td>
+						</tr>
+						<tr>
+							<th>卡池内部编号：</th><td><input name="devId" class="easyui-validatebox" /></td>
+							<th></th><td></td>
+						</tr>
+						<tr style="height:20px"></tr>
+						<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="modifyData()">提 交</a></td></tr>
+					</table>
 		    	</form>
 		  	</div>
 		  	<div id="poolDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
@@ -113,6 +149,10 @@
  		  			<tr>
  		  				<th>版本：</th><td><input name="version" class="easyui-validatebox" /></td>
  		  				<th>软件版本：</th><td><input name="lionVersion" class="easyui-validatebox"/></td>
+ 		  			</tr>
+					<tr>
+ 		  				<th>卡池内部编号：</th><td><input name="devId" class="easyui-validatebox" /></td>
+ 		  				<th></th><td></td>
  		  			</tr>
   		  			<tr style="height:20px"></tr>
   		  			<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="savePool()">提 交</a></td></tr>
@@ -182,10 +222,10 @@
 		
 		$('#doDialog').dialog({
 			modal : true,
-   			width:400,
-   			height:250,
+   			width:800,
+   			height:380,
    			cache: false,
-			title : "调整代理商"
+			title : "修改"
 		});
 		
 		$('#poolDialog').dialog({
@@ -193,7 +233,7 @@
     			width:400,
     			height:650,
     			width:800,
-    			height:340,
+    			height:380,
      			cache: false,
   			title : "新增卡池"
   		});

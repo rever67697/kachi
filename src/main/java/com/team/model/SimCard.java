@@ -36,7 +36,7 @@ public class SimCard implements Serializable{
 	
 	private Integer status;//0：正常；1：拨出；3：停机
 	
-	private Integer cpStatus;//卡池状态:0:正常；1：拔出
+	private Integer cpStatus;//卡池状态，0：正常，1:待激活,2:拔出，8:超时
 	
 	private Integer cpId;//卡池id
 	

@@ -20,5 +20,9 @@ public class BaseService {
 	protected ReturnMsg errorTip(){
 		return new ReturnMsg(IConstant.CODE_ERROR, IConstant.MSG_ERROR);
 	}
+
+	protected ReturnMsg errorTip(String msg){
+		return new ReturnMsg(IConstant.CODE_ERROR, msg);
+	}
 	
 }

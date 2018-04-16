@@ -86,7 +86,7 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 		//首先判断前后的departmendId是否改变
 		SimPool old = simPoolDao.getOne(simPool.getId());
 		Boolean flag = false;
-		if(simPool.getDepartmentId() != old.getDepartmentId()){
+		if(simPool.getDepartmentId()!=null && (simPool.getDepartmentId() != old.getDepartmentId())){
 			flag = true;
 		}
 

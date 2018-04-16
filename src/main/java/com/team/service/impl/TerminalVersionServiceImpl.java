@@ -41,6 +41,12 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
     @Override
     public ReturnMsg saveOrUpdate(TerminalVersion terminalVersion) {
         int count = 0;
+        //指定升级的终端列表不能超多200个
+        if(!CommonUtil.StringIsNull(terminalVersion.getTerminalList())
+                && terminalVersion.getTerminalList().split(",").length>200){
+            return super.errorTip("终端列表不能超过两百个!");
+        }
+
         if(terminalVersion.getId()!=null){
             count = terminalVersionDao.update(terminalVersion);
         }else{
@@ -48,6 +54,5 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
         }
         return count>0?super.successTip():super.errorTip();
     }
-
 
 }
