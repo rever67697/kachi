@@ -146,7 +146,8 @@ public class PermissionLogAop {
 				e.printStackTrace();
 			}
 		}
-		return req_pram.toString().substring(0,req_pram.toString().lastIndexOf("&"));
+		String desc = req_pram.toString();
+		return desc.lastIndexOf("&")>-1?desc.substring(0,desc.lastIndexOf("&")):desc;
 	}
 
 	public static void main(String[] args){
