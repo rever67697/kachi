@@ -3,15 +3,14 @@ package com.team.aop;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
 import com.team.annotation.PermissionLog;
 import com.team.exception.KachiException;
 import com.team.util.IPUtils;
@@ -41,6 +40,8 @@ public class PermissionLogAop {
 	
 	@Autowired
 	private OperationLogDao operationLogDao;
+
+	private Gson gson = new Gson();
 
 	@Pointcut(value="@annotation(com.team.annotation.PermissionLog)")
 	public void cutService(){
@@ -117,7 +118,7 @@ public class PermissionLogAop {
 //			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, getParamURL(request),user.getDepartmentId(), IPUtils.getIpAddr(request));
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request));
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {
@@ -129,25 +130,20 @@ public class PermissionLogAop {
 		return result;
 	}
 
-	public static String getParamURL(HttpServletRequest request){
+	private String getParamDesc(HttpServletRequest request){
+		Map<String,Object> result = new HashMap<>();
 		java.util.Enumeration params = request.getParameterNames();
-		StringBuffer req_pram = new StringBuffer();
-
 		while (params.hasMoreElements()) {
 			String paramName=(String) (params.nextElement());
-			try {
-				if(CommonUtil.StringIsNull(request.getParameter(paramName))
-						|| "passWord".equals(paramName)
-						|| "repeatPwd".equals(paramName)){
-					continue;
-				}
-				req_pram.append(paramName+"="+ URLDecoder.decode(request.getParameter(paramName),"utf-8")+"&");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			if(CommonUtil.StringIsNull(request.getParameter(paramName))
+					|| "passWord".equals(paramName)
+					|| "repeatPwd".equals(paramName)){
+				continue;
 			}
+			result.put(paramName,URLDecoder.decode(request.getParameter(paramName)));
+
 		}
-		String desc = req_pram.toString();
-		return desc.lastIndexOf("&")>-1?desc.substring(0,desc.lastIndexOf("&")):desc;
+		return gson.toJson(result);
 	}
 
 	public static void main(String[] args){
