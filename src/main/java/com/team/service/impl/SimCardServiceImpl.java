@@ -401,11 +401,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	private void reCalculateFlowMonth(SimCard simCard, int offPeriod, int sustained, int packageId) {
 
 		//计算账期是否改变，套餐是否改变
-		boolean isChangePeriod = offPeriod!=simCard.getOffPeriod();
+		boolean isChangePeriod = offPeriod!=simCard.getOffPeriod() && offPeriod!=0;
 
-		boolean isChangeSustained = sustained!=simCard.getSuStained();
+		boolean isChangeSustained = sustained!=simCard.getSuStained() && sustained!=0;
 
-		boolean isChangePackage = packageId!=simCard.getPackageId();
+		boolean isChangePackage = packageId!=simCard.getPackageId() && packageId!=0;
 
 		if(isChangePeriod || isChangeSustained || isChangePackage){
 			//获取当前卡对应的月流量信息
@@ -446,7 +446,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 				//2.如果套餐发生了变化，需要重新计算套餐的最大使用参数
 				if(isChangePackage){
-					SimPackage simPackage = simPackageDao.getPackage(packageId);
+					SimPackage simPackage = simPackageDao.getPackage(simCard.getPackageId());
 					flowMonth.setMaxFlow(simPackage.getMaxFlow());
 					flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
 				}
