@@ -446,7 +446,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 				//2.如果套餐发生了变化，需要重新计算套餐的最大使用参数
 				if(isChangePackage){
-					SimPackage simPackage = simPackageDao.getPackage(simCard.getPackageId());
+					SimPackage simPackage = simPackageDao.getPackage(packageId);
 					flowMonth.setMaxFlow(simPackage.getMaxFlow());
 					flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
 				}
