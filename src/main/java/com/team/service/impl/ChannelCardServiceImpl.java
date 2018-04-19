@@ -32,11 +32,11 @@ public class ChannelCardServiceImpl extends BaseService implements ChannelCardSe
 	private ChannelCardDao channelCardDao;
 
 	@Override
-	public ResultList getChannelCardList(Integer departmentId, Integer dId,String number,Integer countryCode, Integer operatorCode,
+	public ResultList getChannelCardList(Integer departmentId, Integer dId,Long imsi,Integer countryCode, Integer operatorCode,
 			Integer status, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("number", number);
+		map.put("imsi", imsi);
 		map.put("countryCode", countryCode);
 		map.put("operatorCode", operatorCode);
 		map.put("status", status);
@@ -93,8 +93,10 @@ public class ChannelCardServiceImpl extends BaseService implements ChannelCardSe
 					Date rechargeTime = CommonUtil.getCellDateVal(row.getCell(6));
 					Double balance = CommonUtil.getCellDoubleVal(row.getCell(7));
 					String detail = CommonUtil.getCellStringVal(row.getCell(8));
-					
-					channelCard = new ChannelCard(imsi, number, iccid, operatorCode, countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail);
+					Integer tsid = CommonUtil.getCellIntVal(row.getCell(9));
+
+					channelCard = new ChannelCard(imsi, number, iccid, operatorCode,
+							countryCode, mcNumber, rechargeTime, balance, new Integer(0), detail,tsid);
 					list.add(channelCard);
 				} catch (Exception e) {
 					returnMsg = super.errorTip();

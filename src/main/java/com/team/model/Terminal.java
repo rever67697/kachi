@@ -96,7 +96,7 @@ public class Terminal implements Serializable{
 		super();
 	}
 
-	public Terminal(Integer id, Integer tsid, String mac, String model,
+	public Terminal(Integer tsid, String mac, String model,
 			String batch, String sVersion, String key, Integer status,
 			Integer upLog, String imei, Integer activated,
 			Integer homeLocation, String ssid, String wifiPassword,
@@ -104,7 +104,6 @@ public class Terminal implements Serializable{
 			Integer departmentId, String meid, Integer saleType,
 			Integer resetWifi, String androidVersion) {
 		super();
-		this.id = id;
 		this.tsid = tsid;
 		this.mac = mac;
 		this.model = model;

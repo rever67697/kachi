@@ -11,7 +11,7 @@ import com.team.vo.ReturnMsg;
 public interface ChannelCardService {
 
 	public ResultList getChannelCardList(Integer departmentId, Integer dId,
-			String number, Integer countryCode, Integer operatorCode,
+			Long imsi, Integer countryCode, Integer operatorCode,
 			Integer status, int page, int rows);
 
 	public ReturnMsg deleteChannelCards(String ids);

@@ -5,7 +5,7 @@
     <!-- 控制台输出 -->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} : %msg%n</pattern>
         </layout>
     </appender>
 
@@ -18,12 +18,13 @@
             <onMismatch>ACCEPT</onMismatch>
         </filter>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} : %msg%n</pattern>
         </encoder>
         <!--滚动策略 每天一个文件-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
             <!--<fileNamePattern>/Users/wuzhiheng/tomcat/kachi/info.%d.log</fileNamePattern>-->
+            <!--这里引用相对路径，idea跑时存放在工程的主目录下，jar包跑时存放在jar包的统同级目录-->
             <fileNamePattern>kachi/info/info.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
@@ -35,7 +36,7 @@
             <level>ERROR</level>
         </filter>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%10thread] %logger{36} : %msg%n</pattern>
         </encoder>
         <!--滚动策略-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

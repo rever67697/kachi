@@ -1,12 +1,17 @@
 package com.team.aop;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.team.annotation.PermissionLog;
 import com.team.exception.KachiException;
 import com.team.util.IPUtils;
@@ -44,6 +49,7 @@ public class PermissionLogAop {
 	
 	@Around("cutService()")
 	public Object excuteLog(ProceedingJoinPoint point) throws Throwable{
+
 		MethodSignature ms = (MethodSignature) point.getSignature();
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
@@ -98,20 +104,20 @@ public class PermissionLogAop {
 			}
 			
 			//记录日志的额外信息，一般是指主要的参数是什么，key的格式的成对的key用‘_’分割，多个key用‘;’分割
-			StringBuilder desc = new StringBuilder();
-			String desc_str = "";
-			if(!"".equals(logInfo.key())){
-				String[] Keygroup = logInfo.key().split(";");
-				for (String s : Keygroup) {
-					String[] key = s.split("_");
-					if(key.length==2)
-						desc.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
-				}
-				desc_str = desc.substring(0, desc.lastIndexOf(" | "));
-			}
+//			StringBuilder desc = new StringBuilder();
+//			String desc_str = "";
+//			if(!"".equals(logInfo.key())){
+//				String[] Keygroup = logInfo.key().split(";");
+//				for (String s : Keygroup) {
+//					String[] key = s.split("_");
+//					if(key.length==2)
+//						desc.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
+//				}
+//				desc_str = desc.substring(0, desc.lastIndexOf(" | "));
+//			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, desc_str,user.getDepartmentId(), IPUtils.getIpAddr(request));
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, getParamURL(request),user.getDepartmentId(), IPUtils.getIpAddr(request));
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {
@@ -121,6 +127,26 @@ public class PermissionLogAop {
 		}
 		
 		return result;
+	}
+
+	public static String getParamURL(HttpServletRequest request){
+		java.util.Enumeration params = request.getParameterNames();
+		StringBuffer req_pram = new StringBuffer();
+
+		while (params.hasMoreElements()) {
+			String paramName=(String) (params.nextElement());
+			try {
+				if(CommonUtil.StringIsNull(request.getParameter(paramName))
+						|| "passWord".equals(paramName)
+						|| "repeatPwd".equals(paramName)){
+					continue;
+				}
+				req_pram.append(paramName+"="+ URLDecoder.decode(request.getParameter(paramName),"utf-8")+"&");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		return req_pram.toString().substring(0,req_pram.toString().lastIndexOf("&"));
 	}
 
 	public static void main(String[] args){

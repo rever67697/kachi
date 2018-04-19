@@ -9,13 +9,18 @@ var kcJs=
 				 "light-blue":"rgb(87,181,227)",
 				 "orange":"rgb(240,160,26)"
 	};
-    //卡状态
+    //sim卡状态
     var c_status={"0":["正常",v_colors.blue],
 			      "1":["停用",v_colors.red],
 			      "2":["指定",v_colors.green],
 			      "3":["待激活",v_colors.orange],
 			      "4":["作废",v_colors.gray],
     			  "5":["没卡",v_colors.black]
+	};
+    //副卡状态
+    var c_channelcardStatus={"0":["预置卡",v_colors.blue],
+			      "1":["临时卡",v_colors.green],
+			      "2":["作废",v_colors.red]
 	};
     //终端状态
     var t_status={"0":["正常",v_colors.blue],
@@ -104,6 +109,10 @@ var kcJs=
 		//获取sim卡的状态信息
 		getCardStatus:function(o){
 			return c_status[o];
+		},
+		//获取副卡的状态信息
+		getChannelcardStatus:function(o){
+			return c_channelcardStatus[o];
 		},
 		//获取颜色值
 		getColor:function(o){

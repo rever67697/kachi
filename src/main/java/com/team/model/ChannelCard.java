@@ -34,6 +34,8 @@ public class ChannelCard implements Serializable{
 	private Integer status;//状态
 	
 	private String detail;//详情
+
+	private Integer tsid;//设备号
 	
 	private String countryName;//国家名字
 	
@@ -47,7 +49,7 @@ public class ChannelCard implements Serializable{
 
 	public ChannelCard(Long imsi, String number, String iccid,
 			Integer operatorCode, Integer countryCode, String mcNumber,
-			Date rechargeTime, Double balance, Integer status, String detail) {
+			Date rechargeTime, Double balance, Integer status, String detail,Integer tsid) {
 		super();
 		this.imsi = imsi;
 		this.number = number;
@@ -59,6 +61,7 @@ public class ChannelCard implements Serializable{
 		this.balance = balance;
 		this.status = status;
 		this.detail = detail;
+		this.tsid = tsid;
 	}
 
 	public String getDepartmentName() {
@@ -172,5 +175,12 @@ public class ChannelCard implements Serializable{
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	
+
+	public Integer getTsid() {
+		return tsid;
+	}
+
+	public void setTsid(Integer tsid) {
+		this.tsid = tsid;
+	}
 }
