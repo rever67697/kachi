@@ -21,10 +21,8 @@ import com.team.util.CommonUtil;
  * 创建日期：2017-12-14下午4:30:18
  * author:wuzhiheng
  */
-@Component
 public class LoginFilter implements Filter{
 
-	@Value("${filter.noFilterPath}")
 	private String noFilterPath;
 	
 	@Override
@@ -73,7 +71,7 @@ public class LoginFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
+		this.noFilterPath = arg0.getInitParameter("noFilterPath");
 	}
 
 }
