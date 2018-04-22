@@ -1,5 +1,7 @@
 package com.team.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,7 +14,8 @@ public class TbAuthUser implements Serializable{
 	private Integer id;
 
 	private String name;
-	
+
+	@JsonIgnore
 	private String passWord;
 	
 	private String phoneNumber;

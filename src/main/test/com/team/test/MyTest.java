@@ -118,7 +118,7 @@ public class MyTest {
 
 	@Test
 	public void testSimGroup() {
-		MemcachedItem m = simCache.gets("0_46011_0_30_2");
+		MemcachedItem m = simCache.gets("0_46004_0_31_0");
 		List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
 		for (GroupCacheSim groupCacheSim : list) {
 			System.out.println(groupCacheSim);
