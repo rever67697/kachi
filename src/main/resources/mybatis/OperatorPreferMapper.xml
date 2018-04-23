@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.OperatorPreferDao">
+
+	<select id="list" resultType="com.team.model.OperatorPrefer">
+		select r.*,
+				concat(c.NAMECN,'(',r.roamMcc,')') countryName,
+				concat(o.OPERATORNAMECN,'(',r.operatorCode,')') operatorName
+		from m_operator_prefer r
+		left join m_country_mcc m on r.roamMcc=m.mcc
+		left join m_country c on m.countryCode=c.countryCode
+		left join m_operator o on r.operatorCode=o.operatorCode
+		order by r.roamMcc,r.operatorCode
+
+	</select>
+	
+	<insert id="insert" parameterType="com.team.model.OperatorPrefer">
+		insert into m_operator_prefer
+		(operatorCode, roamMcc, PPLMN, FPLMN)
+		VALUES
+		(
+			#{operatorCode,jdbcType=INTEGER},
+			#{roamMcc,jdbcType=INTEGER},
+			#{pPlmn,jdbcType=VARCHAR},
+			#{fPlmn,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update" parameterType="com.team.model.OperatorPrefer">
+		update m_operator_prefer
+		set roamMcc = #{roamMcc,jdbcType=INTEGER},
+			operatorCode = #{operatorCode,jdbcType=INTEGER},
+			pPlmn = #{pPlmn,jdbcType=VARCHAR},
+			fPlmn = #{fPlmn,jdbcType=VARCHAR}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="delete" parameterType="java.util.List">
+		delete from m_operator_prefer
+		where id in
+		<foreach collection="list" close=")" open="(" separator="," item="item">
+			#{item,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>运营商配置</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+  </head>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+  	
+  	<!--<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">-->
+		<!--<form id="queryForm">-->
+	  		<!--<table class="table">-->
+	  			<!--<tr>-->
+	  				<!--<th>用户名：</th><td><input name="username" placeholder="请输入用户名" /></td>-->
+	  				<!--<th>业务类型：</th><td><select name="bussinesstype" ></select></td>-->
+	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+	  			<!--</tr>-->
+	  		<!--</table>-->
+	  	<!--</form>-->
+	<!--</div>	-->
+	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+		<table id="dg" ></table>
+	</div>
+
+	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+		<form id="doForm">
+			<input type="hidden" name="id"/>
+			<table class="table th-normal">
+				<tr><th>国家MCC：</th><td><select name="roamMcc" onchange="changeOperator()"></select></td></tr>
+				<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
+				<tr><th>优先接入运营商名单：</th><td><input name="pPlmn"/></td></tr>
+				<tr><th>拒绝接入运营商名单：</th><td><input name="fPlmn"/></td></tr>
+				<tr style="height:20px"></tr>
+				<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+			</table>
+		</form>
+	</div>
+
+  </body>
+  <script type="text/javascript">
+  	var options={
+			title:'运营商配置表',
+			//queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true},
+						{field:'id',title:'id',hidden:true},
+			         	{field:'countryName',title:'国家MCC',width:120},
+			         	{field:'operatorName',title:'运营商',width:180},
+			         	{field:'pPlmn',title:'优先接入运营商名单',width:120},
+			         	{field:'fPlmn',title:'拒绝接入运营商名单',width:300},
+					]],
+			url:kcJs.fn.getContextPath()+'/operatorPrefer/list',
+			toolbar: kcJs.fn.getFunctions(),
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[30,45],
+			rownumbers:true,
+			striped:true,
+			scrollbarSize:0,
+			fit:true
+		};
+
+  	  function doQuery(){
+  		//options.queryParams = $('#queryForm').serializeObject();
+		  $('#dg').datagrid(options);
+
+  	  }
+
+	  $(function(){
+	  	$('#dg').datagrid(options);
+		  $('#doDialog').dialog({
+			  modal : true,
+			  width:450,
+			  height:250,
+			  cache: false
+          });
+
+		  kcJs.fn.initSelect({"container":$('[name=roamMcc]'),"url":'getMccDic',"needNull":false});
+
+      });
+
+  	  function doModify() {
+          var selectRows = $('#dg').datagrid("getSelections");
+          if (selectRows.length > 0 && selectRows.length == 1) {
+              var rowData = selectRows[0];
+              $.ajaxSetup({async : false});
+              kcJs.fn.autoFillData($('#doDialog'),rowData);
+              changeOperator();
+              kcJs.fn.autoFillData($('#doDialog'),rowData);
+              $.ajaxSetup({async : false});
+              $('#doDialog').dialog({title:'修改'});
+              $('#doDialog').dialog('open');
+          }else {
+              $.messager.alert("提示", "请选择其中一条信息！", "info");
+          }
+
+      }
+      
+      function doAdd() {
+          $('#doForm')[0].reset();
+		  changeOperator();
+
+          $('#doDialog').dialog({title:'添加'});
+          $('#doDialog').dialog('open');
+      }
+	  
+      function saveData() {
+          if($('#doForm').form('validate')){
+              $('#doDialog').dialog('close');
+              $('#dg').datagrid('loading');
+              $.post(kcJs.fn.getContextPath()+'/operatorPrefer/save',$('#doForm').serializeObject(),function(data){
+                  if(data){
+                      $.messager.alert('提示',data.msg,'info');
+                      if(data.code=='200'){
+                          doQuery();
+                      }else{
+                          $('#dg').datagrid('loaded');
+                      }
+                  }
+
+              });
+          }
+      }
+
+    function doDelete() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 ) {
+            var ids = [];
+            for(var i = 0;i < selectRows.length;i++){
+                ids.push(selectRows[i].id);
+            }
+            $.post(kcJs.fn.getContextPath()+'/operatorPrefer/delete',{ids:ids.join(",")},function (data) {
+                if(data){
+                    $.messager.alert('提示',data.msg,'info');
+                    if(data.code=='200'){
+                        doQuery();
+                    }else{
+                        $('#dg').datagrid('loaded');
+                    }
+                }
+            })
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息！", "info");
+        }
+    }
+
+    function changeOperator(){
+        var mcc=$('#doForm [name=roamMcc]').val();
+        if(mcc){
+            kcJs.fn.initSelect({"container":$('#doForm select[name=operatorCode]'),
+                "url":'getOperatorDic',"needNull":false,"queryParam":{mcc:mcc}});
+        }
+    }
+	  
+  </script>
+</html>	

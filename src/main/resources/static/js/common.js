@@ -155,6 +155,7 @@ var kcJs=
 		//给指定的select容器初始化数据，参数container：容器,data：数组数据,needNull：是否需要给一个空值，nullDesc：空值的描述，defaultVal：是否选中默认值
 		initSelectOption:function(option){
 			if(!option.data){
+                $(option.container).html('');
 				return;
 			}
 			option = $.extend({"value":"value","name":"name","nullDesc":"--请选择--"},option);

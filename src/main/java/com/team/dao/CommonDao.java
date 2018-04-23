@@ -32,7 +32,7 @@ public interface CommonDao {
 	 *@return
 	 *return
 	 */
-	public List<Dictionary> getOperatorDic(@Param("countryCode")Integer countryCode);
+	public List<Dictionary> getOperatorDic(Map<String,Object> map);
 	
 	/**
 	 * 查找卡池
@@ -54,6 +54,14 @@ public interface CommonDao {
 	 *return
 	 */
 	public List<Dictionary> getProvinceDic(@Param("countryCode") Integer countryCode);
+
+
+	/**
+	 * 查找省份
+	 *@return
+	 *return
+	 */
+	public List<Dictionary> getMccDic();
 
 
 	

@@ -28,6 +28,9 @@
         <if test="countryCode!=null">
             and countrycode=#{countryCode,jdbcType=INTEGER}
         </if>
+        <if test="mcc!=null">
+            and mcc=#{mcc,jdbcType=INTEGER}
+        </if>
         order by case when instr(OPERATORCODE,460)=1 then 1 else 0 end desc,OPERATORCODE
     </select>
 
@@ -68,5 +71,13 @@
         where countryCode=#{countryCode,jdbcType=INTEGER}
         order by sort
 	</select>
+
+    <select id="getMccDic" resultType="com.team.vo.Dictionary">
+        select m.mcc value,
+               concat(c.namecn,'(',m.mcc,')') name
+        from m_country_mcc m,m_country c
+        where m.countrycode=c.countrycode
+        order by case when m.countryCode=156 then 0 else 1 end
+    </select>
 
 </mapper>

@@ -16,4 +16,6 @@ public interface TerminalVersionDao {
     int save(TerminalVersion terminalVersion);
 
     int update(TerminalVersion terminalVersion);
+
+    int delete(List<Integer> list);
 }

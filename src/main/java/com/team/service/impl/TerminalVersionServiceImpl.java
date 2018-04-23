@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,17 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
             count = terminalVersionDao.save(terminalVersion);
         }
         return count>0?super.successTip():super.errorTip();
+    }
+
+    @Override
+    public ReturnMsg delete(String ids) {
+        int count = 0;
+
+        List<Integer> idList = CommonUtil.getIntList(ids);
+
+        count = terminalVersionDao.delete(idList);
+
+        return count >0 ?super.successTip():super.errorTip();
     }
 
 }

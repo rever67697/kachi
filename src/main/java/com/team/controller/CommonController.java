@@ -55,8 +55,8 @@ public class CommonController {
 	}
 
 	@PostMapping("/getOperatorDic")
-	public ReturnMsg getOperatorDic(Integer countryCode){
-		return commonService.getOperatorDic(countryCode);
+	public ReturnMsg getOperatorDic(Integer countryCode,Integer mcc){
+		return commonService.getOperatorDic(countryCode,mcc);
 	}
 
 	@PostMapping("/getSimPoolDic")
@@ -74,6 +74,11 @@ public class CommonController {
 	@PostMapping("/getProvinceDic")
 	public ReturnMsg getProvinceDic(@RequestParam(name = "countryCode",defaultValue = "156") Integer countryCode){
 		return commonService.getProvinceDic(countryCode);
+	}
+
+	@PostMapping("/getMccDic")
+	public ReturnMsg getMccDic(){
+		return commonService.getMccDic();
 	}
 
 	@PostMapping("/countryList")

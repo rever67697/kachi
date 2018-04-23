@@ -175,7 +175,6 @@
 		});
 
         kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"needNull":false});
-        kcJs.fn.initSelect({"container":$('[name=operatorCode]'),"url":'getOperatorDic',"needNull":false,"queryParam":{"countryCode":156}});
 	});
 	
 	function doQuery(){
@@ -185,6 +184,7 @@
   
   	function doAdd(){
   		$('#doForm')[0].reset();
+  		changeOperator();
   		$('#doDialog [name=id]').val('');
   		$('#doDialog').dialog({title:'添加套餐'});
   		$('#doDialog').dialog('open');
@@ -194,7 +194,13 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
+
+             $.ajaxSetup({async : false});
              kcJs.fn.autoFillData($('#doForm'),rowData);
+             changeOperator();
+             kcJs.fn.autoFillData($('#doForm'),rowData);
+             $.ajaxSetup({async : false});
+
              $('#doForm [name=compareFlow]').val(rowData.maxFlow);
              $('#doForm [name=compareRoamFlow]').val(rowData.maxRoamFlow);
              $('#doDialog').dialog({title:'修改套餐'});

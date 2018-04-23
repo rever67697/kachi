@@ -303,6 +303,28 @@
     function deleteTerminal(index) {
         $('#selectedTerminal').datagrid('deleteRow',index);
     }
+    
+    function doDelete() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 ) {
+            var ids = [];
+            for(var i = 0;i < selectRows.length;i++){
+                ids.push(selectRows[i].id);
+			}
+			$.post(kcJs.fn.getContextPath()+'/tv/delete',{ids:ids.join(",")},function (data) {
+                if(data){
+                    $.messager.alert('提示',data.msg,'info');
+                    if(data.code=='200'){
+                        doQuery();
+                    }else{
+                        $('#dg').datagrid('loaded');
+                    }
+                }
+            })
+        }else {
+            $.messager.alert("提示", "请选择其中一条信息！", "info");
+        }
+    }
 	  
   </script>
 </html>	

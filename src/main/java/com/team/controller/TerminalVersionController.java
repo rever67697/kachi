@@ -40,4 +40,10 @@ public class TerminalVersionController {
         terminalVersion.setOperatorTime(new Date());
         return terminalVersionService.saveOrUpdate(terminalVersion);
     }
+
+    @PostMapping("/delete")
+    @PermissionLog
+    public ReturnMsg save(String ids){
+        return terminalVersionService.delete(ids);
+    }
 }

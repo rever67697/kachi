@@ -12,12 +12,14 @@ public interface CommonService {
 	
 	public ReturnMsg getDepartmentDic(Integer dId);
 	
-	public ReturnMsg getOperatorDic(Integer countryCode);
+	public ReturnMsg getOperatorDic(Integer countryCode,Integer mcc);
 	
 	public ReturnMsg getSimPoolDic(Integer dId);
 
 	public ReturnMsg getPackageDic(Integer operatorCode,Integer dId);
 
 	public ReturnMsg getProvinceDic(Integer countryCode);
+
+	public ReturnMsg getMccDic();
 
 }

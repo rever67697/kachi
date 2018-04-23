@@ -1,19 +1,20 @@
 package com.team.service;
 
-import com.team.model.TerminalVersion;
+import com.team.model.OperatorPrefer;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 
 /**
  * @Author : wuzhiheng
  * @Description :
- * @Date Created in 下午6:20 2018/3/20
+ * @Date Created in 下午2:24 2018/4/23
  */
-public interface TerminalVersionService {
+public interface OperatorPreferService {
 
     ResultList list(int page,int rows);
 
-    ReturnMsg saveOrUpdate(TerminalVersion terminalVersion);
+    ReturnMsg saveOrUpdate(OperatorPrefer operatorPrefer);
 
     ReturnMsg delete(String ids);
+
 }

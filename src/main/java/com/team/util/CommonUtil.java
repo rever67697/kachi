@@ -374,4 +374,14 @@ public class CommonUtil {
 		}
 		return returnModel;
 	}
+
+	public static List<Integer> getIntList(String str){
+		List<Integer> list = new ArrayList<>();
+		if(!StringIsNull(str)){
+			for (String s : str.split(",")) {
+				list.add(new Integer(s));
+			}
+		}
+		return list;
+	}
 }

@@ -54,9 +54,12 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     /**
      * 查找运营商
      */
-    public ReturnMsg getOperatorDic(Integer countryCode) {
+    public ReturnMsg getOperatorDic(Integer countryCode,Integer mcc) {
         ReturnMsg returnMsg = super.successTip();
-        List<Dictionary> list = commonDao.getOperatorDic(countryCode);
+        Map<String,Object> map = new HashMap<>();
+        map.put("countryCode",countryCode);
+        map.put("mcc",mcc);
+        List<Dictionary> list = commonDao.getOperatorDic(map);
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }
@@ -90,6 +93,16 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     public ReturnMsg getProvinceDic(Integer countryCode) {
         ReturnMsg returnMsg = super.successTip();
         List<Dictionary> list = commonDao.getProvinceDic(countryCode);
+        if (list != null && list.size() > 0) {
+            returnMsg.setData(list);
+        }
+        return returnMsg;
+    }
+
+    @Override
+    public ReturnMsg getMccDic() {
+        ReturnMsg returnMsg = super.successTip();
+        List<Dictionary> list = commonDao.getMccDic();
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }

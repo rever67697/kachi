@@ -37,4 +37,12 @@
             terminalList = #{terminalList,jdbcType=VARCHAR}
         where id=#{id,jdbcType=INTEGER}
     </update>
+
+    <delete id="delete" parameterType="java.util.List">
+        delete from m_terminal_version
+        where id in
+        <foreach collection="list" close=")" open="(" separator="," item="item">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </delete>
 </mapper>

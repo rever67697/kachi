@@ -1932,6 +1932,7 @@ textarea{
   border-bottom-color: #ffffff;
 }
 
+#nav .nav{display:inline-block;padding-top:7px;}
 /***********************************************************************************/
 body{border:1px solid transparent;overflow:hidden}
 .card_container{width:100%;border:1px solid transparent;height:200px}
