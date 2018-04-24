@@ -1,9 +1,16 @@
 package com.team.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.team.model.ChannelCard;
+import com.team.model.Country;
 import com.team.util.CommonUtil;
+import com.team.vo.ResultList;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +35,27 @@ public class OperatorServiceImpl implements OperatorService {
 	
 	@Autowired
 	private OperatorDao operatorDao;
-	
-	
-	@Override
+
+
+    @Override
+    public ResultList list(Integer countryCode, int page, int rows) {
+		PageHelper.startPage(page, rows);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("countryCode", countryCode);
+		List<Operator> list = operatorDao.list(map);
+		PageInfo<Operator> pageInfo = new PageInfo<Operator>(list);
+		return new ResultList(pageInfo.getTotal(), list);
+    }
+
+    @Override
+    public ResultList list(String operatorList) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", CommonUtil.getIntList(operatorList));
+		List<Operator> list = operatorDao.list(map);
+		return new ResultList(list.size(), list);
+    }
+
+    @Override
 	public Operator getOperator(Integer operatorCode) {
 		Operator operator = null;
 		Object object = publicCache.get(MConstant.CACHE_OPERATOR_KEY_PREE + operatorCode);

@@ -1,6 +1,7 @@
 package com.team.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +12,8 @@ import com.team.model.Operator;
  * author:wuzhiheng
  */
 public interface OperatorDao {
+
+	List<Operator> list(Map<String,Object> map);
 
 	List<Operator> getOperatorByCode(@Param("operatorCode")Integer operatorCode);
 }

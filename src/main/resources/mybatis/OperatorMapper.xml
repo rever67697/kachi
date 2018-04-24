@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.OperatorDao">
+
+	<select id="list" resultType="com.team.model.Operator" parameterType="java.util.Map">
+		select * from m_operator
+		where 1=1
+		<if test="countryCode!=null">
+			and countryCode = #{countryCode,jdbcType=INTEGER}
+		</if>
+		<if test="list!=null">
+			and operatorCode in
+			<foreach collection="list" open="(" close=")" separator="," item="item">
+				#{item,jdbcType=INTEGER}
+			</foreach>
+		</if>
+	</select>
 	
 	<select id="getOperatorByCode" resultType="com.team.model.Operator">
 		select * from m_operator
