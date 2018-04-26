@@ -37,8 +37,8 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public ResultList getList(String mccs) {
     	if(!CommonUtil.StringIsNull(mccs)){
-    		String[] code = mccs.split(",");
-			List<Country> list = countryDao.getSelected(code);
+    		String[] mccArray = mccs.split(",");
+			List<Country> list = countryDao.getSelected(mccArray);
 			PageInfo<Country> pageInfo = new PageInfo<Country>(list);
 			return new ResultList(pageInfo.getTotal(), list);
 		}

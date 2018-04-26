@@ -49,7 +49,7 @@
 				<div id="selectedCountry" ></div>
 			</div>
 
-			<div region="east" title=""  style="width:450px;background:#FFF">
+			<div region="east" title=""  style="width:390px;background:#FFF">
 				<div class="easyui-layout" fit="true">
 					<div region="north" style="height:41px;background:#fff;overflow:hidden;">
 						<form id="countryForm">
@@ -104,14 +104,14 @@
 		};
 
     var options_c={
-        title:'国家列表<span style="color:red">【双击选中】</span>',
+//        title:'国家列表<span style="color:red">【双击选中】</span>',
 		fit:true,
         queryParams:$('#countryForm').serializeObject(),
         columns:[[
             {field:'id',title:'id',hidden:true},
             {field:'countryCode',title:'国家编号',width:100},
-            {field:'nameCn',title:'中文名称',width:120},
-            {field:'nameEn',title:'英文名称',width:120}
+            {field:'mcc',title:'MCC',width:100},
+            {field:'nameCn',title:'国家名称',width:120},
         ]],
         url:kcJs.fn.getContextPath()+'/countryList',
         iconCls:'icon-tip',
@@ -121,11 +121,11 @@
         rownumbers:true,
         scrollbarSize:0,
         striped:true,
-		onDblClickRow:function (rowIndex, rowData) {
+		onClickRow:function (rowIndex, rowData) {
 			var rows = $('#selectedCountry').datagrid('getRows');
 			var addStatus = true;
 			for(var i=0;i<rows.length;i++){
-			    if(rowData.countryCode == rows[i].countryCode){
+			    if(rowData.mcc == rows[i].mcc){
 			        addStatus = false;
 			        break;
 				}
@@ -133,11 +133,11 @@
 			if(addStatus){
 			    $('#selectedCountry').datagrid('appendRow',{
 			        countryCode:rowData.countryCode,
+			        mcc:rowData.mcc,
 					nameCn:rowData.nameCn,
-					nameEn:rowData.nameEn
 				})
 			}else{
-			    $.messager.alert('提示','已存在','info');
+//			    $.messager.alert('提示','已存在','info');
 			}
         }
     };
@@ -154,12 +154,15 @@
 		});
 
         $('#countryDialog').dialog({
+            title : "国家列表<span style='color:red'>【单击一行选中】</span>",
             modal : true,
-            width:800,
+            width:740,
             height:400,
             cache: false,
-            title : "选择支持的城市",
-			toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordCountry}]
+			toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordCountry}],
+            onClose:function () {
+                recordCountry(1);
+            }
         });
 
         $('#selectedCountry').datagrid({
@@ -169,8 +172,8 @@
 					return '<button class="btn-del" onclick="deleteCountry(\''+i+'\')">删除</button>'
                 }},
                 {field:'countryCode',title:'国家编号',width:60},
-                {field:'nameCn',title:'中文名称',width:90},
-                {field:'nameEn',title:'英文名称',width:120}
+                {field:'mcc',title:'MCC',width:60},
+                {field:'nameCn',title:'国家名称',width:90},
 			]]
 		});
 
@@ -310,8 +313,8 @@
 				        var rowData = data.rows[i];
                         $('#selectedCountry').datagrid('appendRow',{
                             countryCode:rowData.countryCode,
+                            mcc:rowData.mcc,
                             nameCn:rowData.nameCn,
-                            nameEn:rowData.nameEn
                         })
 					}
 				}
@@ -322,16 +325,18 @@
 
     }
 
-    function recordCountry() {
+    function recordCountry(flag) {
 		var rows = $('#selectedCountry').datagrid('getRows');
-		var countrys='';
+		var mccs='';
 		for(var i=0;i<rows.length;i++){
-			countrys+=rows[i].countryCode;
+			mccs+=rows[i].mcc;
 			if((i+1)<rows.length)
-				countrys+=',';
+				mccs+=',';
 		}
-		$('#doForm [name=mccs]').val(countrys);
-		$('#countryDialog').dialog('close');
+		$('#doForm [name=mccs]').val(mccs);
+		if(flag!=1){
+			$('#countryDialog').dialog('close');
+		}
     }
 
     function deleteCountry(index) {

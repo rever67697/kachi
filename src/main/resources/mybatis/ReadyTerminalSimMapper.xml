@@ -51,6 +51,7 @@
 		set operator = #{operator,jdbcType=INTEGER},
 			type = #{type,jdbcType=INTEGER},
 			imsi = #{imsi,jdbcType=BIGINT},
+			insertDate=now(),
 			lastStatus=#{lastStatus,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>

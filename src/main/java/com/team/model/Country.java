@@ -18,6 +18,8 @@ public class Country implements Serializable {
 	private String nameEn;
 	private String nameCn;
 	private Integer status;
+
+	private Integer mcc;
 	
 	public Integer getId() {
 		return id;
@@ -85,6 +87,12 @@ public class Country implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
-	
+
+	public Integer getMcc() {
+		return mcc;
+	}
+
+	public void setMcc(Integer mcc) {
+		this.mcc = mcc;
+	}
 }

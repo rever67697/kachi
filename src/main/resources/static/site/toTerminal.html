@@ -16,8 +16,8 @@
 	  	<form id="queryForm">
 	  		<table class="table">
 	  			<tr>
-	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
-	  				<th>终端状态：</th>
+	  				<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
+	  				<th>状态：</th>
 	  				<td><select name="status">
 		  					<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
 		  					<option value="2">停用</option><option value="3">注销</option>
@@ -28,7 +28,7 @@
 		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
 	  					</select>
 	  				</td>
-	  				<th>所属部门：</th>
+	  				<th>部门：</th>
 	  				<td><select name="departmentId"><option value="">全部</option></select></td>
 	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 	  			</tr>
@@ -177,7 +177,7 @@
 		};
 	var dl_options={
 			columns:[[
-						//{field:'ck',checkbox:true}, 
+//						{field:'ck',checkbox:true},
 			         	{field:'id',title:'id',hidden:true},
 			         	{field:'tsid',title:'终端编号',width:80},
 			         	{field:'date',title:'时间（所在国家）',width:150},

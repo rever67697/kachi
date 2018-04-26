@@ -57,8 +57,8 @@
 						<form id="terminalForm">
 							<table class="table" style="margin:0">
 								<tr>
-									<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
-									<th>终端状态：</th>
+									<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
+									<th>状态：</th>
 									<td><select name="status">
 										<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
 										<option value="2">停用</option><option value="3">注销</option>
@@ -69,7 +69,7 @@
 										<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
 									</select>
 									</td>
-									<th>所属部门：</th>
+									<th>部门：</th>
 									<td><select name="departmentId"></select></td>
 									<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
 								</tr>
@@ -121,10 +121,11 @@
 		};
 
     var terminal_options={
-        title:'终端列表<span style="color:red">【双击一行选中】</span>',
+//        title:'终端列表<span style="color:red">【单击一行选中】</span>',
         fit:true,
         queryParams:$('#terminalForm').serializeObject(),
         columns:[[
+            {field:'ck',checkbox:true},
             {field:'id',title:'终端id',hidden:true},
             {field:'tsid',title:'终端编号',width:80},
             {field:'status',title:'活动状态',width:100,formatter:function(value,rec,index){
@@ -163,7 +164,7 @@
         rownumbers:true,
         scrollbarSize:0,
         striped:true,
-        onDblClickRow:function (rowIndex, rowData) {
+        onClickRow:function (rowIndex, rowData) {
             var rows = $('#selectedTerminal').datagrid('getRows');
             var addStatus = true;
             for(var i=0;i<rows.length;i++){
@@ -177,7 +178,7 @@
                     tsid:rowData.tsid,
                 })
             }else{
-                $.messager.alert('提示','已存在','info');
+//                $.messager.alert('提示','已存在','info');
             }
         }
     };
@@ -200,11 +201,14 @@
 
           $('#terminalDialog').dialog({
               modal : true,
-              width:1230,
+              width:window.innerWidth*0.98,
               height:600,
               cache: false,
-              title : "选择终端列表",
-              toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordTerminal}]
+              title : "终端列表<span style='color:red'>【单击一行选中】</span>",
+              toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordTerminal}],
+			  onClose:function () {
+                  recordTerminal(1);
+              }
           });
 
           $('#selectedTerminal').datagrid({
@@ -289,7 +293,7 @@
 
     }
 
-    function recordTerminal() {
+    function recordTerminal(flag) {
         var rows = $('#selectedTerminal').datagrid('getRows');
         var terminalList='';
         for(var i=0;i<rows.length;i++){
@@ -298,7 +302,9 @@
                 terminalList+=',';
         }
         $('#doForm [name=terminalList]').val(terminalList);
-        $('#terminalDialog').dialog('close');
+		if(flag!=1){
+        	$('#terminalDialog').dialog('close');
+		}
     }
 
     function deleteTerminal(index) {

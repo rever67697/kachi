@@ -3,7 +3,7 @@
   <head>
     <title>指定卡管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>-->
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
 	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
 	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
@@ -36,47 +36,108 @@
 	  		</table>
 		</form>
 	</div>
-	<div id="terminalDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">
-		<form id="queryForm_t">
-	  		<table class="table">
-	  			<tr>
-	  				<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
-	  				<th>终端状态：</th>
-	  				<td><select name="status">
-		  					<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
-		  					<option value="2">停用</option><option value="3">注销</option>
-	  					</select>
-	  				</td>
-	  				<th>激活状态：</th>
-	  				<td><select name="activated">
-		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
-	  					</select>
-	  				</td>
-	  				<th>所属部门：</th>
-	  				<td><select name="departmentId"></select></td>
-	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
-	  			</tr>
-	  		</table>
-	  	</form>
-		<div id="terminalDg"></div>
+
+	<div id="terminalDialog" closed="true" iconCls="icon-user">
+		<div class="easyui-layout" fit="true">
+			<div region="center" title=""  style="background:#FFF">
+				<div class="easyui-layout" fit="true">
+					<div region="north" style="height:44px;background:#fff;overflow:hidden;">
+						<form id="queryForm_t">
+							<table class="table" style="margin-top:1px">
+								<tr>
+									<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
+									<th>状态：</th>
+									<td><select name="status">
+										<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
+										<option value="2">停用</option><option value="3">注销</option>
+									</select>
+									</td>
+									</td>
+									<th>部门：</th>
+									<td><select name="departmentId"></select></td>
+									<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<div region="center" style="background:#fff">
+						<div id="terminalDg"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div id="cardDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">
-		<form id="queryForm_c">
-		  		<table class="table">
-		  			<tr>
-		  				<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
-		  				<th>卡状态：</th>
-		  				<td><select name="status">
-		  						<option value="0">正常</option>
-							    <option value="1">停用</option>
-		  					</select></td>
-		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
-		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
-		  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_c()">查 询</a></td>
-		  			</tr>
-		  		</table>
-		  	</form>
-		<div id="cardDg"></div>
+
+	<!--<div id="terminalDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+		<!--<form id="queryForm_t">-->
+	  		<!--<table class="table">-->
+	  			<!--<tr>-->
+	  				<!--<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>-->
+	  				<!--<th>状态：</th>-->
+	  				<!--<td><select name="status">-->
+		  					<!--<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>-->
+		  					<!--<option value="2">停用</option><option value="3">注销</option>-->
+	  					<!--</select>-->
+	  				<!--</td>-->
+	  				<!--<th>激活状态：</th>-->
+	  				<!--<td><select name="activated">-->
+		  					<!--<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>-->
+	  					<!--</select>-->
+	  				<!--</td>-->
+	  				<!--<th>部门：</th>-->
+	  				<!--<td><select name="departmentId"></select></td>-->
+	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>-->
+	  			<!--</tr>-->
+	  		<!--</table>-->
+	  	<!--</form>-->
+		<!--<div id="terminalDg"></div>-->
+	<!--</div>-->
+	<!--<div id="cardDialog" closed="true" style="overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+		<!--<form id="queryForm_c">-->
+		  		<!--<table class="table">-->
+		  			<!--<tr>-->
+		  				<!--<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>-->
+		  				<!--<th>状态：</th>-->
+		  				<!--<td><select name="status">-->
+		  						<!--<option value="0">正常</option>-->
+							    <!--<option value="1">停用</option>-->
+		  					<!--</select></td>-->
+		  				<!--<th>卡池：</th><td><select name="cpId"></select></td>-->
+		  				<!--<th>部门：</th><td><select name="departmentId"></select></td>-->
+		  				<!--<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_c()">查 询</a></td>-->
+		  			<!--</tr>-->
+		  		<!--</table>-->
+		  	<!--</form>-->
+		<!--<div id="cardDg"></div>-->
+	<!--</div>-->
+
+	<div id="cardDialog" closed="true" iconCls="icon-user">
+		<div class="easyui-layout" fit="true">
+			<div region="center" title=""  style="background:#FFF">
+				<div class="easyui-layout" fit="true">
+					<div region="north" style="height:44px;background:#fff;overflow:hidden;">
+						<form id="queryForm_c">
+							<table class="table" style="margin-top:1px">
+								<tr>
+									<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
+									<th>状态：</th>
+									<td><select name="status">
+										<option value="0">正常</option>
+										<option value="1">停用</option>
+									</select></td>
+									<th>卡池：</th><td><select name="cpId"></select></td>
+									<th>部门：</th><td><select name="departmentId"></select></td>
+									<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_c()">查 询</a></td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<div region="center" style="background:#fff">
+						<div id="cardDg"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div id="updateDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
@@ -96,6 +157,7 @@
 	</div>
   </body>
   <script type="text/javascript">
+
   var input_str = '<div><input type="hidden" name="idStatus" /><input name="imsi" readonly="readonly"/>'+
 	  			  '		<span class="btn-delete" onclick="showCard()">获取</span><span class="btn-delete" onclick="removeInput(this)">删除</span></div>';
 
@@ -177,7 +239,7 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:315,
+			fit:true,
 			onClickRow:function(rowIndex, rowData){
 				$('#terminalDialog').dialog('close');
 				$('#doForm [name="tsid"]').val(rowData.tsid);
@@ -216,8 +278,9 @@
 			striped:true,
 			rownumbers:true,
 			scrollbarSize:0,
-			height:315
+			fit:true
 		};
+
 	$(function(){
 		$('#dg').datagrid(options);
 		$('#terminalDg').datagrid(terminal_options);
@@ -232,16 +295,16 @@
 		
 		$('#terminalDialog').dialog({
 			modal : true,
- 			width:1000,
- 			height:400,
+ 			width:window.innerWidth*0.98,
+ 			height:500,
  			cache: false,
 			title : '选取终端编号<span style="color:red">【单击可选中】</span>'
 		});
 		
 		$('#cardDialog').dialog({
 			modal : true,
- 			width:1000,
- 			height:400,
+ 			width:window.innerWidth*0.98,
+ 			height:500,
  			cache: false,
 			title : '选取sim卡IMSI<span style="color:red">【可多选】</span>'
 		});
@@ -258,39 +321,16 @@
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
 		
 	});
-	function doAdd(){//新增弹出窗
+
+  	/**新增-弹出窗**/
+	function doAdd(){
 		$('#doForm')[0].reset();
-//		$('#doForm [name=id]').val('');
 		$('#input_imsi').html(input_str);
 		$('#doDialog').dialog('open');
 	}
-	
-//	function doDelete(){
-//		var selectRows = $('#dg').datagrid("getSelections");
-//		if (selectRows.length > 0) {
-//			$.messager.confirm('提示','是否确定删除？',function(r){
-//				if(r){
-//					$('#dg').datagrid('loading');
-//		  			var ids = [];
-//		  			for(var i = 0;i < selectRows.length;i++){
-//		  				ids.push(selectRows[i].id);
-//		  			}
-//		  			$.post(kcJs.fn.getContextPath()+'/readyTerminalSim/delete',{ids:ids.join(",")},function(data){
-//		  				if(data && data.code && data.code == '200'){
-//		  					doQuery();
-//		  				}else{
-//		  					$('#dg').datagrid('loaded');
-//		  				}
-//		  				$.messager.alert("提示", data.msg, "info");
-//		  			},'json');
-//		  		}
-//			});
-//      }else {
-//          $.messager.alert("提示", "请选择至少一条信息", "info");
-//      }
-//	}
-	
-	function saveData(){//新增保存
+
+	/**新增-保存**/
+	function saveData(){
 		$('#doForm [name=imsi]').validatebox({
 		    required: true
 		});
@@ -316,12 +356,23 @@
 			}); 
 		}
 	}
-	
+	/** 主查询 **/
 	function doQuery(){
 		options.queryParams = $('#queryForm').serializeObject();
 		$('#dg').datagrid(options);
 	}
-	
+  	/** 终端查询 **/
+	function doQuery_t(){
+		terminal_options.queryParams = $('#queryForm_t').serializeObject();
+		$('#terminalDg').datagrid(terminal_options);
+	}
+  	/** 卡查询 **/
+	function doQuery_c(){
+		card_options.queryParams = $('#queryForm_c').serializeObject();
+		$('#cardDg').datagrid(card_options);
+	}
+
+	/**选卡-删除**/
 	function removeInput(obj){
 		if($('#doForm [name=imsi]').length > 1){
 			$(obj).parent().remove();
@@ -330,7 +381,8 @@
 		   $('#doForm [name=idStatus]').val('');
 		}
 	}
-	
+
+	/**选终端-弹出窗口**/
 	function showTerminal(){
 		$('#terminalDialog').dialog('open');
 	}
@@ -355,7 +407,7 @@
 		$('#cardDialog').dialog('open');
 	}
 
-	
+	/**选卡-选取并关闭弹出窗口**/
 	function selectCards(){
 		var selectRows = $('#cardDg').datagrid("getSelections");
   		if (selectRows.length > 0) {
@@ -375,21 +427,14 @@
   			 		$('#doForm [name=idStatus]:last').val(rowData.id+','+rowData.status);
   			 	}
   			 }
-  		
+
              $('#cardDialog').dialog('close');
         }else {
             $.messager.alert("提示", "请选择其中一条信息", "info");
         }
 	}
-	function doQuery_t(){
-		terminal_options.queryParams = $('#queryForm_t').serializeObject();
-		$('#terminalDg').datagrid(terminal_options);
-	}
-	function doQuery_c(){
-		card_options.queryParams = $('#queryForm_c').serializeObject();
-		$('#cardDg').datagrid(card_options);
-	}
 
+	/**修改-弹出窗口**/
 	function doUpdate() {
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0 && selectRows.length == 1) {
@@ -400,7 +445,8 @@
             $.messager.alert("提示", "请选择其中一条信息", "info");
         }
     }
-	
+
+    /**修改-保存数据**/
 	function updateData(){
         $('#updateDialog').dialog('close');
         $('#dg').datagrid('loading');
@@ -416,6 +462,7 @@
         });
     }
 
+    /**删除数据**/
     function doDelete(){
 	    $.messager.confirm('提示','是否确定删除?',function (r) {
 			if(r){

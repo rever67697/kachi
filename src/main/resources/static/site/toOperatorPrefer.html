@@ -117,6 +117,7 @@
         fit: true,
         queryParams: $('#operatorForm').serializeObject(),
         columns: [[
+            {field: 'ck',checkbox:true},
             {field: 'id', title: 'id', hidden: true},
             {field: 'operatorCode', title: '运营商编号', width: 100},
             {field: 'operatorNameCn', title: '运营商名称', width: 120},
@@ -133,12 +134,12 @@
         striped: true,
     };
 
-    var onClickRow = function(rowIndex, rowData){
+    var onClickRow_pplmn = function(rowIndex, rowData){
         $('#operatorDialog').dialog('close');
         $('#doForm [name="pPlmn"]').val(getLmn(rowData.operatorCode));
     }
 
-    var onDblClickRow = function (rowIndex, rowData) {
+    var onClickRow_fplmn = function (rowIndex, rowData) {
         var rows = $('#selectedOperator').datagrid('getRows');
         var addStatus = true;
         for (var i = 0; i < rows.length; i++) {
@@ -153,7 +154,7 @@
                 operatorNameCn: rowData.operatorNameCn,
             })
         } else {
-            $.messager.alert('提示', '已存在', 'info');
+//            $.messager.alert('提示', '已存在', 'info');
         }
     }
 
@@ -173,11 +174,14 @@
         });
 
         $('#operatorDialog').dialog({
+            title: "运营商列表<span style='color:red'>【单击一行选中】</span>",
             modal: true,
             width: 800,
             height: 500,
             cache: false,
-            title: "选择运营商列表",
+            onClose:function () {
+                recordOperator(1);
+            }
 //              toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordTerminal}]
         });
 
@@ -319,27 +323,27 @@
         }
         //显示弹出框
         if(single){
-            $('#operatorDialog').dialog({toolbar:'',title:'<span style="color:red">【单击可选中】</span>'});
-            operator_options.onClickRow=onClickRow;
-            operator_options.onDblClickRow=null;
+            $('#operatorDialog').dialog({toolbar:''});
+            operator_options.onClickRow=onClickRow_pplmn;
         }else {
-            $('#operatorDialog').dialog({toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordOperator}],title:'<span style="color:red">【双击一行选中】</span>'});
-            operator_options.onClickRow=null;
-            operator_options.onDblClickRow=onDblClickRow;
+            $('#operatorDialog').dialog({toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordOperator}]});
+            operator_options.onClickRow=onClickRow_fplmn;
         }
         doQuery_t();
         $('#operatorDialog').dialog('open');
 
     }
 
-    function recordOperator() {
+    function recordOperator(flag) {
         var rows = $('#selectedOperator').datagrid('getRows');
         var operatorList='';
         for(var i=0;i<rows.length;i++){
             operatorList += getLmn(rows[i].operatorCode);
         }
         $('#doForm [name=fPlmn]').val(operatorList);
-        $('#operatorDialog').dialog('close');
+        if(flag!=1){
+            $('#operatorDialog').dialog('close');
+        }
     }
 
     function deleteOperator(index) {

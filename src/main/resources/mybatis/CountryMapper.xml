@@ -3,21 +3,24 @@
 <mapper namespace="com.team.dao.CountryDao">
     
     <select id="list" resultType="com.team.model.Country">
-        select * from m_country
-        where 1=1
+        select mcc.mcc,c.*
+        from m_country c,m_country_mcc mcc
+        where c.countryCode=mcc.countryCode
         <if test="nameCn!=null and nameCn!=''">
-            and nameCn like concat('%',#{nameCn,jdbcType=VARCHAR},'%')
+            and c.nameCn like concat('%',#{nameCn,jdbcType=VARCHAR},'%')
         </if>
-        order by countryCode
+        order by case when c.countrycode=156 then 0 else 1 end
     </select>
     
     <select id="getSelected" resultType="com.team.model.Country">
-        select * from m_country
-        where countryCode in 
+        select mcc.mcc,c.*
+        from m_country c,m_country_mcc mcc
+        where c.countryCode=mcc.countryCode
+          and mcc.mcc in
         <foreach collection="array" open="(" separator="," close=")" item="item">
             #{item,jdbcType=INTEGER}
         </foreach>
-        order by countryCode
+        order by case when c.countrycode=156 then 0 else 1 end
     </select>
 
     <select id="getCountry" resultType="com.team.model.Country">
