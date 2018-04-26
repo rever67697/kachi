@@ -160,6 +160,12 @@ public class MyTest {
 		simCache.clear();
 	}
 
+	@Test
+	public void testGetPool(){
+		Object object = simCache.get(MConstant.CACHE_SUM_PREF+"400");
+
+	}
+
 }
 
 

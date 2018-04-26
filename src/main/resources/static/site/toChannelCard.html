@@ -12,58 +12,122 @@
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/ajaxfileupload.js"></script><script type="text/javascript" src="../js/Calendar.js"></script>
   </head>
-  <body>
-	  	<form id="queryForm">
-	  		<table class="table">
-	  			<tr>
-	  				<th>副卡IMSI：</th><td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>
-	  				<th>所属部门：</th><td><select name="departmentId"></select></td>
-	  				<!-- <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
-	  				<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> -->
-	  				<th>副卡状态：</th><td><select name="status">
-											<option value="">全部</option>
-											<option value="0">预置卡</option>
-											<option value="1">临时卡</option>
-											<option value="2">作废</option>
-										  </select></td>
-	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-	  			</tr>
-	  		</table>
-	  	</form>
-	  	<div id="dg"></div>
-	    <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-	    	<form id="doForm">
-	    		<input type="hidden" name="id" value=""/>
-	    		<table class="table th-normal">
-	    			<tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-	    			<tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-	    			<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>
-	    			<tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>
-	    			<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
-	    			<tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>
-	    			<tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>
-	    			<tr><th>状态：</th><td><select name="status" class="easyui-validatebox" required="true">
-												<option value=""></option>
-												<option value="0">预置卡</option>
-												<option value="1">临时卡</option>
-												<option value="2">作废</option>
-											</select></td></tr>
-	    			<tr><th>最后一次充值时间 ：</th><td><input name="rechargeTime" readonly="readonly" class="datetime"/></td></tr>
-	    			<tr><th>详情：</th><td><input name="detail"/></td></tr>
-	    			<tr><th>设备号：</th><td><input name="tsid" class="onlyNumber"/></td></tr>
-	    			<tr style="height:10px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-	    		</table>
-	    	</form>
-	    </div>
-	    <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-	  		<table class="excel">
-	  			<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
-	  			<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
-	  			<tr style="height:30px"></tr>
-	  			<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
-	  		</table>
-	  	</div>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+
+  <div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+	  <form id="queryForm">
+		  <table class="table">
+			  <tr>
+				  <th>副卡IMSI：</th><td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>
+				  <th>所属部门：</th><td><select name="departmentId"></select></td>
+				  <!-- <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
+                  <th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> -->
+				  <th>副卡状态：</th><td><select name="status">
+				  <option value="">全部</option>
+				  <option value="0">预置卡</option>
+				  <option value="1">临时卡</option>
+				  <option value="2">作废</option>
+			  </select></td>
+				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+			  </tr>
+		  </table>
+	  </form>
+  </div>
+  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+	  <table id="dg" ></table>
+  </div>
+
+  <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  <form id="doForm">
+		  <input type="hidden" name="id" value=""/>
+		  <table class="table th-normal">
+			  <tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+			  <tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+			  <tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>
+			  <tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>
+			  <tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
+			  <tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>
+			  <tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>
+			  <tr><th>状态：</th><td><select name="status" class="easyui-validatebox" required="true">
+				  <option value=""></option>
+				  <option value="0">预置卡</option>
+				  <option value="1">临时卡</option>
+				  <option value="2">作废</option>
+			  </select></td></tr>
+			  <tr><th>最后一次充值时间 ：</th><td><input name="rechargeTime" readonly="readonly" class="datetime"/></td></tr>
+			  <tr><th>详情：</th><td><input name="detail"/></td></tr>
+			  <tr><th>设备号：</th><td><input name="tsid" class="onlyNumber"/></td></tr>
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+  <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <table class="excel">
+		  <tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
+		  <tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
+		  <tr style="height:30px"></tr>
+		  <tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
+	  </table>
+  </div>
+
+  </body>
+
+
+
+  <!--<body>-->
+	  	<!--<form id="queryForm">-->
+	  		<!--<table class="table">-->
+	  			<!--<tr>-->
+	  				<!--<th>副卡IMSI：</th><td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>-->
+	  				<!--<th>所属部门：</th><td><select name="departmentId"></select></td>-->
+	  				<!--&lt;!&ndash; <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>-->
+	  				<!--<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> &ndash;&gt;-->
+	  				<!--<th>副卡状态：</th><td><select name="status">-->
+											<!--<option value="">全部</option>-->
+											<!--<option value="0">预置卡</option>-->
+											<!--<option value="1">临时卡</option>-->
+											<!--<option value="2">作废</option>-->
+										  <!--</select></td>-->
+	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+	  			<!--</tr>-->
+	  		<!--</table>-->
+	  	<!--</form>-->
+	  	<!--<div id="dg"></div>-->
+	    <!--<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+	    	<!--<form id="doForm">-->
+	    		<!--<input type="hidden" name="id" value=""/>-->
+	    		<!--<table class="table th-normal">-->
+	    			<!--<tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>-->
+	    			<!--<tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>-->
+	    			<!--<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>-->
+	    			<!--<tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>-->
+	    			<!--<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>-->
+	    			<!--<tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>-->
+	    			<!--<tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>-->
+	    			<!--<tr><th>状态：</th><td><select name="status" class="easyui-validatebox" required="true">-->
+												<!--<option value=""></option>-->
+												<!--<option value="0">预置卡</option>-->
+												<!--<option value="1">临时卡</option>-->
+												<!--<option value="2">作废</option>-->
+											<!--</select></td></tr>-->
+	    			<!--<tr><th>最后一次充值时间 ：</th><td><input name="rechargeTime" readonly="readonly" class="datetime"/></td></tr>-->
+	    			<!--<tr><th>详情：</th><td><input name="detail"/></td></tr>-->
+	    			<!--<tr><th>设备号：</th><td><input name="tsid" class="onlyNumber"/></td></tr>-->
+	    			<!--<tr style="height:10px"></tr>-->
+		  			<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>-->
+	    		<!--</table>-->
+	    	<!--</form>-->
+	    <!--</div>-->
+	    <!--<div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<table class="excel">-->
+	  			<!--<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>-->
+	  			<!--<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>-->
+	  			<!--<tr style="height:30px"></tr>-->
+	  			<!--<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>-->
+	  		<!--</table>-->
+	  	<!--</div>-->
+  <!--</body>-->
 	<script type="text/javascript">
   	var options={
 			title:'副卡列表',
@@ -96,7 +160,8 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-50
+			fit:true
+//			height:window.innerHeight-50
 		};
   
 	$(function(){
@@ -269,5 +334,5 @@
   </script>
 	
 	
-  </body>
+
 </html>

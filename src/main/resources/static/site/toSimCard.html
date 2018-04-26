@@ -12,141 +12,283 @@
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/Calendar.js"></script>
   </head>
-  <body>
-  	<div id="tt" class="easyui-tabs" >
-	    <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
-		    <table class="table kc-outline">
-		    	<tr>
-		    		<td><div class="kc-outline-number ligh-blue" id="simCardCount" onclick="$('#tt').tabs('select','流量卡');"></div><div>卡总数</div></td>
-		    		<td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>
-		    		<td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>
-		    		<td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>
-		    	</tr>
-		    	<tr>
-		    		<td><div class="kc-outline-number red" id="stopCardCount"></div><div>停机卡数</div></td>
-		    		<td><div class="kc-outline-number gray" id="offCardCount"></div><div>作废卡数</div></td>
-		    		<td></td><td></td>
-		    	</tr>
-		    </table>
-	    </div>
-	    <div title="流量卡" iconCls="icon icon-device" >
-		  	<form id="queryForm">
-		  		<table class="table">
-		  			<tr>
-		  				<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
-		  				<th>卡状态：</th>
-		  				<td><select name="status">
-		  						<option value="">全部</option><option value="0">正常</option>
-							    <option value="1">停用</option><option value="2">指定</option>
-							    <option value="3">待激活</option><option value="4">作废</option>
-		  					</select></td>
-		  				<th>所在卡池：</th><td><select name="cpId"></select></td>
-		  				<td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-		  			</tr>
-					<tr>
-						<th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td>
-						<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
-		  				<th>所属部门：</th><td><select name="departmentId"></select></td>
-					</tr>
-		  		</table>
-		  	</form>
-		  	<div id="dg"></div>
-		  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-					<form id="doForm">
-						<input type="hidden" name="id"/>
-						<!--<input type="hidden" name="compareOffPeriod"/>-->
-						<!--<input type="hidden" name="compareSustained"/>-->
-						<!--<input type="hidden" name="comparePackage"/>-->
-						<!--<input type="hidden" name="isChangePeriod"/>-->
-						<!--<input type="hidden" name="isChangePackage"/>-->
-						<input type="hidden" name="operatorCode"/>
-						<input type="hidden" name="departmentId"/>
-						<input type="hidden" name="cpId"/>
-						<table class="table th-normal">
-							<tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
-								<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber"/></td></tr>
-							<tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>
-								<th>PIN：</th><td><input name="pin"/></td></tr>
-							<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
-								<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
-							<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="false"></select></td>
-								<th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-							<tr><th>账期持续时间：</th><td><select name="suStained" class="easyui-validatebox" required="true">
-															<option value="1">1个月</option>
-															<option value="6">6个月</option>
-														 </select></td>
-								<th>协议类型：</th><td><input name="simMeProtocol"/></td></tr>
-							<tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">
-														<option value=""></option><option value="0">正常</option>
-														<option value="1">停用</option><option value="2">指定</option>
-														<option value="3">待激活</option><option value="4">作废</option>
-													</select></td>l
-								<th>所在卡池：</th><td><input name="simPoolName" readonly="readonly"/></td></tr>
-							<tr><th>卡池状态：</th><td><select name="cpStatus">
-															<option value=""></option>
-															<option value="0">正常</option>
-															<option value="1">待激活</option>
-															<option value="2">拔出</option>
-															<option value="8">超时</option>
-													  </select></td>
-								<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
-							<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
-								<th>省：</th><td><select name="provinceCode"></select></td></tr>
-							<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
-								<th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
-							<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
-								<th>VPNIP：</th><td><input name="vpnIP"/></td></tr>
-							<tr><th>VPN名称：</th><td><input name="vpnName"/></td>
-								<th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
-							<tr><th>是否软卡：</th><td><select name="softType"></select></td>
-								<th>KI：</th><td><input name="ki"/></td></tr>
-							<tr><th>OPC：</th><td><input name="opc"/></td>
-								<th>OP：</th><td><input name="op"/></td></tr>
-							<tr><th>APN：</th><td><input name="APN"/></td>
-								<th>插入时间：</th><td><input name="insertDate" readonly="readonly" /></td></tr>
-							<tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
-								<th>分组：</th><td><input name="groupPref"/></td></tr>
-							<tr><th>备注：</th><td><input name="note"/></td>
-								<th></th><td></td></tr>
-							<tr style="height:10px"></tr>
-							<tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-						</table>
-					</form>
-			</div>
-			<div id="doBatchDialog" closed="true" style="padding:5px 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-				<p style="color:red">【提示】：</p>
-				<p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>
-				<p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
-				<p>3.不需要改的属性不要改动。</p>
-				<form id="doBatchForm">
-					<input type="hidden" name="id" value="-1"/>
-					<table class="table th-normal">
-						<tr><th>套餐：</th><td><select name="packageId"></select></td>
-							<th>卡状态：</th><td><select name="status">
-													<option value=""></option><option value="0">正常</option>
-													<option value="1">停用</option><option value="2">指定</option>
-													<option value="3">待激活</option><option value="4">作废</option>
-												</select></td></tr>
-						<tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>
-							<th>帐期持续时间：</th><td><select name="suStained">
-														<option value=""></option>
-														<option value="1">1个月</option>
-														<option value="6">6个月</option>
-													</select></td></tr>
-						<tr><th>是否支持VPN：</th><td><select name="usedVpn"><option value=""></option></select></td>
-							<th>是否软卡：</th><td><select name="softType"><option value=""></option></select></td></tr>
-						<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
-							<th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
-						<tr><th>省：</th><td><select name="provinceCode"></select></td>
-							<th></th><td></td></tr>
-						<tr style="height:10px"></tr>
-						<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>
-					</table>
-				</form>
-			</div>
-	    </div>
-	</div>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+
+  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+	  <div id="tt" class="easyui-tabs" fit="true" style="overflow-y: hidden">
+		  <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
+			  <table class="table kc-outline">
+				  <tr>
+					  <td><div class="kc-outline-number ligh-blue" id="simCardCount" onclick="$('#tt').tabs('select','流量卡');"></div><div>卡总数</div></td>
+					  <td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>
+					  <td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>
+					  <td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>
+				  </tr>
+				  <tr>
+					  <td><div class="kc-outline-number red" id="stopCardCount"></div><div>停机卡数</div></td>
+					  <td><div class="kc-outline-number gray" id="offCardCount"></div><div>作废卡数</div></td>
+					  <td></td><td></td>
+				  </tr>
+			  </table>
+		  </div>
+		  <div title="流量卡" iconCls="icon icon-device" >
+			  <div class="easyui-layout" fit="true">
+
+				  <div region="north" id="northDiv" style="height:75px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+					  <form id="queryForm">
+						  <table class="table">
+							  <tr>
+								  <th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
+								  <th>卡状态：</th>
+								  <td><select name="status">
+									  <option value="">全部</option><option value="0">正常</option>
+									  <option value="1">停用</option><option value="2">指定</option>
+									  <option value="3">待激活</option><option value="4">作废</option>
+								  </select></td>
+								  <th>所在卡池：</th><td><select name="cpId"></select></td>
+								  <td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+							  </tr>
+							  <tr>
+								  <th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td>
+								  <th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
+								  <th>所属部门：</th><td><select name="departmentId"></select></td>
+							  </tr>
+						  </table>
+					  </form>
+				  </div>
+				  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+					  <table id="dg" ></table>
+				  </div>
+
+				  <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+					  <form id="doForm">
+						  <input type="hidden" name="id"/>
+						  <input type="hidden" name="operatorCode"/>
+						  <input type="hidden" name="departmentId"/>
+						  <input type="hidden" name="cpId"/>
+						  <table class="table th-normal">
+							  <tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
+								  <th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber"/></td></tr>
+							  <tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>
+								  <th>PIN：</th><td><input name="pin"/></td></tr>
+							  <tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
+								  <th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
+							  <tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="false"></select></td>
+								  <th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
+							  <tr><th>账期持续时间：</th><td><select name="suStained" class="easyui-validatebox" required="true">
+								  <option value="1">1个月</option>
+								  <option value="6">6个月</option>
+							  </select></td>
+								  <th>协议类型：</th><td><input name="simMeProtocol"/></td></tr>
+							  <tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">
+								  <option value=""></option><option value="0">正常</option>
+								  <option value="1">停用</option><option value="2">指定</option>
+								  <option value="3">待激活</option><option value="4">作废</option>
+							  </select></td>l
+								  <th>所在卡池：</th><td><input name="simPoolName" readonly="readonly"/></td></tr>
+							  <tr><th>卡池状态：</th><td><select name="cpStatus">
+								  <option value=""></option>
+								  <option value="0">正常</option>
+								  <option value="1">待激活</option>
+								  <option value="2">拔出</option>
+								  <option value="8">超时</option>
+							  </select></td>
+								  <th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
+							  <tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
+								  <th>省：</th><td><select name="provinceCode"></select></td></tr>
+							  <tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+								  <th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
+							  <tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
+								  <th>VPNIP：</th><td><input name="vpnIP"/></td></tr>
+							  <tr><th>VPN名称：</th><td><input name="vpnName"/></td>
+								  <th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
+							  <tr><th>是否软卡：</th><td><select name="softType"></select></td>
+								  <th>KI：</th><td><input name="ki"/></td></tr>
+							  <tr><th>OPC：</th><td><input name="opc"/></td>
+								  <th>OP：</th><td><input name="op"/></td></tr>
+							  <tr><th>APN：</th><td><input name="APN"/></td>
+								  <th>插入时间：</th><td><input name="insertDate" readonly="readonly" /></td></tr>
+							  <tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
+								  <th>分组：</th><td><input name="groupPref"/></td></tr>
+							  <tr><th>备注：</th><td><input name="note"/></td>
+								  <th></th><td></td></tr>
+							  <tr style="height:10px"></tr>
+							  <tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+						  </table>
+					  </form>
+				  </div>
+				  <div id="doBatchDialog" closed="true" style="padding:5px 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+					  <p style="color:red">【提示】：</p>
+					  <p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>
+					  <p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
+					  <p>3.不需要改的属性不要改动。</p>
+					  <form id="doBatchForm">
+						  <input type="hidden" name="id" value="-1"/>
+						  <table class="table th-normal">
+							  <tr><th>套餐：</th><td><select name="packageId"></select></td>
+								  <th>卡状态：</th><td><select name="status">
+									  <option value=""></option><option value="0">正常</option>
+									  <option value="1">停用</option><option value="2">指定</option>
+									  <option value="3">待激活</option><option value="4">作废</option>
+								  </select></td></tr>
+							  <tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>
+								  <th>帐期持续时间：</th><td><select name="suStained">
+									  <option value=""></option>
+									  <option value="1">1个月</option>
+									  <option value="6">6个月</option>
+								  </select></td></tr>
+							  <tr><th>是否支持VPN：</th><td><select name="usedVpn"><option value=""></option></select></td>
+								  <th>是否软卡：</th><td><select name="softType"><option value=""></option></select></td></tr>
+							  <tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+								  <th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
+							  <tr><th>省：</th><td><select name="provinceCode"></select></td>
+								  <th></th><td></td></tr>
+							  <tr style="height:10px"></tr>
+							  <tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>
+						  </table>
+					  </form>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+  </div>
   </body>
+
+  <!--<body>-->
+  	<!--<div id="tt" class="easyui-tabs" >-->
+	    <!--<div title="概要信息" iconCls="icon icon-outline" style="padding:20px">-->
+		    <!--<table class="table kc-outline">-->
+		    	<!--<tr>-->
+		    		<!--<td><div class="kc-outline-number ligh-blue" id="simCardCount" onclick="$('#tt').tabs('select','流量卡');"></div><div>卡总数</div></td>-->
+		    		<!--<td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>-->
+		    		<!--<td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>-->
+		    		<!--<td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>-->
+		    	<!--</tr>-->
+		    	<!--<tr>-->
+		    		<!--<td><div class="kc-outline-number red" id="stopCardCount"></div><div>停机卡数</div></td>-->
+		    		<!--<td><div class="kc-outline-number gray" id="offCardCount"></div><div>作废卡数</div></td>-->
+		    		<!--<td></td><td></td>-->
+		    	<!--</tr>-->
+		    <!--</table>-->
+	    <!--</div>-->
+	    <!--<div title="流量卡" iconCls="icon icon-device" >-->
+		  	<!--<form id="queryForm">-->
+		  		<!--<table class="table">-->
+		  			<!--<tr>-->
+		  				<!--<th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>-->
+		  				<!--<th>卡状态：</th>-->
+		  				<!--<td><select name="status">-->
+		  						<!--<option value="">全部</option><option value="0">正常</option>-->
+							    <!--<option value="1">停用</option><option value="2">指定</option>-->
+							    <!--<option value="3">待激活</option><option value="4">作废</option>-->
+		  					<!--</select></td>-->
+		  				<!--<th>所在卡池：</th><td><select name="cpId"></select></td>-->
+		  				<!--<td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+		  			<!--</tr>-->
+					<!--<tr>-->
+						<!--<th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td>-->
+						<!--<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>-->
+		  				<!--<th>所属部门：</th><td><select name="departmentId"></select></td>-->
+					<!--</tr>-->
+		  		<!--</table>-->
+		  	<!--</form>-->
+		  	<!--<div id="dg"></div>-->
+		  	<!--<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+					<!--<form id="doForm">-->
+						<!--<input type="hidden" name="id"/>-->
+						<!--&lt;!&ndash;<input type="hidden" name="compareOffPeriod"/>&ndash;&gt;-->
+						<!--&lt;!&ndash;<input type="hidden" name="compareSustained"/>&ndash;&gt;-->
+						<!--&lt;!&ndash;<input type="hidden" name="comparePackage"/>&ndash;&gt;-->
+						<!--&lt;!&ndash;<input type="hidden" name="isChangePeriod"/>&ndash;&gt;-->
+						<!--&lt;!&ndash;<input type="hidden" name="isChangePackage"/>&ndash;&gt;-->
+						<!--<input type="hidden" name="operatorCode"/>-->
+						<!--<input type="hidden" name="departmentId"/>-->
+						<!--<input type="hidden" name="cpId"/>-->
+						<!--<table class="table th-normal">-->
+							<!--<tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>-->
+								<!--<th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber"/></td></tr>-->
+							<!--<tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>-->
+								<!--<th>PIN：</th><td><input name="pin"/></td></tr>-->
+							<!--<tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>-->
+								<!--<th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>-->
+							<!--<tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="false"></select></td>-->
+								<!--<th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>-->
+							<!--<tr><th>账期持续时间：</th><td><select name="suStained" class="easyui-validatebox" required="true">-->
+															<!--<option value="1">1个月</option>-->
+															<!--<option value="6">6个月</option>-->
+														 <!--</select></td>-->
+								<!--<th>协议类型：</th><td><input name="simMeProtocol"/></td></tr>-->
+							<!--<tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">-->
+														<!--<option value=""></option><option value="0">正常</option>-->
+														<!--<option value="1">停用</option><option value="2">指定</option>-->
+														<!--<option value="3">待激活</option><option value="4">作废</option>-->
+													<!--</select></td>l-->
+								<!--<th>所在卡池：</th><td><input name="simPoolName" readonly="readonly"/></td></tr>-->
+							<!--<tr><th>卡池状态：</th><td><select name="cpStatus">-->
+															<!--<option value=""></option>-->
+															<!--<option value="0">正常</option>-->
+															<!--<option value="1">待激活</option>-->
+															<!--<option value="2">拔出</option>-->
+															<!--<option value="8">超时</option>-->
+													  <!--</select></td>-->
+								<!--<th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>-->
+							<!--<tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>-->
+								<!--<th>省：</th><td><select name="provinceCode"></select></td></tr>-->
+							<!--<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>-->
+								<!--<th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>-->
+							<!--<tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>-->
+								<!--<th>VPNIP：</th><td><input name="vpnIP"/></td></tr>-->
+							<!--<tr><th>VPN名称：</th><td><input name="vpnName"/></td>-->
+								<!--<th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>-->
+							<!--<tr><th>是否软卡：</th><td><select name="softType"></select></td>-->
+								<!--<th>KI：</th><td><input name="ki"/></td></tr>-->
+							<!--<tr><th>OPC：</th><td><input name="opc"/></td>-->
+								<!--<th>OP：</th><td><input name="op"/></td></tr>-->
+							<!--<tr><th>APN：</th><td><input name="APN"/></td>-->
+								<!--<th>插入时间：</th><td><input name="insertDate" readonly="readonly" /></td></tr>-->
+							<!--<tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>-->
+								<!--<th>分组：</th><td><input name="groupPref"/></td></tr>-->
+							<!--<tr><th>备注：</th><td><input name="note"/></td>-->
+								<!--<th></th><td></td></tr>-->
+							<!--<tr style="height:10px"></tr>-->
+							<!--<tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>-->
+						<!--</table>-->
+					<!--</form>-->
+			<!--</div>-->
+			<!--<div id="doBatchDialog" closed="true" style="padding:5px 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+				<!--<p style="color:red">【提示】：</p>-->
+				<!--<p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>-->
+				<!--<p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>-->
+				<!--<p>3.不需要改的属性不要改动。</p>-->
+				<!--<form id="doBatchForm">-->
+					<!--<input type="hidden" name="id" value="-1"/>-->
+					<!--<table class="table th-normal">-->
+						<!--<tr><th>套餐：</th><td><select name="packageId"></select></td>-->
+							<!--<th>卡状态：</th><td><select name="status">-->
+													<!--<option value=""></option><option value="0">正常</option>-->
+													<!--<option value="1">停用</option><option value="2">指定</option>-->
+													<!--<option value="3">待激活</option><option value="4">作废</option>-->
+												<!--</select></td></tr>-->
+						<!--<tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>-->
+							<!--<th>帐期持续时间：</th><td><select name="suStained">-->
+														<!--<option value=""></option>-->
+														<!--<option value="1">1个月</option>-->
+														<!--<option value="6">6个月</option>-->
+													<!--</select></td></tr>-->
+						<!--<tr><th>是否支持VPN：</th><td><select name="usedVpn"><option value=""></option></select></td>-->
+							<!--<th>是否软卡：</th><td><select name="softType"><option value=""></option></select></td></tr>-->
+						<!--<tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>-->
+							<!--<th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>-->
+						<!--<tr><th>省：</th><td><select name="provinceCode"></select></td>-->
+							<!--<th></th><td></td></tr>-->
+						<!--<tr style="height:10px"></tr>-->
+						<!--<tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>-->
+					<!--</table>-->
+				<!--</form>-->
+			<!--</div>-->
+	    <!--</div>-->
+	<!--</div>-->
+  <!--</body>-->
   <script type="text/javascript">
       $.fn.datebox.defaults.formatter = function(date){
           var y = date.getFullYear();
@@ -155,7 +297,6 @@
           return y+'-'+(m>10?'':'0')+m+'-'+(d>10?'':'0')+d+' 00:00:00';
       }
 
-  	$('#tt').css('height',window.innerHeight*0.999+'px');
   	var options={
 			title:'流量卡列表',
 			queryParams:$('#queryForm').serializeObject(),
@@ -186,11 +327,11 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-109
+			fit:true
+//			height:window.innerHeight-109
 		};
   
 	$(function(){
-		$.ajaxSetup({async : false}); 
 		getCardInfo();
 	
 		$('#dg').datagrid(options);
@@ -221,12 +362,8 @@
 		kcJs.fn.initSelect({"container":$('#queryForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
 
 		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
-		//kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"nullDesc":""});
-
 
 		kcJs.fn.initDic_noYes($('[name=usedVpn],[name=softType]'));
-
-//		$('[name=expiryDate],[name=openDate]').datebox({required:false});
 
 	});
 
@@ -252,9 +389,6 @@
 			 initData(rowData);
 
              $('#doBtn').show();
-//             $('#doForm [name=compareOffPeriod]').val(rowData.offPeriod);
-//             $('#doForm [name=compareSustained]').val(rowData.suStained);
-//             $('#doForm [name=comparePackage]').val(rowData.packageId);
              $('#doForm [name=countryCode]').attr('disabled',true);
              $('#doDialog').dialog({title:'修改卡信息'});
              $('#doDialog').dialog('open');
@@ -334,22 +468,6 @@
 
   	function saveData() {
 		if($('#doForm').form('validate')) {
-//            var isChangePeriod = false;
-//            var isChangePackage = false;
-//            if($('#doForm [name=id]').val()){
-//                if(($('#doForm [name=compareOffPeriod]').val() != $('#doForm [name=offPeriod]').val())
-//                    || ($('#doForm [name=compareSustained]').val() != $('#doForm [name=suStained]').val()))
-//                    isChangePeriod = true;
-//                if(($('#doForm [name=comparePackage]').val() != $('#doForm [name=packageId]').val()))
-//                    isChangePackage = true;
-//            }
-//
-//            $('#doForm [name=isChangePeriod]').val(isChangePeriod);
-//            $('#doForm [name=isChangePackage]').val(isChangePackage);
-            //帐期日或者持续时间已经前后发生改变
-//            if(isChangePeriod || isChangePackage){
-//                $.messager.confirm('提示','账期或套餐前后发生了改变，需要重新计算月流量，是否确定修改？',function(r){
-//                    if(r){
                         $('#doDialog').dialog('close');
                         $('#dg').datagrid('loading');
                         $('#doForm [name=countryCode]').attr('disabled',false);
@@ -363,22 +481,6 @@
                                 }
                             }
                         });
-//                    }
-//                });
-//            }else{
-//                $('#doDialog').dialog('close');
-//                $('#dg').datagrid('loading');
-//                $.post(kcJs.fn.getContextPath()+'/simcard/update',$('#doForm').serializeObject(),function(data){
-//                    if(data){
-//                        $.messager.alert('提示',data.msg,'info');
-//                        if(data.code=='200'){
-//                            doQuery();
-//                        }else{
-//                            $('#dg').datagrid('loaded');
-//                        }
-//                    }
-//                });
-//            }
         }
     }
 

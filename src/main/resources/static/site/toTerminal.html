@@ -12,111 +12,225 @@
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
   </head>
-  <body>
-	  	<form id="queryForm">
-	  		<table class="table">
-	  			<tr>
-	  				<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
-	  				<th>状态：</th>
-	  				<td><select name="status">
-		  					<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
-		  					<option value="2">停用</option><option value="3">注销</option>
-	  					</select>
-	  				</td>
-	  				<th>激活状态：</th>
-	  				<td><select name="activated">
-		  					<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
-	  					</select>
-	  				</td>
-	  				<th>部门：</th>
-	  				<td><select name="departmentId"><option value="">全部</option></select></td>
-	  				<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-	  			</tr>
-	  		</table>
-	  	</form>
-	  	<div id="dg"></div>
-	  	<div id="historyDialog" closed="true" style="padding-top:5px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-	  		<div id="dlDg"></div>
-	  	</div>
-	  	<div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-	  		<table class="excel">
-	  			<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
-	  			<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
-	  			<tr style="height:30px"></tr>
-	  			<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
-	  		</table>
-	  	</div>
-	  	
-	  	<div id="cardDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-	  		<table class="table readOnly">
-	  			<tr><td>终端编号</td><td><input name="tsid"/></td></tr>
-	  			<tr><td>IMSI码</td><td><input name="imsi"/></td></tr>
-	  			<tr><td>MCC</td><td><input name="mcc"/></td></tr>
-	  			<tr><td>最后心跳时间</td><td><input name="beatTime"/></td></tr>
-	  			<tr><td>选卡时间</td><td><input name="date"/></td></tr>
-	  			<tr><td>是否是在归属地</td><td><select name="reserve"><option value=""></option><option value="0">是</option><option value="1">否</option></select></td></tr>
-	  			<tr><td>副卡IMSI</td><td><input name="eCardImsi"/></td></tr>
-	  			<tr><td>副卡时延</td><td><input name="eCardDuration"/></td></tr>
-	  			<tr><td>当前版本</td><td><input name="runVersion"/></td></tr>
-	  			<tr><td>国家编码</td><td><select name="vCountryCode"></select></td></tr>
-	  		</table>
-	  	</div>
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
 
-	  	<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-	  		<form id="doForm">
-	  			<input type="hidden" name="id"/>
-		  		<table class="table th-normal">
-		  			<tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>
-		  			<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>
-		  			<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>
-		  			<tr><th>终端状态：</th><td><select name="status">
-		  										<option value="0">正常</option><option value="1">未初始化</option>
-		  										<option value="2">停用</option><option value="3">注销</option>
-		  													</select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
-		  			<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>
-		  			<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>
-		  			<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
-		  			<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
-		  			<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
-		  			<!-- <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
-		  			<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> -->
-		  			<tr style="height:10px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-		  		</table>
-	  		</form>
-	  	</div>
+  <div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+	  <form id="queryForm">
+		  <table class="table">
+			  <tr>
+				  <th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
+				  <th>状态：</th>
+				  <td><select name="status">
+					  <option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
+					  <option value="2">停用</option><option value="3">注销</option>
+				  </select>
+				  </td>
+				  <th>激活状态：</th>
+				  <td><select name="activated">
+					  <option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
+				  </select>
+				  </td>
+				  <th>部门：</th>
+				  <td><select name="departmentId"><option value="">全部</option></select></td>
+				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+			  </tr>
+		  </table>
+	  </form>
+  </div>
+  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+	  <table id="dg" ></table>
+  </div>
 
-		<div id="chargeDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-			<form id="chargeForm">
-				<input type="hidden" name="oriFlow" />
-				<input type="hidden" name="oriDate"/>
-				<input type="hidden" name="chargeFlow"/>
-				<input type="hidden" name="chargeDate"/>
-				<table class="table th-normal">
-					<tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
-					<tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true" readonly="readonly"/></td>
-						<td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option>/select></td></tr>
-					<tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox" required="true" readonly="readonly"/></td>
-						<td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>
-					<tr><th>备注：</th><td colspan="2"><input name="note" /></td></tr>
-					<tr style="height:10px"></tr>
-					<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="charge()">充 值</a></td></tr>
-				</table>
-			</form>
-		</div>
-	  	
-	  	<div id="batchDialog" closed="true" style="padding:10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-	  		<form id="batchForm">
-	  			<input type="hidden" name="ids">
-		  		<table class="table th-normal">
-		  			<tr><th>终端编号集合：</th><td><input name="tsids" class="easyui-validatebox" required="true" readonly="readonly"/></td></tr>
-		  			<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
-		  			<tr style="height:10px"></tr>
-		  			<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatch()">提 交</a></td></tr>
-		  		</table>
-	  		</form>
-	  	</div>
+  <div id="historyDialog" closed="true" style="padding-top:5px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <div id="dlDg"></div>
+  </div>
+  <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <table class="excel">
+		  <tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
+		  <tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
+		  <tr style="height:30px"></tr>
+		  <tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
+	  </table>
+  </div>
+
+  <div id="cardDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <table class="table readOnly">
+		  <tr><td>终端编号</td><td><input name="tsid"/></td></tr>
+		  <tr><td>IMSI码</td><td><input name="imsi"/></td></tr>
+		  <tr><td>MCC</td><td><input name="mcc"/></td></tr>
+		  <tr><td>最后心跳时间</td><td><input name="beatTime"/></td></tr>
+		  <tr><td>选卡时间</td><td><input name="date"/></td></tr>
+		  <tr><td>是否是在归属地</td><td><select name="reserve"><option value=""></option><option value="0">是</option><option value="1">否</option></select></td></tr>
+		  <tr><td>副卡IMSI</td><td><input name="eCardImsi"/></td></tr>
+		  <tr><td>副卡时延</td><td><input name="eCardDuration"/></td></tr>
+		  <tr><td>当前版本</td><td><input name="runVersion"/></td></tr>
+		  <tr><td>国家编码</td><td><select name="vCountryCode"></select></td></tr>
+	  </table>
+  </div>
+
+  <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  <form id="doForm">
+		  <input type="hidden" name="id"/>
+		  <table class="table th-normal">
+			  <tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>
+			  <tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>
+			  <tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>
+			  <tr><th>终端状态：</th><td><select name="status">
+				  <option value="0">正常</option><option value="1">未初始化</option>
+				  <option value="2">停用</option><option value="3">注销</option>
+			  </select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
+			  <tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>
+			  <tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>
+			  <tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
+			  <tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
+			  <tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
+			  <!-- <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
+              <tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> -->
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+
+  <div id="chargeDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  <form id="chargeForm">
+		  <input type="hidden" name="oriFlow" />
+		  <input type="hidden" name="oriDate"/>
+		  <input type="hidden" name="chargeFlow"/>
+		  <input type="hidden" name="chargeDate"/>
+		  <table class="table th-normal">
+			  <tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
+			  <tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true" readonly="readonly"/></td>
+				  <td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option>/select></td></tr>
+			  <tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox" required="true" readonly="readonly"/></td>
+				  <td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>
+			  <tr><th>备注：</th><td colspan="2"><input name="note" /></td></tr>
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="charge()">充 值</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+
+  <div id="batchDialog" closed="true" style="padding:10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+	  <form id="batchForm">
+		  <input type="hidden" name="ids">
+		  <table class="table th-normal">
+			  <tr><th>终端编号集合：</th><td><input name="tsids" class="easyui-validatebox" required="true" readonly="readonly"/></td></tr>
+			  <tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatch()">提 交</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+
   </body>
+
+
+  <!--<body>-->
+	  	<!--<form id="queryForm">-->
+	  		<!--<table class="table">-->
+	  			<!--<tr>-->
+	  				<!--<th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>-->
+	  				<!--<th>状态：</th>-->
+	  				<!--<td><select name="status">-->
+		  					<!--<option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>-->
+		  					<!--<option value="2">停用</option><option value="3">注销</option>-->
+	  					<!--</select>-->
+	  				<!--</td>-->
+	  				<!--<th>激活状态：</th>-->
+	  				<!--<td><select name="activated">-->
+		  					<!--<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>-->
+	  					<!--</select>-->
+	  				<!--</td>-->
+	  				<!--<th>部门：</th>-->
+	  				<!--<td><select name="departmentId"><option value="">全部</option></select></td>-->
+	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+	  			<!--</tr>-->
+	  		<!--</table>-->
+	  	<!--</form>-->
+	  	<!--<div id="dg"></div>-->
+	  	<!--<div id="historyDialog" closed="true" style="padding-top:5px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<div id="dlDg"></div>-->
+	  	<!--</div>-->
+	  	<!--<div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<table class="excel">-->
+	  			<!--<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>-->
+	  			<!--<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>-->
+	  			<!--<tr style="height:30px"></tr>-->
+	  			<!--<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>-->
+	  		<!--</table>-->
+	  	<!--</div>-->
+	  	<!---->
+	  	<!--<div id="cardDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<table class="table readOnly">-->
+	  			<!--<tr><td>终端编号</td><td><input name="tsid"/></td></tr>-->
+	  			<!--<tr><td>IMSI码</td><td><input name="imsi"/></td></tr>-->
+	  			<!--<tr><td>MCC</td><td><input name="mcc"/></td></tr>-->
+	  			<!--<tr><td>最后心跳时间</td><td><input name="beatTime"/></td></tr>-->
+	  			<!--<tr><td>选卡时间</td><td><input name="date"/></td></tr>-->
+	  			<!--<tr><td>是否是在归属地</td><td><select name="reserve"><option value=""></option><option value="0">是</option><option value="1">否</option></select></td></tr>-->
+	  			<!--<tr><td>副卡IMSI</td><td><input name="eCardImsi"/></td></tr>-->
+	  			<!--<tr><td>副卡时延</td><td><input name="eCardDuration"/></td></tr>-->
+	  			<!--<tr><td>当前版本</td><td><input name="runVersion"/></td></tr>-->
+	  			<!--<tr><td>国家编码</td><td><select name="vCountryCode"></select></td></tr>-->
+	  		<!--</table>-->
+	  	<!--</div>-->
+
+	  	<!--<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<form id="doForm">-->
+	  			<!--<input type="hidden" name="id"/>-->
+		  		<!--<table class="table th-normal">-->
+		  			<!--<tr><th>终端编号：</th><td><input class="easyui-validatebox onlyNumber" name="tsid" required="true"/></td><th>mac：</th><td><input name="mac"/></td></tr>-->
+		  			<!--<tr><th>终端型号：</th><td><input name="model"/></td><th>生产批次：</th><td><input name="batch"/></td></tr>-->
+		  			<!--<tr><th>软件版本：</th><td><input name="sVersion"/></td><th>key：</th><td><input name="key"/></td></tr>-->
+		  			<!--<tr><th>终端状态：</th><td><select name="status">-->
+		  										<!--<option value="0">正常</option><option value="1">未初始化</option>-->
+		  										<!--<option value="2">停用</option><option value="3">注销</option>-->
+		  													<!--</select></td><th>上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>-->
+		  			<!--<tr><th>imei：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>-->
+		  			<!--<tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>ssid：</th><td><input name="ssid"/></td></tr>-->
+		  			<!--<tr><th>wifi密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>-->
+		  			<!--<tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>-->
+		  			<!--<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>-->
+		  			<!--&lt;!&ndash; <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>-->
+		  			<!--<tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> &ndash;&gt;-->
+		  			<!--<tr style="height:10px"></tr>-->
+		  			<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>-->
+		  		<!--</table>-->
+	  		<!--</form>-->
+	  	<!--</div>-->
+
+		<!--<div id="chargeDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+			<!--<form id="chargeForm">-->
+				<!--<input type="hidden" name="oriFlow" />-->
+				<!--<input type="hidden" name="oriDate"/>-->
+				<!--<input type="hidden" name="chargeFlow"/>-->
+				<!--<input type="hidden" name="chargeDate"/>-->
+				<!--<table class="table th-normal">-->
+					<!--<tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>-->
+					<!--<tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true" readonly="readonly"/></td>-->
+						<!--<td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option>/select></td></tr>-->
+					<!--<tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox" required="true" readonly="readonly"/></td>-->
+						<!--<td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>-->
+					<!--<tr><th>备注：</th><td colspan="2"><input name="note" /></td></tr>-->
+					<!--<tr style="height:10px"></tr>-->
+					<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="charge()">充 值</a></td></tr>-->
+				<!--</table>-->
+			<!--</form>-->
+		<!--</div>-->
+	  	<!---->
+	  	<!--<div id="batchDialog" closed="true" style="padding:10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
+	  		<!--<form id="batchForm">-->
+	  			<!--<input type="hidden" name="ids">-->
+		  		<!--<table class="table th-normal">-->
+		  			<!--<tr><th>终端编号集合：</th><td><input name="tsids" class="easyui-validatebox" required="true" readonly="readonly"/></td></tr>-->
+		  			<!--<tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td></tr>-->
+		  			<!--<tr style="height:10px"></tr>-->
+		  			<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatch()">提 交</a></td></tr>-->
+		  		<!--</table>-->
+	  		<!--</form>-->
+	  	<!--</div>-->
+  <!--</body>-->
   <script type="text/javascript">
   	var options={
 			title:'终端设备列表',
@@ -166,7 +280,8 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
-			height:window.innerHeight-50,
+			fit:true,
+//			height:window.innerHeight-50,
         	onClickCell:function (rowIndex, field, value) {
 				if(field=='allowFlow' || field=='validityDate'){
                     $('#dg').datagrid('clearSelections');
