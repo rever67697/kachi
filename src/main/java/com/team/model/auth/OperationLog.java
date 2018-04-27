@@ -18,6 +18,8 @@ public class OperationLog implements Serializable{
 	private Integer departmentid;
 	
 	private String ip;
+
+	private String browser;
 	
 	private String bussinesstype;
 	
@@ -42,7 +44,7 @@ public class OperationLog implements Serializable{
 	 * @param desc
 	 */
 	public OperationLog(final String username, final String bussinesstype,
-			final String operation,final String desc,final Integer departmentid,final String ip) {
+			final String operation,final String desc,final Integer departmentid,final String ip,final String browser) {
 		super();
 		this.username = username;
 		this.bussinesstype = bussinesstype;
@@ -50,6 +52,7 @@ public class OperationLog implements Serializable{
 		this.desc = desc;
 		this.departmentid = departmentid;
 		this.ip = ip;
+		this.browser = browser;
 	}
 
 	public Integer getId() {
@@ -115,5 +118,12 @@ public class OperationLog implements Serializable{
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	
+
+	public String getBrowser() {
+		return browser;
+	}
+
+	public void setBrowser(String browser) {
+		this.browser = browser;
+	}
 }

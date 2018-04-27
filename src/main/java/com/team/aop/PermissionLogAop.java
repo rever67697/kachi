@@ -14,6 +14,9 @@ import com.google.gson.Gson;
 import com.team.annotation.PermissionLog;
 import com.team.exception.KachiException;
 import com.team.util.IPUtils;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.UserAgent;
+import eu.bitwalker.useragentutils.Version;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -118,7 +121,8 @@ public class PermissionLogAop {
 //			}
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
-			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation, getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request));
+			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation,
+					getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request),browserInfo(request));
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {
@@ -126,7 +130,7 @@ public class PermissionLogAop {
 				}
 			});
 		}
-		
+
 		return result;
 	}
 
@@ -144,6 +148,14 @@ public class PermissionLogAop {
 
 		}
 		return gson.toJson(result);
+	}
+
+	private String browserInfo(HttpServletRequest request){
+		//获取浏览器信息
+		Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
+		//获取浏览器版本号
+		Version version = browser.getVersion(request.getHeader("User-Agent"));
+		return browser.getName() + "/" + version.getVersion();
 	}
 
 	public static void main(String[] args){
