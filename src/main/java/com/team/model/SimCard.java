@@ -92,6 +92,8 @@ public class SimCard implements Serializable{
 
 	private String provinceName;//省
 
+	private String tempImei; //临时IMEI
+
 
 	public Integer getId() {
 		return id;
@@ -400,22 +402,40 @@ public class SimCard implements Serializable{
 
 	@Override
 	public String toString() {
-		return "SimCard [id=" + id + ", imsi=" + imsi + ", number=" + number
-				+ ", iccid=" + iccid + ", pin=" + pin + ", operatorCode="
-				+ operatorCode + ", mcNumber=" + mcNumber + ", packageId="
-				+ packageId + ", offPeriod=" + offPeriod + ", suStained="
-				+ suStained + ", simMeProtocol=" + simMeProtocol + ", status="
-				+ status + ", cpStatus=" + cpStatus + ", cPid=" + cpId
-				+ ", cpChannelId=" + cpChannelId + ", countryCode="
-				+ countryCode + ", provinceCode=" + provinceCode
-				+ ", expiryDate=" + expiryDate + ", insertDate=" + insertDate
-				+ ", usedVpn=" + usedVpn + ", vpnIP=" + vpnIP + ", vpnName="
-				+ vpnName + ", vpnPass=" + vpnPass + ", softType=" + softType
-				+ ", ki=" + ki + ", opc=" + opc + ", op=" + op + ", APN=" + APN
-				+ ", openDate=" + openDate + ", departmentId=" + departmentId
-				+ ", groupPref=" + groupPref + ", note=" + note + "]";
+		return "SimCard{" +
+				"id=" + id +
+				", imsi=" + imsi +
+				", number='" + number + '\'' +
+				", iccid='" + iccid + '\'' +
+				", pin='" + pin + '\'' +
+				", operatorCode=" + operatorCode +
+				", mcNumber='" + mcNumber + '\'' +
+				", packageId=" + packageId +
+				", offPeriod=" + offPeriod +
+				", suStained=" + suStained +
+				", simMeProtocol='" + simMeProtocol + '\'' +
+				", status=" + status +
+				", cpStatus=" + cpStatus +
+				", cpId=" + cpId +
+				", cpChannelId=" + cpChannelId +
+				", countryCode=" + countryCode +
+				", provinceCode=" + provinceCode +
+				", expiryDate=" + expiryDate +
+				", insertDate=" + insertDate +
+				", usedVpn=" + usedVpn +
+				", vpnIP='" + vpnIP + '\'' +
+				", vpnName='" + vpnName + '\'' +
+				", vpnPass='" + vpnPass + '\'' +
+				", softType=" + softType +
+				", ki='" + ki + '\'' +
+				", opc='" + opc + '\'' +
+				", op='" + op + '\'' +
+				", APN='" + APN + '\'' +
+				", openDate=" + openDate +
+				", departmentId=" + departmentId +
+				", groupPref='" + groupPref + '\'' +
+				", note='" + note + '\'' +
+				", tempImei='" + tempImei + '\'' +
+				'}';
 	}
-
-
-
 }

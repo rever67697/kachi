@@ -61,6 +61,8 @@ public class SimCard implements Serializable {
 	private Integer departmentId;  //代理商
 	private String groupPref;  //分组
 	private String note;
+
+	private String tempImei; //临时IMEI
 	
 	public int getId() {
 		return id;
@@ -285,6 +287,15 @@ public class SimCard implements Serializable {
 	public void setNote(String note) {
 		this.note = note;
 	}
+
+	public String getTempImei() {
+		return tempImei;
+	}
+
+	public void setTempImei(String tempImei) {
+		this.tempImei = tempImei;
+	}
+
 	@Override
 	public String toString() {
 		return "SimCard [id=" + id + ", imsi=" + imsi + ", number=" + number
@@ -300,8 +311,8 @@ public class SimCard implements Serializable {
 				+ vpnName + ", vpnPass=" + vpnPass + ", softType=" + softType
 				+ ", ki=" + ki + ", opc=" + opc + ", op=" + op + ", APN=" + APN
 				+ ", openDate=" + openDate + ", departmentId=" + departmentId
-				+ ", groupPref=" + groupPref + ", note=" + note + "]";
-	} 
-	
+				+ ", groupPref=" + groupPref + ", note=" + note+ ", tempImei=" + tempImei + "]";
+	}
+
 
 }
