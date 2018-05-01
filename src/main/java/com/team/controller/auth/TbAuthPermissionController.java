@@ -1,5 +1,6 @@
 package com.team.controller.auth;
 
+import com.team.annotation.PermissionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.team.vo.ReturnMsg;
  */
 @RestController
 @RequestMapping("/permission")
+@PermissionLog("用户管理")
 public class TbAuthPermissionController {
 
 	@Autowired
@@ -27,6 +29,7 @@ public class TbAuthPermissionController {
 	}
 	
 	@PostMapping("/grant")
+	@PermissionLog
 	public ReturnMsg grantPermission(Integer userId,String ids){
 		return tbAuthPermissionService.grantPermission(userId, ids);
 	}

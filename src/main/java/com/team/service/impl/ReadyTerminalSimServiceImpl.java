@@ -26,10 +26,11 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	private SimCardDao simCardDao;
 
 	@Override
-	public ResultList list(Integer tsid, Long imsi, int page,
+	public ResultList list(Integer tsid, Long imsi, Integer dId,int page,
 			int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("dId",CommonUtil.changeDepartmentId(dId));
 		paramMap.put("imsi", imsi);
 		paramMap.put("tsid", tsid);
 		List<ReadyTerminalSim> list = readyTerminalSimDao.list(paramMap);
