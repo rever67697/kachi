@@ -203,10 +203,11 @@ var kcJs=
 			}
 			return o;
 		},
-		getBoxTxt:function(){
+		getBoxTxt:function(cardCount){
 			var html = '';
 			for(var o in c_status){
-				html+='<span class="boxdesc" style="background:'+c_status[o][1]+'"></span>&nbsp;'+c_status[o][0];
+				html+='<div style="float:left"><span class="boxdesc" style="background:'+c_status[o][1]+'"></span>&nbsp;'
+					+c_status[o][0]+'<br><span style="display:inline-block;margin-left:10px">（ '+cardCount[o]+' ）</span></div>';
 			}
 			return html;
 		},

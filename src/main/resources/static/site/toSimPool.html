@@ -262,21 +262,34 @@
   	function showCardSolt(rowData,obj){
   		$.getJSON(kcJs.fn.getContextPath()+'/simcard/getByPool',{cpId:rowData.spid,name:rowData.name},function(data){
   				if(data && data.code=='200'){
+  				    var cardStatus=[0,1,2,3,4,5];
+  				    var cardCount=[0,0,0,0,0,0];
   					var cardList = data.data.rows;
 	             	if(cardList){
 	             		$('.card_container',obj).html('');
 	             		var total = rowData.type?rowData.type:cardList.length;
+	             		cardCount[5] = total;
 	             		var count = 0;
 	             		for(var i = 0;i < total;i++){
 	             			var box = kcJs.fn.getCardStatus(5);
+	             			var imsi = '';
 	             			if((count < cardList.length) && ((i) == cardList[count].cpChannelId)){
 	             				box = kcJs.fn.getCardStatus(cardList[count].status);
+	             				imsi = cardList[count].imsi;
 	             				count ++;
+
+								for(var j=0;j<cardStatus.length;j++){
+								    if(cardStatus[j] == cardList[count-1].status){
+								        cardCount[j] += 1;
+								        cardCount[5] -= 1;
+									}
+								}
+
 	             			}
 	             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container',$(obj)))
 	             			.tooltip({
 							    position: 'top',
-							    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i)+'<br>状态：'+box[0]+'</div>',
+							    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i)+'<br>IMSI：'+imsi+'<br>状态：'+box[0]+'</div>',
 							    onShow: function(){
 									$(this).tooltip('tip').css({
 										backgroundColor:$(this).attr('color'),
@@ -285,7 +298,8 @@
 							});
 	             		}
 	             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）').css('visibility','visible');
-	            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt());
+
+	            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt(cardCount));
              		}
   				}else{
   					$.messager.alert('提示',data.msg,'info');
@@ -345,7 +359,6 @@
   	
   	function modifyData(){
   		if($('#doForm').form('validate')){
-  			console.log($('#doForm').serializeObject());
   			$('#doDialog').dialog('close');
   			$('#dg').datagrid('loading');
   			$.post(kcJs.fn.getContextPath()+'/simpool/update',$('#doForm').serializeObject(),function(data){
@@ -364,7 +377,6 @@
   	
   	function refreshCardSlot(){
 		var rows = $('#dg').datagrid('getRows');
-		console.log(rows);
 		if(rows){
 			for(var i = 0;i < rows.length;i++){
 				if(i==0){

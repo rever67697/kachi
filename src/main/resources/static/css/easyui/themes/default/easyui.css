@@ -1937,10 +1937,11 @@ textarea{
 body{border:1px solid transparent;overflow:hidden}
 .card_container{border:1px solid transparent;height:200px}
 .card_container:after{display:block;content:'';height:0;clear:both}
+.card_container:before{display:block;content:'';height:0;clear:both}
 .box{width:20px;height:10px;margin:5px;float:left;cursor:pointer}
-.boxDesc{display:inline-block}
+.boxDesc{float:left}
 .boxdesc{width:20px;height:10px;display:inline-block;cursor:pointer;margin-left:10px;border-radius:4px}
-.title{padding:5px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);display:inline-block;margin-bottom:10px;visibility:hidden}
+.title{padding:7px 10px;border-radius:4px;color:#fff;font-size:13px;background:rgb(67,116,224);float:left;margin-bottom:10px;visibility:hidden}
 .table{border-collapse:collapse;width:100%;margin-bottom:5px;margin-top:5px;font-weight:normal}
 .table td,.table th{padding:2px 5px;border:1px solid #ccc}
 .table th{background:rgb(237,246,255);text-align:right;font-size:13px;font-weight:500}
