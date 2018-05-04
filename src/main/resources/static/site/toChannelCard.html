@@ -216,7 +216,7 @@
              kcJs.fn.autoFillData($('#doDialog'),rowData);
              $('#doDialog').dialog({title:'修改副卡'});
              $('#doDialog').dialog('open');
-             $.ajaxSetup({async : false}); 
+             $.ajaxSetup({async : true});
              //$('#doDialog [name=tsid]').attr('readOnly',true);
         }
         else {

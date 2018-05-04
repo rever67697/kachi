@@ -2,6 +2,7 @@ package com.team.service.impl;
 
 import java.util.*;
 
+import com.team.service.SimCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	private ReadyTerminalSimDao readyTerminalSimDao;
 	@Autowired
 	private SimCardDao simCardDao;
+	private SimCardService simCardService;
 
 	@Override
 	public ResultList list(Integer tsid, Long imsi, Integer dId,int page,
@@ -45,6 +47,9 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 		readyTerminalSimDao.delete(readyTerminalSim);
 		//2。根据imsi更新卡的状态为指定前的状态
 		simCardDao.resetStatus(readyTerminalSim);
+		//3.释放卡
+		simCardService.updateGroupSim2Cache(simCardDao.getByImsi(readyTerminalSim.getImsi()),0);
+
         return super.successTip();
     }
 
@@ -77,12 +82,17 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 			ReadyTerminalSim old = readyTerminalSimDao.getBydId(readyTerminalSim.getId());
 
 			if(old !=null && !old.getImsi().equals(readyTerminalSim.getImsi())){
-
-				//如果imsi发生改变，需要把先更新之前卡的状态
+				if(old.getLastStatus()==2){
+					old.setLastStatus(0);
+				}
+				//1.如果imsi发生改变，需要把先更新之前卡的状态
 				simCardDao.resetStatus(old);
 
-				//把修改后的imsi的状态改为指定
+				//2.把修改后的imsi的状态改为指定
 				simCardDao.updateByImsi(readyTerminalSim.getImsi());
+
+				//3.释放卡
+				simCardService.updateGroupSim2Cache(simCardDao.getByImsi(old.getImsi()),0);
 			}
 			count = readyTerminalSimDao.update(readyTerminalSim);
 		}

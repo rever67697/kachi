@@ -270,7 +270,7 @@
              kcJs.fn.autoFillData($('#doForm'),rowData);
              changeOperator();
              kcJs.fn.autoFillData($('#doForm'),rowData);
-             $.ajaxSetup({async : false});
+             $.ajaxSetup({async : true});
 
              $('#doForm [name=compareFlow]').val(rowData.maxFlow);
              $('#doForm [name=compareRoamFlow]').val(rowData.maxRoamFlow);

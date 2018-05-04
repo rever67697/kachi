@@ -155,7 +155,8 @@ public class PermissionLogAop {
 		Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
 		//获取浏览器版本号
 		Version version = browser.getVersion(request.getHeader("User-Agent"));
-		return browser.getName() + "/" + version.getVersion();
+		String info = (browser==null?"":browser.getName())+"/"+(version==null?"":version.getVersion());
+		return info;
 	}
 
 	public static void main(String[] args){

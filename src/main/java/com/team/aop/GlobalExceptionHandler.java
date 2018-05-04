@@ -1,6 +1,7 @@
 package com.team.aop;
 
 import com.team.exception.KachiException;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,11 +18,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+	private static Logger logger = Logger.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public ReturnMsg handler(Exception e){
-		e.printStackTrace();
+		logger.error(e.getMessage());
 		ReturnMsg returnMsg = new ReturnMsg(IConstant.CODE_UNKNOW, IConstant.MSG_UNKONW);
 		if(e instanceof KachiException){
 			returnMsg.setMsg(((KachiException)e).getMsg());

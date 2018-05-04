@@ -123,6 +123,7 @@
 					  <p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
 					  <p>3.不需要改的属性不要改动。</p>
 					  <form id="doBatchForm">
+						  <!--这里加一个id只是在记录日志的时候方便-->
 						  <input type="hidden" name="id" value="-1"/>
 						  <table class="table th-normal">
 							  <tr><th>套餐：</th><td><select name="packageId"></select></td>
@@ -401,16 +402,17 @@
          $('#doForm [name=provinceCode],#doForm [name=packageId]').html('');
 		 var countryCode = rowData.countryCode;
 		 var operatorCode = rowData.operatorCode;
+		 //填充数据
+         kcJs.fn.autoFillData($('#doDialog'),rowData);
+
 		 //初始化下拉框--省
 		 if(countryCode){
-			 kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":countryCode},"nullDesc":""});
+			 kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":countryCode},"nullDesc":"","defaultVal":rowData.provinceCode});
 		 }
         //初始化下拉框--套餐
 		 if(operatorCode){
-             kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"queryParam":{"operatorCode":operatorCode},"nullDesc":""});
+             kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"queryParam":{"operatorCode":operatorCode},"nullDesc":"","defaultVal":rowData.packageId});
 		 }
-		 //填充数据
-         kcJs.fn.autoFillData($('#doDialog'),rowData);
     }
   	
   	function doDelete(){
