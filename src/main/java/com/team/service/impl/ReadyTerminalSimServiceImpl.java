@@ -25,6 +25,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	private ReadyTerminalSimDao readyTerminalSimDao;
 	@Autowired
 	private SimCardDao simCardDao;
+	@Autowired
 	private SimCardService simCardService;
 
 	@Override
