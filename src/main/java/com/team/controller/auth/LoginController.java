@@ -53,7 +53,7 @@ public class LoginController {
 	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
 			HttpServletResponse response){
 		String msg = "";
-		String verificationCode = (String) request.getSession().getAttribute("verificationCode");
+		String verificationCode = (String) request.getSession().getAttribute(IConstant.VERIFICATIONCODE);
 		if(verificationCode != null && verificationCode.equals(code)){
 			//根据用户名查询用户实体
 			TbAuthUser user = tbAuthUserService.getUserByName(userName);

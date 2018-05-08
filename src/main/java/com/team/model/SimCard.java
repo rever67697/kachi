@@ -400,42 +400,29 @@ public class SimCard implements Serializable{
 		this.provinceName = provinceName;
 	}
 
+	public String getTempImei() {
+		return tempImei;
+	}
+
+	public void setTempImei(String tempImei) {
+		this.tempImei = tempImei;
+	}
+
 	@Override
 	public String toString() {
-		return "SimCard{" +
-				"id=" + id +
-				", imsi=" + imsi +
-				", number='" + number + '\'' +
-				", iccid='" + iccid + '\'' +
-				", pin='" + pin + '\'' +
-				", operatorCode=" + operatorCode +
-				", mcNumber='" + mcNumber + '\'' +
-				", packageId=" + packageId +
-				", offPeriod=" + offPeriod +
-				", suStained=" + suStained +
-				", simMeProtocol='" + simMeProtocol + '\'' +
-				", status=" + status +
-				", cpStatus=" + cpStatus +
-				", cpId=" + cpId +
-				", cpChannelId=" + cpChannelId +
-				", countryCode=" + countryCode +
-				", provinceCode=" + provinceCode +
-				", expiryDate=" + expiryDate +
-				", insertDate=" + insertDate +
-				", usedVpn=" + usedVpn +
-				", vpnIP='" + vpnIP + '\'' +
-				", vpnName='" + vpnName + '\'' +
-				", vpnPass='" + vpnPass + '\'' +
-				", softType=" + softType +
-				", ki='" + ki + '\'' +
-				", opc='" + opc + '\'' +
-				", op='" + op + '\'' +
-				", APN='" + APN + '\'' +
-				", openDate=" + openDate +
-				", departmentId=" + departmentId +
-				", groupPref='" + groupPref + '\'' +
-				", note='" + note + '\'' +
-				", tempImei='" + tempImei + '\'' +
-				'}';
+		return "SimCard [id=" + id + ", imsi=" + imsi + ", number=" + number
+				+ ", iccid=" + iccid + ", pin=" + pin + ", operatorCode="
+				+ operatorCode + ", mcNumber=" + mcNumber + ", packageId="
+				+ packageId + ", offPeriod=" + offPeriod + ", suStained="
+				+ suStained + ", simMeProtocol=" + simMeProtocol + ", status="
+				+ status + ", cpStatus=" + cpStatus + ", cpId=" + cpId
+				+ ", cpChannelId=" + cpChannelId + ", countryCode="
+				+ countryCode + ", provinceCode=" + provinceCode
+				+ ", expiryDate=" + expiryDate + ", insertDate=" + insertDate
+				+ ", usedVpn=" + usedVpn + ", vpnIP=" + vpnIP + ", vpnName="
+				+ vpnName + ", vpnPass=" + vpnPass + ", softType=" + softType
+				+ ", ki=" + ki + ", opc=" + opc + ", op=" + op + ", APN=" + APN
+				+ ", openDate=" + openDate + ", departmentId=" + departmentId
+				+ ", groupPref=" + groupPref + ", note=" + note+ ", tempImei=" + tempImei + "]";
 	}
 }

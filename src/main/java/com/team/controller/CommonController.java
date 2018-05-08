@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.team.service.CountryService;
+import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -140,7 +141,7 @@ public class CommonController {
 		Resource resource = new ClassPathResource("/static/images/code/"+index+".txt");
 		BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 		String code= br.readLine().trim();
-		request.getSession().setAttribute("verificationCode", code);
+		request.getSession().setAttribute(IConstant.VERIFICATIONCODE, code);
 		br.close();
 		return "../images/code/"+index+".jpg";
 	}
@@ -149,7 +150,7 @@ public class CommonController {
 	public void verificationCode(HttpServletRequest request,HttpServletResponse response){
 		// 生成验证码并放入session中
 		String verificationCodes = CommonUtil.generateCode(4);
-		request.getSession().setAttribute("verificationCode",verificationCodes);
+		request.getSession().setAttribute(IConstant.VERIFICATIONCODE,verificationCodes);
 		try {
 			// 禁止图像缓存
 			// 创建二进制的输出流

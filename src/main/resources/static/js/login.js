@@ -72,12 +72,12 @@ function changeValidateCode() {
 	   //获取当前的时间作为参数，无具体意义
 	   var timenow = new Date().getTime();
 	   //每次请求需要一个不同的参数，否则可能会返回同样的验证码
-	   //$('#code')[0].src = getContextPath()+"/verificationCode?d=" + timenow;
-	   $.get(getContextPath()+"/getCode?d"+timenow,function(data){
-		   if(data){
-			   $('#code')[0].src = data;
-		   }
-	   },'text');
+	   $('#code')[0].src = getContextPath()+"/verificationCode?d=" + timenow;
+	   // $.get(getContextPath()+"/getCode?d"+timenow,function(data){
+		//    if(data){
+		// 	   $('#code')[0].src = data;
+		//    }
+	   // },'text');
  }
 
 /**初始化登陆信息**/

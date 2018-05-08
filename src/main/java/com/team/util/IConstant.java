@@ -20,6 +20,9 @@ public class IConstant {
 	public final static String MSG_SUCCESS = "操作成功！";
 	public final static String MSG_ERROR = "操作失败！";
 	public final static String MSG_UNKONW = "未知错误！";
+
+	/**验证码**/
+	public final static String VERIFICATIONCODE = "verificationCode";
 	
 	public final static String SESSION_USER_NAME = "kachi_user";
 	

@@ -118,11 +118,17 @@ public class MyTest {
 
 	@Test
 	public void testSimGroup() {
+		String imsi = "460040458106170";
 		MemcachedItem m = simCache.gets("0_46004_0_31_0");
 		List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
 		for (GroupCacheSim groupCacheSim : list) {
 			System.out.println(groupCacheSim);
 		}
+
+		Object object = simGroupCache.get("SIM_"+imsi);
+
+		System.out.println(CommonUtil.convertBean(object, com.hqrh.rw.common.model.SimCard.class));
+		System.out.println(CommonUtil.convertBean(object, SimCard.class));
 	}
 
 	@Test
@@ -134,13 +140,7 @@ public class MyTest {
 	@Test
 	public void testGetSimcard() {
 		Object object = simGroupCache.get("SIM_460110664449848");
-//		Object object = simCache.get("FLOW_DAY_460111103004282");
 
-		System.out.println(object);
-
-		com.hqrh.rw.common.model.SimCard simCard = new com.hqrh.rw.common.model.SimCard();
-
-//		BeanUtils.copyProperties(object,simCard);
 		System.out.println(CommonUtil.convertBean(object, com.hqrh.rw.common.model.SimCard.class));
 		System.out.println(CommonUtil.convertBean(object, SimCard.class));
 	}
