@@ -182,10 +182,10 @@ public class CommonUtil {
 		g.setColor(getRandColor(200, 250));
 		g.fillRect(0, 0, width, height);
 		// 设定字体
-		g.setFont(new Font("Times New Roman", Font.ITALIC, 30));
+		g.setFont(new Font("Times New Roman", Font.ITALIC, 28));
 		// 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到
-		g.setColor(getRandColor(160, 200));
-		for (int i = 0; i < 155; i++) {
+		g.setColor(getRandColor(100, 200));
+		for (int i = 0; i < 205; i++) {
 			int x = random.nextInt(width);
 			int y = random.nextInt(height);
 			int xl = random.nextInt(12);

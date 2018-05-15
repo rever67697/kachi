@@ -22,4 +22,6 @@ public interface CommonService {
 
 	public ReturnMsg getMccDic();
 
+	public Object q(Long imsi);
+
 }

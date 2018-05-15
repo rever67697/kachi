@@ -23,10 +23,7 @@ import com.team.vo.ResultList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.team.service.CommonService;
 import com.team.util.CommonUtil;
@@ -90,6 +87,17 @@ public class CommonController {
 	@PostMapping("/countrySelectedList")
 	public ResultList countrySelectedList(String mccs){
 		return countryService.getList(mccs);
+	}
+
+	/**
+	 * 通过imsi查询当前卡缓存状况
+	 * @param ismi
+	 * @return
+	 */
+	@GetMapping("/q")
+	@ResponseBody
+	public Object q(@RequestParam("imsi") Long ismi){
+		return commonService.q(ismi);
 	}
 
 	@GetMapping("/downloadFile")

@@ -140,11 +140,13 @@
   					$('#dg').datagrid('loading');
 		  			var ids = [];
 		  			var TSIDs=[];
+		  			var IMSIs=[];
 		  			for(var i = 0;i < selectRows.length;i++){
 		  				ids.push(selectRows[i].id);
 		  				TSIDs.push(selectRows[i].tsid);
+		  				IMSIs.push(selectRows[i].imsi);
 		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{ids:ids.join(","),TSIDs:TSIDs.join(",")},function(data){
+		  			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{ids:ids.join(","),TSIDs:TSIDs.join(","),IMSIs:IMSIs.join(",")},function(data){
 		  				if(data && data.code && data.code == '200'){
 		  					doQuery();	
 		  				}else{

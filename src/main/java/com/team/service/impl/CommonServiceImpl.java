@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hqrh.rw.common.model.GroupCacheSim;
+import com.schooner.MemCached.MemcachedItem;
+import com.team.model.SimGroup;
+import com.team.service.SimGroupService;
+import com.team.util.Cache;
+import com.team.util.CacheFactory;
+import com.team.util.MConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +30,12 @@ public class CommonServiceImpl extends BaseService implements CommonService {
 
     @Autowired
     private CommonDao commonDao;
+    @Autowired
+    private SimGroupService simGroupService;
+
+    private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
+    private static final Cache simGroupCache = CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
+
 
     @Override
     /**
@@ -107,6 +120,30 @@ public class CommonServiceImpl extends BaseService implements CommonService {
             returnMsg.setData(list);
         }
         return returnMsg;
+    }
+
+    @Override
+    public Object q(Long imsi) {
+
+        SimGroup simGroup = simGroupService.getSimGroup(imsi);
+        if(simGroup!=null){
+            Map<String,Object> map = new HashMap<>();
+            String groupKey = simGroup.getGroupKey();
+            MemcachedItem m = simCache.gets(groupKey);
+            List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
+            for (int i=0;i<list.size();i++) {
+                GroupCacheSim gcs = CommonUtil.convertBean(list.get(i),GroupCacheSim.class);
+                if((Long.valueOf(gcs.getImsi()).toString().equals(imsi.toString()))){
+                    map.put("卡组缓存：",gcs);
+                }
+            }
+
+            map.put("卡缓存：",simGroupCache.get("SIM_"+imsi));
+
+            return successTip(map);
+        }
+
+        return successTip("没有卡信息");
     }
 
 }
