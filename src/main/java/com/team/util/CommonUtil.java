@@ -182,7 +182,6 @@ public class CommonUtil {
 		g.setColor(getRandColor(200, 250));
 		g.fillRect(0, 0, width, height);
 		// 设定字体
-		g.setFont(new Font("Times New Roman", Font.ITALIC, 28));
 		// 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到
 		g.setColor(getRandColor(100, 200));
 		for (int i = 0; i < 205; i++) {
@@ -198,6 +197,11 @@ public class CommonUtil {
 			// String rand = String.valueOf(random.nextInt(10));
 			// sRand += c;
 			// 将认证码显示到图象中
+			if(i%2==0){
+				g.setFont(new Font("Times New Roman", Font.ITALIC, 28));
+			}else{
+				g.setFont(new Font("Times New Roman", Font.ITALIC, 25));
+			}
 			g.setColor(new Color(20 + random.nextInt(110), 20 + random
 					.nextInt(110), 20 + random.nextInt(110)));
 			// 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
