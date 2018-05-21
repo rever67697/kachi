@@ -19,4 +19,6 @@ public interface FLowBalanceDao {
      **/
     int count(@Param("tsid") Integer tsid);
 
+    FlowBalance findByTsid(@Param("tsid") Integer tsid);
+
 }

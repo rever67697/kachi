@@ -28,17 +28,27 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
     @Override
     public ReturnMsg charge(TerminalChargeRecord record) {
 
+        //获取源流量和日期参数
+        FlowBalance origin = fLowBlanceDao.findByTsid(record.getTsid());
+
         //1.保存FlowBlance
         FlowBalance flowBalance = new FlowBalance();
         BeanUtils.copyProperties(record, flowBalance);
 
-        if(fLowBlanceDao.count(record.getTsid())>0){
+        if(origin!=null){
             fLowBlanceDao.update(flowBalance);
         }else {
             fLowBlanceDao.save(flowBalance);
         }
         //2.保存充值记录
-        if(record.getChargeDate()!=null || record.getChargeDate()!=null){
+
+        if(origin == null){
+            origin = new FlowBalance();
+        }
+        if(!origin.getAllowFlow().equals(record.getAllowFlow())){
+            record.setChargeFlow(record.getAllowFlow()-origin.getAllowFlow());
+        }
+        if(record.getChargeFlow()!=null || record.getChargeDate()!=null){
             terminalChargeRecordDao.save(record);
         }
 

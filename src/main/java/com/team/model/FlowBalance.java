@@ -41,7 +41,7 @@ public class FlowBalance implements Serializable {
     }
 
     public Long getAllowFlow() {
-        return allowFlow;
+        return allowFlow==null?0L:allowFlow;
     }
 
     public void setAllowFlow(Long allowFlow) {

@@ -159,7 +159,6 @@ var kcJs=
 				return;
 			}
 			option = $.extend({"value":"value","name":"name","nullDesc":"--请选择--"},option);
-			console.log(option);
 			var html = '';
 			if(option.needNull) html+='<option value="">'+option.nullDesc+'</option>';
 			$.each(option.data,function(i,o){

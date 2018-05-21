@@ -27,5 +27,11 @@
 			note = #{note,jdbcType=VARCHAR}
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
+	
+	<select id="findByTsid" resultType="com.team.model.FlowBalance">
+		select * from m_flow_balance
+		where tsid=#{tsid,jdbcType=INTEGER}
+		limit 1
+	</select>
 
 </mapper>

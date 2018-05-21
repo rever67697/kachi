@@ -16,7 +16,7 @@ public class TerminalChargeRecord implements Serializable {
 
     private Integer tsid;
 
-    private Integer chargeFlow;
+    private Long chargeFlow;
 
     private Long allowFlow;
 
@@ -55,16 +55,16 @@ public class TerminalChargeRecord implements Serializable {
         this.tsid = tsid;
     }
 
-    public Integer getChargeFlow() {
+    public Long getChargeFlow() {
         return chargeFlow;
     }
 
-    public void setChargeFlow(Integer chargeFlow) {
+    public void setChargeFlow(Long chargeFlow) {
         this.chargeFlow = chargeFlow;
     }
 
     public Long getAllowFlow() {
-        return allowFlow;
+        return allowFlow==null?0L:allowFlow;
     }
 
     public void setAllowFlow(Long allowFlow) {
