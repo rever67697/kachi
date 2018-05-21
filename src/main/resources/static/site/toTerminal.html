@@ -273,7 +273,7 @@
 			    $(this).val('');
 			    return;
 			}
-			$(this).val($(this).val().replace(/[^0-9mgMG]/,''));
+			$(this).val($(this).val().replace(/[^0-9mgkMGK]/,''));
         })
 
 	});
@@ -483,6 +483,10 @@
             if(/^\d+G/.test(allowFlow)){
                 allowFlow = /\d+/.exec(allowFlow)[0];
                 allowFlow = allowFlow * 1024 * 1024;
+            }
+
+            if(/^\d+K/.test(allowFlow)){
+                allowFlow = /\d+/.exec(allowFlow)[0];
             }
 
             $('#chargeForm [name=allowFlow]').val(allowFlow);
