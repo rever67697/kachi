@@ -34,9 +34,9 @@ public class SimPackageController {
 	
 	@PostMapping("/save")
 	@PermissionLog(key="name_套餐名称;operatorCode_运营商编号;maxFlow_本国流量;maxRoamFlow_漫游流量;isChange_流量参数是否改变")
-	public ReturnMsg save(SimPackage simPackage,boolean isChange,HttpServletRequest request){
+	public ReturnMsg save(SimPackage simPackage,HttpServletRequest request){
 		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
-		return simPackageService.savePackage(simPackage,isChange);
+		return simPackageService.savePackage(simPackage);
 	} 
 	
 	@PostMapping("/delete")

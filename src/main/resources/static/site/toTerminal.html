@@ -100,7 +100,7 @@
 		  <input type="hidden" name="chargeDate"/>
 		  <table class="table th-normal">
 			  <tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
-			  <tr><th>剩余流量(KB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true"/></td>
+			  <tr><th>剩余流量(MB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true"/></td>
 				  <td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option></select></td></tr>
 			  <tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox"  readonly="readonly"/></td>
 				  <td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>
@@ -158,7 +158,7 @@
 			         	}},
 			         	{field:'departmentName',title:'所属部门',width:120},
 			         	{field:'countryName',title:'所在地区',width:80},
-			         	{field:'allowFlow',title:'剩余流量(KB)',width:100,formatter: function(value,row,index){
+			         	{field:'allowFlow',title:'剩余流量(MB)',width:100,formatter: function(value,row,index){
                             return '<div class="chargeDiv">'+(value?value:'')+'</div>';
                         }},
 			         	{field:'validityDate',title:'有效期截止时间',width:120,formatter: function(value,row,index){
@@ -273,7 +273,12 @@
 			    $(this).val('');
 			    return;
 			}
-			$(this).val($(this).val().replace(/[^0-9mgkMGK]/,''));
+            $(this).val($(this).val().replace(/[^0-9mgkMGK\.]/,''));
+			var _val = ($(this).val()+'').toUpperCase();
+			if(_val.indexOf('K') == _val.length-2 || _val.indexOf('M') == _val.length-2 || _val.indexOf('G') == _val.length-2 ){
+                console.log('干掉');
+                $(this).val(_val.substr(0,_val.length-1));
+			}
         })
 
 	});
@@ -474,21 +479,19 @@
             allowFlow = '0';
 		}
 		if($('#chargeForm').form('validate')){
-
-		    if(/^\d+M/.test(allowFlow)){
-                allowFlow = /\d+/.exec(allowFlow)[0];
+		    if((allowFlow+'').indexOf('M')>0){
+                allowFlow = allowFlow.replace('M','');
+                allowFlow = allowFlow * 1024;
+			}else if((allowFlow+'').indexOf('G')>0){
+                allowFlow = allowFlow.replace('G','');
+                allowFlow = allowFlow * 1024 * 1024;
+            }else if((allowFlow+'').indexOf('K')>0){
+                allowFlow = allowFlow.replace('K','');
+            }else{
                 allowFlow = allowFlow * 1024;
 			}
 
-            if(/^\d+G/.test(allowFlow)){
-                allowFlow = /\d+/.exec(allowFlow)[0];
-                allowFlow = allowFlow * 1024 * 1024;
-            }
-
-            if(/^\d+K/.test(allowFlow)){
-                allowFlow = /\d+/.exec(allowFlow)[0];
-            }
-
+            allowFlow = parseInt(allowFlow);
             $('#chargeForm [name=allowFlow]').val(allowFlow);
 
             $('#dg').datagrid('loading');

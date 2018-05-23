@@ -18,7 +18,7 @@
 		select r.*,
 			  d.name departmentName,
 			  ifnull(k.namecn,k.countryname) countryName,
-			  f.allowFlow,
+			  ifnull(round(f.allowFlow/1024,2),null) allowFlow,
 			  f.validityDate,
 			  f.note
 		from m_terminal r

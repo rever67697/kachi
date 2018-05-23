@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.SimPackageDao">
-	<sql id="allColumn">
-		r.ID, r.NAME, r.OPERATORCODE, r.MAXFLOW, r.MAXROAMFLOW, r.STATUS, r.LEVEL,
-		r.MCCS,r.departmentid
-	</sql>
 
 	<sql id="dId">
 		<if test="dId!=null">
@@ -14,7 +10,15 @@
 
 	<select id="getPackageList" parameterType="java.util.Map" resultType="com.team.model.SimPackage">
 		select
-			<include refid="allColumn" />
+			 r.id
+		    ,r.name
+		    ,r.operatorCode
+		    ,ifnull(round(r.MAXFLOW/1024),null) maxFlow
+		    ,ifnull(round(r.MAXROAMFLOW/1024),null) maxRoamFlow
+		    ,r.status
+		    ,r.level
+		    ,r.mccs
+		    ,r.departmentId
 			,d.name departmentName
 			,concat(OPERATORNAMECN,' (',r.operatorCode,')') operatorName
 		from m_simpackage r
