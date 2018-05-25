@@ -54,7 +54,7 @@ public class Terminal implements Serializable{
 	
 	private String countryName;
 	
-	private Double allowFlow;//剩余流量
+	private Long allowFlow;//剩余流量
 	
 	/******以下几个没有了？*******/
 	private Integer saleType;//销售类型
@@ -68,11 +68,11 @@ public class Terminal implements Serializable{
 	
 	private String note;//备注
 
-	public Double getAllowFlow() {
+	public Long getAllowFlow() {
 		return allowFlow;
 	}
 
-	public void setAllowFlow(Double allowFlow) {
+	public void setAllowFlow(Long allowFlow) {
 		this.allowFlow = allowFlow;
 	}
 

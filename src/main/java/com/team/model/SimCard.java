@@ -94,9 +94,9 @@ public class SimCard implements Serializable{
 
 	private String tempImei; //临时IMEI
 
-	private Double residueFlow;//本国流量剩余额度
+	private Long residueFlow;//本国流量剩余额度
 
-	private Double residueRoamFlow;//漫游流量剩余额度
+	private Long residueRoamFlow;//漫游流量剩余额度
 
 
 	public Integer getId() {
@@ -412,19 +412,19 @@ public class SimCard implements Serializable{
 		this.tempImei = tempImei;
 	}
 
-	public Double getResidueFlow() {
+	public Long getResidueFlow() {
 		return residueFlow;
 	}
 
-	public void setResidueFlow(Double residueFlow) {
+	public void setResidueFlow(Long residueFlow) {
 		this.residueFlow = residueFlow;
 	}
 
-	public Double getResidueRoamFlow() {
+	public Long getResidueRoamFlow() {
 		return residueRoamFlow;
 	}
 
-	public void setResidueRoamFlow(Double residueRoamFlow) {
+	public void setResidueRoamFlow(Long residueRoamFlow) {
 		this.residueRoamFlow = residueRoamFlow;
 	}
 

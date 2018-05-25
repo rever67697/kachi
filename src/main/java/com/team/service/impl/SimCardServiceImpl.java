@@ -113,7 +113,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	}
 
 	@Override
-	public File getCsv(SimCard simCard,Integer dId) throws  Exception{
+	public File getCsv(SimCardDTO simCard,Integer dId) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
@@ -773,6 +773,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @param simCard
 	 * @return
 	 */
+	@Override
 	public FlowMonth getNowFlowMonth(SimCard simCard) {
 		if(simCard == null)
 			return null;

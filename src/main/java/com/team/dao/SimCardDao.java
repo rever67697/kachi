@@ -111,4 +111,6 @@ public interface SimCardDao {
 	public int updateByImsi(@Param("imsi") Long imsi);
 
 	public SimCard getById(@Param("id") Integer id);
+
+	public List<SimCard> getByPackage(@Param("packageId") Integer packageId);
 }

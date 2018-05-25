@@ -183,8 +183,14 @@
 			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'countryName',title:'国家',width:60},
 			         	{field:'provinceName',title:'省',width:60},
-			         	{field:'residueFlow',title:'本国流量余额(M)',width:100},
-			         	{field:'residueRoamFlow',title:'漫游流量余额(M)',width:100}
+			         	{field:'residueFlow',title:'本国流量余额(G)',width:100,formatter: function(value,row,index){
+                            row.residueFlow = (row.residueFlow/1024/1024).toFixed(2);
+                            return row.residueFlow;
+                        }},
+			         	{field:'residueRoamFlow',title:'漫游流量余额(G)',width:100,formatter: function(value,row,index){
+                            row.residueRoamFlow = (row.residueRoamFlow/1024/1024).toFixed(2);
+                            return row.residueRoamFlow;
+                        }}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/simcard/list',
@@ -196,7 +202,6 @@
 			scrollbarSize:0,
 			striped:true,
 			fit:true
-//			height:window.innerHeight-109
 		};
   
 	$(function(){
@@ -447,6 +452,7 @@
 
     function getCsv(){
   	    var url = kcJs.fn.getContextPath()+'/simcard/getCsv?'+$('#queryForm').serialize();
+  	    console.log($('#queryForm').serialize());
   	    window.location.href = url;
 	}
 

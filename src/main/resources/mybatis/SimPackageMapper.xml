@@ -13,8 +13,8 @@
 			 r.id
 		    ,r.name
 		    ,r.operatorCode
-		    ,ifnull(round(r.MAXFLOW/1024),null) maxFlow
-		    ,ifnull(round(r.MAXROAMFLOW/1024),null) maxRoamFlow
+		    ,r.maxFlow
+		    ,r.maxRoamFlow
 		    ,r.status
 		    ,r.level
 		    ,r.mccs

@@ -41,8 +41,8 @@
 				   ,o.OPERATORNAMECN operatorName
 				   ,ifnull(c.namecn,c.countryName) countryName
 				   ,ifnull(pr.namecn,r.provincecode) provinceName
-				   ,ifnull(round(f.RESIDUEFLOW/1024,2),null) residueFlow
-				   ,ifnull(round(f.RESIDUEROAMFLOW/1024,2),null) residueRoamFlow
+				   ,f.residueFlow
+				   ,f.residueRoamFlow
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
@@ -107,49 +107,43 @@
 					,r.DEPARTMENTID
 					,r.GROUPPREF
 					,r.NOTE
-			,t.name packageName
-			,p.name simPoolName
-			,d.name departmentName
-			,o.OPERATORNAMECN operatorName
-			,ifnull(c.namecn,c.countryName) countryName
-			,ifnull(pr.namecn,r.provincecode) provinceName
-			,ifnull(round(f.RESIDUEFLOW/1024,2),null) residueFlow
-			,ifnull(round(f.RESIDUEROAMFLOW/1024,2),null) residueRoamFlow
-			from m_simcard r
-			left join m_simpackage t
-			on r.packageid=t.id and t.status=0
-			left join m_simpool p
-			on r.cpid=p.spid and p.ISACTIVE=1
-			left join m_department d
-			on p.departmentId=d.id and d.status=0
-			left join m_operator o
-			on r.OPERATORCODE=o.OPERATORCODE
-			left join m_country c
-			on r.countryCode = c.countryCode
-			left join m_province pr
-			on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
-			left join m_flow_month f on f.imsi = r.imsi and (now()>f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
-			where 1=1
-			<if test="cpId != null">
-				and r.cpid=#{cpId,jdbcType=INTEGER}
-			</if>
-			<if test="status != null">
-				and r.status=#{status,jdbcType=INTEGER}
-			</if>
-			<if test="departmentId != null">
-				and d.id=#{departmentId,jdbcType=INTEGER}
-			</if>
-			<if test="imsi != null">
-				and r.imsi=#{imsi,jdbcType=BIGINT}
-			</if>
-			<if test="countryCode != null">
-				and r.countryCode=#{countryCode,jdbcType=INTEGER}
-			</if>
-			<if test="operatorCode != null">
-				and r.operatorCode=#{operatorCode,jdbcType=INTEGER}
-			</if>
-			<include refid="dId"></include>
-			order by r.cpid,r.cpchannelid
+			,t.name PACKAGENAME
+			,p.name SIMPOOLNAME
+			,d.name DEPARTMENTNAME
+			,o.OPERATORNAMECN OPERATORNAME
+			,ifnull(c.namecn,c.countryName) COUNTRYNAME
+			,ifnull(pr.namecn,r.provincecode) PROVINCENAME
+			,f.RESIDUEFLOW
+			,f.RESIDUEROAMFLOW
+		from m_simcard r
+		left join m_simpackage t on r.packageid=t.id and t.status=0
+		left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
+		left join m_department d on p.departmentId=d.id and d.status=0
+		left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
+		left join m_country c on r.countryCode = c.countryCode
+		left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
+		left join m_flow_month f on f.imsi = r.imsi and (now()>f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
+		where 1=1
+		<if test="cpId != null">
+			and r.cpid=#{cpId,jdbcType=INTEGER}
+		</if>
+		<if test="status != null">
+			and r.status=#{status,jdbcType=INTEGER}
+		</if>
+		<if test="departmentId != null">
+			and d.id=#{departmentId,jdbcType=INTEGER}
+		</if>
+		<if test="imsi != null">
+			and r.imsi=#{imsi,jdbcType=BIGINT}
+		</if>
+		<if test="countryCode != null">
+			and r.countryCode=#{countryCode,jdbcType=INTEGER}
+		</if>
+		<if test="operatorCode != null">
+			and r.operatorCode=#{operatorCode,jdbcType=INTEGER}
+		</if>
+		<include refid="dId"></include>
+		order by r.cpid,r.cpchannelid
 	</select>
 
 	<select id="getOutlineInfo"  resultType="com.team.vo.OutlineInfo">
@@ -271,5 +265,10 @@
 	<select id="getById" resultType="com.team.model.SimCard">
 		select * from m_simcard
 		where id=#{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="getByPackage" resultType="com.team.model.SimCard">
+		select * from m_simcard
+		where packageId=#{packageId,jdbcType=INTEGER}
 	</select>
 </mapper>

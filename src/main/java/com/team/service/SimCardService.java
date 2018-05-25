@@ -1,6 +1,7 @@
 package com.team.service;
 
 import com.team.dto.SimCardDTO;
+import com.team.model.FlowMonth;
 import com.team.model.SimCard;
 import com.team.model.SimGroup;
 import com.team.vo.ResultList;
@@ -23,7 +24,7 @@ public interface SimCardService {
 	
 	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,int page,int rows);
 
-	public File getCsv(SimCard simCard,Integer dId) throws Exception;
+	public File getCsv(SimCardDTO simCard,Integer dId) throws Exception;
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
 
@@ -34,5 +35,7 @@ public interface SimCardService {
 	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids);
 
 	public boolean updateGroupSim2Cache(SimCard simCard,int status);
+
+	public FlowMonth getNowFlowMonth(SimCard simCard);
 	
 }

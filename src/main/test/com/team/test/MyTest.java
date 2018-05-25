@@ -168,6 +168,15 @@ public class MyTest {
 
 	}
 
+	@Test
+	public void testFlowMonth() {
+		String imsi = "234507093826922";
+		Object object = simCache.get(MConstant.CACHE_FLOW_KEY_PREF+imsi);
+
+		System.out.println(object);
+
+	}
+
 }
 
 

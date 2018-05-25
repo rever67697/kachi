@@ -1,9 +1,13 @@
 package com.team.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.model.FlowMonth;
+import com.team.model.SimCard;
+import com.team.service.SimCardService;
 import com.team.util.Cache;
 import com.team.util.CacheFactory;
 import com.team.util.MConstant;
@@ -37,10 +41,13 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	private SimCardDao simCardDao;
 	@Autowired
 	private FlowMonthDao flowMonthDao;
+	@Autowired
+	private SimCardService simCardService;
 
 	//卡缓存
 	private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
-
+	// 卡最后月流量缓存
+	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
 
 	@Override
 	/**
@@ -84,9 +91,24 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 			SimPackage origin = simPackageDao.getPackage(simPackage.getId());
 
 			count = simPackageDao.updatePackage(simPackage);
-			if(!origin.getMaxFlow().equals(simPackage.getMaxFlow()) || !origin.getMaxRoamFlow().equals(simPackage.getMaxRoamFlow())) {
+			if(!simPackage.getMaxFlow().equals(origin.getMaxFlow()) || !simPackage.getMaxRoamFlow().equals(origin.getMaxRoamFlow())) {
 				//需要更新流量大小
 				flowMonthDao.updateMonthFlowByPackage(simPackage);
+
+				//需要更新使用了这张卡的月流量缓存
+				List<SimCard> simCardList = simCardDao.getByPackage(simPackage.getId());
+
+				if(CommonUtil.listNotBlank(simCardList)){
+					for (SimCard simCard : simCardList) {
+						FlowMonth flowMonth = simCardService.getNowFlowMonth(simCard);
+						if(flowMonth!=null){
+							//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
+							simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(),
+									CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));
+						}
+					}
+				}
+
 			}
 		}else{
 			count = simPackageDao.insertPackage(simPackage);
