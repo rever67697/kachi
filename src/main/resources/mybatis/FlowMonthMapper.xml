@@ -40,4 +40,23 @@
 		]]>
 	</select>
 	
+	<insert id="save" parameterType="com.team.model.FlowMonth" useGeneratedKeys="true" keyProperty="id">
+		insert into m_flow_month
+		(imsi,date,accountPeriodStartDate,accountPeriodEndDate,usedFlow,residueFlow,usedRoamFlow,residueRoamFlow,lastUpDatetime,maxFlow,maxRoamFlow)
+		values
+		(
+		   #{imsi,jdbcType=BIGINT},
+		   #{date,jdbcType=VARCHAR},
+		   #{accountPeriodStartDate,jdbcType=TIMESTAMP},
+		   #{accountPeriodEndDate,jdbcType=TIMESTAMP},
+		   #{usedFlow,jdbcType=INTEGER},
+		   #{residueFlow,jdbcType=INTEGER},
+		   #{usedRoamFlow,jdbcType=INTEGER},
+		   #{residueRoamFlow,jdbcType=INTEGER},
+		   #{lastUpDatetime,jdbcType=TIMESTAMP},
+		   #{maxFlow,jdbcType=INTEGER},
+		   #{maxRoamFlow,jdbcType=INTEGER}
+		)
+	</insert>
+	
 </mapper>

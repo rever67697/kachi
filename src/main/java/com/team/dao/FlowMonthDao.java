@@ -33,5 +33,7 @@ public interface FlowMonthDao {
 	 * @return
 	 */
 	public FlowMonth get(Map<String,Object> map);
+
+	public int save(FlowMonth flowMonth);
 	
 }
