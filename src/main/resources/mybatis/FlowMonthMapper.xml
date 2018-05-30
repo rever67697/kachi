@@ -42,10 +42,11 @@
 	
 	<insert id="save" parameterType="com.team.model.FlowMonth" useGeneratedKeys="true" keyProperty="id">
 		insert into m_flow_month
-		(imsi,date,accountPeriodStartDate,accountPeriodEndDate,usedFlow,residueFlow,usedRoamFlow,residueRoamFlow,lastUpDatetime,maxFlow,maxRoamFlow)
+		(imsi,iccid,date,accountPeriodStartDate,accountPeriodEndDate,usedFlow,residueFlow,usedRoamFlow,residueRoamFlow,lastUpDatetime,maxFlow,maxRoamFlow)
 		values
 		(
 		   #{imsi,jdbcType=BIGINT},
+		   #{iccid,jdbcType=VARCHAR},
 		   #{date,jdbcType=VARCHAR},
 		   #{accountPeriodStartDate,jdbcType=TIMESTAMP},
 		   #{accountPeriodEndDate,jdbcType=TIMESTAMP},

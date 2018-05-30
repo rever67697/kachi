@@ -508,9 +508,9 @@
 		oriFlow = oriFlow?oriFlow:'0';
 		var selectFlow = $('#chargeForm [name=selectFlow]').val();
 
-		var autualFlow = parseInt(oriFlow)+parseInt(selectFlow)*1048576;
-		$('#chargeForm [name=allowFlow]').val(autualFlow);
-		$('#chargeForm [name=chargeFlow]').val(selectFlow);
+		//var autualFlow = parseInt(oriFlow)+parseInt(selectFlow)*1048576;
+		$('#chargeForm [name=allowFlow]').val(selectFlow);
+//		$('#chargeForm [name=chargeFlow]').val(selectFlow);
     }
     
     function changeDate() {
