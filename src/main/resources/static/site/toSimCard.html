@@ -183,13 +183,23 @@
 			         	{field:'departmentName',title:'所属部门',width:150},
 			         	{field:'countryName',title:'国家',width:60},
 			         	{field:'provinceName',title:'省',width:60},
-			         	{field:'residueFlow',title:'本国流量余额(G)',width:100,formatter: function(value,row,index){
-                            row.residueFlow = (row.residueFlow/1024/1024).toFixed(2);
-                            return row.residueFlow;
+			         	{field:'maxFlow',title:'套餐总量(G)',width:100,formatter: function(value,row,index){
+			         	    value = value+"";
+			         	    if(value && value!='null'){
+                            	row.maxFlow = (row.maxFlow/1024/1024).toFixed(2);
+							}else {
+                                row.maxFlow = '';
+							}
+							return row.maxFlow;
                         }},
-			         	{field:'residueRoamFlow',title:'漫游流量余额(G)',width:100,formatter: function(value,row,index){
-                            row.residueRoamFlow = (row.residueRoamFlow/1024/1024).toFixed(2);
-                            return row.residueRoamFlow;
+			         	{field:'residueFlow',title:'套餐余量(G)',width:100,formatter: function(value,row,index){
+                            value = value+"";
+                            if(value && value!='null'){
+                                row.residueFlow = (row.residueFlow/1024/1024).toFixed(2);
+                            }else {
+                                row.residueFlow = '';
+                            }
+							return row.residueFlow;
                         }}
 					]],
 			toolbar: kcJs.fn.getFunctions(),

@@ -41,8 +41,8 @@
 				   ,o.OPERATORNAMECN operatorName
 				   ,ifnull(c.namecn,c.countryName) countryName
 				   ,ifnull(pr.namecn,r.provincecode) provinceName
+		           ,t.maxFlow
 				   ,f.residueFlow
-				   ,f.residueRoamFlow
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
@@ -113,8 +113,8 @@
 			,o.OPERATORNAMECN OPERATORNAME
 			,ifnull(c.namecn,c.countryName) COUNTRYNAME
 			,ifnull(pr.namecn,r.provincecode) PROVINCENAME
+		    ,t.MAXFLOW
 			,f.RESIDUEFLOW
-			,f.RESIDUEROAMFLOW
 		from m_simcard r
 		left join m_simpackage t on r.packageid=t.id and t.status=0
 		left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1

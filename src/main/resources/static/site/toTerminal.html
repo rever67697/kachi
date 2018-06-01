@@ -159,7 +159,12 @@
 			         	{field:'departmentName',title:'所属部门',width:120},
 			         	{field:'countryName',title:'所在地区',width:80},
 			         	{field:'allowFlow',title:'剩余流量(GB)',width:100,formatter: function(value,row,index){
-			         	    row.allowFlow = (row.allowFlow/1024/1024).toFixed(2);
+			         	    value = value+'';
+			         	    if(value && value!='null'){
+			         	    	row.allowFlow = (row.allowFlow/1024/1024).toFixed(2);
+							}else {
+                                row.allowFlow = '';
+							}
                             return '<div class="chargeDiv">'+row.allowFlow+'</div>';
                         }},
 			         	{field:'validityDate',title:'有效期截止时间',width:120,formatter: function(value,row,index){
