@@ -7,6 +7,7 @@ import java.util.*;
 import com.hqrh.rw.common.model.GroupCacheSim;
 import com.schooner.MemCached.MemcachedItem;
 import com.team.dao.SimCardDao;
+import com.team.model.FlowMonth;
 import com.team.model.SimCard;
 import com.team.model.SimPackage;
 import com.team.service.SimCardService;
@@ -170,10 +171,20 @@ public class MyTest {
 
 	@Test
 	public void testFlowMonth() {
-		String imsi = "460111103008319";
+		String imsi = "460016767614238";
 		Object object = simCache.get(MConstant.CACHE_FLOW_KEY_PREF+imsi);
 
 		System.out.println(object);
+
+	}
+
+	@Test
+	public void testGetNowFlowMonth() {
+		String imsi = "460016767614238";
+		SimCard simCard = simCardDao.getByImsi(Long.valueOf(imsi));
+		FlowMonth flowMonth = simCardService.getNowFlowMonth(simCard);
+
+		System.out.println(flowMonth);
 
 	}
 

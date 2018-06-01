@@ -6,7 +6,8 @@
 		select ifnull(sum(flow),0) flow,
 			   ifnull(sum(roamFlow),0) roamFlow
 		from m_flow_day
-		where date>=#{date,jdbcType=TIMESTAMP}
+		where date>=#{startDate,jdbcType=TIMESTAMP}
+		  and date&lt;#{endDate,jdbcType=TIMESTAMP}
 		  and imsi=#{imsi,jdbcType=INTEGER}
 	</select>
 	

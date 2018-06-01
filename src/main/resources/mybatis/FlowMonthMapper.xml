@@ -11,7 +11,7 @@
 			r.RESIDUEROAMFLOW=#{maxRoamFlow,jdbcType=INTEGER}-r.USEDROAMFLOW,
 			r.LASTUPDATETIME=now()
 		where exists (select 1 from m_simcard t where r.IMSI=t.imsi and t.PACKAGEID=#{id,jdbcType=INTEGER})
-		  and r.ACCOUNTPERIODENDDATE>=now() 
+		  and r.ACCOUNTPERIODENDDATE>now()
 		  and r.ACCOUNTPERIODSTARTDATE<=now()
 		]]>
 	</update>
@@ -42,11 +42,12 @@
 	
 	<insert id="save" parameterType="com.team.model.FlowMonth" useGeneratedKeys="true" keyProperty="id">
 		insert into m_flow_month
-		(imsi,iccid,date,accountPeriodStartDate,accountPeriodEndDate,usedFlow,residueFlow,usedRoamFlow,residueRoamFlow,lastUpDatetime,maxFlow,maxRoamFlow)
+		(imsi,iccid,number,date,accountPeriodStartDate,accountPeriodEndDate,usedFlow,residueFlow,usedRoamFlow,residueRoamFlow,lastUpDatetime,maxFlow,maxRoamFlow)
 		values
 		(
 		   #{imsi,jdbcType=BIGINT},
 		   #{iccid,jdbcType=VARCHAR},
+		   #{number,jdbcType=VARCHAR},
 		   #{date,jdbcType=VARCHAR},
 		   #{accountPeriodStartDate,jdbcType=TIMESTAMP},
 		   #{accountPeriodEndDate,jdbcType=TIMESTAMP},

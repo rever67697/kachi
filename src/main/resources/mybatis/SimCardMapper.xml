@@ -50,7 +50,7 @@
 			left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 			left join m_country c on r.countryCode = c.countryCode
 			left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
-			left join m_flow_month f on f.imsi = r.imsi and (now()>f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
+			left join m_flow_month f on f.imsi = r.imsi and (now()>=f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
 			where 1=1
 			<if test="cpId != null">
 				and r.cpid=#{cpId,jdbcType=INTEGER}
@@ -122,7 +122,7 @@
 		left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 		left join m_country c on r.countryCode = c.countryCode
 		left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
-		left join m_flow_month f on f.imsi = r.imsi and (now()>f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
+		left join m_flow_month f on f.imsi = r.imsi and (now()>=f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
 		where 1=1
 		<if test="cpId != null">
 			and r.cpid=#{cpId,jdbcType=INTEGER}

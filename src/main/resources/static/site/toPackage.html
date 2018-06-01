@@ -280,7 +280,7 @@
             }else if((maxFlow+'').indexOf('K')>0){
                 maxFlow = maxFlow.replace('K','');
             }else{
-                maxFlow = maxFlow * 1024;
+                maxFlow = maxFlow * 1024*1024;
             }
 
             if((maxRoamFlow+'').indexOf('M')>0){
@@ -292,7 +292,7 @@
             }else if((maxRoamFlow+'').indexOf('K')>0){
                 maxRoamFlow = maxRoamFlow.replace('K','');
             }else{
-                maxRoamFlow = maxRoamFlow * 1024;
+                maxRoamFlow = maxRoamFlow * 1024*1024;
             }
 
             maxFlow = parseInt(maxFlow);

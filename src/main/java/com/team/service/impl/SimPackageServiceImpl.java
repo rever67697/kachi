@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.dao.FlowDayDao;
+import com.team.model.FlowDay;
 import com.team.model.FlowMonth;
 import com.team.model.SimCard;
 import com.team.service.SimCardService;
@@ -41,6 +43,8 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	private SimCardDao simCardDao;
 	@Autowired
 	private FlowMonthDao flowMonthDao;
+	@Autowired
+	private FlowDayDao flowDayDao;
 	@Autowired
 	private SimCardService simCardService;
 
@@ -93,15 +97,33 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 			count = simPackageDao.updatePackage(simPackage);
 			if(!simPackage.getMaxFlow().equals(origin.getMaxFlow()) || !simPackage.getMaxRoamFlow().equals(origin.getMaxRoamFlow())) {
 				//需要更新流量大小
-				flowMonthDao.updateMonthFlowByPackage(simPackage);
+//				flowMonthDao.updateMonthFlowByPackage(simPackage);
 
-				//需要更新使用了这张卡的月流量缓存
+				//需要更新使用了这张卡的月流量缓存，重新计算月流量
 				List<SimCard> simCardList = simCardDao.getByPackage(simPackage.getId());
 
 				if(CommonUtil.listNotBlank(simCardList)){
 					for (SimCard simCard : simCardList) {
 						FlowMonth flowMonth = simCardService.getNowFlowMonth(simCard);
 						if(flowMonth!=null){
+
+							Map<String,Object> map = new HashMap<>();
+							map.put("imsi",simCard.getImsi());
+							map.put("startDate",flowMonth.getAccountPeriodStartDate());
+							map.put("endDate",flowMonth.getAccountPeriodEndDate());
+							FlowDay flowDay = flowDayDao.getUsedFlow(map);
+
+							//4.重新计算本月的其他流量参数
+							flowMonth.setMaxFlow(simPackage.getMaxFlow());
+							flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
+							flowMonth.setUsedFlow(flowDay.getFlow());
+							flowMonth.setUsedRoamFlow(flowDay.getRoamFlow());
+							flowMonth.setResidueFlow(flowMonth.getMaxFlow()-flowMonth.getUsedFlow());
+							flowMonth.setResidueRoamFlow(flowMonth.getMaxRoamFlow()-flowMonth.getUsedRoamFlow());
+							flowMonth.setLastUpDatetime(new Date());
+
+							flowMonthDao.updateMonthFlowBySimCard(flowMonth);
+
 							//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
 							simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(),
 									CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));

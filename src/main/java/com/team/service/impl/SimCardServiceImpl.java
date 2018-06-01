@@ -420,6 +420,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				if(isChangePeriod || isChangeSustained){
 
 					int offperiod =isChangePeriod?offPeriod:simCard.getOffPeriod();
+					if(offPeriod==0)
+						offPeriod=1;
 					String strOffperiod = "" + offperiod;
 					if(offperiod < 10)
 						strOffperiod = "0" + offperiod;
@@ -455,7 +457,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				//3.获取当月已使用的流量
 				Map<String,Object> map = new HashMap<>();
 				map.put("imsi",simCard.getImsi());
-				map.put("date",flowMonth.getAccountPeriodStartDate());
+				map.put("startDate",flowMonth.getAccountPeriodStartDate());
+				map.put("endDate",flowMonth.getAccountPeriodEndDate());
 				FlowDay flowDay = flowDayDao.getUsedFlow(map);
 
 				//4.重新计算本月的其他流量参数
@@ -785,16 +788,16 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		Date nowDate = DateUtil.string2Date(timeStr, "yyyy-MM-dd HH:mm:ss");
 
 		//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
-		Object object =  simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
+//		Object object =  simFlowCache.get(MConstant.CACHE_FLOW_KEY_PREF + imsi);
 		FlowMonth simFlowMonth = null;
-		if(object != null) {
-			//TODO 修改了接口
-			simFlowMonth = CommonUtil.convertBean(object,FlowMonth.class);
-			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
-					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
-				return simFlowMonth;
-			}
-		}
+//		if(object != null) {
+//			//TODO 修改了接口
+//			simFlowMonth = CommonUtil.convertBean(object,FlowMonth.class);
+//			if(simFlowMonth.getAccountPeriodStartDate().before(nowDate)
+//					&& simFlowMonth.getAccountPeriodEndDate().after(nowDate)) {
+//				return simFlowMonth;
+//			}
+//		}
 
 
 		simFlowMonth = getNowFlowMonthByDB(imsi,nowDate);
@@ -952,6 +955,9 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		int offperiod=1;
 		if(integerOffperiod!=null){
 			offperiod =integerOffperiod.intValue();
+			if(offperiod==0){
+				offperiod=1;
+			}
 		}
 		String strOffperiod = "" + offperiod;
 		if(offperiod < 10)
