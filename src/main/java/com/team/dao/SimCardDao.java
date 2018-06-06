@@ -113,4 +113,6 @@ public interface SimCardDao {
 	public SimCard getById(@Param("id") Integer id);
 
 	public List<SimCard> getByPackage(@Param("packageId") Integer packageId);
+
+    public int updateTempImei(SimCard simCard);
 }

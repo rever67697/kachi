@@ -188,6 +188,13 @@ public class MyTest {
 
 	}
 
+	@Test
+	public void testGetPackage(){
+		Integer packageId=20;
+		Object object = simCache.get(MConstant.CACHE_PACKAGE_KEY_PREF+packageId);
+		System.out.println(object);
+	}
+
 }
 
 

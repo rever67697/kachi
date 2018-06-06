@@ -14,9 +14,14 @@ import com.team.vo.OutlineInfo;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -198,73 +203,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return super.successTip();
 	}
 
-//	private void reCalculateFlowMonth(SimCard simCard,boolean isChangePeriod, boolean isChangePackage) {
-//		//两者只要有一个是true就操作
-//		if(isChangePeriod || isChangePackage){
-//			FlowMonth flowMonth = getNowFlowMonth(simCard);
-//			//如果不为空则作处理
-//			if(flowMonth != null){
-//				convertFlowmonth(simCard,flowMonth,isChangePeriod,isChangePackage);
-//				flowMonthDao.updateMonthFlowBySimCard(flowMonth);
-//				//这里需要注意一下，所有有关获取或者设置缓存的，要确保两边的一致
-//				simFlowCache.set(MConstant.CACHE_FLOW_KEY_PREF + simCard.getImsi(),
-//						CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));
-//			}
-//		}
-//
-//	}
-
-//	private void convertFlowmonth(SimCard simCard, FlowMonth flowMonth, boolean isChangePeriod, boolean isChangePackage) {
-//		Date nowDate = new Date();
-//		flowMonth.setLastUpDatetime(new Date());
-//
-//		//1。如果帐期发生了变化，需要重新计算帐期相关参数
-//		if(isChangePeriod){
-//			int offperiod =simCard.getOffPeriod();
-//			String strOffperiod = "" + offperiod;
-//			if(offperiod < 10)
-//				strOffperiod = "0" + offperiod;
-//			Integer sustained = simCard.getSustained();
-//
-//			String nowMonth = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_Y_M);
-//			Date offperiodDate = DateUtil.string2Date(nowMonth + "-" + strOffperiod, DateUtil.RB_DATE_Y_M_D);
-//
-//			String strNowRoamDate = countryService.getRoamcountryDate(nowDate,simCard.getCountryCode(),DateUtil.RB_DATE_FORMATER);
-//			Date nowRoamDate =  DateUtil.string2Date(strNowRoamDate, DateUtil.RB_DATE_FORMATER);
-//
-//			if(offperiodDate.before(nowRoamDate)) {//账期日小于当前时间，则以账期日为起始时间
-//				flowMonth.setAccountPeriodStartDate(offperiodDate);
-//				Date endDate = DateUtil.calculate(offperiodDate,GregorianCalendar.MONTH, sustained);
-//				flowMonth.setAccountPeriodEndDate(endDate);
-//			} else {
-//				flowMonth.setAccountPeriodEndDate(offperiodDate);
-//				Date startDate = DateUtil.calculate(offperiodDate, GregorianCalendar.MONTH, 0-sustained);
-//				flowMonth.setAccountPeriodStartDate(startDate);
-//			}
-//
-//			String month = DateUtil.date2String(DateUtil.RB_DATE_Y_M, flowMonth.getAccountPeriodStartDate());
-//			flowMonth.setDate(month);
-//		}
-//
-//		//2.如果套餐发生了变化，需要重新计算套餐的最大使用参数
-//		if(isChangePackage){
-//			SimPackage simPackage = simPackageDao.getPackage(simCard.getPackageId());
-//			flowMonth.setMaxFlow(simPackage.getMaxFlow());
-//			flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
-//		}
-//
-//		//3.获取当月已使用的流量
-//		Map<String,Object> map = new HashMap<>();
-//		map.put("imsi",simCard.getImsi());
-//		map.put("date",flowMonth.getAccountPeriodStartDate());
-//		FlowDay flowDay = flowDayDao.getUsedFlow(map);
-//
-//		//4.重新计算本月的其他流量参数
-//		flowMonth.setUsedFlow(flowDay.getFlow());
-//		flowMonth.setUsedRoamFlow(flowDay.getRoamFlow());
-//		flowMonth.setResidueFlow(flowMonth.getMaxFlow()-flowMonth.getUsedFlow());
-//		flowMonth.setResidueRoamFlow(flowMonth.getMaxRoamFlow()-flowMonth.getUsedRoamFlow());
-//	}
 
 	/**
 	 * 初始化一张卡到卡组,
@@ -816,6 +754,63 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 
 		return simFlowMonth;
+	}
+
+	@Override
+	public ReturnMsg getSimcardList(MultipartFile file) {
+		ReturnMsg returnMsg = super.successTip();
+		Workbook book = null;
+		Sheet sheet = null;
+		Row row = null;
+		List<SimCard> list = new ArrayList<SimCard>();
+		try {
+			book = WorkbookFactory.create(file.getInputStream());
+			sheet = book.getSheetAt(0);
+			int total = sheet.getLastRowNum()+1;
+			SimCard simCard = null;
+
+			for (int i = 1; i < total; i++) {
+				row = sheet.getRow(i);
+				if(row == null || row.getCell(0) == null){
+					continue;
+				}
+				try {
+					Long imsi = CommonUtil.getCellLongVal(row.getCell(0));
+					String tempImei = CommonUtil.getCellStringVal(row.getCell(1));
+
+					simCard  = new SimCard(imsi,tempImei);
+
+					list.add(simCard);
+				} catch (Exception e) {
+					returnMsg = super.errorTip();
+					returnMsg.setMsg("第"+(row.getRowNum()+1)+"行数据格式错误，请检查！");
+					e.printStackTrace();
+				}
+			}
+		}catch (Exception e) {
+			returnMsg = super.errorTip();
+			returnMsg.setMsg("无效的文件");
+			e.printStackTrace();
+		}finally{
+			returnMsg.setData(list);
+			return returnMsg;
+		}
+	}
+
+	@Override
+	public void insertBatch(List<SimCard> list) {
+		for (SimCard simCard : list) {
+			//查库找出数据库里面的这张卡
+			SimCard nowSimCard = simCardDao.getByImsi(simCard.getImsi());
+			if(nowSimCard!=null){
+				nowSimCard.setTempImei(simCard.getTempImei());
+				//更新临时IMEI
+				simCardDao.updateTempImei(nowSimCard);
+				//刷新缓存
+				simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+						CommonUtil.convertBean(nowSimCard, com.hqrh.rw.common.model.SimCard.class));
+			}
+		}
 	}
 
 	private FlowMonth getNowFlowMonthByDB(long imsi, Date nowDate) {

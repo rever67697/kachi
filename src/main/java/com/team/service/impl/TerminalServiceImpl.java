@@ -124,12 +124,13 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 					Integer usedSoft = CommonUtil.getCellIntVal(row.getCell(15));
 					Integer departmentId = CommonUtil.getCellIntVal(row.getCell(16));
 					String meid = CommonUtil.getCellStringVal(row.getCell(17));
-					Integer saleType = CommonUtil.getCellIntVal(row.getCell(18));
-					Integer resetWifi = CommonUtil.getCellIntVal(row.getCell(19));
-					String androidVersion = CommonUtil.getCellStringVal(row.getCell(20));
+					String sendWiFiPass = CommonUtil.getCellStringVal(row.getCell(18));
+					Integer saleType = CommonUtil.getCellIntVal(row.getCell(19));
+					Integer resetWifi = CommonUtil.getCellIntVal(row.getCell(20));
+					String androidVersion = CommonUtil.getCellStringVal(row.getCell(21));
 					
 					terminal = new Terminal(tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated,
-							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, saleType, resetWifi, androidVersion);
+							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid, sendWiFiPass,saleType, resetWifi, androidVersion);
 					list.add(terminal);
 				} catch (Exception e) {
 					returnMsg = super.errorTip();

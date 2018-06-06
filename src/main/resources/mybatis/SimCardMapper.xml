@@ -210,7 +210,8 @@
 			note = #{note,jdbcType=VARCHAR},
 			softType = #{softType,jdbcType=INTEGER},
 			expiryDate = #{expiryDate,jdbcType=TIMESTAMP},
-			openDate = #{openDate,jdbcType=TIMESTAMP}
+			openDate = #{openDate,jdbcType=TIMESTAMP},
+			tempImei = #{tempImei,jdbcType=VARCHAR}
 		where id=#{id,jdbcType=INTEGER}
 	</update>
 	
@@ -271,4 +272,10 @@
 		select * from m_simcard
 		where packageId=#{packageId,jdbcType=INTEGER}
 	</select>
+
+	<update id="updateTempImei" parameterType="com.team.model.SimCard">
+		update m_simcard set
+		tempImei = #{tempImei,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

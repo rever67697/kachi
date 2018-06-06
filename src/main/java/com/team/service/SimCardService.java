@@ -6,9 +6,11 @@ import com.team.model.SimCard;
 import com.team.model.SimGroup;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.List;
 
 
 /**
@@ -37,5 +39,8 @@ public interface SimCardService {
 	public boolean updateGroupSim2Cache(SimCard simCard,int status);
 
 	public FlowMonth getNowFlowMonth(SimCard simCard);
-	
+
+    public ReturnMsg getSimcardList(MultipartFile file);
+
+	public void insertBatch(List<SimCard> list);
 }

@@ -98,6 +98,13 @@ public class SimCard implements Serializable{
 
 	private Long residueFlow;//本国流量剩余额度
 
+	public SimCard() {
+	}
+
+	public SimCard(Long imsi, String tempImei) {
+		this.imsi = imsi;
+		this.tempImei = tempImei;
+	}
 
 	public Integer getId() {
 		return id;

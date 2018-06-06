@@ -68,6 +68,10 @@ public class Terminal implements Serializable{
 	
 	private String note;//备注
 
+	private Integer autoOrder;//0: 不自动下单；1：自动下单扣款
+
+	private String sendWiFiPass;//发下给终端更新的WiFi密码
+
 	public Long getAllowFlow() {
 		return allowFlow;
 	}
@@ -101,7 +105,7 @@ public class Terminal implements Serializable{
 			Integer upLog, String imei, Integer activated,
 			Integer homeLocation, String ssid, String wifiPassword,
 			String licFix, Integer usedVpn, Integer usedSoft,
-			Integer departmentId, String meid, Integer saleType,
+			Integer departmentId, String meid,String sendWiFiPass, Integer saleType,
 			Integer resetWifi, String androidVersion) {
 		super();
 		this.tsid = tsid;
@@ -122,6 +126,7 @@ public class Terminal implements Serializable{
 		this.usedSoft = usedSoft;
 		this.departmentId = departmentId;
 		this.meid = meid;
+		this.sendWiFiPass = sendWiFiPass;
 		this.saleType = saleType;
 		this.resetWifi = resetWifi;
 		this.androidVersion = androidVersion;
@@ -319,20 +324,54 @@ public class Terminal implements Serializable{
 		this.androidVersion = androidVersion;
 	}
 
+	public Integer getAutoOrder() {
+		return autoOrder;
+	}
+
+	public void setAutoOrder(Integer autoOrder) {
+		this.autoOrder = autoOrder;
+	}
+
+	public String getSendWiFiPass() {
+		return sendWiFiPass;
+	}
+
+	public void setSendWiFiPass(String sendWiFiPass) {
+		this.sendWiFiPass = sendWiFiPass;
+	}
+
 	@Override
 	public String toString() {
-		return "Terminal [id=" + id + ", tsid=" + tsid + ", mac=" + mac
-				+ ", model=" + model + ", batch=" + batch + ", sVersion="
-				+ sVersion + ", key=" + key + ", status=" + status + ", upLog="
-				+ upLog + ", imei=" + imei + ", activated=" + activated
-				+ ", homeLocation=" + homeLocation + ", ssid=" + ssid
-				+ ", wifiPassword=" + wifiPassword + ", licFix=" + licFix
-				+ ", usedVpn=" + usedVpn + ", usedSoft=" + usedSoft
-				+ ", departmentId=" + departmentId + ", meid=" + meid
-				+ ", saleType=" + saleType + ", resetWifi=" + resetWifi
-				+ ", androidVersion=" + androidVersion + ", departmentName="
-				+ departmentName + ", countryName=" + countryName + "]";
+		return "Terminal{" +
+				"id=" + id +
+				", tsid=" + tsid +
+				", mac='" + mac + '\'' +
+				", model='" + model + '\'' +
+				", batch='" + batch + '\'' +
+				", sVersion='" + sVersion + '\'' +
+				", key='" + key + '\'' +
+				", status=" + status +
+				", upLog=" + upLog +
+				", imei='" + imei + '\'' +
+				", activated=" + activated +
+				", homeLocation=" + homeLocation +
+				", ssid='" + ssid + '\'' +
+				", wifiPassword='" + wifiPassword + '\'' +
+				", licFix='" + licFix + '\'' +
+				", usedVpn=" + usedVpn +
+				", usedSoft=" + usedSoft +
+				", departmentId=" + departmentId +
+				", meid='" + meid + '\'' +
+				", departmentName='" + departmentName + '\'' +
+				", countryName='" + countryName + '\'' +
+				", allowFlow=" + allowFlow +
+				", saleType=" + saleType +
+				", resetWifi=" + resetWifi +
+				", androidVersion='" + androidVersion + '\'' +
+				", validityDate=" + validityDate +
+				", note='" + note + '\'' +
+				", autoOrder=" + autoOrder +
+				", sendWiFiPass='" + sendWiFiPass + '\'' +
+				'}';
 	}
-	
-	
 }

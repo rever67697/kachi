@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/Calendar.js"></script>
+	  <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+
   </head>
   <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
 
@@ -111,7 +113,7 @@
 							  <tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
 								  <th>分组：</th><td><input name="groupPref"/></td></tr>
 							  <tr><th>备注：</th><td><input name="note"/></td>
-								  <th></th><td></td></tr>
+								  <th>tempImei：</th><td><input name="tempImei"/></td></tr>
 							  <tr style="height:10px"></tr>
 							  <tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 						  </table>
@@ -148,6 +150,15 @@
 							  <tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>
 						  </table>
 					  </form>
+				  </div>
+
+				  <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+					  <table class="excel">
+						  <tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
+						  <tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
+						  <tr style="height:30px"></tr>
+						  <tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
+					  </table>
 				  </div>
 			  </div>
 		  </div>
@@ -199,7 +210,7 @@
                             }else {
                                 row.residueFlow = '';
                             }
-							return row.residueFlow;
+							return row.residueFlow.length>0?(row.residueFlow>0?row.residueFlow:'<span style="color:red">'+row.residueFlow+'</span>'):'';
                         }}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
@@ -238,6 +249,14 @@
 			onClose:function () {
                 $('#__calendarPanel').css('visibility','hidden');
             }
+        });
+
+        $('#uploadDialog').dialog({
+            modal : true,
+            width:500,
+            height:200,
+            cache: false,
+            title : "导入临时IMEI"
         });
 
 		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
@@ -465,6 +484,45 @@
   	    console.log($('#queryForm').serialize());
   	    window.location.href = url;
 	}
+	function doUpload(){
+		$('#uploadDialog').dialog('open');
+	}
+
+    function downloadFile(){
+	    window.location.href=kcJs.fn.getContextPath()+"/downloadFile?fileName="+encodeURIComponent(encodeURIComponent('导入临时IMEI模板.xlsx'));
+    }
+
+      function upload(){
+          if($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1){
+              $('#uploadDialog').dialog('close');
+              $('#dg').datagrid('loading');
+              $.ajaxFileUpload({
+                  url:kcJs.fn.getContextPath()+'/simcard/upload',
+                  secureuri : false,
+                  fileElementId : 'file',
+                  dataType:'json',
+                  success:function(data,status){
+                      $('#dg').datagrid('loaded');
+                      if(data && data.code){
+                          if(data.code=='200'){
+                              $.messager.alert('提示','上传成功！','info');
+                              doQuery();
+                          }else{
+                              $.messager.alert('提示',data.msg,'info');
+                          }
+                      }else{
+                          $.messager.alert('提示','上传失败','info');
+                      }
+                  },
+                  error:function(data, status, e) {
+                      $('#dg').datagrid('loaded');
+                      $.messager.alert('提示','未知错误!!!','info');
+                  }
+              });
+          }else{
+              $.messager.alert('提示','请上传指定的excel模板！','info');
+          }
+      }
 
 
   </script>

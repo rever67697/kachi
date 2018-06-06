@@ -64,7 +64,7 @@
 	      IMEI, ACTIVATED, HOMELOCATION, 
 	      SSID, WIFIPASSWORD, LICFIX, 
 	      USEDVPN, USEDSOFT, departmentId, 
-	      MEID<!-- , SALETYPE, resetWiFi, 
+	      MEID,sendWiFiPass<!-- , SALETYPE, resetWiFi,
 	      androidVersion -->)
 	    values (#{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
 		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
@@ -72,7 +72,7 @@
 		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
 		        #{ssid,jdbcType=VARCHAR}, #{wifiPassword,jdbcType=VARCHAR}, #{licFix,jdbcType=VARCHAR}, 
 		        #{usedVpn,jdbcType=INTEGER}, #{usedSoft,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-		        #{meid,jdbcType=VARCHAR}
+		        #{meid,jdbcType=VARCHAR},#{sendWiFiPass,jdbcType=VARCHAR}
 		        <!-- , #{saleType,jdbcType=INTEGER}, #{resetWifi,jdbcType=INTEGER}, 
 	            #{androidVersion,jdbcType=VARCHAR} -->
 	     	   )
@@ -97,7 +97,8 @@
 	      USEDVPN = #{usedVpn,jdbcType=INTEGER},
 	      USEDSOFT = #{usedSoft,jdbcType=INTEGER},
 	      departmentId = #{departmentId,jdbcType=INTEGER},
-	      MEID = #{meid,jdbcType=VARCHAR}
+	      MEID = #{meid,jdbcType=VARCHAR},
+		  sendWiFiPass = #{sendWiFiPass,jdbcType=VARCHAR}
 	      <!-- ,SALETYPE = #{saleType,jdbcType=INTEGER},
 	      resetWiFi = #{resetWifi,jdbcType=INTEGER},
 	      androidVersion = #{androidVersion,jdbcType=VARCHAR} -->

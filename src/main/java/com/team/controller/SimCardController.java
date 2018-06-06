@@ -17,8 +17,10 @@ import com.team.service.SimCardService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * 创建日期：2017-12-18下午3:51:14
@@ -114,12 +116,6 @@ public class SimCardController {
 		return simCardService.deleteSimCard(ids);
 	}
 
-//	@PostMapping("/update")
-//	@PermissionLog(key="imsi_IMSI;isChangePeriod_账期是否改变;isChangePackage_套餐是否改变")
-//	public ReturnMsg update(SimCard simCard,boolean isChangePeriod,boolean isChangePackage){
-//		ReturnMsg returnMsg = simCardService.update(simCard,isChangePeriod,isChangePackage);
-//		return returnMsg;
-//	}
 
 	@PostMapping("/update")
 	@PermissionLog(key="imsi_IMSI")
@@ -133,6 +129,18 @@ public class SimCardController {
 			"expiryDate_有效期截止时间;openDate_开卡时间;usedVpn_是否支持vpn;softType_是否软卡;ids_ids")
 	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids){
 		return simCardService.batchUpdate(simCard,ids);
+	}
+
+	@PostMapping("/upload")
+	@PermissionLog
+	public ReturnMsg upload(MultipartFile file){
+		ReturnMsg returnMsg = simCardService.getSimcardList(file);
+		if("200".equals(returnMsg.getCode())){
+			List<SimCard> list = (List<SimCard>) returnMsg.getData();
+			simCardService.insertBatch(list);
+			returnMsg.setData(list.size());
+		}
+		return returnMsg;
 	}
 	
 }
