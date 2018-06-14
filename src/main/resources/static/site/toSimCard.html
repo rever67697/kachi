@@ -1,389 +1,566 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>流量卡管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
-	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
-	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript" src="../js/common.js"></script>
-	<script type="text/javascript" src="../js/Calendar.js"></script>
-	  <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet"
+          title="blue"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+    <script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/Calendar.js"></script>
+    <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
 
-  </head>
-  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+</head>
+<body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
-  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
-	  <div id="tt" class="easyui-tabs" fit="true" style="overflow-y: hidden">
-		  <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
-			  <table class="table kc-outline">
-				  <tr>
-					  <td><div class="kc-outline-number ligh-blue" id="simCardCount" onclick="$('#tt').tabs('select','流量卡');"></div><div>卡总数</div></td>
-					  <td><div class="kc-outline-number ligh-blue" id="onCardCount"></div><div>正常卡数</div></td>
-					  <td><div class="kc-outline-number green" id="appointCardCount"></div><div>指定卡数</div></td>
-					  <td><div class="kc-outline-number orange" id="readCardCount"></div><div>待激活卡数</div></td>
-				  </tr>
-				  <tr>
-					  <td><div class="kc-outline-number red" id="stopCardCount"></div><div>停机卡数</div></td>
-					  <td><div class="kc-outline-number gray" id="offCardCount"></div><div>作废卡数</div></td>
-					  <td></td><td></td>
-				  </tr>
-			  </table>
-		  </div>
-		  <div title="流量卡" iconCls="icon icon-device" >
-			  <div class="easyui-layout" fit="true">
+<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+    <div id="tt" class="easyui-tabs" fit="true" style="overflow-y: hidden">
+        <div title="概要信息" iconCls="icon icon-outline" style="padding:20px">
+            <table class="table kc-outline">
+                <tr>
+                    <td>
+                        <div class="kc-outline-number ligh-blue" id="simCardCount" style="cursor: pointer"
+                             onclick="$('#tt').tabs('select','流量卡');"></div>
+                        <div>卡总数</div>
+                    </td>
+                    <td>
+                        <div class="kc-outline-number ligh-blue" id="onCardCount"></div>
+                        <div>正常卡数</div>
+                    </td>
+                    <td>
+                        <div class="kc-outline-number green" id="appointCardCount"></div>
+                        <div>指定卡数</div>
+                    </td>
+                    <td>
+                        <div class="kc-outline-number orange" id="readCardCount"></div>
+                        <div>待激活卡数</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="kc-outline-number red" id="stopCardCount"></div>
+                        <div>停机卡数</div>
+                    </td>
+                    <td>
+                        <div class="kc-outline-number gray" id="offCardCount"></div>
+                        <div>作废卡数</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div title="流量卡" iconCls="icon icon-device">
+            <div class="easyui-layout" fit="true">
 
-				  <div region="north" id="northDiv" style="height:75px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
-					  <form id="queryForm">
-						  <table class="table">
-							  <tr>
-								  <th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
-								  <th>卡状态：</th>
-								  <td><select name="status">
-									  <option value="">全部</option><option value="0">正常</option>
-									  <option value="1">停用</option><option value="2">指定</option>
-									  <option value="3">待激活</option><option value="4">作废</option>
-								  </select></td>
-								  <th>所在卡池：</th><td><select name="cpId"></select></td>
-								  <td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-							  </tr>
-							  <tr>
-								  <th>国家：</th><td><select name="countryCode" onchange="changeOperator()"></select></td>
-								  <th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td>
-								  <th>所属部门：</th><td><select name="departmentId"></select></td>
-							  </tr>
-						  </table>
-					  </form>
-				  </div>
-				  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
-					  <table id="dg" ></table>
-				  </div>
+                <div region="north" id="northDiv"
+                     style="height:75px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+                    <form id="queryForm">
+                        <table class="table">
+                            <tr>
+                                <th>IMSI：</th>
+                                <td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
+                                <th>卡状态：</th>
+                                <td><select name="status">
+                                    <option value="">全部</option>
+                                    <option value="0">正常</option>
+                                    <option value="1">停用</option>
+                                    <option value="2">指定</option>
+                                    <option value="3">待激活</option>
+                                    <option value="4">作废</option>
+                                </select></td>
+                                <th>所在卡池：</th>
+                                <td><select name="cpId"></select></td>
+                                <td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
+                                                   plain="true" onclick="doQuery()">查 询</a></td>
+                            </tr>
+                            <tr>
+                                <th>国家：</th>
+                                <td><select name="countryCode" onchange="changeOperator()"></select></td>
+                                <th>运营商：</th>
+                                <td><select name="operatorCode">
+                                    <option value="">全部</option>
+                                </select></td>
+                                <th>所属部门：</th>
+                                <td><select name="departmentId"></select></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+                    <table id="dg"></table>
+                </div>
 
-				  <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-					  <form id="doForm">
-						  <input type="hidden" name="id"/>
-						  <input type="hidden" name="operatorCode"/>
-						  <input type="hidden" name="departmentId"/>
-						  <input type="hidden" name="cpId"/>
-						  <table class="table th-normal">
-							  <tr><th>IMSI码：</th><td><input class="easyui-validatebox onlyNumber" name="imsi" required="true" readonly="readonly"/></td>
-								  <th>卡号：</th><td><input name="number" class="easyui-validatebox onlyNumber"/></td></tr>
-							  <tr><th>ICCID码：</th><td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>
-								  <th>PIN：</th><td><input name="pin"/></td></tr>
-							  <tr><th>运营商：</th><td><input name="operatorName" readonly="readonly"/></td>
-								  <th>短信中心号码：</th><td><input name="mcNumber"/></td></tr>
-							  <tr><th>卡套餐：</th><td><select name="packageId" class="easyui-validatebox" required="false"></select></td>
-								  <th>账期日：</th><td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-							  <tr><th>账期持续时间：</th><td><select name="suStained" class="easyui-validatebox" required="true">
-								  <option value="1">1个月</option>
-								  <option value="6">6个月</option>
-							  </select></td>
-								  <th>协议类型：</th><td><input name="simMeProtocol"/></td></tr>
-							  <tr><th>卡状态：</th><td><select name="status" class="easyui-validatebox" required="true">
-								  <option value=""></option><option value="0">正常</option>
-								  <option value="1">停用</option><option value="2">指定</option>
-								  <option value="3">待激活</option><option value="4">作废</option>
-							  </select></td>l
-								  <th>所在卡池：</th><td><input name="simPoolName" readonly="readonly"/></td></tr>
-							  <tr><th>卡池状态：</th><td><select name="cpStatus">
-								  <option value=""></option>
-								  <option value="0">正常</option>
-								  <option value="1">待激活</option>
-								  <option value="2">拔出</option>
-								  <option value="8">超时</option>
-							  </select></td>
-								  <th>卡池通道编号：</th><td><input name="cpChannelId" readonly="readonly"/></td></tr>
-							  <tr><th>国家：</th><td><select name="countryCode" disabled="disabled"></select></td>
-								  <th>省：</th><td><select name="provinceCode"></select></td></tr>
-							  <tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
-								  <th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
-							  <tr><th>是否支持VPN：</th><td><select name="usedVpn"></select></td>
-								  <th>VPNIP：</th><td><input name="vpnIP"/></td></tr>
-							  <tr><th>VPN名称：</th><td><input name="vpnName"/></td>
-								  <th>VPNPASS：</th><td><input name="vpnPass"/></td></tr>
-							  <tr><th>是否软卡：</th><td><select name="softType"></select></td>
-								  <th>KI：</th><td><input name="ki"/></td></tr>
-							  <tr><th>OPC：</th><td><input name="opc"/></td>
-								  <th>OP：</th><td><input name="op"/></td></tr>
-							  <tr><th>APN：</th><td><input name="APN"/></td>
-								  <th>插入时间：</th><td><input name="insertDate" readonly="readonly" /></td></tr>
-							  <tr><th>所属部门：</th><td><input name="departmentName" readonly="readonly"/></td>
-								  <th>分组：</th><td><input name="groupPref"/></td></tr>
-							  <tr><th>备注：</th><td><input name="note"/></td>
-								  <th>tempImei：</th><td><input name="tempImei"/></td></tr>
-							  <tr style="height:10px"></tr>
-							  <tr><td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-						  </table>
-					  </form>
-				  </div>
-				  <div id="doBatchDialog" closed="true" style="padding:5px 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-					  <p style="color:red">【提示】：</p>
-					  <p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>
-					  <p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
-					  <p>3.不需要改的属性不要改动。</p>
-					  <form id="doBatchForm">
-						  <!--这里加一个id只是在记录日志的时候方便-->
-						  <input type="hidden" name="id" value="-1"/>
-						  <table class="table th-normal">
-							  <tr><th>套餐：</th><td><select name="packageId"></select></td>
-								  <th>卡状态：</th><td><select name="status">
-									  <option value=""></option><option value="0">正常</option>
-									  <option value="1">停用</option><option value="2">指定</option>
-									  <option value="3">待激活</option><option value="4">作废</option>
-								  </select></td></tr>
-							  <tr><th>账期日：</th><td><input name="offPeriod" class="onlyNumber"/></td>
-								  <th>帐期持续时间：</th><td><select name="suStained">
-									  <option value=""></option>
-									  <option value="1">1个月</option>
-									  <option value="6">6个月</option>
-								  </select></td></tr>
-							  <tr><th>是否支持VPN：</th><td><select name="usedVpn"><option value=""></option></select></td>
-								  <th>是否软卡：</th><td><select name="softType"><option value=""></option></select></td></tr>
-							  <tr><th>有效期截卡时间：</th><td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
-								  <th>开卡时间：</th><td><input name="openDate" readonly="readonly" class="datetime"/></td></tr>
-							  <tr><th>省：</th><td><select name="provinceCode"></select></td>
-								  <th></th><td></td></tr>
-							  <tr style="height:10px"></tr>
-							  <tr><td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveBatchData()">提 交</a></td></tr>
-						  </table>
-					  </form>
-				  </div>
+                <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;"
+                     iconCls="icon-user">
+                    <form id="doForm">
+                        <input type="hidden" name="id"/>
+                        <input type="hidden" name="operatorCode"/>
+                        <input type="hidden" name="departmentId"/>
+                        <input type="hidden" name="cpId"/>
+                        <table class="table th-normal">
+                            <tr>
+                                <th>IMSI码：</th>
+                                <td><input class="easyui-validatebox onlyNumber" name="imsi" required="true"
+                                           readonly="readonly"/></td>
+                                <th>卡号：</th>
+                                <td><input name="number" class="easyui-validatebox onlyNumber"/></td>
+                            </tr>
+                            <tr>
+                                <th>ICCID码：</th>
+                                <td><input name="iccid" class="easyui-validatebox onlyNumber" readonly="readonly"/></td>
+                                <th>PIN：</th>
+                                <td><input name="pin"/></td>
+                            </tr>
+                            <tr>
+                                <th>运营商：</th>
+                                <td><input name="operatorName" readonly="readonly"/></td>
+                                <th>短信中心号码：</th>
+                                <td><input name="mcNumber"/></td>
+                            </tr>
+                            <tr>
+                                <th>卡套餐：</th>
+                                <td><select name="packageId" class="easyui-validatebox" required="false"></select></td>
+                                <th>账期日：</th>
+                                <td><input name="offPeriod" class="easyui-validatebox onlyNumber" required="true"/></td>
+                            </tr>
+                            <tr>
+                                <th>账期持续时间：</th>
+                                <td><select name="suStained" class="easyui-validatebox" required="true">
+                                    <option value="1">1个月</option>
+                                    <option value="6">6个月</option>
+                                </select></td>
+                                <th>协议类型：</th>
+                                <td><input name="simMeProtocol"/></td>
+                            </tr>
+                            <tr>
+                                <th>卡状态：</th>
+                                <td><select name="status" class="easyui-validatebox" required="true">
+                                    <option value=""></option>
+                                    <option value="0">正常</option>
+                                    <option value="1">停用</option>
+                                    <option value="2">指定</option>
+                                    <option value="3">待激活</option>
+                                    <option value="4">作废</option>
+                                </select></td>
+                                l
+                                <th>所在卡池：</th>
+                                <td><input name="simPoolName" readonly="readonly"/></td>
+                            </tr>
+                            <tr>
+                                <th>卡池状态：</th>
+                                <td><select name="cpStatus">
+                                    <option value=""></option>
+                                    <option value="0">正常</option>
+                                    <option value="1">待激活</option>
+                                    <option value="2">拔出</option>
+                                    <option value="8">超时</option>
+                                </select></td>
+                                <th>卡池通道编号：</th>
+                                <td><input name="cpChannelId" readonly="readonly"/></td>
+                            </tr>
+                            <tr>
+                                <th>国家：</th>
+                                <td><select name="countryCode" disabled="disabled"></select></td>
+                                <th>省：</th>
+                                <td><select name="provinceCode"></select></td>
+                            </tr>
+                            <tr>
+                                <th>有效期截卡时间：</th>
+                                <td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+                                <th>开卡时间：</th>
+                                <td><input name="openDate" readonly="readonly" class="datetime"/></td>
+                            </tr>
+                            <tr>
+                                <th>是否支持VPN：</th>
+                                <td><select name="usedVpn"></select></td>
+                                <th>VPNIP：</th>
+                                <td><input name="vpnIP"/></td>
+                            </tr>
+                            <tr>
+                                <th>VPN名称：</th>
+                                <td><input name="vpnName"/></td>
+                                <th>VPNPASS：</th>
+                                <td><input name="vpnPass"/></td>
+                            </tr>
+                            <tr>
+                                <th>是否软卡：</th>
+                                <td><select name="softType"></select></td>
+                                <th>KI：</th>
+                                <td><input name="ki"/></td>
+                            </tr>
+                            <tr>
+                                <th>OPC：</th>
+                                <td><input name="opc"/></td>
+                                <th>OP：</th>
+                                <td><input name="op"/></td>
+                            </tr>
+                            <tr>
+                                <th>APN：</th>
+                                <td><input name="APN"/></td>
+                                <th>插入时间：</th>
+                                <td><input name="insertDate" readonly="readonly"/></td>
+                            </tr>
+                            <tr>
+                                <th>所属部门：</th>
+                                <td><input name="departmentName" readonly="readonly"/></td>
+                                <th>分组：</th>
+                                <td><input name="groupPref"/></td>
+                            </tr>
+                            <tr>
+                                <th>备注：</th>
+                                <td><input name="note"/></td>
+                                <th>tempImei：</th>
+                                <td><input name="tempImei"/></td>
+                            </tr>
+                            <tr style="height:10px"></tr>
+                            <tr>
+                                <td colspan="4" align="center" class="noborder"><a id="doBtn" class="easyui-linkbutton"
+                                                                                   iconCls="icon-ok" plain="true"
+                                                                                   onclick="saveData()">提 交</a></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div id="doBatchDialog" closed="true" style="padding:5px 10px;overflow:auto;background:#FFF;"
+                     iconCls="icon-user">
+                    <p style="color:red">【提示】：</p>
+                    <p>1.所选的卡都为同一个运营商才能修改套餐。<span id="operatorTip" style="color:red"></span></p>
+                    <p>2.所选的卡都为同一个国家才能修改省份。<span id="countryTip" style="color:red"></span></p>
+                    <p>3.不需要改的属性不要改动。</p>
+                    <form id="doBatchForm">
+                        <!--这里加一个id只是在记录日志的时候方便-->
+                        <input type="hidden" name="id" value="-1"/>
+                        <table class="table th-normal">
+                            <tr>
+                                <th>套餐：</th>
+                                <td><select name="packageId"></select></td>
+                                <th>卡状态：</th>
+                                <td><select name="status">
+                                    <option value=""></option>
+                                    <option value="0">正常</option>
+                                    <option value="1">停用</option>
+                                    <option value="2">指定</option>
+                                    <option value="3">待激活</option>
+                                    <option value="4">作废</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <th>账期日：</th>
+                                <td><input name="offPeriod" class="onlyNumber"/></td>
+                                <th>帐期持续时间：</th>
+                                <td><select name="suStained">
+                                    <option value=""></option>
+                                    <option value="1">1个月</option>
+                                    <option value="6">6个月</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <th>是否支持VPN：</th>
+                                <td><select name="usedVpn">
+                                    <option value=""></option>
+                                </select></td>
+                                <th>是否软卡：</th>
+                                <td><select name="softType">
+                                    <option value=""></option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <th>有效期截卡时间：</th>
+                                <td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+                                <th>开卡时间：</th>
+                                <td><input name="openDate" readonly="readonly" class="datetime"/></td>
+                            </tr>
+                            <tr>
+                                <th>省：</th>
+                                <td><select name="provinceCode"></select></td>
+                                <th></th>
+                                <td></td>
+                            </tr>
+                            <tr style="height:10px"></tr>
+                            <tr>
+                                <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton"
+                                                                                   iconCls="icon-ok" plain="true"
+                                                                                   onclick="saveBatchData()">提 交</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
 
-				  <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-					  <table class="excel">
-						  <tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
-						  <tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
-						  <tr style="height:30px"></tr>
-						  <tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
-					  </table>
-				  </div>
-			  </div>
-		  </div>
-	  </div>
-  </div>
-  </body>
+                <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;"
+                     iconCls="icon-user">
+                    <table class="excel">
+                        <tr>
+                            <td colspan="2" align="right">
+                                <button class="common-btn" onclick="downloadFile()">下载模板</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">上传路径：</td>
+                            <td><input type="file" name="file" id="file"/></td>
+                        </tr>
+                        <tr style="height:30px"></tr>
+                        <tr>
+                            <td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true"
+                                                              onclick="upload()">上传</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 
-  <script type="text/javascript">
-      $.fn.datebox.defaults.formatter = function(date){
-          var y = date.getFullYear();
-          var m = date.getMonth()+1;
-          var d = date.getDate();
-          return y+'-'+(m>10?'':'0')+m+'-'+(d>10?'':'0')+d+' 00:00:00';
-      }
+<script type="text/javascript">
+    $.fn.datebox.defaults.formatter = function (date) {
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        return y + '-' + (m > 10 ? '' : '0') + m + '-' + (d > 10 ? '' : '0') + d + ' 00:00:00';
+    }
 
-  	var options={
-			title:'流量卡列表',
-			queryParams:$('#queryForm').serializeObject(),
-			columns:[[
-						{field:'ck',checkbox:true}, 
-			         	{field:'id',title:'SIM卡id',hidden:true},
-			         	{field:'imsi',title:'imsi',width:120},
-			         	{field:'number',title:'卡号',width:120},
-			         	{field:'status',title:'卡状态',width:100,formatter:function(value,rec,index){
-			         		var status = kcJs.fn.getCardStatus(value+'');
-			         		return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
-			         	}},
-			         	{field:'operatorName',title:'运营商',width:100},
-			         	{field:'packageName',title:'卡套餐',width:100},
-			         	{field:'expiryDate',title:'有效期截卡时间',width:120},
-			         	{field:'simPoolName',title:'所在卡池',width:150},
-			         	{field:'cpChannelId',title:'卡池通道',width:70},
-			         	{field:'departmentName',title:'所属部门',width:150},
-			         	{field:'countryName',title:'国家',width:60},
-			         	{field:'provinceName',title:'省',width:60},
-			         	{field:'maxFlow',title:'套餐总量(G)',width:100,formatter: function(value,row,index){
-			         	    value = value+"";
-			         	    if(value && value!='null'){
-                            	row.maxFlow = (row.maxFlow/1024/1024).toFixed(2);
-							}else {
-                                row.maxFlow = '';
-							}
-							return row.maxFlow;
-                        }},
-			         	{field:'residueFlow',title:'套餐余量(G)',width:100,formatter: function(value,row,index){
-                            value = value+"";
-                            if(value && value!='null'){
-                                row.residueFlow = (row.residueFlow/1024/1024).toFixed(2);
-                            }else {
-                                row.residueFlow = '';
-                            }
-							return row.residueFlow.length>0?(row.residueFlow>0?row.residueFlow:'<span style="color:red">'+row.residueFlow+'</span>'):'';
-                        }}
-					]],
-			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/simcard/list',
-			iconCls:'icon-tip',
-			nowrap:false,
-			pagination:true,
-			pageList:[20,30,50],
-			rownumbers:true,
-			scrollbarSize:0,
-			striped:true,
-			fit:true
-		};
-  
-	$(function(){
-		getCardInfo();
-	
-		$('#dg').datagrid(options);
-		
-		$('#doDialog').dialog({
-			modal : true,
-   			width:800,
-   			height:638,
-   			cache: false,
-            onClose:function () {
-                $('#__calendarPanel').css('visibility','hidden');
+    var options = {
+        title: '流量卡列表',
+        queryParams: $('#queryForm').serializeObject(),
+        columns: [[
+            {field: 'ck', checkbox: true},
+            {field: 'id', title: 'SIM卡id', hidden: true},
+            {field: 'imsi', title: 'imsi', width: 120},
+            {field: 'number', title: '卡号', width: 120},
+            {
+                field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {
+                var status = kcJs.fn.getCardStatus(value + '');
+                return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
-		});
+            },
+            {field: 'operatorName', title: '运营商', width: 100},
+            {field: 'packageName', title: '卡套餐', width: 100},
+            {field: 'expiryDate', title: '有效期截卡时间', width: 120},
+            {field: 'simPoolName', title: '所在卡池', width: 150},
+            {field: 'cpChannelId', title: '卡池通道', width: 70},
+            {field: 'departmentName', title: '所属部门', width: 150},
+            {field: 'countryName', title: '国家', width: 60},
+            {field: 'provinceName', title: '省', width: 60},
+            {
+                field: 'maxFlow', title: '套餐总量(G)', width: 100, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.maxFlow = (row.maxFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.maxFlow = '';
+                }
+                return row.maxFlow;
+            }
+            },
+            {
+                field: 'residueFlow', title: '套餐余量(G)', width: 100, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.residueFlow = (row.residueFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.residueFlow = '';
+                }
+                return row.residueFlow.length > 0 ? (row.residueFlow > 0 ? row.residueFlow : '<span style="color:red">' + row.residueFlow + '</span>') : '';
+            }
+            }
+        ]],
+        toolbar: kcJs.fn.getFunctions(),
+        url: kcJs.fn.getContextPath() + '/simcard/list',
+        iconCls: 'icon-tip',
+        nowrap: false,
+        pagination: true,
+        pageList: [20, 30, 50],
+        rownumbers: true,
+        scrollbarSize: 0,
+        striped: true,
+        fit: true
+    };
+
+    $(function () {
+        getCardInfo();
+
+        $('#dg').datagrid(options);
+
+        $('#doDialog').dialog({
+            modal: true,
+            width: 800,
+            height: 638,
+            cache: false,
+            onClose: function () {
+                $('#__calendarPanel').css('visibility', 'hidden');
+            }
+        });
 
         $('#doBatchDialog').dialog({
-            modal : true,
-            width:800,
-            height:350,
+            modal: true,
+            width: 800,
+            height: 350,
             cache: false,
-			title:'批量修改',
-			onClose:function () {
-                $('#__calendarPanel').css('visibility','hidden');
+            title: '批量修改',
+            onClose: function () {
+                $('#__calendarPanel').css('visibility', 'hidden');
             }
         });
 
         $('#uploadDialog').dialog({
-            modal : true,
-            width:500,
-            height:200,
+            modal: true,
+            width: 500,
+            height: 200,
             cache: false,
-            title : "导入临时IMEI"
+            title: "导入临时IMEI"
         });
 
-		kcJs.fn.initSelect({"container":$('#queryForm [name=cpId]'),"url":'getSimPoolDic',"nullDesc":"全部"});
-		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
-		kcJs.fn.initSelect({"container":$('#queryForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
+        kcJs.fn.initSelect({"container": $('#queryForm [name=cpId]'), "url": 'getSimPoolDic', "nullDesc": "全部"});
+        kcJs.fn.initSelect({
+            "container": $('#queryForm [name=departmentId]'),
+            "url": 'getDepartmentDic',
+            "nullDesc": "全部"
+        });
+        kcJs.fn.initSelect({"container": $('#queryForm [name=countryCode]'), "url": 'getCountryDic', "nullDesc": "全部"});
 
-		kcJs.fn.initSelect({"container":$('#doForm [name=countryCode]'),"url":'getCountryDic',"nullDesc":""});
+        kcJs.fn.initSelect({"container": $('#doForm [name=countryCode]'), "url": 'getCountryDic', "nullDesc": ""});
 
-		kcJs.fn.initDic_noYes($('[name=usedVpn],[name=softType]'));
+        kcJs.fn.initDic_noYes($('[name=usedVpn],[name=softType]'));
 
-	});
+    });
 
-      function doDetail(){
-          var selectRows = $('#dg').datagrid("getSelections");
-          if (selectRows.length > 0 && selectRows.length == 1) {
-              var rowData = selectRows[0];
-              initData(rowData);
+    function doDetail() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            var rowData = selectRows[0];
+            initData(rowData);
 
-              $('#doBtn').hide();
-              $('#doForm [name=countryCode]').attr('disabled',false);
-              $('#doDialog').dialog({title:'查看卡信息'});
-              $('#doDialog').dialog('open');
-          }else {
-              $.messager.alert("提示", "请选择其中一条信息！", "info");
-          }
-      }
-  
-  	function doModify(){
-  		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0 && selectRows.length == 1) {
-  		     var rowData = selectRows[0];
-			 initData(rowData);
-
-             $('#doBtn').show();
-             $('#doForm [name=countryCode]').attr('disabled',true);
-             $('#doDialog').dialog({title:'修改卡信息'});
-             $('#doDialog').dialog('open');
-        }else {
+            $('#doBtn').hide();
+            $('#doForm [name=countryCode]').attr('disabled', false);
+            $('#doDialog').dialog({title: '查看卡信息'});
+            $('#doDialog').dialog('open');
+        } else {
             $.messager.alert("提示", "请选择其中一条信息！", "info");
         }
-  	}
-
-  	function initData(rowData) {
-         $('#doForm [name=provinceCode],#doForm [name=packageId]').html('');
-		 var countryCode = rowData.countryCode;
-		 var operatorCode = rowData.operatorCode;
-		 //填充数据
-         kcJs.fn.autoFillData($('#doDialog'),rowData);
-
-		 //初始化下拉框--省
-		 if(countryCode){
-			 kcJs.fn.initSelect({"container":$('#doForm [name=provinceCode]'),"url":'getProvinceDic',"queryParam":{"countryCode":countryCode},"nullDesc":"","defaultVal":rowData.provinceCode});
-		 }
-        //初始化下拉框--套餐
-		 if(operatorCode){
-             kcJs.fn.initSelect({"container":$('#doForm [name=packageId]'),"url":'getPackageDic',"queryParam":{"operatorCode":operatorCode},"nullDesc":"","defaultVal":rowData.packageId});
-		 }
     }
-  	
-  	function doDelete(){
-  		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0 ) {
-  			var ids = [];
-  			var IMSIs = [];
-  			for(var i = 0;i < selectRows.length;i++){
-  				ids.push(selectRows[i].id);
-  				IMSIs.push(selectRows[i].imsi);
-  				if(selectRows[i].status!=4){
-  					$.messager.alert("提示", "只能删除状态为作废的SIM卡！", "info");
-  					return;
-  				}
-  			}
-  			$.messager.confirm('提示','是否确定删除？',function(r){
-  				if(r){
-  					$('#dg').datagrid('loading');
-		  			$.post(kcJs.fn.getContextPath()+'/simcard/delete',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
-		  				$('#dg').datagrid('loaded');
-			  			if(data && data.code=='200'){
-			  				$.messager.alert("提示", data.msg, "info");
-			  				doQuery();
-			  			}else{
-			  				$.messager.alert("提示", data.msg, "info");
-			  			}
-		  			},'json');
-  				}
-  			});
-  			
-        }else {
+
+    function doModify() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            var rowData = selectRows[0];
+            initData(rowData);
+
+            $('#doBtn').show();
+            $('#doForm [name=countryCode]').attr('disabled', true);
+            $('#doDialog').dialog({title: '修改卡信息'});
+            $('#doDialog').dialog('open');
+        } else {
+            $.messager.alert("提示", "请选择其中一条信息！", "info");
+        }
+    }
+
+    function initData(rowData) {
+        $('#doForm [name=provinceCode],#doForm [name=packageId]').html('');
+        var countryCode = rowData.countryCode;
+        var operatorCode = rowData.operatorCode;
+        //填充数据
+        kcJs.fn.autoFillData($('#doDialog'), rowData);
+
+        //初始化下拉框--省
+        if (countryCode) {
+            kcJs.fn.initSelect({
+                "container": $('#doForm [name=provinceCode]'),
+                "url": 'getProvinceDic',
+                "queryParam": {"countryCode": countryCode},
+                "nullDesc": "",
+                "defaultVal": rowData.provinceCode
+            });
+        }
+        //初始化下拉框--套餐
+        if (operatorCode) {
+            kcJs.fn.initSelect({
+                "container": $('#doForm [name=packageId]'),
+                "url": 'getPackageDic',
+                "queryParam": {"operatorCode": operatorCode},
+                "nullDesc": "",
+                "defaultVal": rowData.packageId
+            });
+        }
+    }
+
+    function doDelete() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0) {
+            var ids = [];
+            var IMSIs = [];
+            for (var i = 0; i < selectRows.length; i++) {
+                ids.push(selectRows[i].id);
+                IMSIs.push(selectRows[i].imsi);
+                if (selectRows[i].status != 4) {
+                    $.messager.alert("提示", "只能删除状态为作废的SIM卡！", "info");
+                    return;
+                }
+            }
+            $.messager.confirm('提示', '是否确定删除？', function (r) {
+                if (r) {
+                    $('#dg').datagrid('loading');
+                    $.post(kcJs.fn.getContextPath() + '/simcard/delete', {
+                        ids: ids.join(","),
+                        IMSIs: IMSIs.join(",")
+                    }, function (data) {
+                        $('#dg').datagrid('loaded');
+                        if (data && data.code == '200') {
+                            $.messager.alert("提示", data.msg, "info");
+                            doQuery();
+                        } else {
+                            $.messager.alert("提示", data.msg, "info");
+                        }
+                    }, 'json');
+                }
+            });
+
+        } else {
             $.messager.alert("提示", "请选择至少一条信息！", "info");
         }
-  	}
+    }
 
-  	function doQuery(){
-  		options.queryParams = $('#queryForm').serializeObject();
-  		$('#dg').datagrid(options);
-  	}
-  	
-  	
-  	function getCardInfo(){
-  		$.post(kcJs.fn.getContextPath()+'/simcard/outlineInfo',function(data){
-  			if(data && data.code=='200'){
-  				var info = data.data;
-  				$('#simCardCount').text(info.simCardCount);
-  				$('#onCardCount').text(info.onCardCount);
-  				$('#stopCardCount').text(info.stopCardCount);
-  				$('#appointCardCount').text(info.appointCardCount);
-  				$('#readCardCount').text(info.readCardCount);
-  				$('#offCardCount').text(info.offCardCount);
-  			}
-  		},'json');
-  	}
+    function doQuery() {
+        options.queryParams = $('#queryForm').serializeObject();
+        $('#dg').datagrid(options);
+    }
 
-  	function saveData() {
-		if($('#doForm').form('validate')) {
-                        $('#doDialog').dialog('close');
-                        $('#dg').datagrid('loading');
-                        $('#doForm [name=countryCode]').attr('disabled',false);
-                        $.post(kcJs.fn.getContextPath()+'/simcard/update',$('#doForm').serializeObject(),function(data){
-                            if(data){
-                                $.messager.alert('提示',data.msg,'info');
-                                if(data.code=='200'){
-                                    doQuery();
-                                }else{
-                                    $('#dg').datagrid('loaded');
-                                }
-                            }
-                        });
+
+    function getCardInfo() {
+        $.post(kcJs.fn.getContextPath() + '/simcard/outlineInfo', function (data) {
+            if (data && data.code == '200') {
+                var info = data.data;
+                $('#simCardCount').text(info.simCardCount);
+                $('#onCardCount').text(info.onCardCount);
+                $('#stopCardCount').text(info.stopCardCount);
+                $('#appointCardCount').text(info.appointCardCount);
+                $('#readCardCount').text(info.readCardCount);
+                $('#offCardCount').text(info.offCardCount);
+            }
+        }, 'json');
+    }
+
+    function saveData() {
+        if ($('#doForm').form('validate')) {
+            $('#doDialog').dialog('close');
+            $('#dg').datagrid('loading');
+            $('#doForm [name=countryCode]').attr('disabled', false);
+            $.post(kcJs.fn.getContextPath() + '/simcard/update', $('#doForm').serializeObject(), function (data) {
+                if (data) {
+                    $.messager.alert('提示', data.msg, 'info');
+                    if (data.code == '200') {
+                        doQuery();
+                    } else {
+                        $('#dg').datagrid('loaded');
+                    }
+                }
+            });
         }
     }
 
@@ -392,138 +569,151 @@
         if (selectRows.length > 0) {
             $('#doBatchForm [name=packageId],#doBatchForm [name=provinceCode]').html('');
 
-			//1.判断这批卡是不是都是同一个运营商，根据imsi的前5位
-			//2.判断这批卡是不是都是同一个国家，根据前3位
-			var operatorArr=[];
-			var countryArr = [];
-			var operatorNameArr = [];
-			var countryNameArr = [];
-			for(var i=0;i<selectRows.length;i++){
-			    var operatorCode = selectRows[i].operatorCode;
+            //1.判断这批卡是不是都是同一个运营商，根据imsi的前5位
+            //2.判断这批卡是不是都是同一个国家，根据前3位
+            var operatorArr = [];
+            var countryArr = [];
+            var operatorNameArr = [];
+            var countryNameArr = [];
+            for (var i = 0; i < selectRows.length; i++) {
+                var operatorCode = selectRows[i].operatorCode;
                 var countryCode = selectRows[i].countryCode;
-			    var isOperatorAdd = true;
-			    var isCountryAdd = true;
-				for(var j=0;j<operatorArr.length;j++){
-					if(operatorCode==operatorArr[j]){
+                var isOperatorAdd = true;
+                var isCountryAdd = true;
+                for (var j = 0; j < operatorArr.length; j++) {
+                    if (operatorCode == operatorArr[j]) {
                         isOperatorAdd = false;
-						break;
-					}
-				}
-			    if(isOperatorAdd){
-				    operatorArr.push(operatorCode);
+                        break;
+                    }
+                }
+                if (isOperatorAdd) {
+                    operatorArr.push(operatorCode);
                     operatorNameArr.push(selectRows[i].operatorName)
-			    }
-			    /**************************************/
-                for(var j=0;j<countryArr.length;j++){
-                    if(countryCode==countryArr[j]){
+                }
+                /**************************************/
+                for (var j = 0; j < countryArr.length; j++) {
+                    if (countryCode == countryArr[j]) {
                         isCountryAdd = false;
                         break;
                     }
                 }
-                if(isCountryAdd){
+                if (isCountryAdd) {
                     countryArr.push(countryCode);
                     countryNameArr.push(selectRows[i].countryName)
                 }
-			}
-			if(operatorArr.length==1){
-                kcJs.fn.initSelect({"container":$('#doBatchForm [name=packageId]'),"url":'getPackageDic',"nullDesc":"","queryParam":{operatorCode:operatorArr[0]}});
+            }
+            if (operatorArr.length == 1) {
+                kcJs.fn.initSelect({
+                    "container": $('#doBatchForm [name=packageId]'),
+                    "url": 'getPackageDic',
+                    "nullDesc": "",
+                    "queryParam": {operatorCode: operatorArr[0]}
+                });
                 $('#operatorTip').hide();
-			}else{
-                $('#operatorTip').html('【当选中的共有'+operatorArr.length+'个运营商：'+operatorNameArr[0]+'，'+operatorNameArr[1]+'...】').show();
-			}
+            } else {
+                $('#operatorTip').html('【当选中的共有' + operatorArr.length + '个运营商：' + operatorNameArr[0] + '，' + operatorNameArr[1] + '...】').show();
+            }
 
-			if(countryArr.length==1){
-                kcJs.fn.initSelect({"container":$('#doBatchForm [name=provinceCode]'),"url":'getProvinceDic',"nullDesc":"","queryParam":{countryCode:countryArr[0]}});
+            if (countryArr.length == 1) {
+                kcJs.fn.initSelect({
+                    "container": $('#doBatchForm [name=provinceCode]'),
+                    "url": 'getProvinceDic',
+                    "nullDesc": "",
+                    "queryParam": {countryCode: countryArr[0]}
+                });
                 $('#countryTip').hide();
-			}else{
-                $('#countryTip').html('【当选中的共有'+countryArr.length+'个国家：'+countryNameArr[0]+'，'+countryNameArr[1]+'...】').show();
-			}
+            } else {
+                $('#countryTip').html('【当选中的共有' + countryArr.length + '个国家：' + countryNameArr[0] + '，' + countryNameArr[1] + '...】').show();
+            }
             $('#doBatchDialog').dialog('open');
-        }else {
+        } else {
             $.messager.alert("提示", "请选择至少一条信息！", "info");
         }
 
     }
 
     function saveBatchData() {
-		var rows = $('#dg').datagrid('getSelections');
-		if(rows.length>0){
-		    $('#dg').datagrid('loading');
-		    $('#doBatchDialog').dialog('close');
-		    var ids = [];
-		    for(var i = 0;i<rows.length;i++){
-		        ids.push(rows[i].id);
-			}
-			var params = $('#doBatchForm').serializeObject();
-			params.ids=ids.join(",");
-			$.post(kcJs.fn.getContextPath()+"/simcard/batchUpdate",params,function (data) {
-                if(data){
-                    $.messager.alert('提示',data.msg,'info');
-                    if(data.code=='200'){
+        var rows = $('#dg').datagrid('getSelections');
+        if (rows.length > 0) {
+            $('#dg').datagrid('loading');
+            $('#doBatchDialog').dialog('close');
+            var ids = [];
+            for (var i = 0; i < rows.length; i++) {
+                ids.push(rows[i].id);
+            }
+            var params = $('#doBatchForm').serializeObject();
+            params.ids = ids.join(",");
+            $.post(kcJs.fn.getContextPath() + "/simcard/batchUpdate", params, function (data) {
+                if (data) {
+                    $.messager.alert('提示', data.msg, 'info');
+                    if (data.code == '200') {
                         doQuery();
-                    }else{
+                    } else {
                         $('#dg').datagrid('loaded');
                     }
                 }
-            },'json');
-		}
+            }, 'json');
+        }
     }
-    
-    function changeOperator(){
-        var countryCode=$('#queryForm [name=countryCode]').val();
-        if(countryCode){
-            kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),
-                "url":'getOperatorDic',"nullDesc":"全部","queryParam":{countryCode:countryCode}});
-        }else{
+
+    function changeOperator() {
+        var countryCode = $('#queryForm [name=countryCode]').val();
+        if (countryCode) {
+            kcJs.fn.initSelect({
+                "container": $('#queryForm select[name=operatorCode]'),
+                "url": 'getOperatorDic', "nullDesc": "全部", "queryParam": {countryCode: countryCode}
+            });
+        } else {
             $('#queryForm select[name=operatorCode]').html('<option value="">全部</option>')
-		}
+        }
     }
 
-    function getCsv(){
-  	    var url = kcJs.fn.getContextPath()+'/simcard/getCsv?'+$('#queryForm').serialize();
-  	    console.log($('#queryForm').serialize());
-  	    window.location.href = url;
-	}
-	function doUpload(){
-		$('#uploadDialog').dialog('open');
-	}
-
-    function downloadFile(){
-	    window.location.href=kcJs.fn.getContextPath()+"/downloadFile?fileName="+encodeURIComponent(encodeURIComponent('导入临时IMEI模板.xlsx'));
+    function getCsv() {
+        var url = kcJs.fn.getContextPath() + '/simcard/getCsv?' + $('#queryForm').serialize();
+        console.log($('#queryForm').serialize());
+        window.location.href = url;
     }
 
-      function upload(){
-          if($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1){
-              $('#uploadDialog').dialog('close');
-              $('#dg').datagrid('loading');
-              $.ajaxFileUpload({
-                  url:kcJs.fn.getContextPath()+'/simcard/upload',
-                  secureuri : false,
-                  fileElementId : 'file',
-                  dataType:'json',
-                  success:function(data,status){
-                      $('#dg').datagrid('loaded');
-                      if(data && data.code){
-                          if(data.code=='200'){
-                              $.messager.alert('提示','上传成功！','info');
-                              doQuery();
-                          }else{
-                              $.messager.alert('提示',data.msg,'info');
-                          }
-                      }else{
-                          $.messager.alert('提示','上传失败','info');
-                      }
-                  },
-                  error:function(data, status, e) {
-                      $('#dg').datagrid('loaded');
-                      $.messager.alert('提示','未知错误!!!','info');
-                  }
-              });
-          }else{
-              $.messager.alert('提示','请上传指定的excel模板！','info');
-          }
-      }
+    function doUpload() {
+        $('#uploadDialog').dialog('open');
+    }
+
+    function downloadFile() {
+        window.location.href = kcJs.fn.getContextPath() + "/downloadFile?fileName=" + encodeURIComponent(encodeURIComponent('导入临时IMEI模板.xlsx'));
+    }
+
+    function upload() {
+        if ($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1) {
+            $('#uploadDialog').dialog('close');
+            $('#dg').datagrid('loading');
+            $.ajaxFileUpload({
+                url: kcJs.fn.getContextPath() + '/simcard/upload',
+                secureuri: false,
+                fileElementId: 'file',
+                dataType: 'json',
+                success: function (data, status) {
+                    $('#dg').datagrid('loaded');
+                    if (data && data.code) {
+                        if (data.code == '200') {
+                            $.messager.alert('提示', '上传成功！', 'info');
+                            doQuery();
+                        } else {
+                            $.messager.alert('提示', data.msg, 'info');
+                        }
+                    } else {
+                        $.messager.alert('提示', '上传失败', 'info');
+                    }
+                },
+                error: function (data, status, e) {
+                    $('#dg').datagrid('loaded');
+                    $.messager.alert('提示', '未知错误!!!', 'info');
+                }
+            });
+        } else {
+            $.messager.alert('提示', '请上传指定的excel模板！', 'info');
+        }
+    }
 
 
-  </script>
+</script>
 </html>

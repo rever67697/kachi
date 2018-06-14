@@ -465,7 +465,6 @@
         if (selectRows.length > 0 && selectRows.length == 1) {
             $('#chargeForm')[0].reset();
 			var rowData = selectRows[0];
-			//rowData.allowFlow = rowData.allowFlow?(rowData.allowFlow/1014/1024).toFixed(2):'';
             kcJs.fn.autoFillData($('#chargeDialog'),rowData);
             $('#chargeForm [name=oriFlow]').val(rowData.allowFlow);
             $('#chargeForm [name=oriDate]').val(rowData.validityDate);
@@ -514,8 +513,8 @@
 		oriFlow = oriFlow?oriFlow:'0';
 		var selectFlow = $('#chargeForm [name=selectFlow]').val();
 
-		//var autualFlow = parseInt(oriFlow)+parseInt(selectFlow)*1048576;
-		$('#chargeForm [name=allowFlow]').val(selectFlow);
+		var autualFlow = parseFloat(oriFlow)+parseFloat(selectFlow);
+		$('#chargeForm [name=allowFlow]').val(autualFlow);
 //		$('#chargeForm [name=chargeFlow]').val(selectFlow);
     }
     
