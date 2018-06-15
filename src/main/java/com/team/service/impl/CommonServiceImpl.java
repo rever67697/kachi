@@ -128,13 +128,19 @@ public class CommonServiceImpl extends BaseService implements CommonService {
         SimGroup simGroup = simGroupService.getSimGroup(imsi);
         if(simGroup!=null){
             Map<String,Object> map = new HashMap<>();
+            map.put("卡组缓存：","");
             String groupKey = simGroup.getGroupKey();
             MemcachedItem m = simCache.gets(groupKey);
-            List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
-            for (int i=0;i<list.size();i++) {
-                GroupCacheSim gcs = CommonUtil.convertBean(list.get(i),GroupCacheSim.class);
-                if((Long.valueOf(gcs.getImsi()).toString().equals(imsi.toString()))){
-                    map.put("卡组缓存：",gcs);
+            if(m!=null){
+                List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
+                if(CommonUtil.listNotBlank(list)){
+                    for (int i=0;i<list.size();i++) {
+                        GroupCacheSim gcs = CommonUtil.convertBean(list.get(i),GroupCacheSim.class);
+                        if((Long.valueOf(gcs.getImsi()).toString().equals(imsi.toString()))){
+                            map.put("卡组缓存：",gcs);
+                            break;
+                        }
+                    }
                 }
             }
 

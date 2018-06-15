@@ -340,9 +340,19 @@
                 return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
             },
+            {
+                field: 'cStatus', title: '是否被占用', width: 65, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.cStatus = row.cStatus=='1'?'是':'否';
+                } else {
+                    row.cStatus = '';
+                }
+                return row.cStatus;
+            }
+            },
             {field: 'operatorName', title: '运营商', width: 100},
             {field: 'packageName', title: '卡套餐', width: 100},
-            {field: 'expiryDate', title: '有效期截卡时间', width: 120},
             {field: 'simPoolName', title: '所在卡池', width: 150},
             {field: 'cpChannelId', title: '卡池通道', width: 70},
             {field: 'departmentName', title: '所属部门', width: 150},
@@ -369,7 +379,10 @@
                 }
                 return row.residueFlow.length > 0 ? (row.residueFlow > 0 ? row.residueFlow : '<span style="color:red">' + row.residueFlow + '</span>') : '';
             }
-            }
+            },
+            {field: 'expiryDate', title: '有效期截卡时间', width: 120},
+            {field: 'insertDate', title: '插入时间', width: 120},
+            {field: 'openDate', title: '开卡日期', width: 120},
         ]],
         toolbar: kcJs.fn.getFunctions(),
         url: kcJs.fn.getContextPath() + '/simcard/list',
