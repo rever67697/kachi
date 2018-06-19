@@ -181,6 +181,9 @@ var kcJs=
 			}else{
 				$(option.container).html(html);
 			}
+			if(option.callback && typeof option.callback=='function'){
+				option.callback();
+			}
 		},
 		//给指定的select容器通过url返回的数组初始化数据
 		initSelect:function(option){

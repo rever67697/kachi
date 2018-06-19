@@ -309,6 +309,7 @@
 
     function deleteTerminal(index) {
         $('#selectedTerminal').datagrid('deleteRow',index);
+        $('#selectedTerminal').datagrid('loadData',$('#selectedTerminal').datagrid('getData'));
     }
     
     function doDelete() {

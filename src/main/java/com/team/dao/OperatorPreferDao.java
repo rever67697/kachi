@@ -4,6 +4,7 @@ package com.team.dao;
 import com.team.model.OperatorPrefer;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : wuzhiheng
@@ -13,7 +14,7 @@ import java.util.List;
 public interface OperatorPreferDao {
 
 
-    List<OperatorPrefer> list();
+    List<OperatorPrefer> list(Map<String, Object> map);
 
     int insert(OperatorPrefer operatorPrefer);
 

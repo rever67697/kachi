@@ -24,8 +24,8 @@ public class OperatorPreferController {
     private OperatorPreferService operatorPreferService;
 
     @PostMapping("/list")
-    public ResultList list(int page,int rows){
-        return operatorPreferService.list(page,rows);
+    public ResultList list(Integer countryCode,Integer operatorCode,int page,int rows){
+        return operatorPreferService.list(countryCode,operatorCode,page,rows);
     }
 
     @PostMapping("/save")

@@ -374,6 +374,7 @@
 
     function deleteCountry(index) {
 		$('#selectedCountry').datagrid('deleteRow',index);
+		$('#selectedCountry').datagrid('loadData',$('#selectedCountry').datagrid('getData'));
     }
   </script>
 </html>

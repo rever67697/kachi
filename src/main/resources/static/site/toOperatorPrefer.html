@@ -15,23 +15,30 @@
 </head>
 <body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
-<!--<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">-->
-<!--<form id="queryForm">-->
-<!--<table class="table">-->
-<!--<tr>-->
-<!--<th>用户名：</th><td><input name="username" placeholder="请输入用户名" /></td>-->
-<!--<th>业务类型：</th><td><select name="bussinesstype" ></select></td>-->
-<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--</form>-->
-<!--</div>	-->
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"
+     border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
+                <th>国家：</th>
+                <td><select name="countryCode" onchange="changeOperator_2()"></select></td>
+                <th>运营商：</th>
+                <td><select name="operatorCode">
+                    <option value="">全部</option>
+                </select></td>
+                <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
+                    询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
 <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
     <table id="dg"></table>
 </div>
 
 <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
     <form id="doForm">
+        <input type="hidden" name="operatorId"/>
         <input type="hidden" name="id"/>
         <table class="table th-normal">
             <tr>
@@ -43,9 +50,16 @@
                 <td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td>
             </tr>
             <tr>
+                <th>优先级：</th>
+                <td><input name="level" class="onlyNumber"/></td>
+            </tr>
+            <tr>
                 <th>优先接入运营商名单：</th>
                 <td><input name="pPlmn" readonly="readonly" onclick="showOperator(true)" style="width:80px;float:left"/>
-                    <select name="suffix" style="width:60px;float:left"><option value="4000">4000</option><option value="8000">8000</option></select></td>
+                    <select name="suffix" style="width:60px;float:left">
+                        <option value="4000">4000</option>
+                        <option value="8000">8000</option>
+                    </select></td>
             </tr>
             <tr>
                 <th>拒绝接入运营商名单：</th>
@@ -74,7 +88,7 @@
                             <tr>
                                 <th>国家：</th>
                                 <td><select name="countryCode"></select></td>
-                                <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true"
+                                <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true"
                                        onclick="doQuery_t()">查 询</a></td>
                             </tr>
                         </table>
@@ -92,12 +106,14 @@
 <script type="text/javascript">
     var options = {
         title: '运营商配置表',
-        //queryParams:$('#queryForm').serializeObject(),
+        queryParams:$('#queryForm').serializeObject(),
         columns: [[
             {field: 'ck', checkbox: true},
+            {field: 'operatorId', title: 'operatorId', hidden: true},
             {field: 'id', title: 'id', hidden: true},
-            {field: 'countryName', title: '国家MCC', width: 120},
-            {field: 'operatorName', title: '运营商', width: 180},
+            {field: 'countryName', title: '国家MCC', width: 150},
+            {field: 'operatorName', title: '运营商', width: 200},
+            {field: 'level', title: '优先级', width: 100},
             {field: 'pPlmn', title: '优先接入运营商名单', width: 120},
             {field: 'fPlmn', title: '拒绝接入运营商名单', width: 300},
         ]],
@@ -113,11 +129,10 @@
         fit: true
     };
     var operator_options = {
-//        title:'运营商列表<span style="color:red">【双击选中】</span>',
         fit: true,
         queryParams: $('#operatorForm').serializeObject(),
         columns: [[
-            {field: 'ck',checkbox:true},
+            {field: 'ck', checkbox: true},
             {field: 'id', title: 'id', hidden: true},
             {field: 'operatorCode', title: '运营商编号', width: 100},
             {field: 'operatorNameCn', title: '运营商名称', width: 120},
@@ -134,7 +149,7 @@
         striped: true,
     };
 
-    var onClickRow_pplmn = function(rowIndex, rowData){
+    var onClickRow_pplmn = function (rowIndex, rowData) {
         $('#operatorDialog').dialog('close');
         $('#doForm [name="pPlmn"]').val(getLmn(rowData.operatorCode));
     }
@@ -154,22 +169,22 @@
                 operatorNameCn: rowData.operatorNameCn,
             })
         } else {
-//            $.messager.alert('提示', '已存在', 'info');
         }
     }
 
     function doQuery() {
-        //options.queryParams = $('#queryForm').serializeObject();
+        options.queryParams = $('#queryForm').serializeObject();
         $('#dg').datagrid(options);
 
     }
 
     $(function () {
-        $('#dg').datagrid(options);
+//        $('#dg').datagrid(options);
+
         $('#doDialog').dialog({
             modal: true,
             width: 450,
-            height: 250,
+            height: 270,
             cache: false
         });
 
@@ -179,7 +194,7 @@
             width: 800,
             height: 500,
             cache: false,
-            onClose:function () {
+            onClose: function () {
                 recordOperator(1);
             }
 //              toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordTerminal}]
@@ -199,8 +214,22 @@
         });
 
         kcJs.fn.initSelect({"container": $('[name=roamMcc]'), "url": 'getMccDic', "needNull": false});
-        kcJs.fn.initSelect({"container": $('#operatorForm [name=countryCode]'), "url": 'getCountryDic', "needNull": false});
+        kcJs.fn.initSelect({
+            "container": $('#operatorForm [name=countryCode]'),
+            "url": 'getCountryDic',
+            "needNull": false
+        });
 
+        kcJs.fn.initSelect({
+            "container": $('#queryForm [name=countryCode]'),
+            "url": 'getCountryDic',
+            "nullDesc": "全部",
+            "defaultVal":156,
+            "callback":function () {
+                changeOperator_2();
+                doQuery();
+            }
+        });
     });
 
     function doQuery_t() {
@@ -212,13 +241,17 @@
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0 && selectRows.length == 1) {
             var rowData = selectRows[0];
-            rowData.suffix = rowData.pPlmn.substr(6,4);
-            rowData.pPlmn = rowData.pPlmn.substr(0,6);
-
+            if (rowData.pPlmn) {
+                rowData.suffix = rowData.pPlmn.substr(6, 4);
+                rowData.pPlmn = rowData.pPlmn.substr(0, 6);
+            }
             $.ajaxSetup({async: false});
             kcJs.fn.autoFillData($('#doDialog'), rowData);
             changeOperator();
             kcJs.fn.autoFillData($('#doDialog'), rowData);
+
+            $('#doForm [name=id]').val(rowData.id ? rowData.id : '');
+
             $.ajaxSetup({async: false});
             $('#doDialog').dialog({title: '修改'});
             $('#doDialog').dialog('open');
@@ -241,7 +274,12 @@
         if ($('#doForm').form('validate')) {
             $('#doDialog').dialog('close');
             $('#dg').datagrid('loading');
-            $('#doForm [name=pPlmn]').val($('#doForm [name=pPlmn]').val()+$('#doForm [name=suffix]').val());
+
+            if ($('#doForm [name=pPlmn]').val()) {
+                $('#doForm [name=pPlmn]').val($('#doForm [name=pPlmn]').val() + $('#doForm [name=suffix]').val());
+            } else {
+                $('#doForm [name=pPlmn]').val('');
+            }
             $.post(kcJs.fn.getContextPath() + '/operatorPrefer/save', $('#doForm').serializeObject(), function (data) {
                 if (data) {
                     $.messager.alert('提示', data.msg, 'info');
@@ -287,47 +325,48 @@
             });
         }
     }
+
     //single:true为pplmn，不然为fplmn
     function showOperator(single) {
         //查询国家总列表
         $('#operatorForm')[0].reset();
 
         //清空左侧数据
-        $('#selectedOperator').datagrid('loadData',{total:0,rows:[]});
+        $('#selectedOperator').datagrid('loadData', {total: 0, rows: []});
 
         //若原本的有数据，需要加载出来
         var pPlmn = $('#doForm [name=pPlmn]').val();
         var fPlmn = $('#doForm [name=fPlmn]').val();
 
         var operatorList = [];
-        if(single && pPlmn && pPlmn.length == 12){
-            operatorList.push(getOperator(pPlmn.substr(0,6)));
-        }else if(!single && fPlmn && fPlmn.length%6==0){
-            var len = fPlmn.length/6;
-            for(var i = 0;i < len;i++){
-                operatorList.push(getOperator(fPlmn.substr(i*6,6)));
+        if (single && pPlmn && pPlmn.length == 12) {
+            operatorList.push(getOperator(pPlmn.substr(0, 6)));
+        } else if (!single && fPlmn && fPlmn.length % 6 == 0) {
+            var len = fPlmn.length / 6;
+            for (var i = 0; i < len; i++) {
+                operatorList.push(getOperator(fPlmn.substr(i * 6, 6)));
             }
         }
-        if(operatorList.length>0){
-            $.post(kcJs.fn.getContextPath()+'/operator/selectedList',{operatorList:operatorList.join(",")},function (data) {
-                if(data && data.rows){
-                    for(var i=0;i<data.rows.length;i++){
+        if (operatorList.length > 0) {
+            $.post(kcJs.fn.getContextPath() + '/operator/selectedList', {operatorList: operatorList.join(",")}, function (data) {
+                if (data && data.rows) {
+                    for (var i = 0; i < data.rows.length; i++) {
                         var rowData = data.rows[i];
-                        $('#selectedOperator').datagrid('appendRow',{
-                            operatorCode:rowData.operatorCode,
-                            operatorNameCn:rowData.operatorNameCn,
+                        $('#selectedOperator').datagrid('appendRow', {
+                            operatorCode: rowData.operatorCode,
+                            operatorNameCn: rowData.operatorNameCn,
                         })
                     }
                 }
-            },'json');
+            }, 'json');
         }
         //显示弹出框
-        if(single){
-            $('#operatorDialog').dialog({toolbar:''});
-            operator_options.onClickRow=onClickRow_pplmn;
-        }else {
-            $('#operatorDialog').dialog({toolbar:[{text:'记录并且关闭',iconCls:'icon-ok',handler:recordOperator}]});
-            operator_options.onClickRow=onClickRow_fplmn;
+        if (single) {
+            $('#operatorDialog').dialog({toolbar: ''});
+            operator_options.onClickRow = onClickRow_pplmn;
+        } else {
+            $('#operatorDialog').dialog({toolbar: [{text: '记录并且关闭', iconCls: 'icon-ok', handler: recordOperator}]});
+            operator_options.onClickRow = onClickRow_fplmn;
         }
         doQuery_t();
         $('#operatorDialog').dialog('open');
@@ -336,25 +375,26 @@
 
     function recordOperator(flag) {
         var rows = $('#selectedOperator').datagrid('getRows');
-        var operatorList='';
-        for(var i=0;i<rows.length;i++){
+        var operatorList = '';
+        for (var i = 0; i < rows.length; i++) {
             operatorList += getLmn(rows[i].operatorCode);
         }
         $('#doForm [name=fPlmn]').val(operatorList);
-        if(flag!=1){
+        if (flag != 1) {
             $('#operatorDialog').dialog('close');
         }
     }
 
     function deleteOperator(index) {
-        $('#selectedOperator').datagrid('deleteRow',index);
+        $('#selectedOperator').datagrid('deleteRow', index);
+        $('#selectedOperator').datagrid('loadData', $('#selectedOperator').datagrid('getData'));
     }
 
     //64F011
     function getOperator(str) {
         var result = '';
-        if(str && str.length==6){
-            result = str.substr(1,1)+str.substr(0,1)+str.substr(3,1)+str.substr(5,1)+str.substr(4,1)+(str.substr(2,1)=='F'?'':str.substr(2,1));
+        if (str && str.length == 6) {
+            result = str.substr(1, 1) + str.substr(0, 1) + str.substr(3, 1) + str.substr(5, 1) + str.substr(4, 1) + (str.substr(2, 1) == 'F' ? '' : str.substr(2, 1));
         }
         return result;
     }
@@ -363,11 +403,22 @@
     function getLmn(str) {
         str += '';
         var result = '';
-        if(str && str.length>=5){
-            result = str.substr(1,1)+str.substr(0,1)+(str.length==5?'F':str.substr(5,1))+str.substr(2,1)+str.substr(4,1)+str.substr(3,1);
+        if (str && str.length >= 5) {
+            result = str.substr(1, 1) + str.substr(0, 1) + (str.length == 5 ? 'F' : str.substr(5, 1)) + str.substr(2, 1) + str.substr(4, 1) + str.substr(3, 1);
         }
         return result;
     }
 
+    function changeOperator_2() {
+        var countryCode = $('#queryForm [name=countryCode]').val();
+        if (countryCode) {
+            kcJs.fn.initSelect({
+                "container": $('#queryForm select[name=operatorCode]'),
+                "url": 'getOperatorDic', "nullDesc": "全部", "queryParam": {countryCode: countryCode}
+            });
+        } else {
+            $('#queryForm select[name=operatorCode]').html('<option value="">全部</option>')
+        }
+    }
 </script>
 </html>	

@@ -18,6 +18,9 @@ public class OperatorPrefer implements Serializable {
 	private String countryName;
 	private String operatorName;
 
+	private Integer operatorId;//运营商id
+	private Integer level;//运营商优先级
+
 	public Integer getId() {
 		return id;
 	}
@@ -67,6 +70,22 @@ public class OperatorPrefer implements Serializable {
 
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
+	}
+
+	public Integer getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(Integer operatorId) {
+		this.operatorId = operatorId;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	@Override

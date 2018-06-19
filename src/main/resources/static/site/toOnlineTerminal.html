@@ -57,11 +57,12 @@
 						{field:'ck',checkbox:true}, 
 			         	{field:'id',title:'id',hidden:true},
 			         	{field:'tsid',title:'终端编号',width:80},
-			         	{field:'imsi',title:'IMSI码',width:120},
-			         	{field:'mcc',title:'MCC码',width:100},
+			         	{field:'imsi',title:'IMSI',width:120},
+			         	{field:'mcc',title:'MCC',width:100},
+                		{field:'operatorName',title:'运营商',width:160},
 			         	{field:'groupKey',title:'GROUPKEY',width:120},
-			         	{field:'beatTime',title:'最后通讯时间',width:150},
-			         	{field:'date',title:'选卡时间',width:150},
+			         	{field:'beatTime',title:'最后通讯时间',width:130},
+			         	{field:'date',title:'选卡时间',width:130},
 			         	{field:'reserve',title:'是否是在归属地',width:100,formatter:function(value,rec,index){
 			         		value = (value+'').replace('null','');
 			         		return value?(value=='0'?'是':'否'):'';

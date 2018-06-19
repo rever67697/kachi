@@ -12,7 +12,6 @@
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../js/common.js"></script>
-    <script type="text/javascript" src="../js/Calendar.js"></script>
     <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 
@@ -155,8 +154,7 @@
                             </tr>
                             <tr>
                                 <th>卡状态：</th>
-                                <td><select name="status" class="easyui-validatebox" required="true">
-                                    <option value=""></option>
+                                <td><select name="status" class="easyui-validatebox">
                                     <option value="0">正常</option>
                                     <option value="1">停用</option>
                                     <option value="2">指定</option>
@@ -187,9 +185,9 @@
                             </tr>
                             <tr>
                                 <th>有效期截卡时间：</th>
-                                <td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+                                <td><input name="expiryDate" readonly="readonly"/></td>
                                 <th>开卡时间：</th>
-                                <td><input name="openDate" readonly="readonly" class="datetime"/></td>
+                                <td><input name="openDate" readonly="readonly"/></td>
                             </tr>
                             <tr>
                                 <th>是否支持VPN：</th>
@@ -287,9 +285,9 @@
                             </tr>
                             <tr>
                                 <th>有效期截卡时间：</th>
-                                <td><input name="expiryDate" readonly="readonly" class="datetime"/></td>
+                                <td><input name="expiryDate" readonly="readonly"/></td>
                                 <th>开卡时间：</th>
-                                <td><input name="openDate" readonly="readonly" class="datetime"/></td>
+                                <td><input name="openDate" readonly="readonly"/></td>
                             </tr>
                             <tr>
                                 <th>省：</th>
@@ -334,12 +332,6 @@
 </body>
 
 <script type="text/javascript">
-    $.fn.datebox.defaults.formatter = function (date) {
-        var y = date.getFullYear();
-        var m = date.getMonth() + 1;
-        var d = date.getDate();
-        return y + '-' + (m > 10 ? '' : '0') + m + '-' + (d > 10 ? '' : '0') + d + ' 00:00:00';
-    }
 
     var options = {
         title: '流量卡列表',
@@ -349,7 +341,7 @@
             {field: 'id', title: 'SIM卡id', hidden: true},
             {field: 'imsi', title: 'IMSI', width: 120},
             {field: 'number', title: '卡号', width: 120},
-            {field: 'iccid', title: 'ICCID', width: 140},
+            {field: 'iccid', title: 'ICCID', width: 150},
             {
                 field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getCardStatus(value + '');
@@ -414,22 +406,37 @@
         elem: '#dateRange',
         type: 'datetime',
         range: '至',
-//        max:new Date().format("yyyy-MM-dd")
+    });
+
+    laydate.render({
+        elem: '#doForm [name=expiryDate]',
+        type: 'datetime',
+    });
+
+    laydate.render({
+        elem: '#doForm [name=openDate]',
+        type: 'datetime',
+    });
+
+    laydate.render({
+        elem: '#doBatchForm [name=expiryDate]',
+        type: 'datetime',
+    });
+
+    laydate.render({
+        elem: '#doBatchForm [name=openDate]',
+        type: 'datetime',
     });
 
     $(function () {
-        getCardInfo();
 
-        $('#dg').datagrid(options);
+        getCardInfo();
 
         $('#doDialog').dialog({
             modal: true,
             width: 800,
             height: 638,
             cache: false,
-            onClose: function () {
-                $('#__calendarPanel').css('visibility', 'hidden');
-            }
         });
 
         $('#doBatchDialog').dialog({
@@ -438,9 +445,6 @@
             height: 350,
             cache: false,
             title: '批量修改',
-            onClose: function () {
-                $('#__calendarPanel').css('visibility', 'hidden');
-            }
         });
 
         $('#uploadDialog').dialog({
@@ -457,7 +461,16 @@
             "url": 'getDepartmentDic',
             "nullDesc": "全部"
         });
-        kcJs.fn.initSelect({"container": $('#queryForm [name=countryCode]'), "url": 'getCountryDic', "nullDesc": "全部"});
+        kcJs.fn.initSelect({
+            "container": $('#queryForm [name=countryCode]'),
+            "url": 'getCountryDic',
+            "nullDesc": "全部",
+            "defaultVal":156,
+            "callback":function () {
+                changeOperator();
+                doQuery();
+            }
+        });
 
         kcJs.fn.initSelect({"container": $('#doForm [name=countryCode]'), "url": 'getCountryDic', "nullDesc": ""});
 
@@ -485,6 +498,13 @@
         if (selectRows.length > 0 && selectRows.length == 1) {
             var rowData = selectRows[0];
             initData(rowData);
+
+            //指定中的卡状态不能修改
+            if(rowData.status==2){
+                $('#doForm [name=status]').attr('disabled',true);
+            }else {
+                $('#doForm [name=status]').attr('disabled',false);
+            }
 
             $('#doBtn').show();
             $('#doForm [name=countryCode]').attr('disabled', true);
@@ -591,6 +611,7 @@
             $('#doDialog').dialog('close');
             $('#dg').datagrid('loading');
             $('#doForm [name=countryCode]').attr('disabled', false);
+            $('#doForm [name=status]').attr('disabled',false);
             $.post(kcJs.fn.getContextPath() + '/simcard/update', $('#doForm').serializeObject(), function (data) {
                 if (data) {
                     $.messager.alert('提示', data.msg, 'info');
@@ -608,18 +629,21 @@
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0) {
             $('#doBatchForm [name=packageId],#doBatchForm [name=provinceCode]').html('');
-
+            $('#doBatchForm')[0].reset();
             //1.判断这批卡是不是都是同一个运营商，根据imsi的前5位
             //2.判断这批卡是不是都是同一个国家，根据前3位
             var operatorArr = [];
             var countryArr = [];
+            var statusArr = [];
             var operatorNameArr = [];
             var countryNameArr = [];
             for (var i = 0; i < selectRows.length; i++) {
                 var operatorCode = selectRows[i].operatorCode;
                 var countryCode = selectRows[i].countryCode;
+                var status = selectRows[i].status;
                 var isOperatorAdd = true;
                 var isCountryAdd = true;
+                var isStatusAdd = true;
                 for (var j = 0; j < operatorArr.length; j++) {
                     if (operatorCode == operatorArr[j]) {
                         isOperatorAdd = false;
@@ -640,6 +664,16 @@
                 if (isCountryAdd) {
                     countryArr.push(countryCode);
                     countryNameArr.push(selectRows[i].countryName)
+                }
+                /***********************************/
+                for (var j = 0; j < statusArr.length; j++) {
+                    if (status == statusArr[j]) {
+                        isStatusAdd = false;
+                        break;
+                    }
+                }
+                if (isStatusAdd) {
+                    statusArr.push(status);
                 }
             }
             if (operatorArr.length == 1) {
@@ -665,6 +699,16 @@
             } else {
                 $('#countryTip').html('【当选中的共有' + countryArr.length + '个国家：' + countryNameArr[0] + '，' + countryNameArr[1] + '...】').show();
             }
+
+            //指定中的卡不能修改状态
+            $('#doBatchForm [name=status]').attr('disabled',false);
+            for (var j = 0; j < statusArr.length; j++) {
+                if (2 == statusArr[j]) {
+                    $('#doBatchForm [name=status]').attr('disabled',true);
+                    break;
+                }
+            }
+
             $('#doBatchDialog').dialog('open');
         } else {
             $.messager.alert("提示", "请选择至少一条信息！", "info");
@@ -701,7 +745,7 @@
         if (countryCode) {
             kcJs.fn.initSelect({
                 "container": $('#queryForm select[name=operatorCode]'),
-                "url": 'getOperatorDic', "nullDesc": "全部", "queryParam": {countryCode: countryCode}
+                "url": 'getOperatorDic', "nullDesc": "全部", "queryParam": {countryCode: countryCode},
             });
         } else {
             $('#queryForm select[name=operatorCode]').html('<option value="">全部</option>')

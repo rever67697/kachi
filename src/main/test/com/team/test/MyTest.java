@@ -38,6 +38,7 @@ public class MyTest {
 	private static final Cache simGroupCache = CacheFactory.getCache(MConstant.MEM_SIM_GROUP);
 	private static final Cache simFlowCache = CacheFactory.getCache(MConstant.MEM_SIM_FlOW);
 	private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
+	private static final Cache publicCache = CacheFactory.getCache(MConstant.MEM_PUBLIC);
 
 
 	@Autowired
@@ -192,6 +193,12 @@ public class MyTest {
 	public void testGetPackage(){
 		Integer packageId=20;
 		Object object = simCache.get(MConstant.CACHE_PACKAGE_KEY_PREF+packageId);
+		System.out.println(object);
+	}
+
+	@Test
+	public void testGetOperator(){
+		Object object = publicCache.get(MConstant.CACHE_OPERATOR_KEY_PREE+46000);
 		System.out.println(object);
 	}
 

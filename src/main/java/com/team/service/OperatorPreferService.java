@@ -11,7 +11,7 @@ import com.team.vo.ReturnMsg;
  */
 public interface OperatorPreferService {
 
-    ResultList list(int page,int rows);
+    ResultList list(Integer countryCode,Integer operatorCode,int page,int rows);
 
     ReturnMsg saveOrUpdate(OperatorPrefer operatorPrefer);
 

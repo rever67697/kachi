@@ -40,7 +40,9 @@ public class TerminalSim implements Serializable{
 	
 	private String countryName;//国家名称
 	
-	private String departmentName;
+	private String departmentName;//部门名称
+
+	private String operatorName;//运营商名称
 	
 	public String getDepartmentName() {
 		return departmentName;
@@ -153,6 +155,12 @@ public class TerminalSim implements Serializable{
 	public void setvCountryCode(Integer vCountryCode) {
 		this.vCountryCode = vCountryCode;
 	}
-	
-	
+
+	public String getOperatorName() {
+		return operatorName;
+	}
+
+	public void setOperatorName(String operatorName) {
+		this.operatorName = operatorName;
+	}
 }

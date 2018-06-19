@@ -1,338 +1,348 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>副卡管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
-	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
-	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
-	<script type="text/javascript" src="../js/common.js"></script>
-	<script type="text/javascript" src="../js/ajaxfileupload.js"></script><script type="text/javascript" src="../js/Calendar.js"></script>
-  </head>
-  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
-
-  <div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
-	  <form id="queryForm">
-		  <table class="table">
-			  <tr>
-				  <th>副卡IMSI：</th><td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>
-				  <th>所属部门：</th><td><select name="departmentId"></select></td>
-				  <!-- <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
-                  <th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> -->
-				  <th>副卡状态：</th><td><select name="status">
-				  <option value="">全部</option>
-				  <option value="0">预置卡</option>
-				  <option value="1">临时卡</option>
-				  <option value="2">作废</option>
-			  </select></td>
-				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
-			  </tr>
-		  </table>
-	  </form>
-  </div>
-  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
-	  <table id="dg" ></table>
-  </div>
-
-  <div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
-	  <form id="doForm">
-		  <input type="hidden" name="id" value=""/>
-		  <table class="table th-normal">
-			  <tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-			  <tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>
-			  <tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>
-			  <tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>
-			  <tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>
-			  <tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>
-			  <tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>
-			  <tr><th>状态：</th><td><select name="status" class="easyui-validatebox" required="true">
-				  <option value=""></option>
-				  <option value="0">预置卡</option>
-				  <option value="1">临时卡</option>
-				  <option value="2">作废</option>
-			  </select></td></tr>
-			  <tr><th>最后一次充值时间 ：</th><td><input name="rechargeTime" readonly="readonly" class="datetime"/></td></tr>
-			  <tr><th>详情：</th><td><input name="detail"/></td></tr>
-			  <tr><th>设备号：</th><td><input name="tsid" class="onlyNumber"/></td></tr>
-			  <tr style="height:10px"></tr>
-			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
-		  </table>
-	  </form>
-  </div>
-  <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
-	  <table class="excel">
-		  <tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>
-		  <tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>
-		  <tr style="height:30px"></tr>
-		  <tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>
-	  </table>
-  </div>
-
-  </body>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet"
+          title="blue"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+    <script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 
 
+</head>
+<body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
-  <!--<body>-->
-	  	<!--<form id="queryForm">-->
-	  		<!--<table class="table">-->
-	  			<!--<tr>-->
-	  				<!--<th>副卡IMSI：</th><td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>-->
-	  				<!--<th>所属部门：</th><td><select name="departmentId"></select></td>-->
-	  				<!--&lt;!&ndash; <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>-->
-	  				<!--<th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> &ndash;&gt;-->
-	  				<!--<th>副卡状态：</th><td><select name="status">-->
-											<!--<option value="">全部</option>-->
-											<!--<option value="0">预置卡</option>-->
-											<!--<option value="1">临时卡</option>-->
-											<!--<option value="2">作废</option>-->
-										  <!--</select></td>-->
-	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
-	  			<!--</tr>-->
-	  		<!--</table>-->
-	  	<!--</form>-->
-	  	<!--<div id="dg"></div>-->
-	    <!--<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">-->
-	    	<!--<form id="doForm">-->
-	    		<!--<input type="hidden" name="id" value=""/>-->
-	    		<!--<table class="table th-normal">-->
-	    			<!--<tr><th>ISMI：</th><td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td></tr>-->
-	    			<!--<tr><th>副卡号码：</th><td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td></tr>-->
-	    			<!--<tr><th>ICCID：</th><td><input name="iccid" class="easyui-textbox" /></td></tr>-->
-	    			<!--<tr><th>国家：</th><td><select name="countryCode"  class="easyui-validatebox" required="true" onchange="changeOperator(2)"></select></td></tr>-->
-	    			<!--<tr><th>运营商：</th><td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td></tr>-->
-	    			<!--<tr><th>短信中心号码：</th><td><input name="mcNumber" /></td></tr>-->
-	    			<!--<tr><th>账户余额：</th><td><input name="balance" class="easyui-numberbox"  /></td></tr>-->
-	    			<!--<tr><th>状态：</th><td><select name="status" class="easyui-validatebox" required="true">-->
-												<!--<option value=""></option>-->
-												<!--<option value="0">预置卡</option>-->
-												<!--<option value="1">临时卡</option>-->
-												<!--<option value="2">作废</option>-->
-											<!--</select></td></tr>-->
-	    			<!--<tr><th>最后一次充值时间 ：</th><td><input name="rechargeTime" readonly="readonly" class="datetime"/></td></tr>-->
-	    			<!--<tr><th>详情：</th><td><input name="detail"/></td></tr>-->
-	    			<!--<tr><th>设备号：</th><td><input name="tsid" class="onlyNumber"/></td></tr>-->
-	    			<!--<tr style="height:10px"></tr>-->
-		  			<!--<tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>-->
-	    		<!--</table>-->
-	    	<!--</form>-->
-	    <!--</div>-->
-	    <!--<div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
-	  		<!--<table class="excel">-->
-	  			<!--<tr><td colspan="2" align="right"><button class="common-btn" onclick="downloadFile()">下载模板</button></td></tr>-->
-	  			<!--<tr><td align="right">上传路径：</td><td><input type="file" name="file" id="file"/></td></tr>-->
-	  			<!--<tr style="height:30px"></tr>-->
-	  			<!--<tr><td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="upload()">上传</a></td></tr>-->
-	  		<!--</table>-->
-	  	<!--</div>-->
-  <!--</body>-->
-	<script type="text/javascript">
-  	var options={
-			title:'副卡列表',
-			queryParams:$('#queryForm').serializeObject(),
-			columns:[[
-						{field:'ck',checkbox:true}, 
-			         	{field:'id',title:'副卡id',hidden:true},
-			         	{field:'imsi',title:'IMSI',width:110},
-			         	{field:'number',title:'卡号',width:100},
-			         	{field:'tsid',title:'设备号',width:80},
- 			         	{field:'status',title:'状态',width:100,formatter:function(value,rec,index){
-                            var status = kcJs.fn.getChannelcardStatus(value+'');
-                            return status?'<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>':'';
-// 			         		return '<div style="border-radius:8px;color:#fff;width:90px;text-align:center" class="'+(value=="0"?"blue":"red")+'">'+(value=="0"?"正常":"停用")+'</div>';
- 			         	}},
- 			         	{field:'rechargeTime',title:'最后一次充值时间',width:140},
- 			         	{field:'balance',title:'账户余额',width:80},
-			         	{field:'operatorName',title:'运营商',width:120},
-			         	{field:'countryName',title:'国家',width:80},
-			         	{field:'mcNumber',title:'短信中心号码',width:100},
-			         	{field:'detail',title:'详情',width:130},
-			         	{field:'departmentName',title:'所属部门',width:120}
-					]],
-			toolbar: kcJs.fn.getFunctions(),
-			url:kcJs.fn.getContextPath()+'/channelCard/list',
-			iconCls:'icon-tip',
-			nowrap:false,
-			pagination:true,
-			pageList:[20,30,50],
-			rownumbers:true,
-			scrollbarSize:0,
-			striped:true,
-			fit:true
-//			height:window.innerHeight-50
-		};
-  
-	$(function(){
-		$('#dg').datagrid(options);
-		
-		$('#doDialog').dialog({
-			modal : true,
-   			width:400,
-   			height:460,
-   			cache: false,
-			title : "添加/修改副卡信息",
-            onClose:function () {
-                $('#__calendarPanel').css('visibility','hidden');
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"
+     border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
+                <th>副卡IMSI：</th>
+                <td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>
+                <th>所属部门：</th>
+                <td><select name="departmentId"></select></td>
+                <!-- <th>国家：</th><td><select name="countryCode" onchange="changeOperator(1)"></select></td>
+                <th>运营商：</th><td><select name="operatorCode"><option value="">全部</option></select></td> -->
+                <th>副卡状态：</th>
+                <td><select name="status">
+                    <option value="">全部</option>
+                    <option value="0">预置卡</option>
+                    <option value="1">临时卡</option>
+                    <option value="2">作废</option>
+                </select></td>
+                <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
+                    询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+    <table id="dg"></table>
+</div>
+
+<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+    <form id="doForm">
+        <input type="hidden" name="id" value=""/>
+        <table class="table th-normal">
+            <tr>
+                <th>ISMI：</th>
+                <td><input name="imsi" class="easyui-validatebox onlyNumber" required="true"/></td>
+            </tr>
+            <tr>
+                <th>副卡号码：</th>
+                <td><input name="number" class="easyui-validatebox onlyNumber" required="true"/></td>
+            </tr>
+            <tr>
+                <th>ICCID：</th>
+                <td><input name="iccid" class="easyui-textbox"/></td>
+            </tr>
+            <tr>
+                <th>国家：</th>
+                <td><select name="countryCode" class="easyui-validatebox" required="true"
+                            onchange="changeOperator(2)"></select></td>
+            </tr>
+            <tr>
+                <th>运营商：</th>
+                <td><select name="operatorCode" class="easyui-validatebox" required="true"></select></td>
+            </tr>
+            <tr>
+                <th>短信中心号码：</th>
+                <td><input name="mcNumber"/></td>
+            </tr>
+            <tr>
+                <th>账户余额：</th>
+                <td><input name="balance" class="easyui-numberbox"/></td>
+            </tr>
+            <tr>
+                <th>状态：</th>
+                <td><select name="status" class="easyui-validatebox" required="true">
+                    <option value=""></option>
+                    <option value="0">预置卡</option>
+                    <option value="1">临时卡</option>
+                    <option value="2">作废</option>
+                </select></td>
+            </tr>
+            <tr>
+                <th>最后一次充值时间 ：</th>
+                <td><input name="rechargeTime" readonly="readonly"/></td>
+            </tr>
+            <tr>
+                <th>详情：</th>
+                <td><input name="detail"/></td>
+            </tr>
+            <tr>
+                <th>设备号：</th>
+                <td><input name="tsid" class="onlyNumber"/></td>
+            </tr>
+            <tr style="height:10px"></tr>
+            <tr>
+                <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok"
+                                                                   plain="true" onclick="saveData()">提 交</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+    <table class="excel">
+        <tr>
+            <td colspan="2" align="right">
+                <button class="common-btn" onclick="downloadFile()">下载模板</button>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">上传路径：</td>
+            <td><input type="file" name="file" id="file"/></td>
+        </tr>
+        <tr style="height:30px"></tr>
+        <tr>
+            <td colspan="2" align="center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true"
+                                              onclick="upload()">上传</a></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    var options = {
+        title: '副卡列表',
+        queryParams: $('#queryForm').serializeObject(),
+        columns: [[
+            {field: 'ck', checkbox: true},
+            {field: 'id', title: '副卡id', hidden: true},
+            {field: 'imsi', title: 'IMSI', width: 110},
+            {field: 'number', title: '卡号', width: 100},
+            {field: 'tsid', title: '设备号', width: 80},
+            {
+                field: 'status', title: '状态', width: 100, formatter: function (value, rec, index) {
+                var status = kcJs.fn.getChannelcardStatus(value + '');
+                return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
-		});
-		
-		$('#uploadDialog').dialog({
-			modal : true,
-   			width:500,
-   			height:200,
-   			cache: false,
-			title : "excel上传副卡信息"
-		});
-		
-		kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"nullDesc":"全部"});
-		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
-		
-	});
-	
-	function doAdd(){
-  		$('#doForm')[0].reset();
-  		$('#doForm [name=id]').val('');
-  		//$('#doDialog [name=tsid]').attr('readOnly',false);
-  		$('#doForm [name=countryCode]').val('156');
-  		changeOperator();
-  		$('#doDialog').dialog({title:'添加副卡'});
-  		$('#doDialog').dialog('open');
-  	}
-  	
-  	function doUpload(){
-  		$('#file').val('');
-  		$('#uploadDialog').dialog('open');
-  	}
-  	
-  	function doModify(){
-  		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0 && selectRows.length == 1) {
-  			 $.ajaxSetup({async : false}); 
-             var rowData = $('#dg').datagrid("getSelected");
-             kcJs.fn.autoFillData($('#doDialog'),rowData);
-             changeOperator();
-             kcJs.fn.autoFillData($('#doDialog'),rowData);
-             $('#doDialog').dialog({title:'修改副卡'});
-             $('#doDialog').dialog('open');
-             $.ajaxSetup({async : true});
-             //$('#doDialog [name=tsid]').attr('readOnly',true);
+            },
+            {field: 'rechargeTime', title: '最后一次充值时间', width: 140},
+            {field: 'balance', title: '账户余额', width: 80},
+            {field: 'operatorName', title: '运营商', width: 120},
+            {field: 'countryName', title: '国家', width: 80},
+            {field: 'mcNumber', title: '短信中心号码', width: 100},
+            {field: 'detail', title: '详情', width: 130},
+            {field: 'departmentName', title: '所属部门', width: 120}
+        ]],
+        toolbar: kcJs.fn.getFunctions(),
+        url: kcJs.fn.getContextPath() + '/channelCard/list',
+        iconCls: 'icon-tip',
+        nowrap: false,
+        pagination: true,
+        pageList: [20, 30, 50],
+        rownumbers: true,
+        scrollbarSize: 0,
+        striped: true,
+        fit: true
+    };
+
+    laydate.render({
+        elem: '#doForm [name=rechargeTime]',
+        type: 'datetime',
+    });
+
+    $(function () {
+        $('#dg').datagrid(options);
+
+        $('#doDialog').dialog({
+            modal: true,
+            width: 400,
+            height: 460,
+            cache: false,
+            title: "添加/修改副卡信息",
+        });
+
+        $('#uploadDialog').dialog({
+            modal: true,
+            width: 500,
+            height: 200,
+            cache: false,
+            title: "excel上传副卡信息"
+        });
+
+        kcJs.fn.initSelect({"container": $('[name=countryCode]'), "url": 'getCountryDic', "nullDesc": "全部"});
+        kcJs.fn.initSelect({"container": $('[name=departmentId]'), "url": 'getDepartmentDic', "nullDesc": "全部"});
+
+    });
+
+    function doAdd() {
+        $('#doForm')[0].reset();
+        $('#doForm [name=id]').val('');
+        //$('#doDialog [name=tsid]').attr('readOnly',false);
+        $('#doForm [name=countryCode]').val('156');
+        changeOperator();
+        $('#doDialog').dialog({title: '添加副卡'});
+        $('#doDialog').dialog('open');
+    }
+
+    function doUpload() {
+        $('#file').val('');
+        $('#uploadDialog').dialog('open');
+    }
+
+    function doModify() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            $.ajaxSetup({async: false});
+            var rowData = $('#dg').datagrid("getSelected");
+            kcJs.fn.autoFillData($('#doDialog'), rowData);
+            changeOperator();
+            kcJs.fn.autoFillData($('#doDialog'), rowData);
+            $('#doDialog').dialog({title: '修改副卡'});
+            $('#doDialog').dialog('open');
+            $.ajaxSetup({async: true});
+            //$('#doDialog [name=tsid]').attr('readOnly',true);
         }
         else {
             $.messager.alert("提示", "请选择其中一条信息", "info");
         }
-  	}
-  	
-  	function doDelete(){
-  		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0) {
-  			$.messager.confirm('提示','是否确定删除？',function(r){
-  				if(r){
-  					$('#dg').datagrid('loading');
-		  			var ids = [];
-		  			var IMSIs=[];
-		  			for(var i = 0;i < selectRows.length;i++){
-		  				ids.push(selectRows[i].id);
-		  				IMSIs.push(selectRows[i].imsi);
-		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/channelCard/delete',{ids:ids.join(","),IMSIs:IMSIs.join(",")},function(data){
-		  				if(data && data.code && data.code == '200'){
-		  					doQuery();	
-		  				}else{
-		  					$('#dg').datagrid('loaded');
-		  				}
-		  				$.messager.alert("提示", data.msg, "info");
-		  			},'json');
-		  		}
-  			});
-        }else {
+    }
+
+    function doDelete() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0) {
+            $.messager.confirm('提示', '是否确定删除？', function (r) {
+                if (r) {
+                    $('#dg').datagrid('loading');
+                    var ids = [];
+                    var IMSIs = [];
+                    for (var i = 0; i < selectRows.length; i++) {
+                        ids.push(selectRows[i].id);
+                        IMSIs.push(selectRows[i].imsi);
+                    }
+                    $.post(kcJs.fn.getContextPath() + '/channelCard/delete', {
+                        ids: ids.join(","),
+                        IMSIs: IMSIs.join(",")
+                    }, function (data) {
+                        if (data && data.code && data.code == '200') {
+                            doQuery();
+                        } else {
+                            $('#dg').datagrid('loaded');
+                        }
+                        $.messager.alert("提示", data.msg, "info");
+                    }, 'json');
+                }
+            });
+        } else {
             $.messager.alert("提示", "请选择至少一条信息", "info");
         }
-  	}
-  	
-  	function upload(){
-	  	if($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1){
-			$('#uploadDialog').dialog('close');
-			$('#dg').datagrid('loading');
-			$.ajaxFileUpload({
-				url:kcJs.fn.getContextPath()+'/channelCard/upload',
-				secureuri : false,
-				fileElementId : 'file',
-				dataType:'json',
-				success:function(data,status){
-					$('#dg').datagrid('loaded');
-					if(data && data.code){
-						if(data.code=='200'){
-							$.messager.alert('提示','上传成功！','info');
-							doQuery();
-						}else{
-							$.messager.alert('提示',data.msg,'info');
-						}
-					}else{
-						$.messager.alert('提示','上传失败','info');
-					}
-				},
-				error:function(data, status, e) {
-					$('#dg').datagrid('loaded');
-					console.log(data);
-					$.messager.alert('提示','未知错误!!!','info');
-				}
-			});  
-		}else{
-			$.messager.alert('提示','请上传指定的excel模板！','info');
-		}
-  	}
-  	
-  	function saveData(){
-  		if($('#doForm').form('validate')){
-  			$('#doDialog').dialog('close');
-  			$('#dg').datagrid('loading');
-  			$.post(kcJs.fn.getContextPath()+'/channelCard/save',$('#doForm').serializeObject(),function(data){
-  				if(data){
-	    			$.messager.alert('提示',data.msg,'info');
-	    			if(data.code=='200'){
-	    				doQuery();
-	    			}else{
-	    				$('#dg').datagrid('loaded');
-	    			}
-	    		}
-	    		
-  			});
-  		}
-  	}
-	
-  	function doQuery(){
-  		options.queryParams = $('#queryForm').serializeObject();
-  		$('#dg').datagrid(options);
-  	}
-  	
-  	function changeOperator(flag){
-  		if(flag == 1){
-  			var countryCode = $('#queryForm [name=countryCode]').val();
-  			if(countryCode){
-  				kcJs.fn.initSelect({"container":$('#queryForm select[name=operatorCode]'),
-  						"url":'getOperatorDic',"queryParam":{countryCode:countryCode},"nullDesc":"全部"});
-  			}else{
-  				$('#queryForm select[name=operatorCode]').html('<option value="">全部</option>');
-  			}
-  		}else{
-  			var countryCode=$('#doForm [name=countryCode]').val();
-  			if(countryCode){
-  				kcJs.fn.initSelect({"container":$('#doForm select[name=operatorCode]'),
-  						"url":'getOperatorDic',"needNull":false,"queryParam":{countryCode:countryCode}});
-  			}else{
-  				$('#doForm select[name=operatorCode]').html('');
-  			}
-  		}
-  	}
-  	
-  	function downloadFile(){
-  		window.location.href=kcJs.fn.getContextPath()+"/downloadFile?fileName="+encodeURIComponent(encodeURIComponent('副卡.xlsx'));
-  	}
- 
-  </script>
-	
-	
+    }
+
+    function upload() {
+        if ($('#file').val().indexOf('.xls') > -1 || $('#file').val().indexOf('.xlsx') > -1) {
+            $('#uploadDialog').dialog('close');
+            $('#dg').datagrid('loading');
+            $.ajaxFileUpload({
+                url: kcJs.fn.getContextPath() + '/channelCard/upload',
+                secureuri: false,
+                fileElementId: 'file',
+                dataType: 'json',
+                success: function (data, status) {
+                    $('#dg').datagrid('loaded');
+                    if (data && data.code) {
+                        if (data.code == '200') {
+                            $.messager.alert('提示', '上传成功！', 'info');
+                            doQuery();
+                        } else {
+                            $.messager.alert('提示', data.msg, 'info');
+                        }
+                    } else {
+                        $.messager.alert('提示', '上传失败', 'info');
+                    }
+                },
+                error: function (data, status, e) {
+                    $('#dg').datagrid('loaded');
+                    console.log(data);
+                    $.messager.alert('提示', '未知错误!!!', 'info');
+                }
+            });
+        } else {
+            $.messager.alert('提示', '请上传指定的excel模板！', 'info');
+        }
+    }
+
+    function saveData() {
+        if ($('#doForm').form('validate')) {
+            $('#doDialog').dialog('close');
+            $('#dg').datagrid('loading');
+            $.post(kcJs.fn.getContextPath() + '/channelCard/save', $('#doForm').serializeObject(), function (data) {
+                if (data) {
+                    $.messager.alert('提示', data.msg, 'info');
+                    if (data.code == '200') {
+                        doQuery();
+                    } else {
+                        $('#dg').datagrid('loaded');
+                    }
+                }
+
+            });
+        }
+    }
+
+    function doQuery() {
+        options.queryParams = $('#queryForm').serializeObject();
+        $('#dg').datagrid(options);
+    }
+
+    function changeOperator(flag) {
+        if (flag == 1) {
+            var countryCode = $('#queryForm [name=countryCode]').val();
+            if (countryCode) {
+                kcJs.fn.initSelect({
+                    "container": $('#queryForm select[name=operatorCode]'),
+                    "url": 'getOperatorDic', "queryParam": {countryCode: countryCode}, "nullDesc": "全部"
+                });
+            } else {
+                $('#queryForm select[name=operatorCode]').html('<option value="">全部</option>');
+            }
+        } else {
+            var countryCode = $('#doForm [name=countryCode]').val();
+            if (countryCode) {
+                kcJs.fn.initSelect({
+                    "container": $('#doForm select[name=operatorCode]'),
+                    "url": 'getOperatorDic', "needNull": false, "queryParam": {countryCode: countryCode}
+                });
+            } else {
+                $('#doForm select[name=operatorCode]').html('');
+            }
+        }
+    }
+
+    function downloadFile() {
+        window.location.href = kcJs.fn.getContextPath() + "/downloadFile?fileName=" + encodeURIComponent(encodeURIComponent('副卡.xlsx'));
+    }
+
+</script>
+
 
 </html>

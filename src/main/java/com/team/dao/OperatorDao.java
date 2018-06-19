@@ -16,4 +16,8 @@ public interface OperatorDao {
 	List<Operator> list(Map<String,Object> map);
 
 	List<Operator> getOperatorByCode(@Param("operatorCode")Integer operatorCode);
+
+	Operator getOperatorById(@Param("id")Integer id);
+
+	int updateLevel(Operator operator);
 }

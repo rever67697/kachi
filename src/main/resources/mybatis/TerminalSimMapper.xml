@@ -30,13 +30,13 @@
 		select r.*
 			  ,ifnull(c.namecn,c.countryname) countryName
 			  ,d.name departmentName
+			  ,concat(o.operatornamecn,' (',o.operatorCode,')') operatorName
 		from m_terminal_sim r
-		left join m_country c
-		on c.countrycode=r.vcountrycode
-		left join m_terminal t
-		on t.tsid=r.tsid
-		left join m_department d
-		on t.departmentId=d.id and d.status=0
+		left join m_country c on c.countrycode=r.vcountrycode
+		left join m_terminal t on t.tsid=r.tsid
+		left join m_department d on t.departmentId=d.id and d.status=0
+		left join m_simcard s on s.imsi=r.imsi
+		left join m_operator o on o.operatorCode=s.operatorCode
 		where 1=1
 		<if test="imsi!=null">
 			and r.imsi = #{imsi,jdbcType=BIGINT}

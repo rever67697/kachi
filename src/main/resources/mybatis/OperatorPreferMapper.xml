@@ -2,17 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.OperatorPreferDao">
 
-	<select id="list" resultType="com.team.model.OperatorPrefer">
-		select r.*,
-				concat(c.NAMECN,'(',r.roamMcc,')') countryName,
-				concat(o.OPERATORNAMECN,'(',r.operatorCode,')') operatorName
-		from m_operator_prefer r
-		left join m_country_mcc m on r.roamMcc=m.mcc
-		left join m_country c on m.countryCode=c.countryCode
-		left join m_operator o on r.operatorCode=o.operatorCode
-		order by r.roamMcc,r.operatorCode
-
-	</select>
+	<select id="list" resultType="com.team.model.OperatorPrefer" parameterType="java.util.Map">
+		select  o.id operatorId,
+				o.mcc roamMcc,
+				o.operatorCode,
+				o.level,
+				r.id,
+				r.pPlmn,
+				r.fPlmn,
+				concat(c.NAMECN,'(',o.mcc,')') countryName,
+				concat(o.OPERATORNAMECN,'(',o.operatorCode,')') operatorName
+		from m_operator o
+		left join m_operator_prefer r on o.mcc=r.roamMcc and o.operatorCode=r.operatorCode
+		left join m_country c on o.countryCode=c.countryCode
+		where 1=1
+		<if test="countryCode!=null">
+			and o.countryCode=#{countryCode,jdbcType=INTEGER}
+		</if>
+		<if test="operatorCode!=null">
+			and o.operatorCode=#{operatorCode,jdbcType=INTEGER}
+		</if>
+		order by case when o.countryCode=156 then 0 else 1 end,o.operatorCode
+  	</select>
 	
 	<insert id="insert" parameterType="com.team.model.OperatorPrefer">
 		insert into m_operator_prefer

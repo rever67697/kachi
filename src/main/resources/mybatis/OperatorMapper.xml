@@ -20,5 +20,15 @@
 		select * from m_operator
 		where operatorcode=#{operatorCode,jdbcType=INTEGER}
 	</select>
+
+	<select id="getOperatorById" resultType="com.team.model.Operator">
+		select * from m_operator
+		where id=#{id,jdbcType=INTEGER}
+	</select>
 	
+	<update id="updateLevel" parameterType="com.team.model.Operator">
+		update m_operator
+		set level=#{level,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
 </mapper>
