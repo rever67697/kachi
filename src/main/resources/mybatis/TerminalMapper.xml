@@ -38,7 +38,12 @@
 		<if test="activated!=null" >  
          	and r.activated = #{activated,jdbcType=INTEGER}  
         </if>
-        <include refid="departmentId"/>
+		<if test="departmentId!=null" >
+			and d.id = #{departmentId,jdbcType=INTEGER}
+		</if>
+		<if test="startDate!=null">
+			and (r.createDate>=#{startDate,jdbcType=TIMESTAMP} and r.createDate&lt;=#{endDate,jdbcType=TIMESTAMP})
+		</if>
         <include refid="dId"/>
         order by d.id,r.tsid
 	</select> 
@@ -111,4 +116,16 @@
   		where id in
   		(<foreach collection="ids" separator="," item="item">#{item,jdbcType=INTEGER}</foreach>)
   	</update>
+	
+	<update id="updateStatus">
+		update m_terminal
+		set status=2
+		where tsid=#{tsid,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateWiFiPass" parameterType="java.util.Map">
+		update m_terminal
+		set sendWiFiPass=#{sendWiFiPass,jdbcType=VARCHAR}
+		where tsid=#{tsid,jdbcType=INTEGER}
+	</update>
 </mapper>

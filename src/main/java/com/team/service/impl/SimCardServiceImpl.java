@@ -102,7 +102,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	/**
 	 * 根据条件寻找出sim卡列表
 	 */
-	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,int page,int rows) {
+	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,Integer dateType,Date startDate,Date endDate,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
@@ -112,29 +112,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("imsi", simCard.getImsi());
 		map.put("countryCode",simCard.getCountryCode());
 		map.put("operatorCode",simCard.getOperatorCode());
+		map.put("cStatus",simCard.getcStatus());
+		map.put("dateType",dateType);
+		map.put("startDate",startDate);
+		map.put("endDate",endDate);
 		List<SimCard> list = simCardDao.getSimCardList(map);
-		//查询对应卡的占用或空闲状态
-		if(CommonUtil.listNotBlank(list)){
-			for (SimCard card : list) {
-				SimGroup simGroup = simGroupService.getSimGroup(card.getImsi());
-				if(simGroup!=null){
-					String groupKey = simGroup.getGroupKey();
-					MemcachedItem m = simCache.gets(groupKey);
-					if(m!=null){
-						List<GroupCacheSim> groupCacheSimList = (List<GroupCacheSim>) m.getValue();
-						if(CommonUtil.listNotBlank(groupCacheSimList)){
-							for (int i=0;i<groupCacheSimList.size();i++) {
-								GroupCacheSim gcs = CommonUtil.convertBean(groupCacheSimList.get(i),GroupCacheSim.class);
-								if(Long.valueOf(gcs.getImsi()).equals(card.getImsi())){
-									card.setcStatus(gcs.getStatus());
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);

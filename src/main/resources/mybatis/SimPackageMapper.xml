@@ -38,12 +38,17 @@
 	</select>
 
 
-	<update id="deletePackage">
-		update m_simpackage
-		set status=1
-		where
-		id=#{id,jdbcType=INTEGER}
-	</update>
+	<!--<update id="deletePackage">-->
+		<!--update m_simpackage-->
+		<!--set status=1-->
+		<!--where-->
+		<!--id=#{id,jdbcType=INTEGER}-->
+	<!--</update>-->
+	
+	<delete id="deletePackage">
+		delete from m_simpackage
+		where id=#{id,jdbcType=INTEGER}
+	</delete>
 
 	<update id="updatePackage" parameterType="com.team.model.SimPackage">
 		update m_simpackage

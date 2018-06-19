@@ -70,6 +70,8 @@ public class SimCardDTO {
 
     private String APN;
 
+    private Integer cStatus;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date openDate;//开卡日期
 
@@ -335,5 +337,13 @@ public class SimCardDTO {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Integer getcStatus() {
+        return cStatus;
+    }
+
+    public void setcStatus(Integer cStatus) {
+        this.cStatus = cStatus;
     }
 }

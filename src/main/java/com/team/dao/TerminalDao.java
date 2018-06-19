@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.team.model.Terminal;
+import org.apache.ibatis.annotations.Param;
 
 
 /**
@@ -59,5 +60,9 @@ public interface TerminalDao {
 	 * @return
 	 */
 	public List<Terminal> getSelectedList(String[] list);
-	
+
+	public int updateStatus(@Param("tsid") Integer tsid);
+
+	public int updateWiFiPass(Map<String,Object> map);
+
 }

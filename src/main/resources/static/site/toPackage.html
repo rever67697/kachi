@@ -80,7 +80,7 @@
 			queryParams:$('#queryForm').serializeObject(),
 			columns:[[
 						{field:'ck',checkbox:true}, 
-			         	{field:'id',title:'套餐id',hidden:true},
+			         	{field:'id',title:'套餐Id',width:60},
 			         	{field:'name',title:'套餐名称',width:150},
 			         	{field:'operatorName',title:'运营商',width:200},
 			         	{field:'maxFlow',title:'国内通用流量（GB）',width:120,formatter:function(value,row,index){
@@ -114,7 +114,6 @@
 			singleSelect:true,
 			striped:true,
 			fit:true
-//			height:window.innerHeight-50
 		};
 
     var options_c={

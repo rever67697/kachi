@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../js/common.js"></script>
     <script type="text/javascript" src="../js/Calendar.js"></script>
     <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 
 </head>
 <body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
@@ -59,7 +60,7 @@
             <div class="easyui-layout" fit="true">
 
                 <div region="north" id="northDiv"
-                     style="height:75px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+                     style="height:108px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
                     <form id="queryForm">
                         <table class="table">
                             <tr>
@@ -76,8 +77,6 @@
                                 </select></td>
                                 <th>所在卡池：</th>
                                 <td><select name="cpId"></select></td>
-                                <td rowspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
-                                                   plain="true" onclick="doQuery()">查 询</a></td>
                             </tr>
                             <tr>
                                 <th>国家：</th>
@@ -88,6 +87,22 @@
                                 </select></td>
                                 <th>所属部门：</th>
                                 <td><select name="departmentId"></select></td>
+                            </tr>
+                            <tr>
+                                <th>使用状态：</th>
+                                <td><select name="cStatus">
+                                    <option value="">全部</option>
+                                    <option value="1">占用</option>
+                                    <option value="0">空闲</option>
+                                </select></td>
+                                <th><select name="dateType">
+                                    <option value="1">有效期截卡时间</option>
+                                    <option value="2">插入时间</option>
+                                    <option value="3">开卡日期</option>
+                                </select></th>
+                                <td><input readonly="readonly" id="dateRange" style="width:95%"/></td>
+                                <td colspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
+                                                   plain="true" onclick="doQuery()">查 询</a></td>
                             </tr>
                         </table>
                     </form>
@@ -332,25 +347,23 @@
         columns: [[
             {field: 'ck', checkbox: true},
             {field: 'id', title: 'SIM卡id', hidden: true},
-            {field: 'imsi', title: 'imsi', width: 120},
+            {field: 'imsi', title: 'IMSI', width: 120},
             {field: 'number', title: '卡号', width: 120},
+            {field: 'iccid', title: 'ICCID', width: 140},
             {
                 field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getCardStatus(value + '');
                 return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
             },
+
             {
-                field: 'cStatus', title: '是否被占用', width: 65, formatter: function (value, row, index) {
-                value = value + "";
-                if (value && value != 'null') {
-                    row.cStatus = row.cStatus=='1'?'是':'否';
-                } else {
-                    row.cStatus = '';
-                }
-                return row.cStatus;
+                field: 'cStatus', title: '使用状态', width: 60, formatter: function (value, rec, index) {
+                var status = kcJs.fn.getUsedStatus(value + '');
+                return status ? '<div style="border-radius:8px;color:#fff;width:50px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
             },
+
             {field: 'operatorName', title: '运营商', width: 100},
             {field: 'packageName', title: '卡套餐', width: 100},
             {field: 'simPoolName', title: '所在卡池', width: 150},
@@ -395,6 +408,14 @@
         striped: true,
         fit: true
     };
+
+    //日期时间范围
+    laydate.render({
+        elem: '#dateRange',
+        type: 'datetime',
+        range: '至',
+//        max:new Date().format("yyyy-MM-dd")
+    });
 
     $(function () {
         getCardInfo();
@@ -541,6 +562,12 @@
 
     function doQuery() {
         options.queryParams = $('#queryForm').serializeObject();
+        var dateRange = $('#dateRange').val();
+        if(dateRange){
+            var dates = dateRange.split(" 至 ");
+            options.queryParams.startDate = dates[0];
+            options.queryParams.endDate = dates[1];
+        }
         $('#dg').datagrid(options);
     }
 

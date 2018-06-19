@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,7 +25,7 @@ public interface SimCardService {
 	
 	public ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,int page,int rows);
+	public ResultList getSimCardList(SimCardDTO simCard, Integer dId,Integer dateType, Date startDate, Date endDate,int page, int rows);
 
 	public File getCsv(SimCardDTO simCard,Integer dId) throws Exception;
 	

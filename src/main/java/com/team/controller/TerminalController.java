@@ -1,6 +1,7 @@
 package com.team.controller;
 
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,9 +45,9 @@ public class TerminalController {
 	
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId,Integer status,Integer tsid,Integer activated,
-			int page,int rows,HttpServletRequest request){
+			int page,int rows,Date startDate,Date endDate,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, page, rows);
+		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, startDate,endDate,page, rows);
 	}
 	
 	@PostMapping("/delete")
@@ -104,5 +105,16 @@ public class TerminalController {
 		return terminalService.getSelectedList(terminalList);
 	}
 
+	@PostMapping("/updateStatus")
+	@PermissionLog()
+	public ReturnMsg updateStatus(Integer tsid){
+		return terminalService.updateStatus(tsid);
+	}
+
+	@PostMapping("/updateWiFiPass")
+	@PermissionLog()
+	public ReturnMsg updateWiFiPass(Integer tsid){
+		return terminalService.updateWiFiPass(tsid);
+	}
 
 }

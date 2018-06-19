@@ -17,6 +17,10 @@ var kcJs=
 			      "4":["作废",v_colors.gray],
     			  "5":["没卡",v_colors.black]
 	};
+    //sim卡的使用状态
+    var u_status={"0":["空闲",v_colors.blue],
+        "1":["占用",v_colors.red],
+    };
     //副卡状态
     var c_channelcardStatus={"0":["预置卡",v_colors.blue],
 			      "1":["临时卡",v_colors.green],
@@ -81,7 +85,11 @@ var kcJs=
 		{"5天":5},
 		{"7天":7},
 		{"15天":15},
-		{"30天":30}
+		{"30天":30},
+		{"60天":60},
+		{"90天":90},
+		{"180天":180},
+		{"1年":365},
 	];
 
 	//simcard批量操作可以修改的属性
@@ -110,6 +118,10 @@ var kcJs=
 		getCardStatus:function(o){
 			return c_status[o];
 		},
+        //获取sim卡的使用状态信息
+        getUsedStatus:function(o){
+            return u_status[o];
+        },
 		//获取副卡的状态信息
 		getChannelcardStatus:function(o){
 			return c_channelcardStatus[o];
@@ -262,7 +274,14 @@ var kcJs=
             });
 			$(obj).html(_html);
         },
-		//
+		//通过有效期截止时间获取终端剩余时间
+        getRemainTime:function (date_str) {
+			if(date_str){
+                var diff = Math.floor((new Date(date_str) - new Date())/1000/60/60/24);
+                return diff;
+			}
+			return "";
+        }
 
 	};
 	return {fn:_FUNC};

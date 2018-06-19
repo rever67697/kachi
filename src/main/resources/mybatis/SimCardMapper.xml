@@ -43,6 +43,7 @@
 				   ,ifnull(pr.namecn,r.provincecode) provinceName
 		           ,t.maxFlow
 				   ,f.residueFlow
+				   ,case when r.status=2 or ts.tsid is not null then 1 else 0 end cStatus
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
@@ -51,6 +52,7 @@
 			left join m_country c on r.countryCode = c.countryCode
 			left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
 			left join m_flow_month f on f.imsi = r.imsi and (now()>=f.ACCOUNTPERIODSTARTDATE and now()&lt;f.ACCOUNTPERIODENDDATE)
+			left join m_terminal_sim ts on r.imsi=ts.imsi
 			where 1=1
 			<if test="cpId != null">
 				and r.cpid=#{cpId,jdbcType=INTEGER}
@@ -69,6 +71,29 @@
 			</if>
 			<if test="operatorCode != null">
 				and r.operatorCode=#{operatorCode,jdbcType=INTEGER}
+			</if>
+			<if test="cStatus != null">
+				<choose>
+					<when test="cStatus==1">
+						and exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+					</when>
+					<otherwise>
+						and not exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+					</otherwise>
+				</choose>
+			</if>
+			<if test="startDate!=null and endDate!=null">
+				<choose>
+					<when test="dateType==1">
+						and (expiryDate>=#{startDate,jdbcType=TIMESTAMP} and expiryDate&lt;=#{endDate,jdbcType=TIMESTAMP})
+					</when>
+					<when test="dateType==2">
+						and (insertDate>=#{startDate,jdbcType=TIMESTAMP} and insertDate&lt;=#{endDate,jdbcType=TIMESTAMP})
+					</when>
+					<when test="dateType==3">
+						and (openDate>=#{startDate,jdbcType=TIMESTAMP} and openDate&lt;=#{endDate,jdbcType=TIMESTAMP})
+					</when>
+				</choose>
 			</if>
 			<include refid="dId"></include>
 			order by r.cpid,r.cpchannelid

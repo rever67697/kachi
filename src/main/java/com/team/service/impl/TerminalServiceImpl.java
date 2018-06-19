@@ -1,9 +1,6 @@
 package com.team.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.team.model.Country;
 import org.apache.poi.ss.usermodel.Row;
@@ -11,6 +8,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +31,9 @@ import com.team.util.CommonUtil;
 @Service
 public class TerminalServiceImpl extends BaseService implements TerminalService{
 
+	@Value("${sendWiFiPass}")
+	public String sendWiFiPass;
+
 	@Autowired
 	private TerminalDao terminalDao;
 	
@@ -43,8 +44,8 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 	 *@return
 	 *return
 	 */
-	public ResultList getTerminalList(Integer departmentId,Integer dId, Integer tsid,
-			Integer status,Integer activated, int page, int rows) {
+	public ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid,
+									  Integer status, Integer activated, Date startDate, Date endDate, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
@@ -52,6 +53,8 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		map.put("tsid", tsid);
 		map.put("status", status);
 		map.put("activated", activated);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
 		List<Terminal> list = terminalDao.getTerminalList(map);
 		PageInfo<Terminal> pageInfo = new PageInfo<Terminal>(list);
 		return new ResultList(pageInfo.getTotal(), list);
@@ -180,5 +183,20 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		return super.successTip();
 	}
 
-	
+    @Override
+    public ReturnMsg updateStatus(Integer tsid) {
+		int count = terminalDao.updateStatus(tsid);
+		return count>0?super.successTip():super.errorTip();
+    }
+
+	@Override
+	public ReturnMsg updateWiFiPass(Integer tsid) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("tsid",tsid);
+		map.put("sendWiFiPass",sendWiFiPass);
+		int count = terminalDao.updateWiFiPass(map);
+		return count>0?super.successTip():super.errorTip();
+	}
+
+
 }

@@ -49,36 +49,6 @@
 
   </body>
 
-  <!--<body>-->
-  		<!--<form id="queryForm">-->
-	  		<!--<table class="table">-->
-	  			<!--<tr>-->
-	  				<!--<th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>-->
-	  				<!--<th>所属部门：</th><td><select name="departmentId"></select></td>-->
-	  				<!--<th>IMSI码：</th><td><input name="imsi" placeholder="请输入IMSI码" class="onlyNumber"/></td>-->
-	  				<!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
-	  			<!--</tr>-->
-	  		<!--</table>-->
-	  	<!--</form>-->
-	  	<!--<div id="dg"></div>-->
-	  	<!---->
-	  	<!--<div id="detailDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">-->
-	  		<!--<table class="table readOnly">-->
-	  			<!--<tr><td>终端编号</td><td><input name="tsid"/></td></tr>-->
-	  			<!--<tr><td>IMSI码</td><td><input name="imsi"/></td></tr>-->
-	  			<!--<tr><td>MCC</td><td><input name="mcc"/></td></tr>-->
-	  			<!--<tr><td>最后心跳时间</td><td><input name="beatTime"/></td></tr>-->
-	  			<!--<tr><td>选卡时间</td><td><input name="date"/></td></tr>-->
-	  			<!--<tr><td>是否是在归属地</td><td><select name="reserve"><option value=""></option><option value="0">是</option><option value="1">否</option></select></td></tr>-->
-	  			<!--<tr><td>副卡IMSI</td><td><input name="eCardImsi"/></td></tr>-->
-	  			<!--<tr><td>副卡时延</td><td><input name="eCardDuration"/></td></tr>-->
-	  			<!--<tr><td>当前版本</td><td><input name="runVersion"/></td></tr>-->
-	  			<!--<tr><td>国家代码</td><td><input name="vCountryCode"/></td></tr>-->
-	  			<!--<tr><td>国家</td><td><input name="countryName"/></td></tr>-->
-	  			<!--<tr><td>所属部门</td><td><input name="departmentName"/></td></tr>-->
-	  		<!--</table>-->
-	  	<!--</div>-->
-  <!--</body>-->
   <script type="text/javascript">
   	var options={
 			title:'终端设备列表',
@@ -90,7 +60,7 @@
 			         	{field:'imsi',title:'IMSI码',width:120},
 			         	{field:'mcc',title:'MCC码',width:100},
 			         	{field:'groupKey',title:'GROUPKEY',width:120},
-			         	{field:'beatTime',title:'最后心跳时间',width:150},
+			         	{field:'beatTime',title:'最后通讯时间',width:150},
 			         	{field:'date',title:'选卡时间',width:150},
 			         	{field:'reserve',title:'是否是在归属地',width:100,formatter:function(value,rec,index){
 			         		value = (value+'').replace('null','');
@@ -109,7 +79,6 @@
 			scrollbarSize:0,
 			striped:true,
 			fit:true
-//			height:window.innerHeight-50
 		};
 		
   
@@ -172,5 +141,31 @@
             $.messager.alert("提示", "请选择其中一条信息", "info");
         }
   	}
+
+    function doReset() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            $('#dg').datagrid('loading');
+            $.post(kcJs.fn.getContextPath()+'/terminal/updateWiFiPass',{tsid:selectRows[0].tsid},function (data) {
+                $.messager.alert('提示',data.msg);
+                $('#dg').datagrid('loaded');
+            },'json');
+        }else {
+            $.messager.alert("提示", "请选择一条信息", "info");
+        }
+    }
+
+    function doOffline() {
+        var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+            $('#dg').datagrid('loading');
+            $.post(kcJs.fn.getContextPath()+'/terminal/updateStatus',{tsid:selectRows[0].tsid},function (data) {
+                $.messager.alert('提示',data.msg);
+                $('#dg').datagrid('loaded');
+            },'json');
+        }else {
+            $.messager.alert("提示", "请选择一条信息", "info");
+        }
+    }
   </script>
 </html>

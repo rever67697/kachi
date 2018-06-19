@@ -72,6 +72,9 @@ public class Terminal implements Serializable{
 
 	private String sendWiFiPass;//发下给终端更新的WiFi密码
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date createDate;
+
 	public Long getAllowFlow() {
 		return allowFlow;
 	}
@@ -338,6 +341,14 @@ public class Terminal implements Serializable{
 
 	public void setSendWiFiPass(String sendWiFiPass) {
 		this.sendWiFiPass = sendWiFiPass;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override

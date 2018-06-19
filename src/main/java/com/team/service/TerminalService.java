@@ -3,6 +3,7 @@ package com.team.service;
 
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +19,8 @@ import com.team.model.Terminal;
  */
 public interface TerminalService {
 	
-	public ResultList getTerminalList(Integer departmentId,Integer dId,Integer tsid,Integer status,
-			Integer activated,int page,int rows);
+	public ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid, Integer status,
+									  Integer activated, Date startDate, Date endDate,int page, int rows);
 
 	public ResultList getSelectedList(String terminalList);
 
@@ -32,5 +33,9 @@ public interface TerminalService {
 	public void insertBatch(List<Terminal> list);
 	
 	public ReturnMsg updateDepartment(String ids,Integer departmentId);
+
+	public ReturnMsg updateStatus(Integer tsid);
+
+	public ReturnMsg updateWiFiPass(Integer tsid);
 	
 }

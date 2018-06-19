@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="../js/common.js"></script>
 	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="../js/laydate/laydate.js"></script>
   </head>
   <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
 
@@ -18,22 +19,26 @@
 	  <form id="queryForm">
 		  <table class="table">
 			  <tr>
-				  <th>编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
+				  <th>编号：</th><td width="100px"><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
 				  <th>状态：</th>
-				  <td><select name="status">
+				  <td width="100px"><select name="status">
 					  <option value="">全部</option><option value="0">正常</option><option value="1">未初始化</option>
 					  <option value="2">停用</option><option value="3">注销</option>
 				  </select>
 				  </td>
-				  <th>激活状态：</th>
-				  <td><select name="activated">
-					  <option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
-				  </select>
-				  </td>
+				  <!--<th>激活状态：</th>-->
+				  <!--<td><select name="activated">-->
+					  <!--<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>-->
+				  <!--</select>-->
+				  <!--</td>-->
 				  <th>部门：</th>
 				  <td><select name="departmentId"><option value="">全部</option></select></td>
-				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+				  <th>激活时间：</th>
+				  <td><input readonly="readonly" id="dateRange" style="width:95%"/></td>
+				  <td width="80px"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 			  </tr>
+			  <!--<tr>-->
+			  <!--</tr>-->
 		  </table>
 	  </form>
   </div>
@@ -171,14 +176,18 @@
 			         	{field:'validityDate',title:'有效期截止时间',width:120,formatter: function(value,row,index){
                             return '<div class="chargeDiv">'+(value?value:'')+'</div>';
                         }},
-			         	{field:'note',title:'备注',width:140}
+						{field:'abc',title:'剩余天数',width:70,formatter: function(value,row,index){
+						    return kcJs.fn.getRemainTime(row.validityDate);
+						}},
+			         	{field:'note',title:'备注',width:140},
+			         	{field:'createDate',title:'激活时间',width:120}
 					]],
 			toolbar: kcJs.fn.getFunctions(),
 			url:kcJs.fn.getContextPath()+'/terminal/list',
 			iconCls:'icon-tip',
 			nowrap:false,
 			pagination:true,
-			pageList:[15,30],
+			pageList:[20,30,50],
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
@@ -217,10 +226,18 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			fit:true
-		};	
-		
-  
-	$(function(){
+		};
+
+
+    //日期时间范围
+    laydate.render({
+        elem: '#dateRange',
+        type: 'datetime',
+        range: '至',
+		max:new Date().format("yyyy-MM-dd")
+    });
+
+    $(function(){
 		$('#dg').datagrid(options);
 		
 		$('#uploadDialog').dialog({
@@ -286,7 +303,13 @@
 	});
 	
 	function doQuery(){
-  		options.queryParams = $('#queryForm').serializeObject();
+        options.queryParams = $('#queryForm').serializeObject();
+        var dateRange = $('#dateRange').val();
+  		if(dateRange){
+  		    var dates = dateRange.split(" 至 ");
+  		    options.queryParams.startDate = dates[0];
+  		    options.queryParams.endDate = dates[1];
+		}
   		$('#dg').datagrid(options);
   	}
   
@@ -465,6 +488,9 @@
         if (selectRows.length > 0 && selectRows.length == 1) {
             $('#chargeForm')[0].reset();
 			var rowData = selectRows[0];
+			if(rowData.allowFlow && rowData.allowFlow<=0){
+                rowData.allowFlow=0;
+			}
             kcJs.fn.autoFillData($('#chargeDialog'),rowData);
             $('#chargeForm [name=oriFlow]').val(rowData.allowFlow);
             $('#chargeForm [name=oriDate]').val(rowData.validityDate);
@@ -513,7 +539,7 @@
 		oriFlow = oriFlow?oriFlow:'0';
 		var selectFlow = $('#chargeForm [name=selectFlow]').val();
 
-		var autualFlow = parseFloat(oriFlow)+parseFloat(selectFlow);
+		var autualFlow = parseFloat(parseFloat(oriFlow)+parseFloat(selectFlow)).toFixed(2);
 		$('#chargeForm [name=allowFlow]').val(autualFlow);
 //		$('#chargeForm [name=chargeFlow]').val(selectFlow);
     }
@@ -533,5 +559,7 @@
 		$('#chargeForm [name=allowFlow]').val('0');
 		$('#chargeForm [name=validityDate]').val('');
     }
+    
+
   </script>
 </html>

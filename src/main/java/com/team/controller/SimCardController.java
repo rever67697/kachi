@@ -20,6 +20,7 @@ import com.team.vo.ReturnMsg;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,9 +48,9 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(SimCardDTO simCard,int page,int rows,HttpServletRequest request){
+	public ResultList list(SimCardDTO simCard,Integer dateType, Date startDate,Date endDate,int page, int rows, HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getSimCardList(simCard,dId, page, rows);
+		return simCardService.getSimCardList(simCard,dId,dateType,startDate,endDate ,page, rows);
 	}
 
 	@GetMapping("/getCsv")
