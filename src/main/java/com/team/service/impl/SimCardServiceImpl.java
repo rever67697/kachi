@@ -23,8 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -116,6 +115,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("dateType",dateType);
 		map.put("startDate",startDate);
 		map.put("endDate",endDate);
+		map.put("packageId",simCard.getPackageId());
 		List<SimCard> list = simCardDao.getSimCardList(map);
 
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
@@ -123,7 +123,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	}
 
 	@Override
-	public File getCsv(SimCardDTO simCard,Integer dId) throws  Exception{
+	public File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
@@ -132,6 +132,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("imsi", simCard.getImsi());
 		map.put("countryCode",simCard.getCountryCode());
 		map.put("operatorCode",simCard.getOperatorCode());
+		map.put("cStatus",simCard.getcStatus());
+		map.put("dateType",dateType);
+		map.put("startDate",startDate);
+		map.put("endDate",endDate);
+		map.put("packageId",simCard.getPackageId());
 
 		Field[] fields = SimCard.class.getDeclaredFields();
 		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
@@ -141,8 +146,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 		File file = new File(parentFile,System.currentTimeMillis()+".csv");
 
-//		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
-		FileWriter writer = new FileWriter(file);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"GBK"));
+//		FileWriter writer = new FileWriter(file);
 		for (Field field : fields) {
 			writer.write("\""+field.getName()+"\",");
 		}
@@ -151,7 +156,19 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			for (Map<String, Object> stringObjectMap : list) {
 				for (Field field : fields) {
 					if (stringObjectMap.get(field.getName().toUpperCase()) != null){
-						writer.write("\""+stringObjectMap.get(field.getName().toUpperCase()).toString()+"\",");
+
+						String value = stringObjectMap.get(field.getName().toUpperCase()).toString();
+						boolean quoteFlag = false;//标记是否添加过双引号
+
+						if(value.contains("\"")){ //若发现有双引号  需要将字符串中的一个双引号替换为两个 并且需前后加双引号
+							value = value.replaceAll("\"","\"\"");
+							value = "\"" + value + "\"";
+							quoteFlag = true;
+						}
+						if(value.contains(",") && !quoteFlag){ //若发现有逗号  需前后加引号
+							value = "\"" + value + "\"";
+						}
+						writer.write(value+",");
 					}else{
 						writer.write("\" \",");
 					}

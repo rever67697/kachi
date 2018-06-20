@@ -76,6 +76,8 @@
                                 </select></td>
                                 <th>所在卡池：</th>
                                 <td><select name="cpId"></select></td>
+                                <td rowspan="3"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
+                                                   plain="true" onclick="doQuery()">查 询</a></td>
                             </tr>
                             <tr>
                                 <th>国家：</th>
@@ -94,14 +96,15 @@
                                     <option value="1">占用</option>
                                     <option value="0">空闲</option>
                                 </select></td>
+                                <th>套餐：</th>
+                                <td><select name="packageId"></select></td>
                                 <th><select name="dateType">
                                     <option value="1">有效期截卡时间</option>
                                     <option value="2">插入时间</option>
                                     <option value="3">开卡日期</option>
                                 </select></th>
                                 <td><input readonly="readonly" id="dateRange" style="width:95%"/></td>
-                                <td colspan="2"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
-                                                   plain="true" onclick="doQuery()">查 询</a></td>
+
                             </tr>
                         </table>
                     </form>
@@ -340,7 +343,7 @@
             {field: 'ck', checkbox: true},
             {field: 'id', title: 'SIM卡id', hidden: true},
             {field: 'imsi', title: 'IMSI', width: 120},
-            {field: 'number', title: '卡号', width: 120},
+//            {field: 'number', title: '卡号', width: 120},
             {field: 'iccid', title: 'ICCID', width: 150},
             {
                 field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {
@@ -456,11 +459,15 @@
         });
 
         kcJs.fn.initSelect({"container": $('#queryForm [name=cpId]'), "url": 'getSimPoolDic', "nullDesc": "全部"});
+
+        kcJs.fn.initSelect({"container": $('#queryForm [name=packageId]'), "url": 'getPackageDic', "nullDesc": "全部"});
+
         kcJs.fn.initSelect({
             "container": $('#queryForm [name=departmentId]'),
             "url": 'getDepartmentDic',
             "nullDesc": "全部"
         });
+
         kcJs.fn.initSelect({
             "container": $('#queryForm [name=countryCode]'),
             "url": 'getCountryDic',

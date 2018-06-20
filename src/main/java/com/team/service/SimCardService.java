@@ -27,7 +27,7 @@ public interface SimCardService {
 	
 	public ResultList getSimCardList(SimCardDTO simCard, Integer dId,Integer dateType, Date startDate, Date endDate,int page, int rows);
 
-	public File getCsv(SimCardDTO simCard,Integer dId) throws Exception;
+	public File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws Exception;
 	
 	public ReturnMsg getOutlineInfo(Integer dId);
 

@@ -55,10 +55,10 @@ public class SimCardController {
 
 	@GetMapping("/getCsv")
 	@PermissionLog
-	public void getCsv(SimCardDTO simCard, HttpServletRequest request, HttpServletResponse response) throws  Exception{
+	public void getCsv(SimCardDTO simCard,Integer dateType, Date startDate,Date endDate, HttpServletRequest request, HttpServletResponse response) throws  Exception{
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 
-		File file = simCardService.getCsv(simCard,dId);
+		File file = simCardService.getCsv(simCard,dId,dateType,startDate,endDate);
 
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
