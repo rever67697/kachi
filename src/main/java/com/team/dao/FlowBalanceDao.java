@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
  * @Description :
  * @Date Created in 下午4:26 2018/3/26
  */
-public interface FLowBalanceDao {
+public interface FlowBalanceDao {
 
     int save(FlowBalance flowBalance);
 

@@ -66,6 +66,7 @@ var kcJs=
                            {value:"指定卡管理",name:"指定卡管理"},
                            {value:"副卡管理",name:"副卡管理"},
                            {value:"App版本管理",name:"App版本管理"},
+                           {value:"运营商配置",name:"运营商配置"},
                           ];
 	//终端充值--充值流量
 	var v_charge_flow=[

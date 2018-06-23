@@ -1,6 +1,6 @@
 package com.team.service.impl;
 
-import com.team.dao.FLowBalanceDao;
+import com.team.dao.FlowBalanceDao;
 import com.team.dao.TerminalChargeRecordDao;
 import com.team.model.FlowBalance;
 import com.team.model.TerminalChargeRecord;
@@ -23,22 +23,22 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
     @Autowired
     private TerminalChargeRecordDao terminalChargeRecordDao;
     @Autowired
-    private FLowBalanceDao fLowBlanceDao;
+    private FlowBalanceDao flowBlanceDao;
 
     @Override
     public ReturnMsg charge(TerminalChargeRecord record) {
 
         //获取源流量和日期参数
-        FlowBalance origin = fLowBlanceDao.findByTsid(record.getTsid());
+        FlowBalance origin = flowBlanceDao.findByTsid(record.getTsid());
 
         //1.保存FlowBlance
         FlowBalance flowBalance = new FlowBalance();
         BeanUtils.copyProperties(record, flowBalance);
 
         if(origin!=null){
-            fLowBlanceDao.update(flowBalance);
+            flowBlanceDao.update(flowBalance);
         }else {
-            fLowBlanceDao.save(flowBalance);
+            flowBlanceDao.save(flowBalance);
         }
         //2.保存充值记录
 

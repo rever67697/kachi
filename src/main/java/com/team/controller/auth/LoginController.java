@@ -78,7 +78,7 @@ public class LoginController {
 		return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 
-	@GetMapping("/index")
+	@GetMapping({"/index","/"})
 	public String index(Model model){
 		model.addAttribute("name","wzh");
 		return "index";

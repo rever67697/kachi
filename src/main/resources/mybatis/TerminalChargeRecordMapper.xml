@@ -4,7 +4,7 @@
 	
 	<select id="list" resultType="com.team.model.TerminalChargeRecord">
 		select *
-		from m_terminal_charge_record;
+		from m_terminal_charge_record
 		where tsid=#{tsid,jdbcType=INTEGER}
 		order by createDate desc
 	</select>
