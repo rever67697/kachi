@@ -65,4 +65,6 @@ public interface TerminalDao {
 
 	public int updateWiFiPass(Map<String,Object> map);
 
+	public Terminal getById(@Param("tsid") Integer tsid);
+
 }

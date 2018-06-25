@@ -7,11 +7,16 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.Gson;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.UserAgent;
+import eu.bitwalker.useragentutils.Version;
 import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,7 +32,9 @@ import com.team.model.auth.TbAuthUser;
 public class CommonUtil {
 	private static char[] codes = { '1','2', '3', '4', '5', '6', '7', '8', '9','0'};
 	
-	private static DecimalFormat df = new DecimalFormat("0"); 
+	private static DecimalFormat df = new DecimalFormat("0");
+
+	private static Gson gson = new Gson();
 	/**
 	 * 只要用作把Integer参数放进Map中，如果参数为空，返回null
 	 *@param str
@@ -387,5 +394,30 @@ public class CommonUtil {
 			}
 		}
 		return list;
+	}
+
+	public static String getParamDesc(HttpServletRequest request){
+		Map<String,Object> result = new HashMap<>();
+		java.util.Enumeration params = request.getParameterNames();
+		while (params.hasMoreElements()) {
+			String paramName=(String) (params.nextElement());
+			if(CommonUtil.StringIsNull(request.getParameter(paramName))
+					|| "passWord".equals(paramName)
+					|| "repeatPwd".equals(paramName)){
+				continue;
+			}
+			result.put(paramName, URLDecoder.decode(request.getParameter(paramName)));
+
+		}
+		return gson.toJson(result);
+	}
+
+	public static String browserInfo(HttpServletRequest request){
+		//获取浏览器信息
+		Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
+		//获取浏览器版本号
+		Version version = browser.getVersion(request.getHeader("User-Agent"));
+		String info = (browser==null?"":browser.getName())+"/"+(version==null?"":version.getVersion());
+		return info;
 	}
 }

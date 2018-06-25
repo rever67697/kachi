@@ -128,4 +128,9 @@
 		set sendWiFiPass=#{sendWiFiPass,jdbcType=VARCHAR}
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
+	
+	<select id="getById" resultType="com.team.model.Terminal">
+		select * from m_terminal
+		where tsid = #{tsid,jdbcType=INTEGER}
+	</select>
 </mapper>

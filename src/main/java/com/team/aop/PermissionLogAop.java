@@ -44,8 +44,6 @@ public class PermissionLogAop {
 	@Autowired
 	private OperationLogDao operationLogDao;
 
-	private Gson gson = new Gson();
-
 	@Pointcut(value="@annotation(com.team.annotation.PermissionLog)")
 	public void cutService(){
 		
@@ -122,7 +120,7 @@ public class PermissionLogAop {
 			
 			//下面是正式开启一个异步的任务来执行这个记录日志
 			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation,
-					getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request),browserInfo(request));
+					CommonUtil.getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request),CommonUtil.browserInfo(request));
 			LogManager.me().executeLog(new TimerTask() {
 				@Override
 				public void run() {
@@ -134,30 +132,6 @@ public class PermissionLogAop {
 		return result;
 	}
 
-	private String getParamDesc(HttpServletRequest request){
-		Map<String,Object> result = new HashMap<>();
-		java.util.Enumeration params = request.getParameterNames();
-		while (params.hasMoreElements()) {
-			String paramName=(String) (params.nextElement());
-			if(CommonUtil.StringIsNull(request.getParameter(paramName))
-					|| "passWord".equals(paramName)
-					|| "repeatPwd".equals(paramName)){
-				continue;
-			}
-			result.put(paramName,URLDecoder.decode(request.getParameter(paramName)));
-
-		}
-		return gson.toJson(result);
-	}
-
-	private String browserInfo(HttpServletRequest request){
-		//获取浏览器信息
-		Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
-		//获取浏览器版本号
-		Version version = browser.getVersion(request.getHeader("User-Agent"));
-		String info = (browser==null?"":browser.getName())+"/"+(version==null?"":version.getVersion());
-		return info;
-	}
 
 	public static void main(String[] args){
 		System.out.println("/simcard/getByPool".matches("simcard/getByPool"));
