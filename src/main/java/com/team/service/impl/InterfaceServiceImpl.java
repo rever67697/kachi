@@ -57,8 +57,8 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         List<TerminalChargeRecord> terminalChargeRecordList = terminalChargeRecordDao.list(tsid);
 
         Map<String,Object> map = new HashMap<>();
-        map.put("终端流水",costDayList);
-        map.put("终端充值记录",terminalChargeRecordList);
+        map.put("flowRecord",costDayList);
+        map.put("chargeRecord",terminalChargeRecordList);
 
         return successTip(map);
     }
@@ -100,6 +100,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         //3.填充充值数据
         terminalChargeRecord.setAllowFlow(flowBalance.getAllowFlow());
         terminalChargeRecord.setValidityDate(flowBalance.getValidityDate());
+        terminalChargeRecord.setCreateDate(new Date());
 
         //4.保存终端信息
         if(flowBalance.getId()!=null){

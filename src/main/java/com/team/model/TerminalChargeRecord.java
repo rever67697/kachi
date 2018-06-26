@@ -1,6 +1,7 @@
 package com.team.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,7 +22,7 @@ public class TerminalChargeRecord implements Serializable {
     private Long allowFlow;
 
     private Integer chargeDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date validityDate;
 
     private String operator;
@@ -29,6 +30,7 @@ public class TerminalChargeRecord implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;
 
+    @JsonIgnore
     private String note;
 
     public String getNote() {
