@@ -5,19 +5,16 @@ import com.team.model.TerminalChargeRecord;
 import com.team.model.auth.OperationLog;
 import com.team.service.InterfaceService;
 import com.team.service.impl.BaseService;
-import com.team.util.CommonUtil;
-import com.team.util.IPUtils;
-import com.team.util.LogManager;
+import com.team.util.*;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * @Author : wuzhiheng
@@ -36,14 +33,14 @@ public class InterfaceController  extends BaseService{
 
     @RequestMapping("/interface")
     @ResponseBody
-    public ReturnMsg bussiness(String name, TerminalChargeRecord terminalChargeRecord,HttpServletRequest request){
+    public ReturnMsg bussiness(String name,
+                               @RequestParam(name = "time",defaultValue = "0") long time ,
+                               TerminalChargeRecord terminalChargeRecord,
+                               HttpServletRequest request){
 
-        if(!checkName(name)){
-            return errorTip("接口名有误");
-        }
-
-        if(terminalChargeRecord.getTsid()==null){
-            return errorTip("参数有误（终端编号）");
+        ReturnMsg checkResult = validate(name, time, terminalChargeRecord, request);
+        if(checkResult.getCode().equals(IConstant.CODE_ERROR)){
+            return checkResult;
         }
 
         ReturnMsg returnMsg = null;
@@ -55,7 +52,7 @@ public class InterfaceController  extends BaseService{
         }else if("tCharge".equals(name)){//终端充值
 
             if(terminalChargeRecord.getChargeFlow()==null && terminalChargeRecord.getChargeDate()==null){
-                return errorTip("参数有误（充值流量或充值天数）");
+                return errorTip("参数有误");
             }
 
             returnMsg = interfaceService.tCharge(terminalChargeRecord);
@@ -65,9 +62,6 @@ public class InterfaceController  extends BaseService{
         return returnMsg;
     }
 
-    public boolean checkName(String name){
-        return INTEFACE_NAME.contains(name);
-    }
 
     public void saveLog(HttpServletRequest request){
         final OperationLog operationLog = new OperationLog(null, "接口", request.getParameter("name"),
@@ -78,6 +72,57 @@ public class InterfaceController  extends BaseService{
                 operationLogDao.saveLog(operationLog);
             }
         });
+    }
+
+    public ReturnMsg validate(String name,long time,TerminalChargeRecord record,HttpServletRequest request){
+
+
+        if(!INTEFACE_NAME.contains(name)){
+            return errorTip("请求的接口不存在");
+        }
+
+        if(time<(System.currentTimeMillis()-5*60*1000)){
+            return errorTip("请求超时");
+        }
+
+        if(record.getTsid()==null){
+            return errorTip("参数有误");
+        }
+
+        Enumeration params = request.getParameterNames();
+        List<String> list = new ArrayList<>();
+
+        String verify_source = "";
+
+        while (params.hasMoreElements()){
+            String paramName = (String) params.nextElement();
+            if(!"checkCode".equals(paramName)){
+                list.add(paramName+"="+request.getParameter(paramName));
+            }
+        }
+
+        Collections.sort(list);
+
+        for (String s : list) {
+            verify_source+=s+"&";
+        }
+
+        verify_source = verify_source.substring(0,verify_source.length()-1);
+
+        String verify_check_code = MD5Utils.encrypt(verify_source);
+
+        if(!verify_check_code.equals(request.getParameter("checkCode"))){
+            return errorTip("校验失败");
+        }
+
+
+        return successTip();
+
+    }
+
+    public static void main(String[] args){
+        System.out.println(System.currentTimeMillis());
+        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time=1530093500948&tsid=10160266"));
     }
 
 }
