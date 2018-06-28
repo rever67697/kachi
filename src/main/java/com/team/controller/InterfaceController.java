@@ -57,6 +57,8 @@ public class InterfaceController  extends BaseService{
 
             returnMsg = interfaceService.tCharge(terminalChargeRecord);
         }
+
+        //保存日志
         saveLog(request);
 
         return returnMsg;
@@ -64,7 +66,7 @@ public class InterfaceController  extends BaseService{
 
 
     public void saveLog(HttpServletRequest request){
-        final OperationLog operationLog = new OperationLog(null, "接口", request.getParameter("name"),
+        final OperationLog operationLog = new OperationLog(null, "接口管理", request.getParameter("name"),
                 CommonUtil.getParamDesc(request),null, IPUtils.getIpAddr(request),CommonUtil.browserInfo(request));
         LogManager.me().executeLog(new TimerTask() {
             @Override
@@ -112,7 +114,7 @@ public class InterfaceController  extends BaseService{
         String verify_check_code = MD5Utils.encrypt(verify_source);
 
         if(!verify_check_code.equals(request.getParameter("checkCode"))){
-            return errorTip("校验失败");
+            return errorTip("校验失败-checkCode");
         }
 
 
@@ -121,8 +123,11 @@ public class InterfaceController  extends BaseService{
     }
 
     public static void main(String[] args){
-        System.out.println(System.currentTimeMillis());
-        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time=1530093500948&tsid=10160266"));
+        long time = System.currentTimeMillis();
+        System.out.println(time);
+//        System.out.println("name=qtb&time="+time+"&tsid=10160266");
+//        System.out.println("name=qti&time="+time+"&tsid=10160266");
+        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
     }
 
 }
