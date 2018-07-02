@@ -44,4 +44,6 @@ public interface SimCardService {
     public ReturnMsg getSimcardList(MultipartFile file);
 
 	public void insertBatch(List<SimCard> list);
+
+	public ResultList listProblemCard();
 }

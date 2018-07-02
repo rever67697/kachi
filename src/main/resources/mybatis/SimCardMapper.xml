@@ -240,9 +240,9 @@
 		)
 	</update>
 	
-	<update id="updateByImsi">
+	<update id="updateStatusByImsi" parameterType="java.util.Map">
 		update m_simcard
-		set status=2
+		set status=#{status,jdbcType=INTEGER}
 		where imsi=#{imsi,jdbcType=BIGINT}
 	</update>
 
@@ -334,4 +334,16 @@
 		tempImei = #{tempImei,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
+	<select id="getProblemCard" resultType="com.team.model.SimCard">
+		select distinct k.*
+		from m_select_card r
+		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute)
+		left join m_simcard k on r.imsi=k.imsi
+		where r.selectdate>subdate(current_timestamp,interval 1 day)
+		  and not exists (select 1 from m_terminal_sim_flow tsf where r.imsi=tsf.imsi and tsf.time>subdate(current_timestamp,interval 1 day))
+		  and t.time is null
+		  and r.imsi>0
+		order by 2
+	</select>
 </mapper>

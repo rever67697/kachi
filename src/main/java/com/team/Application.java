@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.context.request.RequestContextListener;
 
 import com.github.pagehelper.PageHelper;
@@ -34,6 +35,7 @@ import com.github.pagehelper.PageHelper;
 @SpringBootApplication			//@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan
 @MapperScan("com.team.dao")		//查找报指定包及其子包下面的dao接口
 @EnableCaching					//开启注解缓存
+@EnableScheduling               //开启定时
 public class Application{
 	private static Logger logger = Logger.getLogger(Application.class);
 

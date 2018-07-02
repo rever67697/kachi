@@ -106,13 +106,29 @@ public interface SimCardDao {
 	 */
 	public List<SimCard> getByPool(@Param("cpId") Integer cpId);
 
+	/**
+	 * 根据imsi获取卡
+	 * @param imsi
+	 * @return
+	 */
 	public SimCard getByImsi(@Param("imsi") Long imsi);
 
-	public int updateByImsi(@Param("imsi") Long imsi);
+	/**
+	 * 根据imsi更新statu
+	 * @param map
+	 * @return
+	 */
+	public int updateStatusByImsi(Map<String,Object> map);
 
 	public SimCard getById(@Param("id") Integer id);
 
 	public List<SimCard> getByPackage(@Param("packageId") Integer packageId);
 
     public int updateTempImei(SimCard simCard);
+
+	/**
+	 * 找出一天内的问题卡
+	 * @return
+	 */
+	public List<SimCard> getProblemCard();
 }

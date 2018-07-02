@@ -143,5 +143,10 @@ public class SimCardController {
 		}
 		return returnMsg;
 	}
+
+	@PostMapping("/listProblemCard")
+	public ResultList listProblemCard(){
+		return simCardService.listProblemCard();
+	}
 	
 }

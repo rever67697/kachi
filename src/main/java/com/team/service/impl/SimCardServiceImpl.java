@@ -835,7 +835,14 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 	}
 
-	private FlowMonth getNowFlowMonthByDB(long imsi, Date nowDate) {
+    @Override
+    public ResultList listProblemCard() {
+		List<SimCard> simCardList = simCardDao.getProblemCard();
+		ResultList resultList = new ResultList(simCardList!=null?simCardList.size():0,simCardList);
+        return resultList;
+    }
+
+    private FlowMonth getNowFlowMonthByDB(long imsi, Date nowDate) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("imsi",imsi);
 		map.put("nowDate",nowDate);

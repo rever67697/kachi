@@ -121,7 +121,10 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 				simCardDao.resetStatus(old);
 
 				//2.把修改后的imsi的状态改为指定
-				simCardDao.updateByImsi(readyTerminalSim.getImsi());
+				Map<String,Object> map = new HashMap<>();
+				map.put("imsi",readyTerminalSim.getImsi());
+				map.put("status",new Integer(2));
+				simCardDao.updateStatusByImsi(map);
 
 				SimCard simCard = simCardDao.getByImsi(old.getImsi());
 				//3.释放卡
