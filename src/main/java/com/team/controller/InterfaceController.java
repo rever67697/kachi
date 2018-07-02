@@ -83,7 +83,8 @@ public class InterfaceController  extends BaseService{
             return errorTip("请求的接口不存在");
         }
 
-        if(time<(System.currentTimeMillis()-5*60*1000)){
+        //请求一分钟内有效
+        if(time<(System.currentTimeMillis()-1*60*1000)){
             return errorTip("请求超时");
         }
 

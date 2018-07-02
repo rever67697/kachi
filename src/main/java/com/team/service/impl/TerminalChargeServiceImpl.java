@@ -45,6 +45,12 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         if(origin == null){
             origin = new FlowBalance();
         }
+
+        //如果原本的剩余流量小于0，当0处理
+        if(origin.getAllowFlow()<=0){
+            origin.setAllowFlow(0L);
+        }
+
         if(!origin.getAllowFlow().equals(record.getAllowFlow())){
             record.setChargeFlow(record.getAllowFlow()-origin.getAllowFlow());
         }
