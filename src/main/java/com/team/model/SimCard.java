@@ -98,7 +98,7 @@ public class SimCard implements Serializable{
 
 	private Long residueFlow;//本国流量剩余额度
 
-	private Integer cStatus;//当前卡在缓存里面的状态
+	private Integer cstatus;//当前卡在缓存里面的状态
 
 	public SimCard() {
 	}
@@ -437,12 +437,12 @@ public class SimCard implements Serializable{
 		this.maxFlow = maxFlow;
 	}
 
-	public Integer getcStatus() {
-		return cStatus;
+	public Integer getCstatus() {
+		return cstatus;
 	}
 
-	public void setcStatus(Integer cStatus) {
-		this.cStatus = cStatus;
+	public void setCstatus(Integer cstatus) {
+		this.cstatus = cstatus;
 	}
 
 	@Override

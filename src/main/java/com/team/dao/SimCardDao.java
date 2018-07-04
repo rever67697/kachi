@@ -3,6 +3,7 @@ package com.team.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.team.model.ProblemCard;
 import com.team.model.ReadyTerminalSim;
 import org.apache.ibatis.annotations.Param;
 
@@ -127,8 +128,16 @@ public interface SimCardDao {
     public int updateTempImei(SimCard simCard);
 
 	/**
-	 * 找出一天内的问题卡
+	 * 找出特定时间的问题卡
 	 * @return
 	 */
-	public List<SimCard> getProblemCard();
+	public List<SimCard> getProblemCard(Map<String,Object> map);
+
+	/**
+	 * 找出今天的问题卡
+	 * @return
+	 */
+	public List<ProblemCard> listProblemCard();
+
+	public int saveProblemCard(@Param("imsi") Long imsi);
 }

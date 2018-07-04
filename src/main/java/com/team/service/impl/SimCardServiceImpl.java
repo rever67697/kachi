@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -42,6 +43,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	private static final Cache simCache = CacheFactory .getCache(MConstant.MEM_SIM);
 	// 卡最后月流量缓存
 	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
+
+	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Autowired
 	private SimCardDao simCardDao;
@@ -139,45 +142,56 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("packageId",simCard.getPackageId());
 
 		Field[] fields = SimCard.class.getDeclaredFields();
-		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
+//		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
+		List<SimCard> list = simCardDao.getSimCardList(map);
 		File parentFile = new File("csv");
 		if(!parentFile.exists()){
 			parentFile.mkdir();
 		}
-		File file = new File(parentFile,System.currentTimeMillis()+".csv");
+		File file = new File(parentFile,System.currentTimeMillis()+".xls");
 
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"GBK"));
-//		FileWriter writer = new FileWriter(file);
-		for (Field field : fields) {
-			writer.write("\""+field.getName()+"\",");
+		OutputStream out = new FileOutputStream(file);
+
+		ExportExcelUtil<SimCard> exportExcelUtil = new ExportExcelUtil();
+		String[] headers = new String[fields.length];
+		for (int i = 0; i < fields.length; i++) {
+			headers[i] = fields[i].getName();
 		}
-		writer.write("\r\n");
-		if(CommonUtil.listNotBlank(list)){
-			for (Map<String, Object> stringObjectMap : list) {
-				for (Field field : fields) {
-					if (stringObjectMap.get(field.getName().toUpperCase()) != null){
+		exportExcelUtil.exportExcel("卡列表",headers,list,out,"yyyy-MM-dd HH:mm:ss");
 
-						String value = stringObjectMap.get(field.getName().toUpperCase()).toString();
-						boolean quoteFlag = false;//标记是否添加过双引号
-
-						if(value.contains("\"")){ //若发现有双引号  需要将字符串中的一个双引号替换为两个 并且需前后加双引号
-							value = value.replaceAll("\"","\"\"");
-							value = "\"" + value + "\"";
-							quoteFlag = true;
-						}
-						if(value.contains(",") && !quoteFlag){ //若发现有逗号  需前后加引号
-							value = "\"" + value + "\"";
-						}
-						writer.write(value+",");
-					}else{
-						writer.write("\" \",");
-					}
-				}
-				writer.write("\r\n");
-			}
-		}
-		writer.flush();
-		writer.close();
+//		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"GBK"));
+////		FileWriter writer = new FileWriter(file);
+//		for (Field field : fields) {
+//			writer.write("\""+field.getName()+"\",");
+//		}
+//		writer.write("\r\n");
+//		if(CommonUtil.listNotBlank(list)){
+//			for (Map<String, Object> stringObjectMap : list) {
+//				for (Field field : fields) {
+//					if (stringObjectMap.get(field.getName().toUpperCase()) != null){
+//
+//						String value = stringObjectMap.get(field.getName().toUpperCase()).toString();
+//						boolean quoteFlag = false;//标记是否添加过双引号
+//
+//						if(value.contains("\"")){ //若发现有双引号  需要将字符串中的一个双引号替换为两个 并且需前后加双引号
+//							value = value.replaceAll("\"","\"\"");
+//							value = "\"" + value + "\"";
+//							quoteFlag = true;
+//						}
+//						if(value.contains(",") && !quoteFlag){ //若发现有逗号  需前后加引号
+//							value = "\"" + value + "\"";
+//						}
+//						writer.write(value+",");
+//					}else{
+//						writer.write("\" \",");
+//					}
+//				}
+//				writer.write("\r\n");
+//			}
+//		}
+//		writer.flush();
+//		writer.close();
+		out.close();
 		return  file;
 	}
 
@@ -215,6 +229,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		//3.需要更新缓存里面的卡组信息
 		initGroupSim2Cache(simCard);
+
+		//如果修改了卡状态，改为了停用或者作废，需要把卡组状态设置为1
+		if((simCard.getStatus() == 1 || simCard.getStatus() ==4 ) && !simCard.getStatus().equals(oldSimCard.getStatus()) ){
+			refreshCacheStatus(simCard);
+		}
 
 		//4.更新卡缓存
 		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
@@ -797,8 +816,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 					continue;
 				}
 				try {
-					Long imsi = CommonUtil.getCellLongVal(row.getCell(0));
-					String tempImei = CommonUtil.getCellStringVal(row.getCell(1));
+					Long imsi = CommonUtil.getCellLongVal(row.getCell(1));
+					String tempImei = CommonUtil.getCellStringVal(row.getCell(38));
+
+					//处理长整数读取成科学计算法格式问题
+					if(tempImei.indexOf(".")>0 && tempImei.indexOf("E")>0){
+						tempImei = CommonUtil.getCellLongVal(row.getCell(38)).toString();
+					}
 
 					simCard  = new SimCard(imsi,tempImei);
 
@@ -837,7 +861,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
     @Override
     public ResultList listProblemCard() {
-		List<SimCard> simCardList = simCardDao.getProblemCard();
+		List<ProblemCard> simCardList = simCardDao.listProblemCard();
 		ResultList resultList = new ResultList(simCardList!=null?simCardList.size():0,simCardList);
         return resultList;
     }
@@ -1017,6 +1041,19 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		flowMonthDao.save(simFlowMonth);
 
 		return simFlowMonth;
+	}
+
+	private void refreshCacheStatus(SimCard simCard){
+		if(simCard.getStatus() == 0){
+			TerminalSim terminalSim = getTerminalSimBySim(simCard.getImsi());
+			if(terminalSim == null){
+				updateGroupSim2Cache(simCard,0);
+			}else {
+				updateGroupSim2Cache(simCard,1);
+			}
+		}else if(simCard.getStatus() == 1 || simCard.getStatus() == 4){
+			updateGroupSim2Cache(simCard,1);
+		}
 	}
 }
 

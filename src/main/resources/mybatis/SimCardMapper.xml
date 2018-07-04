@@ -43,7 +43,7 @@
 				   ,ifnull(pr.namecn,r.provincecode) provinceName
 		           ,t.maxFlow
 				   ,f.residueFlow
-				   ,case when r.status=2 or ts.tsid is not null then 1 else 0 end cStatus
+				   ,case when r.status in (1,2,4) or ts.tsid is not null then 1 else 0 end cStatus
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
@@ -78,10 +78,10 @@
 			<if test="cStatus != null">
 				<choose>
 					<when test="cStatus==1">
-						and exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+						and exists(select 1 from dual where r.status in (1,2,4) or ts.tsid is not null)
 					</when>
 					<otherwise>
-						and not exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+						and not exists(select 1 from dual where r.status in (1,2,4) or ts.tsid is not null)
 					</otherwise>
 				</choose>
 			</if>
@@ -143,7 +143,7 @@
 			,ifnull(pr.namecn,r.provincecode) PROVINCENAME
 		    ,t.MAXFLOW
 			,f.RESIDUEFLOW
-			,case when r.status=2 or ts.tsid is not null then 1 else 0 end CSTATUS
+			,case when r.status in (1,2,4) or ts.tsid is not null then 1 else 0 end CSTATUS
 		from m_simcard r
 		left join m_simpackage t on r.packageid=t.id and t.status=0
 		left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
@@ -178,10 +178,10 @@
 		<if test="cStatus != null">
 			<choose>
 				<when test="cStatus==1">
-					and exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+					and exists(select 1 from dual where r.status in (1,2,4) or ts.tsid is not null)
 				</when>
 				<otherwise>
-					and not exists(select 1 from dual where r.status=2 or ts.tsid is not null)
+					and not exists(select 1 from dual where r.status in (1,2,4) or ts.tsid is not null)
 				</otherwise>
 			</choose>
 		</if>
@@ -335,14 +335,28 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 
-	<select id="getProblemCard" resultType="com.team.model.SimCard">
+	<select id="getProblemCard" resultType="com.team.model.SimCard" parameterType="java.util.Map">
 		select distinct k.*
 		from m_select_card r
 		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type=0
 		left join m_simcard k on r.imsi=k.imsi
-		where r.selectdate>subdate(current_timestamp,interval 1 day)
+		where r.selectdate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
 		  and not exists (select 1 from m_terminal_sim_flow tsf where r.imsi=tsf.imsi and tsf.time>r.selectdate and tsf.type=0)
 		  and t.time is null
 		  and r.imsi>0
+		order by k.status desc
 	</select>
+	
+	<select id="listProblemCard" resultType="com.team.model.ProblemCard">
+		select distinct r.*,t.status
+		from tb_problem_card r ,m_simcard t
+		where r.imsi=t.imsi
+		  and r.createTime>=CURRENT_DATE
+	</select>
+	
+	<insert id="saveProblemCard" parameterType="com.team.model.ProblemCard">
+		insert into tb_problem_card
+		(imsi)
+		values(#{imsi,jdbcType=BIGINT})
+	</insert>
 </mapper>

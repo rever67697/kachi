@@ -312,11 +312,11 @@
                 <div id="uploadDialog" closed="true" style="padding:5px 20px;overflow:hidden;background:#FFF;"
                      iconCls="icon-user">
                     <table class="excel">
-                        <tr>
-                            <td colspan="2" align="right">
-                                <button class="common-btn" onclick="downloadFile()">下载模板</button>
-                            </td>
-                        </tr>
+                        <!--<tr>-->
+                            <!--<td colspan="2" align="right">-->
+                                <!--<button class="common-btn" onclick="downloadFile()">下载模板</button>-->
+                            <!--</td>-->
+                        <!--</tr>-->
                         <tr>
                             <td align="right">上传路径：</td>
                             <td><input type="file" name="file" id="file"/></td>
@@ -353,7 +353,7 @@
             },
 
             {
-                field: 'cStatus', title: '使用状态', width: 60, formatter: function (value, rec, index) {
+                field: 'cstatus', title: '使用状态', width: 60, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getUsedStatus(value + '');
                 return status ? '<div style="border-radius:8px;color:#fff;width:50px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
@@ -761,7 +761,6 @@
 
     function getCsv() {
         var url = kcJs.fn.getContextPath() + '/simcard/getCsv?' + $('#queryForm').serialize();
-        console.log($('#queryForm').serialize());
         window.location.href = url;
     }
 
