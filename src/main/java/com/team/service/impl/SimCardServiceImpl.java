@@ -44,7 +44,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	// 卡最后月流量缓存
 	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
 
-	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private ExportExcelUtil<SimCard> exportExcelUtil = new ExportExcelUtil();
 
 	@Autowired
 	private SimCardDao simCardDao;
@@ -152,7 +152,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		OutputStream out = new FileOutputStream(file);
 
-		ExportExcelUtil<SimCard> exportExcelUtil = new ExportExcelUtil();
 		String[] headers = new String[fields.length];
 		for (int i = 0; i < fields.length; i++) {
 			headers[i] = fields[i].getName();
@@ -191,6 +190,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 //		}
 //		writer.flush();
 //		writer.close();
+
 		out.close();
 		return  file;
 	}
