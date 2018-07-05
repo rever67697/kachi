@@ -10,9 +10,13 @@ import java.util.Date;
  */
 public class QuartzCron implements Serializable {
 
-    private Integer minute;
+    private Integer minute;//扫描时间间隔，针对选卡时间
 
-    private String cronStr;
+    private String cronStr;//定时任务描述
+
+    private Integer status;//是否扫描
+
+    private Integer isHandle;//是否处理问题卡
 
     private Date lastTime;
 
@@ -38,5 +42,21 @@ public class QuartzCron implements Serializable {
 
     public void setLastTime(Date lastTime) {
         this.lastTime = lastTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getIsHandle() {
+        return isHandle;
+    }
+
+    public void setIsHandle(Integer isHandle) {
+        this.isHandle = isHandle;
     }
 }

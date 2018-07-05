@@ -66,20 +66,23 @@ public class ScheduleTask {
             for (SimCard simCard : simCardList) {
                 logger.error("处理问题卡:"+simCard.getImsi()+" ，状态为："+simCard.getStatus());
                 simCardDao.saveProblemCard(simCard.getImsi());
-                //把卡状态改为1-停用
-//                if(simCard.getStatus()!=1 && simCard.getStatus()!=4){
-//                    simCard.setStatus(1);
-//                    //更新status
-//                    map.put("imsi",simCard.getImsi());
-//                    map.put("status",1);
-//                    simCardDao.updateStatusByImsi(map);
-//
-//                    //刷新卡组缓存
-//                    simCardService.updateGroupSim2Cache(simCard,1);
-//                    //刷新卡缓存
-//                    simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-//                            CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-//                }
+
+                if (quartzCron.getIsHandle() == 0){
+                    //把卡状态改为1-停用
+                    if(simCard.getStatus()!=1 && simCard.getStatus()!=4){
+                        simCard.setStatus(1);
+                        //更新status
+                        map.put("imsi",simCard.getImsi());
+                        map.put("status",1);
+                        simCardDao.updateStatusByImsi(map);
+
+                        //刷新卡组缓存
+                        simCardService.updateGroupSim2Cache(simCard,1);
+                        //刷新卡缓存
+                        simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+                                CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+                    }
+                }
             }
         }
 

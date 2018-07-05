@@ -10,6 +10,8 @@
 		update tb_quartz_cron
 		set `minute` = #{minute,jdbcType=INTEGER},
 			cronStr= #{cronStr,jdbcType=VARCHAR},
+			status = #{status,jdbcType=INTEGER},
+			isHandle = #{isHandle,jdbcType=INTEGER},
 			lasttime = now()
 	</update>
 

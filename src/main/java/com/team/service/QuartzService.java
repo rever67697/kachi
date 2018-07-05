@@ -32,15 +32,19 @@ public class QuartzService extends BaseService{
     @Autowired
     private QuartzCronDao quartzCronDao;
 
-    public ReturnMsg scheduleUpdateCronTrigger(int minute) throws SchedulerException {
+    public ReturnMsg scheduleUpdateCronTrigger(int minute,int status,int isHandle) throws SchedulerException {
+
+        QuartzCron quartzCron = quartzCronDao.get();
 
         String newCron = "0 */"+minute+" * * * ?";
 
-        CronTrigger trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
-        String currentCron = trigger.getCronExpression();// 当前Trigger使用的
-        System.out.println(currentCron);
-        System.out.println(newCron);
-        if(!currentCron.equals(newCron)){
+        //关闭或者开启任务
+        if(status==0){
+            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
+//            String currentCron = trigger.getCronExpression();// 当前Trigger使用的
+            String currentCron = quartzCron.getCronStr();// 当前Trigger使用的
+            System.out.println(currentCron);
+            System.out.println(newCron);
             // 表达式调度构建器
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(newCron);
             // 按新的cronExpression表达式重新构建trigger
@@ -49,19 +53,22 @@ public class QuartzService extends BaseService{
                     .withSchedule(scheduleBuilder).build();
             // 按新的trigger重新设置job执行
             scheduler.rescheduleJob(cronTrigger.getKey(), trigger);
-
-            QuartzCron quartzCron = new QuartzCron();
-            quartzCron.setCronStr(newCron);
-            quartzCron.setMinute(minute);
-
-            //更新数据库
-            quartzCronDao.update(quartzCron);
+        }else {
+            scheduler.unscheduleJob(cronTrigger.getKey());
         }
+
+        quartzCron.setCronStr(newCron);
+        quartzCron.setMinute(minute);
+        quartzCron.setStatus(status);
+        quartzCron.setIsHandle(isHandle);
+        //更新数据库
+        quartzCronDao.update(quartzCron);
 
         return successTip(newCron);
     }
 
-    public Integer getNow(){
-        return quartzCronDao.get().getMinute();
+
+    public QuartzCron getNow(){
+        return quartzCronDao.get();
     }
 }

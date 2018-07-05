@@ -348,7 +348,7 @@
 	</select>
 	
 	<select id="listProblemCard" resultType="com.team.model.ProblemCard">
-		select distinct r.*,t.status
+		select distinct r.imsi,t.status
 		from tb_problem_card r ,m_simcard t
 		where r.imsi=t.imsi
 		  and r.createTime>=CURRENT_DATE

@@ -1,5 +1,7 @@
 package com.team.controller;
 
+import com.team.annotation.PermissionLog;
+import com.team.model.QuartzCron;
 import com.team.service.QuartzService;
 import com.team.service.impl.BaseService;
 import com.team.vo.ReturnMsg;
@@ -16,23 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/quartz")
+@PermissionLog("/定时任务")
 public class QuartzController extends BaseService{
 
     @Autowired
     private QuartzService quartzService;
 
     @RequestMapping("/reset")
-    public ReturnMsg set(Integer minute) throws Exception{
+    @PermissionLog
+    public ReturnMsg set(Integer minute,Integer status,Integer isHandle) throws Exception{
 
-        if(minute == null || minute<1 || minute>59){
+        if(minute == null || minute<1 || minute>59 || status == null || (status!=0 && status!=1)|| isHandle==null || (isHandle!=0 && isHandle!=1)){
             return errorTip("参数错误");
         }
 
-        return  quartzService.scheduleUpdateCronTrigger(minute);
+        return  quartzService.scheduleUpdateCronTrigger(minute,status,isHandle);
     }
 
     @PostMapping("/getNow")
-    public Integer getNow(){
+    public QuartzCron getNow(){
         return quartzService.getNow();
     }
 

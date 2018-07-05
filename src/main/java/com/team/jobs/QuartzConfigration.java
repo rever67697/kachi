@@ -2,6 +2,8 @@ package com.team.jobs;
 
 import com.team.dao.QuartzCronDao;
 import com.team.model.QuartzCron;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +18,8 @@ public class QuartzConfigration {
 
     @Autowired
     private QuartzCronDao quartzCronDao;
+
+    private Integer status;
 
     /**
      * attention:
@@ -57,7 +61,14 @@ public class QuartzConfigration {
         tigger.setJobDetail(jobDetail.getObject());
 
         QuartzCron quartzCron = quartzCronDao.get();
-        tigger.setCronExpression(quartzCron.getCronStr());// 初始时的cron表达式
+
+        status = quartzCron.getStatus();
+
+        if (quartzCron.getStatus()==0){
+            tigger.setCronExpression(quartzCron.getCronStr());// 初始时的cron表达式
+        }else {
+            tigger.setCronExpression("0 0 0 1 1 ? 2050");// 初始时的cron表达式
+        }
         tigger.setName("srd-chhliu");// trigger的name
         return tigger;
 
@@ -76,6 +87,7 @@ public class QuartzConfigration {
         bean.setStartupDelay(1);
         // 注册触发器
         bean.setTriggers(cronJobTrigger);
+
         return bean;
     }
 }
