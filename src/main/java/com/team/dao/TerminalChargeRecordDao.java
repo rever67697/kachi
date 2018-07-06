@@ -4,6 +4,7 @@ import com.team.model.TerminalChargeRecord;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : wuzhiheng
@@ -12,7 +13,9 @@ import java.util.List;
  */
 public interface TerminalChargeRecordDao {
 
-    List<TerminalChargeRecord> list(@Param("tsid") Integer tsid);
+    List<TerminalChargeRecord> list(Map<String,Object> map);
+
+    Map<String,Object> count(Map<String,Object> map);
 
     int save(TerminalChargeRecord terminalChargeRecord);
 

@@ -1964,7 +1964,7 @@ body{border:1px solid transparent;overflow:hidden}
 .ligh-blue{background:rgb(87,181,227)}
 table.excel{border-collapse:collapse;width:95%;margin:20px auto;font-weight:normal;font-size:15px}
 table.excel input{border:0;border:1px solid #ccc;padding:3px;line-height:18px;min-width:100px;border-radius:4px}
-table.excel a.l-btn-plain,.table a.l-btn-plain{border:1px solid #ccc;border-radius:4px;padding:3px 10px 3px 3px;font-size:15px}
+table.excel a.l-btn-plain,.table a.l-btn-plain{ border:1px solid #ccc;border-radius:4px;padding:3px 10px 3px 3px;font-size:15px}
 .table.th-normal th{font-weight:normal}
 .table .noborder{border:0}
 .top-right{float:right}
@@ -1999,3 +1999,12 @@ fieldset{border:1px solid #999}
 .chargeDiv{width:100%;margin:0 auto;height:25px;color:blue;
 	cursor: pointer;line-height: 25px;text-align: left}
 .btn-del{border:0;background:rgb(0,144,215);color: #fff;cursor: pointer;text-align:center;border-radius: 2px;height: 20px;line-height:20px;width:50px}
+.stat-table{width: 100%;padding:0 20px;font-size: 110%}
+.stat-table a.l-btn-plain{ border:1px solid #ccc;border-radius:4px;padding:5px 10px 5px 3px;font-size:15px}
+.stat-table label{cursor: pointer}
+.stat-table span{display: inline-block;margin-left: 5px}
+.stat-table .stat-input{border: 1px solid #ccc;padding:2px 5px;line-height: 30px;width: 60%;display: inline-block;margin-left: 10px;border-radius: 4px}
+.stat-table .stat-result{display: inline-block;;width: 80px;font-size:120%;color:#fff;line-height:50px;height: 50px;text-align: center;border-radius: 4px;margin-top: 10px}
+.detail-table{border: 1px solid #ccc;text-align:center;border-radius: 5px}
+.detail-table td{border-top:1px dotted #ccc;height:30px}
+.detail-table tr:first-child td{border-top:0}

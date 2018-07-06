@@ -1,15 +1,23 @@
 package com.team.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.team.dao.FlowBalanceDao;
 import com.team.dao.TerminalChargeRecordDao;
 import com.team.model.FlowBalance;
 import com.team.model.TerminalChargeRecord;
 import com.team.service.TerminalChargeService;
+import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author : wuzhiheng
@@ -59,6 +67,28 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         }
 
         return super.successTip();
+    }
+
+    @Override
+    public ResultList list(Integer tsid, Date startDate, Date endDate, int page, int rows) {
+        PageHelper.startPage(page, rows);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("tsid",tsid);
+        map.put("startDate",startDate);
+        map.put("endDate",endDate);
+        List<TerminalChargeRecord> list = terminalChargeRecordDao.list(map);
+
+        PageInfo<TerminalChargeRecord> pageInfo = new PageInfo<TerminalChargeRecord>(list);
+        return new ResultList(pageInfo.getTotal(), list);
+    }
+
+    @Override
+    public ReturnMsg count(Integer tsid, Date startDate, Date endDate) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("tsid",tsid);
+        map.put("startDate",startDate);
+        map.put("endDate",endDate);
+        return successTip(terminalChargeRecordDao.count(map));
     }
 
 

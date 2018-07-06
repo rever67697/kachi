@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>终端统计</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet"
+          title="blue"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+    <script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+</head>
+<body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
+
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"
+     border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
+                <th>终端编号：</th>
+                <td><input name="tsid" placeholder="请输入终端编号"/></td>
+                <th>充值时间：</th>
+                <td><input id="dateRange"/></td>
+                <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
+                    询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+    <table id="dg"></table>
+</div>
+<div region="south" title="" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;">
+    <table class="table">
+        <tr>
+            <th>充值流量(G)</th>
+            <td><input id="chargeFlow" readonly="readonly"/></td>
+            <th>充值天数</th>
+            <td><input id="chargeDate" readonly="readonly"/></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script type="text/javascript">
+    var options = {
+        title: '充值列表',
+        queryParams: $('#queryForm').serializeObject(),
+        columns: [[
+            {field: 'id', title: 'id', hidden: true},
+            {field: 'tsid', title: '终端编号', width: 100},
+            {
+                field: 'chargeFlow', title: '充值流量(G)', width: 100, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.chargeFlow = (row.chargeFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.chargeFlow = '';
+                }
+                return row.chargeFlow;
+            }
+            },
+            {field: 'chargeDate', title: '充值天数', width: 100},
+            {field: 'createDate', title: '充值时间', width: 150},
+            {field: 'operator', title: '操作人', width: 100},
+        ]],
+        url: kcJs.fn.getContextPath() + '/stat/chargeList',
+        iconCls: 'icon-tip',
+        nowrap: false,
+        pagination: true,
+        pageList: [30, 45],
+        rownumbers: true,
+        striped: true,
+        scrollbarSize: 0,
+        fit: true
+    };
+
+    //日期时间范围
+    laydate.render({
+        elem: '#dateRange',
+        type: 'datetime',
+        range: '至',
+        max:new Date().format("yyyy-MM-dd")
+    });
+
+    function doQuery() {
+        options.queryParams = $('#queryForm').serializeObject();
+
+        var dateRange = $('#dateRange').val();
+        if (dateRange) {
+            var dates = dateRange.split(" 至 ");
+            options.queryParams.startDate = dates[0];
+            options.queryParams.endDate = dates[1];
+        }
+        $('#dg').datagrid(options);
+
+        $.post(kcJs.fn.getContextPath() + '/stat/chargeCount',options.queryParams, function (data) {
+            if (data && data.code == '200') {
+                $('#chargeFlow').val(data.data.chargeFlow);
+                $('#chargeDate').val(data.data.chargeDate);
+            } else {
+                $.messager.alert("提示", data.msg, "info");
+            }
+        }, 'json');
+    }
+
+    $(function () {
+        doQuery();
+    });
+
+
+</script>
+</html>	

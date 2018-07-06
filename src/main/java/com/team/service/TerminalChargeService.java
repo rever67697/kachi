@@ -1,7 +1,10 @@
 package com.team.service;
 
 import com.team.model.TerminalChargeRecord;
+import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
+
+import java.util.Date;
 
 /**
  * @Author : wuzhiheng
@@ -16,5 +19,9 @@ public interface TerminalChargeService {
      * @return
      */
     ReturnMsg charge(TerminalChargeRecord record);
+
+    ResultList list(Integer tsid, Date startDate,Date endDate,int page,int rows);
+
+    ReturnMsg count(Integer tsid, Date startDate,Date endDate);
 
 }

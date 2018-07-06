@@ -54,9 +54,11 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         //查询终端流水
         List<CostDay> costDayList = costDayDao.getCostDayByTsid(tsid);
         //查询终端充值记录
-        List<TerminalChargeRecord> terminalChargeRecordList = terminalChargeRecordDao.list(tsid);
-
         Map<String,Object> map = new HashMap<>();
+        map.put("tsid",tsid);
+        List<TerminalChargeRecord> terminalChargeRecordList = terminalChargeRecordDao.list(map);
+
+        map.clear();
         map.put("flowRecord",costDayList);
         map.put("chargeRecord",terminalChargeRecordList);
 

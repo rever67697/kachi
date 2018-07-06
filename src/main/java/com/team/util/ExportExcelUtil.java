@@ -60,7 +60,7 @@ public class ExportExcelUtil<T>{
         HSSFSheet sheet = workbook.createSheet(title);
         // 设置表格默认列宽度为15个字节
         sheet.setDefaultColumnWidth((short) 15);
-        //设置表哥行高度
+        //设置表格行高度
         sheet.setDefaultRowHeight((short)500);
         // 生成一个样式--表头
         HSSFCellStyle style = workbook.createCellStyle();

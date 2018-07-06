@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>统计</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>-->
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	  <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+  </head>
+  <body id="main-layout" class="easyui-layout" >
+
+  <div region="center" title="" style=";background:#FFF;padding:20px" border="false">
+
+	  <table width="100%">
+		  <tr>
+			  <td width="50%">
+				  <div  class="easyui-panel" collapsible="true" title="终端激活统计" style="padding-top:10px;padding-left:5px;padding-bottom:50px;overflow:hidden" iconCls="icon icon--60--360" fit="true">
+					  <table class="stat-table">
+						  <tr>
+							  <td><label ><input type="radio" name="tActive" checked="checked" value="1"/><span>今天</span></label></td>
+							  <td><label><input type="radio" name="tActive" value="2"/><span>今周</span></label></td>
+							  <td><label><input type="radio" name="tActive" value="3"/><span>今月</span></label></td>
+							  <td width="100px" align="left" rowspan="2"><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+						  </tr>
+						  <tr>
+							  <td colspan="3"><label><input type="radio" name="tActive" value="4"/><span>自定义</span></label>
+								  <input class="stat-input dateRange1"/></td>
+						  </tr>
+						  <tr style="height:60px"></tr>
+						  <tr>
+							  <td colspan="2">激活数量：
+								  <span class="stat-result blue">120</span></td>
+							  <td colspan="2" align="right">
+								  <table class="detail-table" >
+									  <tr>
+										  <td style="font-weight: bold;width: 150px">终端编号</td>
+										  <td style="font-weight: bold;width: 150px">激活时间</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>2018-06-31 00:00:00</td>
+									  </tr>
+									  <tr>
+										  <td colspan="2">
+										  	<div style="margin-right:10px;float: right;padding: 5px 8px;background: #abd176;color:#fff;border-radius: 4px">更多&gt;&gt;</div>
+										  </td>
+									  </tr>
+								  </table>
+
+							  </td>
+						  </tr>
+					  </table>
+				  </div>
+			  </td>
+			  <td width="50%">
+				  <div  class="easyui-panel" collapsible="true" title="终端充值统计" style="padding-top:10px;padding-left:5px;padding-bottom:50px;overflow:hidden" iconCls="icon icon--60--360" fit="true">
+					  <table class="stat-table">
+						  <tr>
+							  <td><label ><input type="radio" name="tCharge" checked="checked" value="1"/><span>今天</span></label></td>
+							  <td><label><input type="radio" name="tCharge" value="2"/><span>今周</span></label></td>
+							  <td><label><input type="radio" name="tCharge" value="3"/><span>今月</span></label></td>
+							  <td width="100px" align="left" rowspan="3"><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+						  </tr>
+						  <tr>
+							  <td colspan="3"><label><input type="radio" name="tCharge" value="4"/><span>自定义</span></label>
+								  <input class="stat-input dateRange2"/></td>
+						  </tr>
+						  <tr>
+							  <td colspan="3">终端编号<input class="stat-input" style="margin-left:18px"/></td>
+						  </tr>
+						  <tr style="height:20px"></tr>
+						  <tr>
+							  <td colspan="2">充值流量：
+								  <span class="stat-result blue">120 G</span><br/>
+								  充值天数：
+								  <span class="stat-result blue">120 天</span></td>
+							  <td colspan="2" align="right">
+								  <table class="detail-table" >
+									  <tr>
+										  <td style="font-weight: bold;width: 150px">终端编号</td>
+										  <td style="font-weight: bold;width: 100px">充值流量(G)</td>
+										  <td style="font-weight: bold;width: 100px">充值天数(天)</td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td>10160266</td>
+										  <td>10</td>
+										  <td></td>
+									  </tr>
+									  <tr>
+										  <td colspan="3">
+											  <div style="margin-right:10px;float: right;padding: 5px 8px;background: #abd176;color:#fff;border-radius: 4px">更多&gt;&gt;</div>
+										  </td>
+									  </tr>
+								  </table>
+							  </td>
+						  </tr>
+					  </table>
+				  </div>
+
+			  </td>
+		  </tr>
+	  </table>
+
+
+
+
+	  <!--<div  class="easyui-panel" collapsible="true" title="终端激活统计" style="padding-top:10px;padding-left:5px;padding-bottom:50px;overflow:hidden" iconCls="icon icon&#45;&#45;60&#45;&#45;360" fit="true">-->
+		  <!--<table class="stat-table">-->
+			  <!--<tr>-->
+				  <!--<td width="10%"><label ><input type="radio" name="tActive" checked="checked" value="1"/><span>今天</span></label></td>-->
+				  <!--<td width="10%"><label><input type="radio" name="tActive" value="2"/><span>今周</span></label></td>-->
+				  <!--<td width="10%"><label><input type="radio" name="tActive" value="3"/><span>今月</span></label></td>-->
+				  <!--<td width="40%"><label><input type="radio" name="tActive" value="4"/><span>自定义</span></label>-->
+					  <!--<input class="stat-input dateRange1"/></td>-->
+				  <!--<td align="left"><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+			  <!--</tr>-->
+			  <!--<tr style="height:20px"></tr>-->
+			  <!--<tr>-->
+				  <!--<td colspan="2">激活数量：-->
+					  <!--<span class="stat-result blue">120</span></td>-->
+				  <!--<td colspan="3">-->
+					  <!--<table class="detail-table" >-->
+						  <!--<tr>-->
+							  <!--<td style="font-weight: bold;width: 150px">终端编号</td>-->
+							  <!--<td style="font-weight: bold;width: 150px">激活时间</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+						  <!--<tr>-->
+							  <!--<td>10160266</td>-->
+							  <!--<td>2018-06-31 00:00:00</td>-->
+						  <!--</tr>-->
+					  <!--</table>-->
+				  <!--</td>-->
+			  <!--</tr>-->
+		  <!--</table>-->
+	  <!--</div>-->
+
+	  <!--<div style="margin-top:100px;"></div>-->
+
+	  <!--<div  class="easyui-panel" collapsible="true" title="终端充值统计" style="padding-top:10px;padding-bottom:50px;padding-left:5px;overflow:hidden" iconCls="icon icon&#45;&#45;60&#45;&#45;360" fit="true">-->
+		  <!--<table class="stat-table">-->
+
+			  <!--<tr>-->
+				  <!--<td width="10%"><label ><input type="radio" name="tCharge" checked="checked" value="1"/><span>今天</span></label></td>-->
+				  <!--<td width="10%"><label><input type="radio" name="tCharge" value="2"/><span>今周</span></label></td>-->
+				  <!--<td width="10%"><label><input type="radio" name="tCharge" value="3"/><span>今月</span></label></td>-->
+				  <!--<td width="40%"><label><input type="radio" name="tCharge" value="4"/><span>自定义</span></label>-->
+					  <!--<input class="stat-input dateRange2"/></td>-->
+				  <!--<td align="left">终端编号：<input class="stat-input" style="width: 120px"/></td>-->
+				  <!--<td align="left"><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>-->
+			  <!--</tr>-->
+			  <!--<tr style="height:20px"></tr>-->
+			  <!--<tr>-->
+				  <!--<td colspan="5">-->
+					  <!--充值流量(G)：<span class="stat-result blue">120</span>-->
+					  <!--充值天数(天)：<span class="stat-result blue">120</span>-->
+				  <!--</td>-->
+			  <!--</tr>-->
+		  <!--</table>-->
+	  <!--</div>-->
+  <!--</div>-->
+
+
+  </body>
+
+  <script type="text/javascript">
+
+      //日期时间范围
+      laydate.render({
+          elem: '.dateRange1',
+          type: 'datetime',
+          range: '至',
+          max:new Date().format("yyyy-MM-dd")
+      });
+
+      //日期时间范围
+      laydate.render({
+          elem: '.dateRange2',
+          type: 'datetime',
+          range: '至',
+          max:new Date().format("yyyy-MM-dd")
+      });
+
+  </script>
+</html>	
