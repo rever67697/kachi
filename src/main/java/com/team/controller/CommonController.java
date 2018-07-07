@@ -1,13 +1,7 @@
 package com.team.controller;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Random;
@@ -142,7 +136,49 @@ public class CommonController {
 				bos.close();
 		}
 	}
-	
+
+	@GetMapping("/download")
+	public void download(String fileName,HttpServletResponse response,HttpServletRequest request) throws Exception{
+		fileName = URLDecoder.decode(fileName, "utf-8");
+		if (request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
+			try {
+				fileName = URLEncoder.encode(fileName, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				fileName = new String(fileName.getBytes(), "ISO-8859-1");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		response.reset();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application//octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+		BufferedOutputStream bos = null;
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(new File("kachi/file/"+fileName)));
+			bos = new BufferedOutputStream(response.getOutputStream());
+			byte[] buff = new byte[1024];
+			int bytesRead;
+			while (-1 != (bytesRead = bis.read(buff))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (bis != null)
+				bis.close();
+			if (bos != null)
+				bos.close();
+		}
+	}
+
 	@GetMapping("/getCode")
 	public String getcode(HttpServletRequest request) throws Exception{
 		int index = new Random().nextInt(49);

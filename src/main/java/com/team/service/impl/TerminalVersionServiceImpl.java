@@ -10,9 +10,13 @@ import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +33,8 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
 
     @Autowired
     private TerminalVersionDao terminalVersionDao;
+    @Value("${urlPrefix}")
+    private String urlPrefix;
 
     @Override
     public ResultList list(int page,int rows) {
@@ -40,7 +46,9 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
     }
 
     @Override
-    public ReturnMsg saveOrUpdate(TerminalVersion terminalVersion) {
+    public ReturnMsg saveOrUpdate(TerminalVersion terminalVersion,MultipartFile file) throws Exception{
+        System.out.println(file.getOriginalFilename());
+
         int count = 0;
         //指定升级的终端列表不能超多200个
         if(!CommonUtil.StringIsNull(terminalVersion.getTerminalList())
@@ -53,6 +61,19 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
         }else{
             count = terminalVersionDao.save(terminalVersion);
         }
+        if(!CommonUtil.StringIsNull(file.getOriginalFilename())){
+            File parentFile = new File("kachi/file");
+            if(!parentFile.exists()){
+                parentFile.mkdirs();
+            }
+
+            String fileName = terminalVersion.getId()+"-"+System.currentTimeMillis()+"."+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
+            FileCopyUtils.copy(file.getBytes(),new File(parentFile,fileName));
+
+            terminalVersion.setDownUrl(urlPrefix+fileName);
+            terminalVersionDao.update(terminalVersion);
+        }
+
         return count>0?super.successTip():super.errorTip();
     }
 

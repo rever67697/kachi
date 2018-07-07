@@ -336,7 +336,7 @@
 	</update>
 
 	<select id="getProblemCard" resultType="com.team.model.SimCard" parameterType="java.util.Map">
-		select distinct k.*
+		select distinct k.*,r.selectDate
 		from m_select_card r
 		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type=0
 		left join m_simcard k on r.imsi=k.imsi
@@ -348,15 +348,23 @@
 	</select>
 	
 	<select id="listProblemCard" resultType="com.team.model.ProblemCard">
-		select distinct r.imsi,t.status
-		from tb_problem_card r ,m_simcard t
-		where r.imsi=t.imsi
-		  and r.createTime>=CURRENT_DATE
+		select  r.imsi,
+		        (select t.status from m_simcard t where r.imsi=t.imsi) status,
+		        max(r.selectDate) selectDate
+		from tb_problem_card r
+		where r.createTime>=CURRENT_DATE
+		group by imsi
+		order by 3 desc
 	</select>
 	
 	<insert id="saveProblemCard" parameterType="com.team.model.ProblemCard">
 		insert into tb_problem_card
-		(imsi)
-		values(#{imsi,jdbcType=BIGINT})
+		(imsi,selectDate)
+		values(#{imsi,jdbcType=BIGINT},#{selectDate,jdbcType=TIMESTAMP})
 	</insert>
+	
+	<delete id="deleteProblemCard">
+		delete from tb_problem_card
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</delete>
 </mapper>

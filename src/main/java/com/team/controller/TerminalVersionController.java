@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -33,12 +34,12 @@ public class TerminalVersionController {
     }
 
     @PostMapping("/save")
-    @PermissionLog(key = "tVersion_目标版本号;oVersion_源版本号;downUrl_下载地址")
-    public ReturnMsg saveTV(TerminalVersion terminalVersion, HttpServletRequest request){
+    @PermissionLog()
+    public ReturnMsg saveTV(TerminalVersion terminalVersion,MultipartFile file, HttpServletRequest request) throws Exception{
         String operatorMan = CommonUtil.getUser(request).getName();
         terminalVersion.setOperatorMan(operatorMan);
         terminalVersion.setOperatorTime(new Date());
-        return terminalVersionService.saveOrUpdate(terminalVersion);
+        return terminalVersionService.saveOrUpdate(terminalVersion,file);
     }
 
     @PostMapping("/delete")
@@ -46,4 +47,5 @@ public class TerminalVersionController {
     public ReturnMsg save(String ids){
         return terminalVersionService.delete(ids);
     }
+
 }

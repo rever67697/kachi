@@ -139,5 +139,7 @@ public interface SimCardDao {
 	 */
 	public List<ProblemCard> listProblemCard();
 
-	public int saveProblemCard(@Param("imsi") Long imsi);
+	public int saveProblemCard(ProblemCard problemCard);
+
+	public int deleteProblemCard(@Param("imsi") Long imsi);
 }

@@ -100,6 +100,8 @@ public class SimCard implements Serializable{
 
 	private Integer cstatus;//当前卡在缓存里面的状态
 
+	private Date selectDate;//
+
 	public SimCard() {
 	}
 
@@ -443,6 +445,14 @@ public class SimCard implements Serializable{
 
 	public void setCstatus(Integer cstatus) {
 		this.cstatus = cstatus;
+	}
+
+	public Date getSelectDate() {
+		return selectDate;
+	}
+
+	public void setSelectDate(Date selectDate) {
+		this.selectDate = selectDate;
 	}
 
 	@Override

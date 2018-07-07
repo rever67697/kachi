@@ -15,8 +15,11 @@ public class ProblemCard implements Serializable {
     private Long imsi;
 
     private Integer status;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date selectDate;//选卡时间
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     public Long getImsi() {
@@ -41,5 +44,21 @@ public class ProblemCard implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getSelectDate() {
+        return selectDate;
+    }
+
+    public void setSelectDate(Date selectDate) {
+        this.selectDate = selectDate;
+    }
+
+    public ProblemCard() {
+    }
+
+    public ProblemCard(Long imsi, Date selectDate) {
+        this.imsi = imsi;
+        this.selectDate = selectDate;
     }
 }

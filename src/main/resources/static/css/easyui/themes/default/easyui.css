@@ -2008,3 +2008,4 @@ fieldset{border:1px solid #999}
 .detail-table{border: 1px solid #ccc;text-align:center;border-radius: 5px}
 .detail-table td{border-top:1px dotted #ccc;height:30px}
 .detail-table tr:first-child td{border-top:0}
+.btn-download{border:0;background:#abd176;color: #fff;cursor: pointer;text-align:center;border-radius: 4px;height: 20px;line-height:20px;width:50px}

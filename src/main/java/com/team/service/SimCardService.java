@@ -46,4 +46,6 @@ public interface SimCardService {
 	public void insertBatch(List<SimCard> list);
 
 	public ResultList listProblemCard();
+
+	public ReturnMsg deleteProblemCard(Long imsi);
 }

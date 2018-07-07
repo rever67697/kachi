@@ -3,6 +3,7 @@ package com.team.controller;
 import com.team.annotation.PermissionLog;
 import com.team.model.QuartzCron;
 import com.team.service.QuartzService;
+import com.team.service.SimCardService;
 import com.team.service.impl.BaseService;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/quartz")
-@PermissionLog("/定时任务")
+@PermissionLog("定时任务")
 public class QuartzController extends BaseService{
 
     @Autowired
     private QuartzService quartzService;
+    @Autowired
+    private SimCardService simCardService;
 
     @RequestMapping("/reset")
     @PermissionLog
@@ -38,6 +41,12 @@ public class QuartzController extends BaseService{
     @PostMapping("/getNow")
     public QuartzCron getNow(){
         return quartzService.getNow();
+    }
+
+    @PostMapping("/deleteProblemCard")
+    @PermissionLog
+    public ReturnMsg deleteProblemCard(Long imsi){
+        return simCardService.deleteProblemCard(imsi);
     }
 
 

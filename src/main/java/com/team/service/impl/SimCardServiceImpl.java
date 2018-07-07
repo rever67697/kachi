@@ -866,6 +866,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
         return resultList;
     }
 
+    @Override
+    public ReturnMsg deleteProblemCard(Long imsi) {
+        int count = simCardDao.deleteProblemCard(imsi);
+        return count>0?successTip():errorTip();
+    }
+
     private FlowMonth getNowFlowMonthByDB(long imsi, Date nowDate) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("imsi",imsi);

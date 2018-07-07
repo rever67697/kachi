@@ -2,6 +2,7 @@ package com.team.jobs;
 
 import com.team.dao.QuartzCronDao;
 import com.team.dao.SimCardDao;
+import com.team.model.ProblemCard;
 import com.team.model.QuartzCron;
 import com.team.model.SimCard;
 import com.team.service.SimCardService;
@@ -65,7 +66,7 @@ public class ScheduleTask {
         if(CommonUtil.listNotBlank(simCardList)){
             for (SimCard simCard : simCardList) {
                 logger.error("处理问题卡:"+simCard.getImsi()+" ，状态为："+simCard.getStatus());
-                simCardDao.saveProblemCard(simCard.getImsi());
+                simCardDao.saveProblemCard(new ProblemCard(simCard.getImsi(),simCard.getSelectDate()));
 
                 if (quartzCron.getIsHandle() == 0){
                     //把卡状态改为1-停用
