@@ -67,7 +67,7 @@ public class TerminalVersionServiceImpl extends  BaseService implements Terminal
                 parentFile.mkdirs();
             }
 
-            String fileName = terminalVersion.getId()+"-"+System.currentTimeMillis()+"."+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")+1);
+            String fileName = terminalVersion.getId()+"-"+file.getOriginalFilename();
             FileCopyUtils.copy(file.getBytes(),new File(parentFile,fileName));
 
             terminalVersion.setDownUrl(urlPrefix+fileName);

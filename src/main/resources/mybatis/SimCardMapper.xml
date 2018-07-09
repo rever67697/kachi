@@ -338,10 +338,10 @@
 	<select id="getProblemCard" resultType="com.team.model.SimCard" parameterType="java.util.Map">
 		select distinct k.*,r.selectDate
 		from m_select_card r
-		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type=0
+		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type in (0,1,4)
 		left join m_simcard k on r.imsi=k.imsi
 		where r.selectdate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
-		  and not exists (select 1 from m_terminal_sim_flow tsf where r.imsi=tsf.imsi and tsf.time>r.selectdate and tsf.type=0)
+		  and not exists (select 1 from m_terminal_sim_flow tsf where r.imsi=tsf.imsi and tsf.time>r.selectdate and tsf.type in (0,1,4))
 		  and t.time is null
 		  and r.imsi>0
 		order by k.status desc

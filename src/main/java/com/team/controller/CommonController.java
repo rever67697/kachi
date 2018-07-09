@@ -140,24 +140,24 @@ public class CommonController {
 	@GetMapping("/download")
 	public void download(String fileName,HttpServletResponse response,HttpServletRequest request) throws Exception{
 		fileName = URLDecoder.decode(fileName, "utf-8");
-		if (request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
-			try {
-				fileName = URLEncoder.encode(fileName, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				fileName = new String(fileName.getBytes(), "ISO-8859-1");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-		}
+//		if (request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
+//			try {
+//				fileName = URLEncoder.encode(fileName, "UTF-8");
+//			} catch (UnsupportedEncodingException e) {
+//				e.printStackTrace();
+//			}
+//		} else {
+//			try {
+//				fileName = new String(fileName.getBytes(), "ISO-8859-1");
+//			} catch (UnsupportedEncodingException e) {
+//				e.printStackTrace();
+//			}
+//		}
 
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application//octet-stream");
-		response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+		response.setHeader("Content-Disposition", "attachment; filename="+fileName.replaceAll("^\\d+-",""));
 		BufferedOutputStream bos = null;
 		BufferedInputStream bis = null;
 		try {
