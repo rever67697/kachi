@@ -30,7 +30,7 @@ import com.team.model.auth.TbAuthUser;
  */
 @SuppressWarnings("all")
 public class CommonUtil {
-	private static char[] codes = { '1','2', '3', '4', '5', '6', '7', '8', '9','0'};
+	private static char[] codes = { '1','2', '3', '5', '6', '7', '8', '9','0'};
 	
 	private static DecimalFormat df = new DecimalFormat("0");
 

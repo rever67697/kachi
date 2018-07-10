@@ -44,9 +44,9 @@
 				<div id="selectedTerminal" ></div>
 			</div>
 
-			<div region="east" title=""  style="width:1030px;background:#FFF">
+			<div region="east" title=""  style="width:600px;background:#FFF">
 				<div class="easyui-layout" fit="true">
-					<div region="north" style="height:44px;background:#fff;overflow:hidden;">
+					<div region="north" style="height:73px;background:#fff;overflow:hidden;">
 						<form id="terminalForm">
 							<table class="table" style="margin:0">
 								<tr>
@@ -57,14 +57,16 @@
 										<option value="2">停用</option><option value="3">注销</option>
 									</select>
 									</td>
-									<th>激活状态：</th>
-									<td><select name="activated">
-										<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>
-									</select>
-									</td>
+									<!--<th>激活状态：</th>-->
+									<!--<td><select name="activated">-->
+										<!--<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>-->
+									<!--</select>-->
+									<!--</td>-->
+								</tr>
+								<tr>
 									<th>部门：</th>
 									<td><select name="departmentId"></select></td>
-									<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
+									<td colspan="2"><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery_t()">查 询</a></td>
 								</tr>
 							</table>
 						</form>
@@ -120,37 +122,59 @@
 //        title:'终端列表<span style="color:red">【单击一行选中】</span>',
         fit:true,
         queryParams:$('#terminalForm').serializeObject(),
-        columns:[[
-            {field:'ck',checkbox:true},
-            {field:'id',title:'终端id',hidden:true},
-            {field:'tsid',title:'终端编号',width:80},
-            {field:'status',title:'活动状态',width:100,formatter:function(value,rec,index){
+        columns: [[
+            {field: 'id', title: '终端id', hidden: true},
+            {field: 'tsid', title: '终端编号', width: 80},
+            {
+                field: 'status', title: '活动状态', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getTerminalStatus(value);
-                return status?('<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:'+status[1]+'">'+status[0]+'</div>'):'';
-            }},
-            {field:'activated',title:'是否激活',width:60,formatter:function(value,rec,index){
-                value+='';
-                return value?(value=='0'?'否':(value=='1'?'是':'')):'';
-            }},
-            {field:'model',title:'终端型号',width:80},
-            {field:'sVersion',title:'软件版本',width:80},
-            {field:'upLog',title:'是否上传日志',width:100,formatter:function(value,rec,index){
-                value+='';
-                return value?(value=='0'?'否':(value=='1'?'是':'')):'';
-            }},
-            {field:'usedVpn',title:'是否支持VPN',width:80,formatter:function(value,rec,index){
-                value+='';
-                return value?(value=='0'?'否':(value=='1'?'是':'')):'';
-            }},
-            {field:'usedSoft',title:'是否支持软卡',width:80,formatter:function(value,rec,index){
-                value+='';
-                return value?(value=='0'?'否':(value=='1'?'是':'')):'';
-            }},
-            {field:'departmentName',title:'所属部门',width:150},
-            {field:'countryName',title:'所在地区',width:120},
-            {field:'allowFlow',title:'剩余流量(KB)',width:100},
-            {field:'validityDate',title:'有效期截止时间',width:120},
-            {field:'note',title:'备注',width:140}
+                return status ? ('<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>') : '';
+            }
+            },
+            {
+                field: 'activated', title: '是否激活', width: 60, formatter: function (value, rec, index) {
+                value += '';
+                return value ? (value == '0' ? '否' : (value == '1' ? '是' : '')) : '';
+            }
+            },
+            {field: 'model', title: '终端型号', width: 80},
+            {field: 'sVersion', title: '软件版本', width: 80},
+//            {
+//                field: 'upLog', title: '是否上传日志', width: 100, formatter: function (value, rec, index) {
+//                value += '';
+//                return value ? (value == '0' ? '否' : (value == '1' ? '是' : '')) : '';
+//            }
+//            },
+//            {
+//                field: 'usedVpn', title: '是否支持VPN', width: 80, formatter: function (value, rec, index) {
+//                value += '';
+//                return value ? (value == '0' ? '否' : (value == '1' ? '是' : '')) : '';
+//            }
+//            },
+//            {
+//                field: 'usedSoft', title: '是否支持软卡', width: 80, formatter: function (value, rec, index) {
+//                value += '';
+//                return value ? (value == '0' ? '否' : (value == '1' ? '是' : '')) : '';
+//            }
+//            },
+            {field: 'departmentName', title: '所属部门', width: 120},
+            {field: 'countryName', title: '所在地区', width: 80},
+            {
+                field: 'allowFlow', title: '剩余流量(GB)', width: 100, formatter: function (value, row, index) {
+                value = value + '';
+                if (value && value != 'null') {
+                    row.allowFlow = (row.allowFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.allowFlow = '';
+                }
+                return '<div class="chargeDiv">' + row.allowFlow + '</div>';
+            }
+            },
+            {
+                field: 'validityDate', title: '有效期截止时间', width: 120, formatter: function (value, row, index) {
+                return '<div class="chargeDiv">' + (value ? value : '') + '</div>';
+            }
+            },
         ]],
         url:kcJs.fn.getContextPath()+'/terminal/list',
         iconCls:'icon-tip',
@@ -194,7 +218,7 @@
 
           $('#terminalDialog').dialog({
               modal : true,
-              width:window.innerWidth*0.98,
+              width:750,
               height:600,
               cache: false,
               title : "终端列表<span style='color:red'>【单击一行选中】</span>",
