@@ -347,12 +347,15 @@
 		order by k.status desc
 	</select>
 	
-	<select id="listProblemCard" resultType="com.team.model.ProblemCard">
+	<select id="listProblemCard" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
 		select  r.imsi,
 		        (select t.status from m_simcard t where r.imsi=t.imsi) status,
 		        max(r.selectDate) selectDate
 		from tb_problem_card r
-		where r.createTime>=CURRENT_DATE
+		where 1=1
+		<if test="startDate!=null">
+			r.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
 		group by imsi
 		order by 3 desc
 	</select>

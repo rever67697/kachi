@@ -145,8 +145,8 @@ public class SimCardController {
 	}
 
 	@PostMapping("/listProblemCard")
-	public ResultList listProblemCard(){
-		return simCardService.listProblemCard();
+	public ResultList listProblemCard(Date startDate,Date endDate){
+		return simCardService.listProblemCard(startDate,endDate);
 	}
 
 	

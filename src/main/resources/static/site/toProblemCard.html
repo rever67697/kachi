@@ -12,8 +12,22 @@
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
+
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
+                <th >选卡时间</th>
+                <td ><input readonly="readonly" id="dateRange"/></td>
+                <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
 <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
     <table id="dg"></table>
 </div>
@@ -43,8 +57,7 @@
             </tr>
             <tr style="height:10px"></tr>
             <tr>
-                <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok"
-                                                                   plain="true" onclick="saveData()">提 交</a></td>
+                <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td>
             </tr>
         </table>
     </form>
@@ -76,9 +89,17 @@
         singleSelect:true
     };
 
+    //日期时间范围
+    laydate.render({
+        elem: '#dateRange',
+        type: 'datetime',
+        range: '至',
+    });
+
 
     $(function () {
-        $('#dg').datagrid(options);
+        $('#dateRange').val(new Date().format("yyyy-MM-dd")+' 00:00:00 至 '+new Date().format("yyyy-MM-dd")+' 23:59:59');
+        doQuery();
 
         $('#doDialog').dialog({
             modal: true,
@@ -118,6 +139,13 @@
     }
 
     function doQuery() {
+        options.queryParams = $('#queryForm').serializeObject();
+        var dateRange = $('#dateRange').val();
+        if(dateRange){
+            var dates = dateRange.split(" 至 ");
+            options.queryParams.startDate = dates[0];
+            options.queryParams.endDate = dates[1];
+        }
         $('#dg').datagrid(options);
     }
 

@@ -162,12 +162,15 @@ public class CommonController {
 		BufferedInputStream bis = null;
 		try {
 			bis = new BufferedInputStream(new FileInputStream(new File("kachi/file/"+fileName)));
+			//设置响应的内容长度
+			response.setContentLength(bis.available());
 			bos = new BufferedOutputStream(response.getOutputStream());
 			byte[] buff = new byte[1024];
 			int bytesRead;
 			while (-1 != (bytesRead = bis.read(buff))) {
 				bos.write(buff, 0, bytesRead);
 			}
+
 			bos.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

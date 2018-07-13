@@ -137,7 +137,7 @@ public interface SimCardDao {
 	 * 找出今天的问题卡
 	 * @return
 	 */
-	public List<ProblemCard> listProblemCard();
+	public List<ProblemCard> listProblemCard(Map<String,Object> map);
 
 	public int saveProblemCard(ProblemCard problemCard);
 

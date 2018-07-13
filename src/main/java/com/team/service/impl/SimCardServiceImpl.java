@@ -860,8 +860,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	}
 
     @Override
-    public ResultList listProblemCard() {
-		List<ProblemCard> simCardList = simCardDao.listProblemCard();
+    public ResultList listProblemCard(Date startDate,Date endDate) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("startDate",startDate);
+		map.put("endDate",endDate);
+		List<ProblemCard> simCardList = simCardDao.listProblemCard(map);
 		ResultList resultList = new ResultList(simCardList!=null?simCardList.size():0,simCardList);
         return resultList;
     }

@@ -12,7 +12,7 @@
 	<script type="text/javascript" src="../../js/common.js"></script>
   </head>
   <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
-  	
+
   	<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
 		<form id="queryForm">
 	  		<table class="table">
@@ -23,7 +23,7 @@
 	  			</tr>
 	  		</table>
 	  	</form>
-	</div>	
+	</div>
 	<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
 		<table id="dg" ></table>
 	</div>
@@ -41,7 +41,7 @@
 			         	{field:'browser',title:'浏览器',width:100},
 			         	{field:'bussinesstype',title:'业务类型',width:100},
 			         	{field:'operation',title:'具体操作',width:100},
-			         	{field:'desc',title:'关键内容',width:460}
+			         	{field:'desc',title:'关键内容',width:600}
 					]],
 			url:kcJs.fn.getContextPath()+'/log/list',
 			iconCls:'icon-tip',
@@ -53,17 +53,17 @@
 			scrollbarSize:0,
 			fit:true
 		};
-  
+
   	  function doQuery(){
   		options.queryParams = $('#queryForm').serializeObject();
   		$('#dg').datagrid(options);
   	  }
-  	  
+
 	  $(function(){
 	  	$('#dg').datagrid(options);
 	  	kcJs.fn.initDic_bussinesstype($('[name=bussinesstype]'));
 	  });
-	  
-	  
+
+
   </script>
 </html>	
