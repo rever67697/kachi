@@ -14,9 +14,14 @@ public interface InterfaceService {
     ReturnMsg qtb(Integer tsid);
 
     /**查询终端流水和终端充值记录**/
-    ReturnMsg qti(Integer tsid);
+    ReturnMsg qti(Integer tsid,Integer page,Integer rows);
 
     /**终端充值**/
     ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord);
+
+    /**查询所有部门**/
+    ReturnMsg qd();
+
+    ReturnMsg qtbd(Integer departmentId,Integer tsid,Integer page,Integer rows);
 
 }

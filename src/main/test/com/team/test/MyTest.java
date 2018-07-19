@@ -1,7 +1,12 @@
 package com.team.test;
 
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 import com.hqrh.rw.common.model.GroupCacheSim;
@@ -200,6 +205,32 @@ public class MyTest {
 	public void testGetOperator(){
 		Object object = publicCache.get(MConstant.CACHE_OPERATOR_KEY_PREE+46000);
 		System.out.println(object);
+	}
+
+	public static void main(String[] args) throws Exception{
+		StringBuffer sb = new StringBuffer();
+		HttpURLConnection conn = null;
+		URL url = new URL("http://localhost:10086/kachiManagerment/q?imsi=1");
+		conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		try{
+			conn.connect();
+			InputStream in = conn.getInputStream();
+			InputStreamReader isr = new InputStreamReader(in);
+			BufferedReader br = new BufferedReader(isr);
+			String temp = "";
+			while((temp = br.readLine()) != null){
+				sb.append(temp);
+			}
+			br.close();
+			isr.close();
+			in.close();
+			conn.disconnect();
+			System.out.println(sb.toString());
+		}catch (Exception e){
+			System.out.println("网络连接失败！");
+		}
+
 	}
 
 }

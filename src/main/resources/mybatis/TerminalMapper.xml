@@ -133,4 +133,13 @@
 		select * from m_terminal
 		where tsid = #{tsid,jdbcType=INTEGER}
 	</select>
+	
+	<select id="qtbd" resultType="com.team.dto.TerminalDTO">
+		select * from m_terminal
+		where departmentId = #{departmentId,jdbcType=INTEGER}
+		<if test="tsid!=null">
+			and tsid>=#{tsid,jdbcType=INTEGER}
+		</if>
+		order by tsid
+	</select>
 </mapper>

@@ -21,4 +21,6 @@ public interface DepartmentDao {
 	
 	public List<TbAuthPermission> list();
 
+	public List<Department> getAllDepartment();
+
 }

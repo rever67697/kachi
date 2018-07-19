@@ -1,15 +1,19 @@
 package com.team.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
 import com.team.dao.CostDayDao;
 import com.team.dao.FlowBalanceDao;
 import com.team.dao.TerminalChargeRecordDao;
 import com.team.dao.TerminalDao;
+import com.team.dao.auth.DepartmentDao;
 import com.team.dao.auth.OperationLogDao;
+import com.team.dto.TerminalDTO;
 import com.team.model.CostDay;
 import com.team.model.FlowBalance;
 import com.team.model.Terminal;
 import com.team.model.TerminalChargeRecord;
+import com.team.model.auth.Department;
 import com.team.model.auth.OperationLog;
 import com.team.service.InterfaceService;
 import com.team.service.TerminalChargeService;
@@ -41,6 +45,8 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     private TerminalDao terminalDao;
     @Autowired
     private FlowBalanceDao flowBalanceDao;
+    @Autowired
+    private DepartmentDao departmentDao;
 
 
     @Override
@@ -50,13 +56,17 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg qti(Integer tsid) {
-        //查询终端流水
-        List<CostDay> costDayList = costDayDao.getCostDayByTsid(tsid);
+    public ReturnMsg qti(Integer tsid,Integer page,Integer rows) {
         //查询终端充值记录
         Map<String,Object> map = new HashMap<>();
         map.put("tsid",tsid);
         List<TerminalChargeRecord> terminalChargeRecordList = terminalChargeRecordDao.list(map);
+
+        //查询终端流水
+        if (page != null && rows != null){
+            PageHelper.startPage(page, rows);
+        }
+        List<CostDay> costDayList = costDayDao.getCostDayByTsid(tsid);
 
         map.clear();
         map.put("flowRecord",costDayList);
@@ -115,6 +125,27 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         int count = terminalChargeRecordDao.save(terminalChargeRecord);
 
         return count>0?successTip():errorTip();
+    }
+
+    @Override
+    public ReturnMsg qd() {
+        List<Department> list = departmentDao.getAllDepartment();
+        return successTip(list);
+    }
+
+    @Override
+    public ReturnMsg qtbd(Integer departmentId, Integer tsid, Integer page, Integer rows) {
+        if (page != null && rows != null){
+            PageHelper.startPage(page, rows);
+        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("departmentId",departmentId);
+        map.put("tsid",tsid);
+
+        List<TerminalDTO> list = terminalDao.qtbd(map);
+
+        return successTip(list);
     }
 
 }

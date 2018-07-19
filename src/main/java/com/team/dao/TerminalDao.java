@@ -3,6 +3,7 @@ package com.team.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.team.dto.TerminalDTO;
 import com.team.model.Terminal;
 import org.apache.ibatis.annotations.Param;
 
@@ -66,5 +67,7 @@ public interface TerminalDao {
 	public int updateWiFiPass(Map<String,Object> map);
 
 	public Terminal getById(@Param("tsid") Integer tsid);
+
+	public List<TerminalDTO> qtbd(Map<String,Object> map);
 
 }

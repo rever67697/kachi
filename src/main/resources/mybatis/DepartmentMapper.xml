@@ -40,5 +40,12 @@
 		where status=0
 		order by id
 	</select>
+
+	<select id="getAllDepartment" resultType="com.team.model.auth.Department">
+		select *
+		from m_department
+		where status=0
+		order by id
+	</select>
 	
 </mapper>

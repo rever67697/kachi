@@ -29,7 +29,7 @@ public class InterfaceController  extends BaseService{
     @Autowired
     private OperationLogDao operationLogDao;
 
-    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge");
+    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd");
 
     @RequestMapping("/interface")
     @ResponseBody
@@ -48,7 +48,7 @@ public class InterfaceController  extends BaseService{
         if("qtb".equals(name)){
             returnMsg = interfaceService.qtb(terminalChargeRecord.getTsid());
         }else if("qti".equals(name)){//查询终端流水和充值记录
-            returnMsg = interfaceService.qti(terminalChargeRecord.getTsid());
+            returnMsg = interfaceService.qti(terminalChargeRecord.getTsid(),toInt(request,"page"),toInt(request,"rows"));
         }else if("tCharge".equals(name)){//终端充值
 
             if(terminalChargeRecord.getChargeFlow()==null && terminalChargeRecord.getChargeDate()==null){
@@ -56,6 +56,13 @@ public class InterfaceController  extends BaseService{
             }
 
             returnMsg = interfaceService.tCharge(terminalChargeRecord);
+        }else if("qd".equals(name)){//查询所有部门
+            returnMsg = interfaceService.qd();
+        }else if("qtbd".equals(name)){//通过部门编号查询所有的终端
+            returnMsg = interfaceService.qtbd(toInt(request,"departmentId"),
+                                              toInt(request,"tsid"),
+                                              toInt(request,"page"),
+                                              toInt(request,"rows"));
         }
 
         //保存日志
@@ -88,9 +95,22 @@ public class InterfaceController  extends BaseService{
             return errorTip("请求超时");
         }
 
-        if(record.getTsid()==null){
+        if(Arrays.asList("qtb","qti","tCharge").contains(name) && record.getTsid()==null){
             return errorTip("参数有误");
         }
+        //qtbd
+        if("qtbd".equals(name)){
+            if(toInt(request,"departmentId")==null){
+                return errorTip("参数有误");
+            }
+        }
+
+        if("qtbd".equals(name) || "qti".equals(name)){
+            if((toInt(request,"page")==null && toInt(request,"rows")!=null) || (toInt(request,"page")!=null && toInt(request,"rows")==null)){
+                return errorTip("参数有误");
+            }
+        }
+
 
         Enumeration params = request.getParameterNames();
         List<String> list = new ArrayList<>();
@@ -123,12 +143,31 @@ public class InterfaceController  extends BaseService{
 
     }
 
+    public Integer toInt(HttpServletRequest request,String name){
+        String str = request.getParameter(name);
+
+        Integer ret = null;
+
+        try {
+            ret = new Integer(str);
+        }catch (Exception e){
+            System.out.println(str);
+        }
+        return  ret;
+    }
+
     public static void main(String[] args){
         long time = System.currentTimeMillis();
         System.out.println(time);
 //        System.out.println("name=qtb&time="+time+"&tsid=10160266");
-//        System.out.println("name=qti&time="+time+"&tsid=10160266");
-        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
+//        System.out.println("name=qti&page=&rows=&time="+time+"&tsid=10160266");
+//        System.out.println(MD5Utils.encrypt("name=qti&page=1&rows=5&time="+time+"&tsid=10160266"));
+//        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
+//        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
+        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
+
     }
+
+
 
 }

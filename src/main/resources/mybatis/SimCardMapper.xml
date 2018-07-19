@@ -354,7 +354,7 @@
 		from tb_problem_card r
 		where 1=1
 		<if test="startDate!=null">
-			r.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+			and r.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
 		</if>
 		group by imsi
 		order by 3 desc
