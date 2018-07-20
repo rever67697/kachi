@@ -106,7 +106,11 @@ public class InterfaceController  extends BaseService{
         }
 
         if("qtbd".equals(name) || "qti".equals(name)){
-            if((toInt(request,"page")==null && toInt(request,"rows")!=null) || (toInt(request,"page")!=null && toInt(request,"rows")==null)){
+            Integer page = toInt(request,"page");
+            Integer rows = toInt(request,"rows");
+            if((page==null && rows!=null) || (page!=null && rows==null)){
+                return errorTip("参数有误");
+            }else if (page!=null && rows!=null && (page<1 || rows<1)){
                 return errorTip("参数有误");
             }
         }
@@ -145,15 +149,12 @@ public class InterfaceController  extends BaseService{
 
     public Integer toInt(HttpServletRequest request,String name){
         String str = request.getParameter(name);
-
-        Integer ret = null;
-
         try {
-            ret = new Integer(str);
+            return new Integer(str);
         }catch (Exception e){
             System.out.println(str);
         }
-        return  ret;
+        return  null;
     }
 
     public static void main(String[] args){
