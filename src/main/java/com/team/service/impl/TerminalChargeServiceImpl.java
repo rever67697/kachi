@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author : wuzhiheng
@@ -42,6 +40,16 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         //1.保存FlowBlance
         FlowBalance flowBalance = new FlowBalance();
         BeanUtils.copyProperties(record, flowBalance);
+
+        //解决在手机端手机不到时间的问题
+
+        if(record.getChargeDate() != null && record.getValidityDate() == null){
+            Date validityDate = origin.getValidityDate()==null?new Date():origin.getValidityDate();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(validityDate);
+            calendar.add(Calendar.DATE,record.getChargeDate());
+            flowBalance.setValidityDate(calendar.getTime());
+        }
 
         if(origin!=null){
             flowBlanceDao.update(flowBalance);
@@ -89,6 +97,15 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         return successTip(terminalChargeRecordDao.count(map));
+    }
+    public static void main(String[] args) throws Exception{
+        Date n = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(n);
+        calendar.add(Calendar.DATE,365);
+        n = calendar.getTime();
+
+        System.out.println((new SimpleDateFormat("yyyy-MM-dd").format(n)));
     }
 
 
