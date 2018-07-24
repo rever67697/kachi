@@ -138,7 +138,7 @@
 		select * from m_terminal
 		where departmentId = #{departmentId,jdbcType=INTEGER}
 		<if test="tsid!=null">
-			and tsid>=#{tsid,jdbcType=INTEGER}
+			and id>=#{tsid,jdbcType=INTEGER}
 		</if>
 		order by tsid
 	</select>
