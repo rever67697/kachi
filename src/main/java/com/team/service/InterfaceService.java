@@ -22,6 +22,10 @@ public interface InterfaceService {
     /**查询所有部门**/
     ReturnMsg qd();
 
+    /**查询部门下的终端**/
     ReturnMsg qtbd(Integer departmentId,Integer tsid,Integer page,Integer rows);
+
+    /**查询终端是否存在**/
+    ReturnMsg qte(Integer tsid);
 
 }

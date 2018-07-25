@@ -29,7 +29,7 @@ public class InterfaceController  extends BaseService{
     @Autowired
     private OperationLogDao operationLogDao;
 
-    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd");
+    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte");
 
     @RequestMapping("/interface")
     @ResponseBody
@@ -63,6 +63,8 @@ public class InterfaceController  extends BaseService{
                                               toInt(request,"tsid"),
                                               toInt(request,"page"),
                                               toInt(request,"rows"));
+        }else if("qte".equals(name)){//查询终端是否存在
+            returnMsg = interfaceService.qte(terminalChargeRecord.getTsid());
         }
 
         //保存日志
@@ -95,7 +97,7 @@ public class InterfaceController  extends BaseService{
             return errorTip("请求超时");
         }
 
-        if(Arrays.asList("qtb","qti","tCharge").contains(name) && record.getTsid()==null){
+        if(Arrays.asList("qtb","qti","tCharge","qte").contains(name) && record.getTsid()==null){
             return errorTip("参数有误");
         }
         //qtbd
@@ -165,7 +167,8 @@ public class InterfaceController  extends BaseService{
 //        System.out.println(MD5Utils.encrypt("name=qti&page=1&rows=5&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
-        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
+//        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
+        System.out.println(MD5Utils.encrypt("name=qte&time="+time+"&tsid=296271286"));
 
     }
 

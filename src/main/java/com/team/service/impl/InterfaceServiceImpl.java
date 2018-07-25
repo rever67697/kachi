@@ -148,4 +148,12 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         return successTip(list);
     }
 
+    @Override
+    public ReturnMsg qte(Integer tsid) {
+        Terminal terminal = terminalDao.getById(tsid);
+        Map<String,Object> map = new HashMap<>();
+        map.put("exist",terminal!=null);
+        return successTip(map);
+    }
+
 }
