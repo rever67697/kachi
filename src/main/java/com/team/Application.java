@@ -8,9 +8,12 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 
+import org.apache.catalina.Context;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +23,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -153,8 +158,35 @@ public class Application{
     }
 
     /**
-     * 启动入口main方法
+     * 关闭其他不安全的请求方法，只允许GET和POST
+     * @return
      */
+    @Bean
+    public EmbeddedServletContainerFactory servletContainer() {
+        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+            protected void postProcessContext(Context context) {
+                SecurityConstraint securityConstraint = new SecurityConstraint();
+                securityConstraint.setUserConstraint("CONFIDENTIAL");
+                SecurityCollection collection = new SecurityCollection();
+                collection.addPattern("/*");
+                collection.addMethod("HEAD");
+                collection.addMethod("PUT");
+                collection.addMethod("DELETE");
+                collection.addMethod("OPTIONS");
+                collection.addMethod("TRACE");
+                collection.addMethod("COPY");
+                collection.addMethod("SEARCH");
+                collection.addMethod("PROPFIND");
+                securityConstraint.addCollection(collection);
+                context.addConstraint(securityConstraint);
+            }
+        };
+        return tomcat;
+    }
+
+        /**
+         * 启动入口main方法
+         */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         logger.info("SpringBoot Start Success!");

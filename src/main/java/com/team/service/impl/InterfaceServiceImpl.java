@@ -77,8 +77,9 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
 
     @Override
     public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord) {
-
-        Terminal terminal = terminalDao.getById(terminalChargeRecord.getTsid());
+        Map<String,Object> map = new HashMap<>();
+        map.put("tsid",terminalChargeRecord.getTsid());
+        Terminal terminal = terminalDao.getByTsid(map);
         if(terminal==null){
             return errorTip("充值失败，终端不存在");
         }
@@ -149,9 +150,13 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg qte(Integer tsid) {
-        Terminal terminal = terminalDao.getById(tsid);
+    public ReturnMsg qte(Integer tsid,Integer departmentId) {
         Map<String,Object> map = new HashMap<>();
+        map.put("tsid",tsid);
+        map.put("departmentId",departmentId);
+
+        Terminal terminal = terminalDao.getByTsid(map);
+        map.clear();
         map.put("exist",terminal!=null);
         return successTip(map);
     }

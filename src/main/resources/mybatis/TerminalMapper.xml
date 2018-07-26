@@ -129,9 +129,12 @@
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
 	
-	<select id="getById" resultType="com.team.model.Terminal">
+	<select id="getByTsid" resultType="com.team.model.Terminal" parameterType="java.util.Map">
 		select * from m_terminal
 		where tsid = #{tsid,jdbcType=INTEGER}
+		<if test="departmentId!=null">
+			and departmentId=#{departmentId,jdbcType=INTEGER}
+		</if>
 	</select>
 	
 	<select id="qtbd" resultType="com.team.dto.TerminalDTO">

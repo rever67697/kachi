@@ -26,6 +26,6 @@ public interface InterfaceService {
     ReturnMsg qtbd(Integer departmentId,Integer tsid,Integer page,Integer rows);
 
     /**查询终端是否存在**/
-    ReturnMsg qte(Integer tsid);
+    ReturnMsg qte(Integer tsid,Integer departmentId);
 
 }

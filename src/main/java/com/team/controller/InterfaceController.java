@@ -64,7 +64,7 @@ public class InterfaceController  extends BaseService{
                                               toInt(request,"page"),
                                               toInt(request,"rows"));
         }else if("qte".equals(name)){//查询终端是否存在
-            returnMsg = interfaceService.qte(terminalChargeRecord.getTsid());
+            returnMsg = interfaceService.qte(terminalChargeRecord.getTsid(),toInt(request,"departmentId"));
         }
 
         //保存日志
@@ -168,7 +168,7 @@ public class InterfaceController  extends BaseService{
 //        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
 //        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
-        System.out.println(MD5Utils.encrypt("name=qte&time="+time+"&tsid=296271286"));
+        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
 
     }
 

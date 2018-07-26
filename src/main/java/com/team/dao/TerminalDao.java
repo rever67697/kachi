@@ -66,7 +66,7 @@ public interface TerminalDao {
 
 	public int updateWiFiPass(Map<String,Object> map);
 
-	public Terminal getById(@Param("tsid") Integer tsid);
+	public Terminal getByTsid(Map<String,Object> map);
 
 	public List<TerminalDTO> qtbd(Map<String,Object> map);
 
