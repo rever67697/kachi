@@ -24,7 +24,7 @@ public class DepartmentController {
 	private DepartmentService departmentService;
 	
 	@PostMapping("/save")
-	@PermissionLog(value="维护部门",key="id_id;text_名称",onlyLog=true)
+	@PermissionLog(value="维护部门",onlyLog=true)
 	public ReturnMsg save(Integer id,Integer parentId,String text,String url,String funDesc){
 		Department department = new Department();
 		department.setId(id);
@@ -36,7 +36,7 @@ public class DepartmentController {
 	}
 	
 	@PostMapping("/delete")
-	@PermissionLog(value="删除部门",key="name_名称",onlyLog=true)
+	@PermissionLog(value="删除部门",onlyLog=true)
 	public ReturnMsg delete(Integer id){
 		return departmentService.delete(id);
 	}

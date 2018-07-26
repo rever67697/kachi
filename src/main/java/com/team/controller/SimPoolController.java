@@ -45,20 +45,20 @@ public class SimPoolController {
 	}
 	
 	@PostMapping("/give")
-	@PermissionLog(key="spid_卡池编号;departmentId_部门id")
+	@PermissionLog
 	public ReturnMsg give(ReadPoolDept readPoolDept){
 		return readPoolDeptService.saveReadPoolDept(readPoolDept);
 	}
 	
 	@PostMapping("/update")
-	@PermissionLog(key="spid_卡池编号;name_卡池名称;departmentId_部门编号")
+	@PermissionLog
 	public ReturnMsg update(SimPool simPool){
 		ReturnMsg returnMsg =  simPoolService.update(simPool);
 		return returnMsg;
 	}
 	
 	@PostMapping("/save")
-	@PermissionLog(key="name_卡池名称;spid_卡池编号;departmentId_部门编号")
+	@PermissionLog
 	public ReturnMsg save(SimPool simPool) {
 		return simPoolService.saveSimPool(simPool);
 	}

@@ -29,14 +29,14 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/save")
-	@PermissionLog(key="tsid_终端编号;args_卡信息")
+	@PermissionLog
 	public ReturnMsg save(Integer tsid, Integer type, String args,HttpServletRequest request) {
 		Integer userId = CommonUtil.getUser(request).getId();
 		return ReadyTerminalSimService.save(tsid, type, args,userId);
 	}
 
 	@PostMapping("/update")
-	@PermissionLog(key = "tsid_终端编号;imsi_IMSI;type_类型")
+	@PermissionLog
 	public ReturnMsg update(ReadyTerminalSim readyTerminalSim,HttpServletRequest request) {
 		Integer operator = CommonUtil.getUser(request).getId();
 		readyTerminalSim.setOperator(operator);
@@ -44,7 +44,7 @@ public class ReadyTernimalSimController {
 	}
 
 	@PostMapping("/delete")
-	@PermissionLog(key = "tsid_终端编号;imsi_IMSI")
+	@PermissionLog
 	public ReturnMsg delete(ReadyTerminalSim readyTerminalSim) {
 		return ReadyTerminalSimService.delete(readyTerminalSim);
 	}

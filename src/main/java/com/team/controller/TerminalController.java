@@ -51,13 +51,13 @@ public class TerminalController {
 	}
 	
 	@PostMapping("/delete")
-	@PermissionLog(key="TSIDs_终端编号的集合")
+	@PermissionLog
 	public ReturnMsg delete(String ids){
 		return terminalService.deleteTerminalByIds(ids);
 	}
 	
 	@PostMapping("/save")
-	@PermissionLog(key="tsid_终端编号")
+	@PermissionLog
 	public ReturnMsg save(Terminal terminal){
 		return terminalService.saveTerminal(terminal);
 	} 
@@ -75,25 +75,25 @@ public class TerminalController {
 	} 
 	
 	@PostMapping("/getCostDay")
-	@PermissionLog(key="tsid_终端编号")
+	@PermissionLog
 	public ResultList getCostDay(Integer tsid,int page,int rows){
 		return costDayService.getCostDayByTsid(tsid, page, rows);
 	}
 	
 	@PostMapping("/getSimcard")
-	@PermissionLog(key="tsid_终端编号")
+	@PermissionLog
 	public ReturnMsg getSimcard(Integer tsid){
 		return terminalSimService.getTerminalSimByTsid(tsid);
 	} 
 	
 	@PostMapping("/batchUpdate")
-	@PermissionLog(key="tsids_终端编号的集合;departmentId_部门编号")
+	@PermissionLog
 	public ReturnMsg batchUpdate(String ids,Integer departmentId){
 		return terminalService.updateDepartment(ids, departmentId);
 	}
 
 	@PostMapping("/charge")
-	@PermissionLog(key = "tsid_终端编号;chargeFlow_充值流量;allowFlow_剩余流量;chargeDate_充值天数;validityDate_有效期;note_备注")
+	@PermissionLog
 	public ReturnMsg charge(TerminalChargeRecord terminalChargeRecord,HttpServletRequest request){
 		terminalChargeRecord.setCreateDate(new Date());
 		terminalChargeRecord.setOperator(CommonUtil.getUser(request).getName());

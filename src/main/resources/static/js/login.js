@@ -52,18 +52,32 @@ function doLogin() {
 			createCookie('kachi_password','',7);
 		}
 		createCookie('kachi_savePwd',checked,7);
-		var loginName=$('[name=userName]').val();
-		var passWord=$('[name=passWord]').val();
-		var code=$('[name=code]').val();
-		$.post(getContextPath()+'/login',{userName:loginName,passWord:passWord,code:code},function(data){
-			if(data && data.code=='200'){
-				window.location.href=getContextPath()+'/index';
-			}else{
-				$('#msg').text(data.msg);
-				changeValidateCode();
-				$('[name=code]').val('');
-			}
-		});
+		// var loginName=$('[name=userName]').val();
+		// var passWord=$('[name=passWord]').val();
+		// var code=$('[name=code]').val();
+
+
+        $.jCryption.getKeys(getContextPath()+'/getPublicKey',function(receivedKeys){ // 异步请求获取用来加密的公钥
+			var keys = receivedKeys;
+            if( null != keys && "undefined" != keys){
+                var postData = {};
+                var origPwd = $('[name=passWord]').val();
+                //实用公钥进行加密
+                $.jCryption.encrypt(origPwd, keys, function(encryptedPasswd) {  ///使用公钥谨慎性加密
+					$.post(getContextPath()+'/login',{userName:$('[name=userName]').val(),passWord:encryptedPasswd,code:$('[name=code]').val()},function(data){
+						if(data && data.code=='200'){
+							window.location.href=getContextPath()+'/index';
+						}else{
+							$('#msg').text(data.msg);
+							changeValidateCode();
+							$('[name=code]').val('');
+						}
+					});
+                })
+            }
+        });
+
+
 	}
 }
 

@@ -42,7 +42,6 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getByPool")
-//	@PermissionLog(key="cpId_卡池编号;name_卡池名称")
 	public ReturnMsg getByPool(Integer cpId){
 		return simCardService.getSimCardByPool(cpId);
 	}
@@ -112,7 +111,7 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/delete")
-	@PermissionLog(key="IMSIs_IMSI的集合")
+	@PermissionLog
 	public ReturnMsg delete(String ids){
 		return simCardService.deleteSimCard(ids);
 	}
@@ -126,8 +125,7 @@ public class SimCardController {
 	}
 
 	@PostMapping("/batchUpdate")
-	@PermissionLog(key = "status_卡状态;packageId_卡套餐;provinceCode_省;offPeriod_帐期日;sustained_账期持续时间;" +
-			"expiryDate_有效期截止时间;openDate_开卡时间;usedVpn_是否支持vpn;softType_是否软卡;ids_ids")
+	@PermissionLog
 	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids){
 		return simCardService.batchUpdate(simCard,ids);
 	}

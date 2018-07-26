@@ -32,7 +32,7 @@ public class TerminalSimController {
 	}
 	
 	@PostMapping("/delete")
-	@PermissionLog(key="TSIDs_终端编号的集合")
+	@PermissionLog
 	public ReturnMsg delete(String ids){
 		return terminalSimService.deleteTerminalByIds(ids);
 	}

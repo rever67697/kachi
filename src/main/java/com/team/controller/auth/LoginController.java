@@ -1,6 +1,7 @@
 package com.team.controller.auth;
 
 
+import java.security.KeyPair;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.team.util.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.team.exception.KachiException;
 import com.team.annotation.PermissionLog;
@@ -47,12 +47,16 @@ public class LoginController {
 	@Autowired
 	private TbAuthPermissionService tbAuthPermissionService;
 	
-	@PermissionLog(value="用户登录",key="userName_用户名",onlyLog=true)
+	@PermissionLog(value="用户登录",onlyLog=true)
 	@PostMapping("/login")
 	@ResponseBody
 	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
-			HttpServletResponse response){
+			HttpServletResponse response) throws Exception{
 		String msg = "";
+		//rsa解密
+		KeyPair keys = (KeyPair) request.getSession().getAttribute(IConstant.KEYPAIR);
+		passWord = RSAUtil.decrypt(passWord, keys);
+
 		String verificationCode = (String) request.getSession().getAttribute(IConstant.VERIFICATIONCODE);
 		if(verificationCode != null && verificationCode.equals(code)){
 			//根据用户名查询用户实体
@@ -121,7 +125,6 @@ public class LoginController {
 		cookie.setMaxAge(0);//消除cookie
 		response.addCookie(cookie);
 		response.sendRedirect(request.getContextPath()+"/site/login.html");
-		//return new ReturnMsg(IConstant.CODE_SUCCESS, IConstant.MSG_SUCCESS);
 	}
 	
 	@PostMapping("/getFunctions")
@@ -143,5 +146,32 @@ public class LoginController {
 			}
 		}
 		request.getSession().setAttribute(IConstant.SESSION_PERMISSION_MAP, map);
+	}
+
+	/**
+	 * 获取公钥
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/getPublicKey",  method = { RequestMethod.GET })
+	@ResponseBody
+	public Object encryptionWithPublicKey(HttpServletRequest request) {
+		try {
+			String basePath = "config/ds.properties";
+			KeyPair keyPair = RSAUtil.generateKeypair(1024, basePath);
+			request.getSession().setAttribute(IConstant.KEYPAIR,keyPair);
+			String e = RSAUtil.getPublicKeyExponent(keyPair);
+			String n = RSAUtil.getPublicKeyModulus(keyPair);
+			String md = String.valueOf(RSAUtil.getMaxDigits(1024));
+
+			Map<String,Object> ret = new HashMap<>();
+			ret.put("e",e);
+			ret.put("n",n);
+			ret.put("maxdigits",md);
+			return ret;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -35,19 +35,19 @@ public class TbAuthUserController {
 	}
 	
 	@PostMapping("/save")
-	@PermissionLog(key="name_用户名;departmentId_部门编号;id_用户id")
+	@PermissionLog
 	public ReturnMsg save(TbAuthUser user){
 		return tbAuthUserService.saveOrUpdateUser(user);
 	}
 	
 	@PostMapping("/update")
-	@PermissionLog(key="name_用户名;status_状态;id_用户id")
+	@PermissionLog
 	public ReturnMsg updateUserStatus(TbAuthUser user){
 		return tbAuthUserService.updateUserStatus(user);
 	}
 	
 	@PostMapping("/delete")
-	@PermissionLog(key="name_用户名")
+	@PermissionLog
 	public ReturnMsg delete(Integer id){
 		return tbAuthUserService.deleteUser(id);
 	}
@@ -64,7 +64,7 @@ public class TbAuthUserController {
 	}
 	
 	@PostMapping("/resetPwd")
-	@PermissionLog(key="name_用户名;id_用户id")
+	@PermissionLog
 	public ReturnMsg resetPwd(Integer id){
 		return tbAuthUserService.resetPwd(id);
 	}
