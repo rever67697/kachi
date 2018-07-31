@@ -31,4 +31,18 @@ public class LoginConfig {
         filterRegistrationBean.setInitParameters(initParameters);
         return filterRegistrationBean;
     }
+
+//    @Bean
+//    public FilterRegistrationBean logFilter(){
+//        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+//        filterRegistrationBean.setFilter(new LogFilter());
+//        filterRegistrationBean.addUrlPatterns("/*");
+//        filterRegistrationBean.setOrder(10);
+//        Map<String, String> initParameters = new HashMap<>();
+////        initParameters.put("excludes", "/verify");
+//        initParameters.put("session_user", IConstant.SESSION_USER_NAME+"1");
+//        initParameters.put("log_url", "http://localhost:8998/log-provider/log/save");
+//        filterRegistrationBean.setInitParameters(initParameters);
+//        return filterRegistrationBean;
+//    }
 }

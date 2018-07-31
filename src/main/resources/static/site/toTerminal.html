@@ -294,7 +294,7 @@
 		$('#chargeForm [name=allowFlow]').keyup(function () {
 
             var _val = ($(this).val()+'').toUpperCase();
-            if(!/^\d+[KMG]?$/.test(_val)){
+            if(!/^\d+\.?\d*[KMG]?$/.test(_val)){
                 $(this).val(_val.substr(0,_val.length-1));
                 return;
             }
@@ -501,6 +501,13 @@
     }
     
     function charge() {
+
+        var _val = ($('#chargeForm [name=allowFlow]').val()+'').toUpperCase();
+        if(!/^\d+\.?\d*[KMG]?$/.test(_val)){
+            $('#chargeForm [name=allowFlow]').val('');
+            return;
+        }
+
         var allowFlow = $('#chargeForm [name=allowFlow]').val().toUpperCase();
         if(!allowFlow){
             $('#chargeForm [name=allowFlow]').val('0');

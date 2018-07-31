@@ -98,15 +98,5 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         map.put("endDate",endDate);
         return successTip(terminalChargeRecordDao.count(map));
     }
-    public static void main(String[] args) throws Exception{
-        Date n = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(n);
-        calendar.add(Calendar.DATE,365);
-        n = calendar.getTime();
-
-        System.out.println((new SimpleDateFormat("yyyy-MM-dd").format(n)));
-    }
-
 
 }
