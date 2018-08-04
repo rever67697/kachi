@@ -17,7 +17,7 @@ public interface InterfaceService {
     ReturnMsg qti(Integer tsid,Integer page,Integer rows);
 
     /**终端充值**/
-    ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord);
+    ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord,boolean clearFlow,boolean clearDate);
 
     /**查询所有部门**/
     ReturnMsg qd();

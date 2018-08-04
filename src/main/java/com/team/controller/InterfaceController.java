@@ -38,6 +38,8 @@ public class InterfaceController  extends BaseService{
     @ResponseBody
     public ReturnMsg bussiness(String name,
                                @RequestParam(name = "time",defaultValue = "0") long time ,
+                               @RequestParam(name = "clearFlow",defaultValue = "false") boolean clearFlow ,
+                               @RequestParam(name = "clearDate",defaultValue = "false") boolean clearDate ,
                                TerminalChargeRecord terminalChargeRecord,
                                HttpServletRequest request){
 
@@ -54,11 +56,12 @@ public class InterfaceController  extends BaseService{
             returnMsg = interfaceService.qti(terminalChargeRecord.getTsid(),toInt(request,"page"),toInt(request,"rows"));
         }else if("tCharge".equals(name)){//终端充值
 
-            if(terminalChargeRecord.getChargeFlow()==null && terminalChargeRecord.getChargeDate()==null){
+            if(terminalChargeRecord.getChargeFlow()==null && terminalChargeRecord.getChargeDate()==null
+                    && !clearFlow && !clearDate){
                 return errorTip("参数有误");
             }
 
-            returnMsg = interfaceService.tCharge(terminalChargeRecord);
+            returnMsg = interfaceService.tCharge(terminalChargeRecord,clearFlow,clearDate);
         }else if("qd".equals(name)){//查询所有部门
             returnMsg = interfaceService.qd();
         }else if("qtbd".equals(name)){//通过部门编号查询所有的终端
@@ -168,10 +171,10 @@ public class InterfaceController  extends BaseService{
 //        System.out.println("name=qtb&time="+time+"&tsid=10160266");
 //        System.out.println("name=qti&page=&rows=&time="+time+"&tsid=10160266");
 //        System.out.println(MD5Utils.encrypt("name=qti&page=1&rows=5&time="+time+"&tsid=10160266"));
-//        System.out.println(MD5Utils.encrypt("chargeDate=2&chargeFlow=2&name=tCharge&time="+time+"&tsid=10160266"));
+        System.out.println(MD5Utils.encrypt("chargeDate=1&chargeFlow=2&clearDate=true&clearFlow=true&name=tCharge&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
 //        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
-        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
+//        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
 
     }
 

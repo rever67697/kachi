@@ -1,6 +1,8 @@
 package com.team.config;
 
 import com.team.filter.LoginFilter;
+import com.team.util.IConstant;
+import com.wonders.filter.LogFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +43,7 @@ public class LoginConfig {
 //        Map<String, String> initParameters = new HashMap<>();
 ////        initParameters.put("excludes", "/verify");
 //        initParameters.put("session_user", IConstant.SESSION_USER_NAME+"1");
-//        initParameters.put("log_url", "http://localhost:8998/log-provider/log/save");
+//        initParameters.put("log_url", "http://localhost:8999/log-customer/log/save");
 //        filterRegistrationBean.setInitParameters(initParameters);
 //        return filterRegistrationBean;
 //    }

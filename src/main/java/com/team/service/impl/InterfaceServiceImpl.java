@@ -76,7 +76,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord) {
+    public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord,boolean clearFlow,boolean clearDate) {
         Map<String,Object> map = new HashMap<>();
         map.put("tsid",terminalChargeRecord.getTsid());
         Terminal terminal = terminalDao.getByTsid(map);
@@ -107,7 +107,21 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
             if(validityDate.before(new Date())){
                 validityDate = new Date();
             }
-            flowBalance.setValidityDate(new Date(validityDate.getTime()+terminalChargeRecord.getChargeDate()*24*60*60*1000));
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(validityDate);
+            calendar.add(Calendar.DATE,terminalChargeRecord.getChargeDate());
+            flowBalance.setValidityDate(calendar.getTime());
+
+        }
+
+        if(clearFlow){
+            flowBalance.setAllowFlow(0L);
+            terminalChargeRecord.setChargeFlow(null);
+        }
+        if(clearDate){
+            flowBalance.setValidityDate(null);
+            terminalChargeRecord.setChargeDate(null);
         }
 
         //3.填充充值数据
