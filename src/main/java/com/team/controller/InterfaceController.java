@@ -38,8 +38,9 @@ public class InterfaceController  extends BaseService{
     @ResponseBody
     public ReturnMsg bussiness(String name,
                                @RequestParam(name = "time",defaultValue = "0") long time ,
-                               @RequestParam(name = "clearFlow",defaultValue = "false") boolean clearFlow ,
-                               @RequestParam(name = "clearDate",defaultValue = "false") boolean clearDate ,
+                               @RequestParam(name = "clearFlow",defaultValue = "false") boolean clearFlow ,//是否清空流量
+                               @RequestParam(name = "clearDate",defaultValue = "false") boolean clearDate ,//是否清空日期
+                               @RequestParam(name = "noLimit",defaultValue = "false") boolean noLimit ,    //是否不限量
                                TerminalChargeRecord terminalChargeRecord,
                                HttpServletRequest request){
 
@@ -52,24 +53,28 @@ public class InterfaceController  extends BaseService{
         //查询终端流量信息
         if("qtb".equals(name)){
             returnMsg = interfaceService.qtb(terminalChargeRecord.getTsid());
+
         }else if("qti".equals(name)){//查询终端流水和充值记录
             returnMsg = interfaceService.qti(terminalChargeRecord.getTsid(),toInt(request,"page"),toInt(request,"rows"));
+
         }else if("tCharge".equals(name)){//终端充值
 
             if(terminalChargeRecord.getChargeFlow()==null && terminalChargeRecord.getChargeDate()==null
-                    && !clearFlow && !clearDate){
+                    && !clearFlow && !clearDate && !noLimit){
                 return errorTip("参数有误");
             }
+            returnMsg = interfaceService.tCharge(terminalChargeRecord,clearFlow,clearDate,noLimit);
 
-            returnMsg = interfaceService.tCharge(terminalChargeRecord,clearFlow,clearDate);
         }else if("qd".equals(name)){//查询所有部门
             returnMsg = interfaceService.qd();
+
         }else if("qtbd".equals(name)){//通过部门编号查询所有的终端
             returnMsg = interfaceService.qtbd(toInt(request,"departmentId"),
                                               toInt(request,"tsid"),
                                               toInt(request,"page"),
                                               toInt(request,"rows"));
         }else if("qte".equals(name)){//查询终端是否存在
+
             returnMsg = interfaceService.qte(terminalChargeRecord.getTsid(),toInt(request,"departmentId"));
         }
 
@@ -171,10 +176,11 @@ public class InterfaceController  extends BaseService{
 //        System.out.println("name=qtb&time="+time+"&tsid=10160266");
 //        System.out.println("name=qti&page=&rows=&time="+time+"&tsid=10160266");
 //        System.out.println(MD5Utils.encrypt("name=qti&page=1&rows=5&time="+time+"&tsid=10160266"));
-        System.out.println(MD5Utils.encrypt("chargeDate=1&chargeFlow=2&clearDate=true&clearFlow=true&name=tCharge&time="+time+"&tsid=10160266"));
+        System.out.println(MD5Utils.encrypt("chargeDate=1&chargeFlow=2&clearDate=false&clearFlow=false&name=tCharge&noLimit=true&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
 //        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
 //        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
+        System.out.println(100000000000L/1024/1024);
 
     }
 

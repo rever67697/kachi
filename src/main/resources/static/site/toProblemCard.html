@@ -68,20 +68,24 @@
         title: '问题卡列表',
         columns: [[
             {field: 'ck', checkbox: true},
-            {field: 'imsi', title: 'IMSI', width: 150},
-
+            {field: 'tsid', title: '终端编号', width: 80},
+            {field: 'imsi', title: '选卡', width: 150},
+            {field: 'released', title: '释放卡', width: 150},
             {
-                field: 'status', title: '卡当前状态', width: 100, formatter: function (value, rec, index) {
+                field: 'status', title: '选卡当前状态', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getCardStatus(value + '');
                 return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
             },
-            {field: 'selectDate', title: '最后选卡时间', width: 150},
+            {field: 'selectDate', title: '选卡时间', width: 150},
+            {field: 'authTime', title: '鉴权时间', width: 150},
         ]],
         url: kcJs.fn.getContextPath() + '/simcard/listProblemCard',
 			toolbar: kcJs.fn.getFunctions(),
         iconCls: 'icon-tip',
         nowrap: false,
+        pagination:true,
+        pageList:[30,45],
         rownumbers: true,
         striped: true,
         scrollbarSize: 0,

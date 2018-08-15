@@ -63,8 +63,32 @@
                 return row.chargeFlow;
             }
             },
+            {
+                field: 'originFlow', title: '充值前流量(G)', width: 100, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.originFlow = (row.originFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.originFlow = '';
+                }
+                return row.originFlow;
+            }
+            },
+            {
+                field: 'allowFlow', title: '充值后流量(G)', width: 100, formatter: function (value, row, index) {
+                value = value + "";
+                if (value && value != 'null') {
+                    row.allowFlow = (row.allowFlow / 1024 / 1024).toFixed(2);
+                } else {
+                    row.allowFlow = '';
+                }
+                return row.allowFlow;
+            }
+            },
             {field: 'chargeDate', title: '充值天数', width: 100},
-            {field: 'createDate', title: '充值时间', width: 150},
+            {field: 'originDate', title: '充值前有效时间', width: 150},
+            {field: 'validityDate', title: '充值后有效时间', width: 150},
+            {field: 'createDate', title: '操作时间', width: 150},
             {field: 'operator', title: '操作人', width: 100},
         ]],
         url: kcJs.fn.getContextPath() + '/stat/chargeList',

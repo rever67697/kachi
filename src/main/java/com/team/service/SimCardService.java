@@ -45,7 +45,7 @@ public interface SimCardService {
 
 	public void insertBatch(List<SimCard> list);
 
-	public ResultList listProblemCard(Date startDate,Date endDate);
+	public ResultList listProblemCard(Date startDate,Date endDate,int page, int rows);
 
 	public ReturnMsg deleteProblemCard(Long imsi);
 }

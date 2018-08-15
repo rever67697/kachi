@@ -73,11 +73,18 @@ public class PermissionLogAop {
     		}
         }
 
-		//2.执行目标方法
-		Object result = point.proceed();
-		
+		TbAuthUser user = null;
+		Object result = null;
+        if("用户登出".equals(logInfo.value())){
+			user = CommonUtil.getUser(request);
+			result = point.proceed();
+		}else {
+			//2.执行目标方法
+			result = point.proceed();
+			user = CommonUtil.getUser(request);
+		}
+
 		//3.记录日志，如果用户为空则不记录
-		TbAuthUser user = CommonUtil.getUser(request);
 		if(user!=null){
 			PermissionLog bussiness = point.getTarget().getClass().getAnnotation(PermissionLog.class);
 			String bussinesstype = bussiness.value();

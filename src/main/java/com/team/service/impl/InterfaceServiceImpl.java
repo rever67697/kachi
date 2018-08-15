@@ -18,6 +18,7 @@ import com.team.model.auth.OperationLog;
 import com.team.service.InterfaceService;
 import com.team.service.TerminalChargeService;
 import com.team.util.CommonUtil;
+import com.team.util.IConstant;
 import com.team.util.IPUtils;
 import com.team.util.LogManager;
 import com.team.vo.ReturnMsg;
@@ -76,7 +77,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord,boolean clearFlow,boolean clearDate) {
+    public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord,boolean clearFlow,boolean clearDate,boolean noLimit) {
         Map<String,Object> map = new HashMap<>();
         map.put("tsid",terminalChargeRecord.getTsid());
         Terminal terminal = terminalDao.getByTsid(map);
@@ -90,6 +91,9 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
             flowBalance = new FlowBalance();
             flowBalance.setTsid(terminalChargeRecord.getTsid());
         }
+
+        terminalChargeRecord.setOriginFlow(flowBalance.getAllowFlow());
+        terminalChargeRecord.setOriginDate(flowBalance.getValidityDate());
 
         //1.处理流量，单位G
         if(terminalChargeRecord.getChargeFlow()!=null){
@@ -122,6 +126,12 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         if(clearDate){
             flowBalance.setValidityDate(null);
             terminalChargeRecord.setChargeDate(null);
+        }
+
+        //特殊处理，无限量100000000000kb
+        if(noLimit){
+            flowBalance.setAllowFlow(IConstant.NO_LIMIT);
+            terminalChargeRecord.setChargeFlow(IConstant.NO_LIMIT);
         }
 
         //3.填充充值数据

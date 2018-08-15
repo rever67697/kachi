@@ -12,6 +12,8 @@ import java.util.Date;
  */
 public class ProblemCard implements Serializable {
 
+    private Integer tsid;//终端编号
+
     private Long imsi;
 
     private Integer status;
@@ -19,8 +21,15 @@ public class ProblemCard implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date selectDate;//选卡时间
 
+    private Long released;//释放卡
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date authTime;//鉴权时间
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
+
+
 
     public Long getImsi() {
         return imsi;
@@ -54,11 +63,38 @@ public class ProblemCard implements Serializable {
         this.selectDate = selectDate;
     }
 
+    public Date getAuthTime() {
+        return authTime;
+    }
+
+    public void setAuthTime(Date authTime) {
+        this.authTime = authTime;
+    }
+
+    public Integer getTsid() {
+        return tsid;
+    }
+
+    public void setTsid(Integer tsid) {
+        this.tsid = tsid;
+    }
+
+    public Long getReleased() {
+        return released;
+    }
+
+    public void setReleased(Long released) {
+        this.released = released;
+    }
+
     public ProblemCard() {
     }
 
-    public ProblemCard(Long imsi, Date selectDate) {
+    public ProblemCard(Integer tsid, Long imsi, Date selectDate, Long released, Date authTime) {
+        this.tsid = tsid;
         this.imsi = imsi;
         this.selectDate = selectDate;
+        this.released = released;
+        this.authTime = authTime;
     }
 }

@@ -335,39 +335,57 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 
-	<select id="getProblemCard" resultType="com.team.model.SimCard" parameterType="java.util.Map">
-		select distinct k.*,r.selectDate
+	<select id="getProblemCard" resultType="com.team.dto.CardDTO" parameterType="java.util.Map">
+		select  k.*,r.tsid,r.released,r.selectDate,l.authtime
 		from m_select_card r
 		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type in (0,1,4)
+		left join m_auth_log l on r.tsid=l.tsid and r.imsi=l.imsi and l.authtime between r.selectdate and adddate(r.selectdate,interval 5 minute)
 		left join m_simcard k on r.imsi=k.imsi
 		where r.selectdate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
-		  and not exists (select 1 from m_terminal_sim_flow tsf where r.imsi=tsf.imsi and tsf.time>r.selectdate and tsf.type in (0,1,4))
 		  and t.time is null
 		  and r.imsi>0
-		order by k.status desc
+		order by k.imsi,r.selectDate desc
 	</select>
 	
 	<select id="listProblemCard" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
-		select  r.imsi,
-		        (select t.status from m_simcard t where r.imsi=t.imsi) status,
-		        max(r.selectDate) selectDate
+		select  r.*,
+		        (select t.status from m_simcard t where r.imsi=t.imsi) status
 		from tb_problem_card r
 		where 1=1
 		<if test="startDate!=null">
-			and r.createTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+			and r.selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
 		</if>
-		group by imsi
-		order by 3 desc
+		order by selectDate desc
 	</select>
 	
 	<insert id="saveProblemCard" parameterType="com.team.model.ProblemCard">
 		insert into tb_problem_card
-		(imsi,selectDate)
-		values(#{imsi,jdbcType=BIGINT},#{selectDate,jdbcType=TIMESTAMP})
+		(imsi,tsid,selectDate,released,authTime)
+		values
+		(
+		 #{imsi,jdbcType=BIGINT},
+		 #{tsid,jdbcType=INTEGER},
+		 #{selectDate,jdbcType=TIMESTAMP},
+		 #{released,jdbcType=BIGINT},
+		 #{authTime,jdbcType=TIMESTAMP}
+		)
 	</insert>
 	
 	<delete id="deleteProblemCard">
 		delete from tb_problem_card
 		where imsi=#{imsi,jdbcType=BIGINT}
+	</delete>
+
+	<delete id="deleteProblemCards">
+		delete from tb_problem_card
+		where imsi in(
+			select imsi from (
+				select imsi,max(selectDate) selectDate
+				from tb_problem_card
+				where createtime>=CURRENT_DATE
+				group by imsi
+			) r where
+			exists(select 1 from m_terminal_sim_flow t where t.imsi=r.imsi and t.type in (0,1,4) and t.time>r.selectDate))
+		and createtime>=CURRENT_DATE
 	</delete>
 </mapper>

@@ -37,6 +37,14 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
         //获取源流量和日期参数
         FlowBalance origin = flowBlanceDao.findByTsid(record.getTsid());
 
+        if(origin!=null){
+            record.setOriginFlow(origin.getAllowFlow());
+            record.setOriginDate(origin.getValidityDate());
+        }else {
+            record.setOriginFlow(null);
+            record.setOriginDate(null);
+        }
+
         //1.保存FlowBlance
         FlowBalance flowBalance = new FlowBalance();
         BeanUtils.copyProperties(record, flowBalance);

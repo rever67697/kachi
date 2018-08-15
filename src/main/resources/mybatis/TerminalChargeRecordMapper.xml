@@ -30,14 +30,16 @@
 	
 	<insert id="save" parameterType="com.team.model.TerminalChargeRecord">
 		insert into m_terminal_charge_record
-		(tsid,chargeFlow,allowFlow,chargeDate,validityDate,operator,createDate)
+		(tsid,chargeFlow,allowFlow,originFlow,chargeDate,validityDate,originDate,operator,createDate)
 		values
 		(
 			#{tsid,jdbcType=INTEGER},
 			#{chargeFlow,jdbcType=BIGINT},
 			#{allowFlow,jdbcType=BIGINT},
+			#{originFlow,jdbcType=BIGINT},
 			#{chargeDate,jdbcType=INTEGER},
 			#{validityDate,jdbcType=TIMESTAMP},
+			#{originDate,jdbcType=TIMESTAMP},
 			#{operator,jdbcType=VARCHAR},
 			#{createDate,jdbcType=TIMESTAMP}
 		)

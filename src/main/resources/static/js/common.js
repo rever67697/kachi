@@ -73,12 +73,13 @@ var kcJs=
 	//终端充值--充值流量
 	var v_charge_flow=[
 		{"充值流量":0},
-		{"1G":"1G"},
-		{"3G":"3G"},
-		{"5G":"5G"},
-		{"10G":"10G"},
-		{"15G":"15G"},
-		{"20G":"20G"}
+		{"1G":"1"},
+		{"3G":"3"},
+		{"5G":"5"},
+		{"10G":"10"},
+		{"15G":"15"},
+		{"20G":"20"},
+		{"无限量":"999"}
 	];
 	//终端充值--充值日期
 	var v_charge_date=[
@@ -285,6 +286,7 @@ var kcJs=
 		//通过有效期截止时间获取终端剩余时间
         getRemainTime:function (date_str) {
 			if(date_str){
+				date_str = date_str.substr(0,10);
                 var diff = Math.floor((new Date(date_str) - new Date())/1000/60/60/24);
                 return diff;
 			}

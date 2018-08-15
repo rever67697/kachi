@@ -118,7 +118,7 @@ public class LoginController {
 	}
 
 	@GetMapping("/logout")
-	@PermissionLog(value="退出登录",onlyLog=true)
+	@PermissionLog(value="用户登出",onlyLog=true)
 	public void logout(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		request.getSession().removeAttribute(IConstant.SESSION_USER_NAME);
 		Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,"");

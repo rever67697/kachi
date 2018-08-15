@@ -21,9 +21,15 @@ public class TerminalChargeRecord implements Serializable {
 
     private Long allowFlow;
 
+    private Long originFlow;//充值前剩余流量
+
     private Integer chargeDate;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date validityDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date originDate;//充值前有效日期
 
     private String operator;
 
@@ -103,5 +109,21 @@ public class TerminalChargeRecord implements Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Long getOriginFlow() {
+        return originFlow;
+    }
+
+    public void setOriginFlow(Long originFlow) {
+        this.originFlow = originFlow;
+    }
+
+    public Date getOriginDate() {
+        return originDate;
+    }
+
+    public void setOriginDate(Date originDate) {
+        this.originDate = originDate;
     }
 }

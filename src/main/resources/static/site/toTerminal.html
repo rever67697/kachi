@@ -501,9 +501,14 @@
     }
     
     function charge() {
-
+		var noLimit = false;
         var _val = ($('#chargeForm [name=allowFlow]').val()+'').toUpperCase();
-        if(!/^\d+\.?\d*[KMG]?$/.test(_val)){
+
+        if(_val=='无限量'){
+			noLimit = true;
+		}
+
+        if(!noLimit && !/^\d+\.?\d*[KMG]?$/.test(_val)){
             $('#chargeForm [name=allowFlow]').val('');
             return;
         }
@@ -514,19 +519,32 @@
             allowFlow = '0';
 		}
 		if($('#chargeForm').form('validate')){
-		    if((allowFlow+'').indexOf('M')>0){
-                allowFlow = allowFlow.replace('M','');
-                allowFlow = allowFlow * 1024;
-			}else if((allowFlow+'').indexOf('G')>0){
-                allowFlow = allowFlow.replace('G','');
-                allowFlow = allowFlow * 1024 * 1024;
-            }else if((allowFlow+'').indexOf('K')>0){
-                allowFlow = allowFlow.replace('K','');
-            }else{
-                allowFlow = allowFlow * 1024 * 1024;
-			}
+            if(noLimit){
+                allowFlow = 100000000000;
+			}else {
+                if((allowFlow+'').indexOf('M')>0){
+                    allowFlow = allowFlow.replace('M','');
+                    allowFlow = allowFlow * 1024;
+                }else if((allowFlow+'').indexOf('G')>0){
+                    allowFlow = allowFlow.replace('G','');
+                    if(allowFlow==95367.43){
+                        allowFlow=100000000000;
+					}else {
+                        allowFlow = allowFlow * 1024 * 1024;
+                    }
+                }else if((allowFlow+'').indexOf('K')>0){
+                    allowFlow = allowFlow.replace('K','');
+                }else{
+                    if(allowFlow==95367.43){
+                        allowFlow=100000000000;
+                    }else {
+                        allowFlow = allowFlow * 1024 * 1024;
+                    }
+                }
 
-            allowFlow = parseInt(allowFlow);
+                allowFlow = parseInt(allowFlow);
+            }
+
             $('#chargeForm [name=allowFlow]').val(allowFlow);
 
             $('#dg').datagrid('loading');
@@ -546,9 +564,14 @@
 		oriFlow = oriFlow?oriFlow:'0';
 		var selectFlow = $('#chargeForm [name=selectFlow]').val();
 
-		var autualFlow = parseFloat(parseFloat(oriFlow)+parseFloat(selectFlow)).toFixed(2);
-		$('#chargeForm [name=allowFlow]').val(autualFlow);
-//		$('#chargeForm [name=chargeFlow]').val(selectFlow);
+		//无限量，特殊处理
+		if(selectFlow==999){
+            $('#chargeForm [name=allowFlow]').val('无限量');
+		}else {
+            var autualFlow = parseFloat(parseFloat(oriFlow)+parseFloat(selectFlow)).toFixed(2);
+            $('#chargeForm [name=allowFlow]').val(autualFlow);
+		}
+
     }
     
     function changeDate() {

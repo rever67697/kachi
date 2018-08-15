@@ -32,4 +32,6 @@ public class IConstant {
 	
 	public final static String NO_PERMISSION = "没有权限！";
 
+	public final static Long NO_LIMIT = 100000000000L;
+
 }
