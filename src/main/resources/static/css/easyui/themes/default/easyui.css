@@ -2009,3 +2009,18 @@ fieldset{border:1px solid #999}
 .detail-table td{border-top:1px dotted #ccc;height:30px}
 .detail-table tr:first-child td{border-top:0}
 .btn-download{border:0;background:#abd176;color: #fff;cursor: pointer;text-align:center;border-radius: 4px;height: 20px;line-height:20px;width:50px}
+
+.indicator{width:250px;height:60px;margin:5px 0;border-bottom:1px dotted #ccc;padding-bottom:2px}
+.indicator-value{display: block;font-size: 18px ;color:red;margin-left:80px;padding-top: 8px;padding-bottom: 3px}
+.indicator-text{display: block;font-size: 15px ;color:#666;margin-left:80px}
+.stat-icon{background:url("./stat_icon.jpg") no-repeat;width:60px;height:60px;float:left}
+.stat-icon1{background-position:-15px -15px }
+.stat-icon2{background-position:-87px -15px }
+.stat-icon3{background-position:-17px -87px }
+.stat-icon4{background-position:-230px -15px }
+.stat-icon5{background-position:-88px -87px }
+.stat-icon6{background-position:-160px -87px }
+.stat-icon7{background-position:-88px -160px }
+.stat-icon8{background-position:-160px -160px }
+.stat-icon9{background-position:-160px -230px }
+.stat-icon10{background-position:-230px -230px }

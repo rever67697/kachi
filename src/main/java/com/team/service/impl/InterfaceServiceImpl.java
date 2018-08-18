@@ -147,6 +147,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         }
 
         //5.保存充值流水
+        terminalChargeRecord.setOperator("接口充值");
         int count = terminalChargeRecordDao.save(terminalChargeRecord);
 
         return count>0?successTip():errorTip();

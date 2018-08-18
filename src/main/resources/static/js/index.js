@@ -195,6 +195,7 @@ function InitLeftMenu(data) {
         var t = panels[0].panel('options').title;
         $('#nav').accordion('select', t);
     }
+    toIndex();
 }
 
 function logout(){
@@ -227,4 +228,8 @@ function submit(){
             }
         });
     };
+}
+
+function toIndex() {
+    addTab('首页',kcJs.fn.getContextPath()+'/stat/index','icon icon-whome');
 }
