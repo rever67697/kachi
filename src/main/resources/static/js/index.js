@@ -7,6 +7,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     }
 });
 $(document).ready(function () {
+    toIndex();
     $.post(kcJs.fn.getContextPath()+'/getUser',function(data){
         if(data){
             $('.userName').text(data.name);
@@ -169,6 +170,7 @@ function InitLeftMenu(data) {
         });
 
     });
+
     //给所有有连接的子菜单加上事件
     $('.easyui-accordion div ul li a').click(function(){
         var tabTitle = $(this).children('.nav').text();
@@ -195,7 +197,7 @@ function InitLeftMenu(data) {
         var t = panels[0].panel('options').title;
         $('#nav').accordion('select', t);
     }
-    toIndex();
+
 }
 
 function logout(){
@@ -230,6 +232,8 @@ function submit(){
     };
 }
 
+
 function toIndex() {
-    addTab('首页',kcJs.fn.getContextPath()+'/stat/index','icon icon-whome');
+    addTab("首页",kcJs.fn.getContextPath()+'/site/stat.html',"icon icon-whome");
+    // addTab("首页",kcJs.fn.getContextPath()+'/site/toSimPool.html?id=2',"icon icon-whome");
 }

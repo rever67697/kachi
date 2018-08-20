@@ -2010,6 +2010,10 @@ fieldset{border:1px solid #999}
 .detail-table tr:first-child td{border-top:0}
 .btn-download{border:0;background:#abd176;color: #fff;cursor: pointer;text-align:center;border-radius: 4px;height: 20px;line-height:20px;width:50px}
 
+.text-top{font-size: 14px;display: inline-block;margin-bottom:3px}
+.text-bottom{font-size: 13px;color: #666}
+.text-title{width:100%;padding:3px 10px;background: #4e97e3;color:#fff;font-weight: bold;border-radius:4px;margin-bottom:10px}
+
 .indicator{width:250px;height:60px;margin:5px 0;border-bottom:1px dotted #ccc;padding-bottom:2px}
 .indicator-value{display: block;font-size: 18px ;color:red;margin-left:80px;padding-top: 8px;padding-bottom: 3px}
 .indicator-text{display: block;font-size: 15px ;color:#666;margin-left:80px}

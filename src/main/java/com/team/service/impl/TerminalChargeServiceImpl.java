@@ -7,6 +7,7 @@ import com.team.dao.TerminalChargeRecordDao;
 import com.team.model.FlowBalance;
 import com.team.model.TerminalChargeRecord;
 import com.team.service.TerminalChargeService;
+import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.BeanUtils;
@@ -77,6 +78,9 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
 
         if(!origin.getAllowFlow().equals(record.getAllowFlow())){
             record.setChargeFlow(record.getAllowFlow()-origin.getAllowFlow());
+            if(IConstant.NO_LIMIT.equals(record.getAllowFlow())){
+                record.setChargeFlow(IConstant.NO_LIMIT);
+            }
         }
         if(record.getChargeFlow()!=null || record.getChargeDate()!=null){
             terminalChargeRecordDao.save(record);

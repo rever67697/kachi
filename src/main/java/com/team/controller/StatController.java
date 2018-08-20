@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,18 +51,21 @@ public class StatController {
 		return terminalChargeService.count(tsid,startDate,endDate);
 	}
 
-	@RequestMapping("/index")
-	public String index(Model model){
+	@RequestMapping("/")
+	@ResponseBody
+	public Object index(Model model){
 		Map<String,Object> terminalCountMap = statService.terminalCount();
 		Map<String,Object> terminalCostMap = statService.terminalCost();
 
 		StatBean statBean = (StatBean) terminalCountMap.get("statBean");
 		statBean = statService.fixInformation(statBean);
 
-		model.addAttribute("terminalCountMap",terminalCountMap);
-		model.addAttribute("terminalCostMap",terminalCostMap);
-		model.addAttribute("stat",statBean);
-		return "stat";
+		Map<String,Object> map = new HashMap<>();
+
+		map.put("terminalCountMap",terminalCountMap);
+		map.put("terminalCostMap",terminalCostMap);
+		map.put("stat",statBean);
+		return map;
 	}
 
 

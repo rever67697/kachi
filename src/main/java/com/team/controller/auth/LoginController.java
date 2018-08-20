@@ -9,8 +9,11 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.team.service.StatService;
 import com.team.util.RSAUtil;
+import com.team.vo.stat.StatBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +49,7 @@ public class LoginController {
 	
 	@Autowired
 	private TbAuthPermissionService tbAuthPermissionService;
-	
+
 	@PermissionLog(value="用户登录",onlyLog=true)
 	@PostMapping("/login")
 	@ResponseBody
@@ -83,8 +86,7 @@ public class LoginController {
 	}
 
 	@GetMapping({"/index","/"})
-	public String index(Model model){
-		model.addAttribute("name","wzh");
+	public String index(){
 		return "index";
 	}
 

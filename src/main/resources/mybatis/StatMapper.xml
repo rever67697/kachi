@@ -41,7 +41,7 @@
 			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date=current_date) d_user_flow,
 			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date=current_date) d_card_flow,
 			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) m_user_flow,
-			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) m_card_flow,
+			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date>=DATE_ADD(curdate(),interval - day(curda1te())+1 day)) m_card_flow,
 			(select round(ifnull(sum(chargeflow),0)/1024/1024,2) from m_terminal_charge_record where chargeflow<>100000000000 and chargeflow>0
 				and createdate>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) t_charge_flow,
 			(select round(ifnull(sum(allowflow),0)/1024/1024,2) from m_flow_balance where allowflow<>100000000000) t_residue_flow,

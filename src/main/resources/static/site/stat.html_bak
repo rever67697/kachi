@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>统计概览</title>
+	
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/easyui/themes/default/easyui.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/easyui/themes/icon.css}"/>
+	<script type="text/javascript" th:src="@{/js/jquery-1.6.3.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.easyui.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/easyui-lang-zh_CN.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/js/echarts.js}"></script>
+	  <style>
+		  .text-top{font-size: 14px;display: inline-block;margin-bottom:3px}
+		  .text-bottom{font-size: 13px;color: #666}
+		  .text-title{width:100%;padding:3px 10px;background: #4e97e3;color:#fff;font-weight: bold;border-radius:4px;margin-bottom:10px}
+		  /*.text-title span{height: 32px;float: left;background: #84dcc6;width:20px;margin-top:-3px;margin-left:-10px;border-radius: 4px 0 0 4px}*/
+	  </style>
+
+</head>
+  <body id="main-layout" class="easyui-layout"  style="overflow-y: hidden;background: #f6f6f8"  scroll="no">
+
+  <div region="center" title="" style="background:#f6f6f8;;padding:20px;padding-top:10px" border="false">
+	<table style="width: 100%">
+		<tr>
+			<td width="50%">
+				<div style="margin-right:20px">
+					<h2 class="text-title"><span></span>近7天终端激活量统计</h2>
+
+					<div id="terminalCount" style="width:590px;height:230px"></div>
+				</div>
+			</td>
+			<td width="50%">
+				<div style="margin-left:20px">
+					<h2 class="text-title"><span></span>流量消耗</h2>
+					<div style="width:100%;height:230px">
+						<table style="width:100%;">
+							<tr>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon1"></span>
+										<span class="indicator-value" th:text="${stat.dUserFlow}+'G'"></span>
+										<span class="indicator-text">当日用户消耗</span>
+									</div>
+								</td>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon2"></span>
+										<span class="indicator-value" th:text="${stat.dCardFlow}+'G'"></span>
+										<span class="indicator-text">当日卡消耗</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon3"></span>
+										<span class="indicator-value" th:text="${stat.mUserFlowStr}"></span>
+										<span class="indicator-text">当月用户消耗</span>
+									</div>
+								</td>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon4"></span>
+										<span class="indicator-value" th:text="${stat.mCardFlowStr}"></span>
+										<span class="indicator-text">当月卡消耗</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon5"></span>
+										<span class="indicator-value" th:text="${stat.tAvgCost}+'G'"></span>
+										<span class="indicator-text">当月终端平均消耗</span>
+									</div>
+								</td>
+								<td width="50">
+									<div class="indicator ">
+										<span class="stat-icon stat-icon6"></span>
+										<span class="indicator-value" th:text="${stat.cCostRate}+'%'"></span>
+										<span class="indicator-text">卡套餐流量消耗</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+
+					</div>
+				</div>
+			</td>
+		</tr>
+
+		<!--第二行-->
+
+		<tr>
+			<td width="50%">
+				<table style="width:100%">
+					<tr align="center">
+						<td width="25%">
+							<div>
+								<span class="text-top" th:text="${stat.dTCount}+' 台'"></span><br/><span class="text-bottom">今日激活量</span>
+							</div>
+						</td>
+						<td width="25%">
+							<div style="border-left:1px solid #ccc;border-right:1px solid #ccc">
+								<span class="text-top" th:text="${stat.mTCount}+' 台'"></span><br/><span class="text-bottom">今月激活量</span>
+							</div>
+						</td>
+						<td width="25%" style="border-right:1px solid #ccc">
+							<div>
+								<span class="text-top" th:text="${stat.tTCount}+' 台'"></span><br/><span class="text-bottom">总激活量</span>
+							</div>
+						</td>
+						<td width="25%">
+							<div>
+								<span class="text-top" th:text="${stat.cChargeTotal}+' 人'"></span><br/><span class="text-bottom">今日充值人数</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td width="50%">
+				<div style="margin-left: 20px">
+					<table style="width:100%">
+						<tr>
+							<td width="100">
+								<div class="indicator " style="width: 100%">
+									<span class="stat-icon stat-icon7"></span>
+									<span class="indicator-value" th:text="${stat.mMaxFlowStr}+'  /  '+${stat.mUsedFlowStr}+'  /  '+${stat.mResidueFlowStr}">20T / 1T / 1T</span>
+									<span class="indicator-text">卡套餐总量 / 已使用量 / 剩余量</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+				</div>
+			</td>
+		</tr>
+
+		<!--第三行-->
+
+		<tr>
+			<td width="50%">
+				<div style="margin-right:20px;margin-top:0px">
+					<h2 class="text-title"><span></span>当月终端消耗排名前十</h2>
+					<div id="terminalCost" style="width:100%;height:280px"></div>
+				</div>
+			</td>
+			<td width="50%">
+				<div style="margin-left:20px;margin-top:0px">
+					<h2 class="text-title"><span></span>终端充值</h2>
+					<div  style="width:100%;height:280px">
+						<table style="width:100%">
+							<tr>
+								<td width="50">
+									<div class="indicator"  style="margin-top:40px">
+										<span class="stat-icon stat-icon8"></span>
+										<span class="indicator-value" th:text="${stat.dChargeFlow}+'G  /  '+${stat.cChargeFlow}+'人'"></span>
+										<span class="indicator-text">当日充值流量 / 充值人数</span>
+									</div>
+								</td>
+								<td width="50">
+									<div class="indicator"  style="margin-top:40px">
+										<span class="stat-icon stat-icon9"></span>
+										<span class="indicator-value" th:text="${stat.dChargeDate}+'天  /  '+${stat.cChargeDate}+'人'"></span>
+										<span class="indicator-text">当日充值天数 / 充值人数</span>
+									</div>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="2">
+									<div class="indicator" style="width: 100%;margin-top:30px">
+										<span class="stat-icon stat-icon10"></span>
+										<span class="indicator-value" th:text="${stat.tChargeFlowStr}+'  /  '+${stat.tResidueFlowStr}+'  /  '+${stat.tDuration}+'分钟'">10T/5T/100h</span>
+										<span class="indicator-text">当月充值流量 / 剩余流量 / 使用时长</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+
+	</table>
+
+
+
+	<script th:inline="javascript">
+        var tcountChart = echarts.init(document.getElementById('terminalCount'));
+        var tcostChart = echarts.init(document.getElementById('terminalCost'));
+        var option_tcountChart = {
+            color:  ['#F2AE43', '#28A9E2', '#90ed7d', '#f7a35c', '#8085e9','#f15c80', '#e4d354', '#8085e8', '#8d4653', '#91e8e1'],
+            title: {
+//                text: '近7天终端激活数据统计'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: '{b0}<br/>{a0}：{c0}台<br/>{a1}：{c1}台'
+            },
+            legend: {
+                data:[[${terminalCountMap.legend}]]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '0px',
+                containLabel: true
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: [[${terminalCountMap.xAxis}]]
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [[${terminalCountMap.series}]]
+        };
+
+//        $.each(option_tcountChart.series,function (idx, obj) {
+//			obj.itemStyle = { normal: {label : {show: true}}}
+//        })
+
+        tcountChart.setOption(option_tcountChart);
+
+        var option_tcostChart = {
+            title: {
+//                text: '当月终端消耗排名前十'
+            },
+            xAxis: {
+                type: 'category',
+                data: [[${terminalCostMap.xAxis}]],
+                axisLabel: {
+                    interval:0,
+                    rotate:30
+				}
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: '终端编号：{b}<br/>消耗：{c0}G'
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+			yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [[${terminalCostMap.series}]],
+                type: 'bar',
+                itemStyle : {
+                    normal: {
+                        label : {
+                            show: true,
+							position:'top'//在柱状图的顶部显示数值
+                        }
+                    }
+                }
+            }],
+
+
+        };
+
+        tcostChart.setOption(option_tcostChart);
+	</script>
+  </div>
+</body>
+</html>
