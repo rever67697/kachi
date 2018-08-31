@@ -34,16 +34,16 @@
 <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
     <table id="dg"></table>
 </div>
-<div region="south" title="" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;">
-    <table class="table">
-        <tr>
-            <th>充值流量(G)</th>
-            <td><input id="chargeFlow" readonly="readonly"/></td>
-            <th>充值天数</th>
-            <td><input id="chargeDate" readonly="readonly"/></td>
-        </tr>
-    </table>
-</div>
+<!--<div region="south" title="" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;">-->
+    <!--<table class="table">-->
+        <!--<tr>-->
+            <!--<th>充值流量(G)</th>-->
+            <!--<td><input id="chargeFlow" readonly="readonly"/></td>-->
+            <!--<th>充值天数</th>-->
+            <!--<td><input id="chargeDate" readonly="readonly"/></td>-->
+        <!--</tr>-->
+    <!--</table>-->
+<!--</div>-->
 </body>
 <script type="text/javascript">
     var options = {
@@ -107,7 +107,7 @@
         elem: '#dateRange',
         type: 'datetime',
         range: '至',
-        max:new Date().format("yyyy-MM-dd")
+        max:new Date().format("yyyy-MM-dd")+' 23:59:59'
     });
 
     function doQuery() {
@@ -121,14 +121,14 @@
         }
         $('#dg').datagrid(options);
 
-        $.post(kcJs.fn.getContextPath() + '/stat/chargeCount',options.queryParams, function (data) {
-            if (data && data.code == '200') {
-                $('#chargeFlow').val(data.data.chargeFlow);
-                $('#chargeDate').val(data.data.chargeDate);
-            } else {
-                $.messager.alert("提示", data.msg, "info");
-            }
-        }, 'json');
+//        $.post(kcJs.fn.getContextPath() + '/stat/chargeCount',options.queryParams, function (data) {
+//            if (data && data.code == '200') {
+//                $('#chargeFlow').val(data.data.chargeFlow);
+//                $('#chargeDate').val(data.data.chargeDate);
+//            } else {
+//                $.messager.alert("提示", data.msg, "info");
+//            }
+//        }, 'json');
     }
 
     $(function () {

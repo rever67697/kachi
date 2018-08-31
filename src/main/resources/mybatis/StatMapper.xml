@@ -27,7 +27,7 @@
 		select tsid,
 			   round(sum(flow)/1024/1024,2) flow
 		from  m_cost_day
-		where date>=DATE_ADD(curdate(),interval - day(curdate())+1 day)
+		where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)
 		group by tsid
 		order by 2 desc
 		limit 10
@@ -37,15 +37,15 @@
 	<select id="stat" resultType="com.team.vo.stat.StatBean">
 		<![CDATA[
 			select *,null d_t_count,null t_t_count from
-			(select (select count(1) from m_terminal where createDate>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) m_t_count,
+			(select (select count(1) from m_terminal where createDate>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_t_count,
 			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date=current_date) d_user_flow,
 			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date=current_date) d_card_flow,
-			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) m_user_flow,
-			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date>=DATE_ADD(curdate(),interval - day(curda1te())+1 day)) m_card_flow,
+			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_user_flow,
+			(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_card_flow,
 			(select round(ifnull(sum(chargeflow),0)/1024/1024,2) from m_terminal_charge_record where chargeflow<>100000000000 and chargeflow>0
-				and createdate>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) t_charge_flow,
+				and createdate>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) t_charge_flow,
 			(select round(ifnull(sum(allowflow),0)/1024/1024,2) from m_flow_balance where allowflow<>100000000000) t_residue_flow,
-			(select ifnull(sum(duration),0) from m_cost_day where date>=DATE_ADD(curdate(),interval - day(curdate())+1 day)) t_duration,
+			(select ifnull(sum(duration),0) from m_cost_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) t_duration,
 			(select count(distinct operator) from m_terminal_charge_record where chargeflow>0 and chargeflow<>100000000000 and createdate>=current_date) c_charge_flow,
 			(select count(distinct operator) from m_terminal_charge_record where chargedate is not null and createdate>=current_date) c_charge_date,
 			(select count(distinct operator) from m_terminal_charge_record where ((chargeflow>0 and chargeflow<>100000000000) or chargedate is not null) and createdate>=current_date) c_charge_total
@@ -54,7 +54,7 @@
 					round(ifnull(sum(usedflow),2)/1024/1024,2) m_used_flow,
 					round(ifnull(sum(residueflow),2)/1024/1024,2) m_residue_flow
 			from m_flow_month
-			where date=date_format(DATE_ADD(curdate(),interval - day(curdate())+1 day),'%Y-%m')) t,
+			where date=date_format(DATE_ADD(current_date(),interval - day(current_date())+1 day),'%Y-%m')) t,
 			(select round(ifnull(sum(case when chargeflow=100000000000 then 0 when chargeflow<0 then 0 else chargeflow end),0)/1024/1024,2) d_charge_flow,
 					ifnull(sum(chargedate),0) d_charge_date
 			from m_terminal_charge_record

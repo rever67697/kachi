@@ -16,7 +16,7 @@
 	</select>
 
 	<select id="count" resultType="java.util.Map" parameterType="java.util.Map">
-		select round(ifnull(sum(chargeFlow),0)/1024/1024,2) chargeFlow,
+		select round(ifnull(sum(case when chargeFlow=100000000000 then 0 else chargeFlow end),0)/1024/1024,2) chargeFlow,
 			   ifnull(sum(chargeDate),0) chargeDate
 		from m_terminal_charge_record
 		where 1=1

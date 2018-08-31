@@ -20,7 +20,7 @@
 			  <tr>
 				  <th>终端编号：</th><td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
 				  <th>所属部门：</th><td><select name="departmentId"></select></td>
-				  <th>IMSI码：</th><td><input name="imsi" placeholder="请输入IMSI码" class="onlyNumber"/></td>
+				  <th>IMSI：</th><td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
 				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 			  </tr>
 		  </table>
@@ -58,12 +58,12 @@
 			         	{field:'id',title:'id',hidden:true},
 			         	{field:'tsid',title:'终端编号',width:80},
 			         	{field:'imsi',title:'IMSI',width:120},
-			         	{field:'mcc',title:'MCC',width:100},
+			         	{field:'mcc',title:'MCC',width:60},
                 		{field:'operatorName',title:'运营商',width:160},
 			         	{field:'groupKey',title:'GROUPKEY',width:120},
 			         	{field:'beatTime',title:'最后通讯时间',width:130},
 			         	{field:'date',title:'选卡时间',width:130},
-			         	{field:'reserve',title:'是否是在归属地',width:100,formatter:function(value,rec,index){
+			         	{field:'reserve',title:'是否在归属地',width:100,formatter:function(value,rec,index){
 			         		value = (value+'').replace('null','');
 			         		return value?(value=='0'?'是':'否'):'';
 			         	}},
@@ -135,7 +135,6 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
-             console.log(rowData);
 			 kcJs.fn.autoFillData($('#detailDialog'),rowData);
 			 $('#detailDialog').dialog('open');
         }else {
