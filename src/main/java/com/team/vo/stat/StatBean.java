@@ -288,6 +288,7 @@ public class StatBean implements Serializable {
 
 
     public void fix(){
+        this.mResidueFlow = this.mMaxFlow-this.mUsedFlow;
         this.tAvgCost = df.format(mUserFlow/tTCount);
         this.cCostRate = df.format(mUsedFlow/mMaxFlow);
 
