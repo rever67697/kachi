@@ -36,7 +36,7 @@
 	
 	<select id="stat" resultType="com.team.vo.stat.StatBean">
 		<![CDATA[
-			select *,null d_t_count,null t_t_count from
+			select * from
 			(select
 				(select count(1) from m_terminal where createDate>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_t_count,
 				(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date=current_date) d_user_flow,

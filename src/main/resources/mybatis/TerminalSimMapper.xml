@@ -48,7 +48,7 @@
 			and d.id = #{departmentId,jdbcType=INTEGER}
 		</if>
 		<include refid="dId"></include>
-		order by r.tsid
+		order by r.date desc
 	</select>
 	
 	<delete id="deleteTerminalByIds" parameterType="java.util.List">
