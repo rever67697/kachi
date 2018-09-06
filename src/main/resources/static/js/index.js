@@ -33,6 +33,7 @@ $(document).ready(function () {
 
 function addTab(subtitle, url,iconCls) {
     if (!$('#tabs').tabs('exists', subtitle)) {
+        $('#tabs').css('background','#fff');
         $('#tabs').tabs('add', {
             title: subtitle,
             content: createFrame(url),
@@ -41,6 +42,9 @@ function addTab(subtitle, url,iconCls) {
             height: $('#mainPanle').height() - 26 ,
             iconCls:iconCls
         });
+        setTimeout(function () {
+            $('#tabs').css('background','#fff url("images/welcome.jpeg") center center no-repeat');
+        },1000);
     } else {
         $('#tabs').tabs('select', subtitle);
 

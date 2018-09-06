@@ -94,6 +94,12 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 		if(simPackage.getId()!=null){
 			SimPackage origin = simPackageDao.getPackage(simPackage.getId());
 
+			if(simPackage.getStatus().equals(1) && origin.getStatus().equals(0) && !CommonUtil.StringIsNull(simCardDao.getPackageExist(simPackage.getId()))){
+				ReturnMsg returnMsg = super.errorTip();
+				returnMsg.setMsg("不能修改套餐状态，有SIM卡正在使用该套餐！");
+				return returnMsg;
+			}
+
 			count = simPackageDao.updatePackage(simPackage);
 			if(!simPackage.getMaxFlow().equals(origin.getMaxFlow()) || !simPackage.getMaxRoamFlow().equals(origin.getMaxRoamFlow())) {
 				//需要更新流量大小
