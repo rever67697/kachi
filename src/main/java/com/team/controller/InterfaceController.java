@@ -86,7 +86,7 @@ public class InterfaceController  extends BaseService{
 
 
     public void saveLog(HttpServletRequest request){
-        final OperationLog operationLog = new OperationLog(null, "接口管理", request.getParameter("name"),
+        final OperationLog operationLog = new OperationLog("接口调用", "接口管理", request.getParameter("name"),
                 CommonUtil.getParamDesc(request),null, IPUtils.getIpAddr(request),CommonUtil.browserInfo(request));
         LogManager.me().executeLog(new TimerTask() {
             @Override
