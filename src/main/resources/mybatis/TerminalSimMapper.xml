@@ -12,8 +12,9 @@
 		select id, imsi, tsid, 
       		   mcc, groupkey, beattime, 
       		   date, reserve, ecardimsi, 
-      		   ecardduration, runversion, vcountrycode
-		from m_terminal_sim
+      		   ecardduration, runversion, vcountrycode,
+      		   (select sversion from m_terminal t where r.tsid=t.tsid) sversion
+		from m_terminal_sim r
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</select>
 
@@ -22,7 +23,7 @@
       		   mcc, groupkey, beattime,
       		   date, reserve, ecardimsi,
       		   ecardduration, runversion, vcountrycode
-		from m_terminal_sim
+		from m_terminal_sim r
 		where imsi=#{imsi,jdbcType=BIGINT}
 	</select>
 	
@@ -31,6 +32,7 @@
 			  ,ifnull(c.namecn,c.countryname) countryName
 			  ,d.name departmentName
 			  ,concat(o.operatornamecn,' (',o.operatorCode,')') operatorName
+			  ,(select sversion from m_terminal mt where r.tsid=mt.tsid) sversion
 		from m_terminal_sim r
 		left join m_country c on c.countrycode=r.vcountrycode
 		left join m_terminal t on t.tsid=r.tsid

@@ -43,6 +43,8 @@ public class TerminalSim implements Serializable{
 	private String departmentName;//部门名称
 
 	private String operatorName;//运营商名称
+
+	private String sversion;//终端版本
 	
 	public String getDepartmentName() {
 		return departmentName;
@@ -162,5 +164,13 @@ public class TerminalSim implements Serializable{
 
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
+	}
+
+	public String getSversion() {
+		return sversion;
+	}
+
+	public void setSversion(String sversion) {
+		this.sversion = sversion;
 	}
 }
