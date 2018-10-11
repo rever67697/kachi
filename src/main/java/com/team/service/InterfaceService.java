@@ -28,4 +28,16 @@ public interface InterfaceService {
     /**查询终端是否存在**/
     ReturnMsg qte(Integer tsid,Integer departmentId);
 
+    /**阿里云充值**/
+    ReturnMsg aliCharge(Long offerId, Long phoneNumber,String outOrderId);
+
+    /**阿里云查询流量套餐**/
+    ReturnMsg aliQuery(Long offerId);
+
+    /**阿里云订单状态查询**/
+    ReturnMsg aliStatusQuery(String outOrderId);
+
+
+    /**订阅阿里消息**/
+    void aliMessage() throws Exception;
 }

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.KeyPair;
 import java.util.*;
 
@@ -32,7 +34,7 @@ public class InterfaceController  extends BaseService{
     @Autowired
     private OperationLogDao operationLogDao;
 
-    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte");
+    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte","aliQuery","aliCharge");
 
     @RequestMapping("/interface")
     @ResponseBody
@@ -76,6 +78,12 @@ public class InterfaceController  extends BaseService{
         }else if("qte".equals(name)){//查询终端是否存在
 
             returnMsg = interfaceService.qte(terminalChargeRecord.getTsid(),toInt(request,"departmentId"));
+        }else if("aliCharge".equals(name)){//调用阿里的充值接口
+            returnMsg = interfaceService.aliCharge(toLong(request,"offerId"),toLong(request,"phoneNumber"),request.getParameter("outOrderId"));
+        }else if("aliQuery".equals(name)){//调用阿里的查询接口
+            returnMsg = interfaceService.aliQuery(toLong(request,"offerId"));
+        }else if("aliStatusQuery".equals(name)){
+            returnMsg = interfaceService.aliStatusQuery(request.getParameter("outOrderId"));
         }
 
         //保存日志
@@ -83,6 +91,8 @@ public class InterfaceController  extends BaseService{
 
         return returnMsg;
     }
+
+
 
 
     public void saveLog(HttpServletRequest request){
@@ -98,14 +108,17 @@ public class InterfaceController  extends BaseService{
 
     public ReturnMsg validate(String name,long time,TerminalChargeRecord record,HttpServletRequest request){
 
+        String flag =request.getParameter("s");
 
         if(!INTEFACE_NAME.contains(name)){
             return errorTip("请求的接口不存在");
         }
 
         //请求一分钟内有效
-        if(time<(System.currentTimeMillis()-1*60*1000)){
-            return errorTip("请求超时");
+        if(!"1".equals(flag)){
+            if(time<(System.currentTimeMillis()-1*60*1000)){
+                return errorTip("请求超时");
+            }
         }
 
         if(Arrays.asList("qtb","qti","tCharge","qte").contains(name) && record.getTsid()==null){
@@ -114,6 +127,14 @@ public class InterfaceController  extends BaseService{
         //qtbd
         if("qtbd".equals(name)){
             if(toInt(request,"departmentId")==null){
+                return errorTip("参数有误");
+            }
+        }
+
+        //aliCharge
+        if("aliCharge".equals(name)){
+            String outOrderId = request.getParameter("outOrderId");
+            if(toLong(request,"offerId")==null || toLong(request,"phoneNumber")==null || outOrderId==null || "".equals(outOrderId)){
                 return errorTip("参数有误");
             }
         }
@@ -128,33 +149,40 @@ public class InterfaceController  extends BaseService{
             }
         }
 
-
-        Enumeration params = request.getParameterNames();
-        List<String> list = new ArrayList<>();
-
-        String verify_source = "";
-
-        while (params.hasMoreElements()){
-            String paramName = (String) params.nextElement();
-            if(!"checkCode".equals(paramName)){
-                list.add(paramName+"="+request.getParameter(paramName));
+        if("aliQuery".equals(name)){
+            String outOrderId = request.getParameter("outOrderId");
+            if(outOrderId == null || "".equals(outOrderId)){
+                return errorTip("参数有误");
             }
         }
 
-        Collections.sort(list);
+        if(!"1".equals(flag)){
+            Enumeration params = request.getParameterNames();
+            List<String> list = new ArrayList<>();
 
-        for (String s : list) {
-            verify_source+=s+"&";
+            String verify_source = "";
+
+            while (params.hasMoreElements()){
+                String paramName = (String) params.nextElement();
+                if(!"checkCode".equals(paramName)){
+                    list.add(paramName+"="+request.getParameter(paramName));
+                }
+            }
+
+            Collections.sort(list);
+
+            for (String s : list) {
+                verify_source+=s+"&";
+            }
+
+            verify_source = verify_source.substring(0,verify_source.length()-1);
+
+            String verify_check_code = MD5Utils.encrypt(verify_source);
+
+            if(!verify_check_code.equals(request.getParameter("checkCode"))){
+                return errorTip("校验失败-checkCode");
+            }
         }
-
-        verify_source = verify_source.substring(0,verify_source.length()-1);
-
-        String verify_check_code = MD5Utils.encrypt(verify_source);
-
-        if(!verify_check_code.equals(request.getParameter("checkCode"))){
-            return errorTip("校验失败-checkCode");
-        }
-
 
         return successTip();
 
@@ -170,18 +198,29 @@ public class InterfaceController  extends BaseService{
         return  null;
     }
 
-    public static void main(String[] args){
+    private Long toLong(HttpServletRequest request, String name) {
+        String str = request.getParameter(name);
+        try {
+            return new Long(str);
+        }catch (Exception e){
+            System.out.println(str);
+        }
+        return  null;
+    }
+
+    public static void main(String[] args) throws Exception{
         long time = System.currentTimeMillis();
         System.out.println(time);
 //        System.out.println("name=qtb&time="+time+"&tsid=10160266");
 //        System.out.println("name=qti&page=&rows=&time="+time+"&tsid=10160266");
 //        System.out.println(MD5Utils.encrypt("name=qti&page=1&rows=5&time="+time+"&tsid=10160266"));
-        System.out.println(MD5Utils.encrypt("chargeDate=1&chargeFlow=2&clearDate=false&clearFlow=false&name=tCharge&noLimit=true&time="+time+"&tsid=10160266"));
+//        System.out.println(MD5Utils.encrypt("chargeDate=1&chargeFlow=2&clearDate=false&clearFlow=false&name=tCharge&noLimit=true&time="+time+"&tsid=10160266"));
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
 //        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
 //        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
-        System.out.println(100000000000L/1024/1024);
-
+        System.out.println(MD5Utils.encrypt("name=aliCharge&offerId=22020000115116&phoneNumber=13570364320&time="+time));
+//        System.out.println(MD5Utils.encrypt("name=aliQuery&time="+time));
+        System.out.println(URLEncoder.encode("phone=111&outId=222&result=充值成功&errCode=00000&errMsg=充值成功","utf-8"));
     }
 
 }

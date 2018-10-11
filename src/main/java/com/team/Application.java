@@ -8,6 +8,9 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 
+import com.team.service.InterfaceService;
+import com.team.service.impl.InterfaceServiceImpl;
+import com.team.util.SpringUtil;
 import org.apache.catalina.Context;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -187,9 +190,12 @@ public class Application{
         /**
          * 启动入口main方法
          */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         SpringApplication.run(Application.class, args);
         logger.info("SpringBoot Start Success!");
+        InterfaceService interfaceService = SpringUtil.getBean(InterfaceServiceImpl.class);
+
+        interfaceService.aliMessage();
 //        System.out.println("\n"+
 //                "                  oo8oo_                           \n"+
 //                "                o8888888o                          \n"+
