@@ -275,7 +275,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg aliQuery(Long offerId) {
+    public ReturnMsg aliQuery(Long offerId,String channelType,String province,String vendor) {
         try {
             init();
             AcsResponse acsResponse = null;
@@ -285,8 +285,9 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
                 acsResponse = client.getAcsResponse(request);
             }else {
                 QueryCdpOfferRequest request = new QueryCdpOfferRequest();
-                //request.setVendor("中国移动");
-                request.setChannelType("全国");
+                request.setVendor(vendor);
+                request.setChannelType(channelType);
+                request.setProvince(province);
                 acsResponse = client.getAcsResponse(request);
             }
             return successTip(acsResponse);

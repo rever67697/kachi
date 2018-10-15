@@ -147,6 +147,7 @@
             <version>1.54</version>
         </dependency>
 
+        <!--阿里云流量服务-->
         <dependency>
             <groupId>com.aliyun.alicom</groupId>
             <artifactId>alicom-mns-receive-sdk</artifactId>

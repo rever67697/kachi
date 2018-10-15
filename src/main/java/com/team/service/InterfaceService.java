@@ -32,7 +32,7 @@ public interface InterfaceService {
     ReturnMsg aliCharge(Long offerId, Long phoneNumber,String outOrderId);
 
     /**阿里云查询流量套餐**/
-    ReturnMsg aliQuery(Long offerId);
+    ReturnMsg aliQuery(Long offerId,String channelType,String province,String vendor);
 
     /**阿里云订单状态查询**/
     ReturnMsg aliStatusQuery(String outOrderId);

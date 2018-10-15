@@ -76,12 +76,19 @@ public class InterfaceController  extends BaseService{
                                               toInt(request,"page"),
                                               toInt(request,"rows"));
         }else if("qte".equals(name)){//查询终端是否存在
-
             returnMsg = interfaceService.qte(terminalChargeRecord.getTsid(),toInt(request,"departmentId"));
+
         }else if("aliCharge".equals(name)){//调用阿里的充值接口
-            returnMsg = interfaceService.aliCharge(toLong(request,"offerId"),toLong(request,"phoneNumber"),request.getParameter("outOrderId"));
+            returnMsg = interfaceService.aliCharge(toLong(request,"offerId"),
+                                                   toLong(request,"phoneNumber"),
+                                                   request.getParameter("outOrderId"));
+
         }else if("aliQuery".equals(name)){//调用阿里的查询接口
-            returnMsg = interfaceService.aliQuery(toLong(request,"offerId"));
+            returnMsg = interfaceService.aliQuery(toLong(request,"offerId"),
+                                                  request.getParameter("channelType"),
+                                                  request.getParameter("province"),
+                                                  request.getParameter("vendor"));
+
         }else if("aliStatusQuery".equals(name)){
             returnMsg = interfaceService.aliStatusQuery(request.getParameter("outOrderId"));
         }
@@ -139,6 +146,7 @@ public class InterfaceController  extends BaseService{
             }
         }
 
+        //qtbd
         if("qtbd".equals(name) || "qti".equals(name)){
             Integer page = toInt(request,"page");
             Integer rows = toInt(request,"rows");
@@ -149,9 +157,14 @@ public class InterfaceController  extends BaseService{
             }
         }
 
+        //aliQuery
         if("aliQuery".equals(name)){
             String outOrderId = request.getParameter("outOrderId");
-            if(outOrderId == null || "".equals(outOrderId)){
+            String channelType = request.getParameter("channelType");
+            if((outOrderId!=null && !"".equals(outOrderId)) && toLong(request,"outOrderId")==null){
+                return errorTip("参数有误");
+            }
+            if(channelType == null || "".equals(channelType)){
                 return errorTip("参数有误");
             }
         }
@@ -218,9 +231,8 @@ public class InterfaceController  extends BaseService{
 //        System.out.println(MD5Utils.encrypt("name=qd&time="+time));
 //        System.out.println(MD5Utils.encrypt("departmentId=0&name=qtbd&page=1&rows=20&time="+time+"&tsid=29627286"));
 //        System.out.println(MD5Utils.encrypt("departmentId=1&name=qte&time="+time+"&tsid=29627286"));
-        System.out.println(MD5Utils.encrypt("name=aliCharge&offerId=22020000115116&phoneNumber=13570364320&time="+time));
-//        System.out.println(MD5Utils.encrypt("name=aliQuery&time="+time));
-        System.out.println(URLEncoder.encode("phone=111&outId=222&result=充值成功&errCode=00000&errMsg=充值成功","utf-8"));
+//        System.out.println(MD5Utils.encrypt("name=aliCharge&offerId=22020000115116&phoneNumber=13570364320&time="+time));
+        System.out.println(MD5Utils.encrypt("name=aliQuery&time="+time));
     }
 
 }
