@@ -34,7 +34,7 @@ public class InterfaceController  extends BaseService{
     @Autowired
     private OperationLogDao operationLogDao;
 
-    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte","aliQuery","aliCharge");
+    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte","aliQuery","aliCharge","aliStatusQuery");
 
     @RequestMapping("/interface")
     @ResponseBody
