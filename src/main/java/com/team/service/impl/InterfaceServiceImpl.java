@@ -12,10 +12,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.github.pagehelper.PageHelper;
 import com.google.gson.Gson;
-import com.team.dao.CostDayDao;
-import com.team.dao.FlowBalanceDao;
-import com.team.dao.TerminalChargeRecordDao;
-import com.team.dao.TerminalDao;
+import com.team.dao.*;
 import com.team.dao.auth.DepartmentDao;
 import com.team.dao.auth.OperationLogDao;
 import com.team.dto.TerminalDTO;
@@ -24,6 +21,8 @@ import com.team.model.auth.Department;
 import com.team.model.auth.OperationLog;
 import com.team.service.InterfaceService;
 import com.team.service.TerminalChargeService;
+import com.team.service.TerminalService;
+import com.team.service.TerminalSimService;
 import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.util.IPUtils;
@@ -62,11 +61,20 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     @Autowired
     private DepartmentDao departmentDao;
 
+    @Autowired
+    private TerminalService terminalService;
+    @Autowired
+    private TerminalSimService terminalSimService;
+
+
     @Value("${aliyun.accessKey}")
     private String accessKey;
 
     @Value("${aliyun.accessSecurity}")
     private String accessSecurity;
+
+    @Value("${bookMessage}")
+    private boolean bookMessage;
 
     static IAcsClient client = null;
 
@@ -377,25 +385,43 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
 
     public void aliMessage() throws com.aliyuncs.exceptions.ClientException, ParseException {
 
-        DefaultAlicomMessagePuller puller=new DefaultAlicomMessagePuller();
+        if(bookMessage){
+            DefaultAlicomMessagePuller puller=new DefaultAlicomMessagePuller();
 
-        //TODO 此处需要替换成开发者自己的AK信息
-        String accessKeyId=accessKey;
-        String accessKeySecret=accessSecurity;
+            //TODO 此处需要替换成开发者自己的AK信息
+            String accessKeyId=accessKey;
+            String accessKeySecret=accessSecurity;
 
-		/*
-		* TODO 将messageType和queueName替换成您需要的消息类型名称和对应的队列名称
-		*云通信产品下所有的回执消息类型:
-		*1:短信回执：SmsReport，
-		*2:短息上行：SmsUp
-		*3:语音呼叫：VoiceReport
-		*4:流量直冲：FlowReport
-		*/
-        String messageType="FlowReport";//此处应该替换成相应产品的消息类型
-        String queueName="Alicom-Queue-1059202185248422-FlowReport";//在云通信页面开通相应业务消息后，就能在页面上获得对应的queueName,每一个消息类型
+            /*
+            * TODO 将messageType和queueName替换成您需要的消息类型名称和对应的队列名称
+            *云通信产品下所有的回执消息类型:
+            *1:短信回执：SmsReport，
+            *2:短息上行：SmsUp
+            *3:语音呼叫：VoiceReport
+            *4:流量直冲：FlowReport
+            */
+            String messageType="FlowReport";//此处应该替换成相应产品的消息类型
+            String queueName="Alicom-Queue-1059202185248422-FlowReport";//在云通信页面开通相应业务消息后，就能在页面上获得对应的queueName,每一个消息类型
 
-        System.out.println("订阅消息中。。。");
-        puller.startReceiveMsg(accessKeyId,accessKeySecret, messageType, queueName, new MyMessageListener());
+            System.out.println("订阅消息中。。。");
+            puller.startReceiveMsg(accessKeyId,accessKeySecret, messageType, queueName, new MyMessageListener());
+        }
+
+    }
+
+    @Override
+    public ReturnMsg tOffline(Integer tsid) {
+        return terminalService.updateStatus(tsid);
+    }
+
+    @Override
+    public ReturnMsg tChangeCard(Integer tsid) {
+        return terminalSimService.deleteTerminalByTsid(tsid);
+    }
+
+    @Override
+    public ReturnMsg tPassword(Integer tsid,String wifiPassword) {
+        return terminalService.updateWiFiPass(tsid,wifiPassword);
     }
 
 }

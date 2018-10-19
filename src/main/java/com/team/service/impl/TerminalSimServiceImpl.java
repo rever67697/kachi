@@ -67,22 +67,16 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 	}
 
 	@Override
-	public ReturnMsg deleteTerminalByIds(String ids) {
-		String[] arr = ids.split(",");
-		List<Integer> list = new ArrayList<Integer>();
-		for (String string : arr) {
-			list.add(Integer.valueOf(string));
-		}
-		List<TerminalSim> terminalSimList  = terminalSimDao.getByIds(list);
-		int count = terminalSimDao.deleteTerminalByIds(list);
+	public ReturnMsg deleteTerminalByTsid(Integer tsid) {
+		TerminalSim terminalSim  = terminalSimDao.getByTsid(tsid);
+		terminalSimDao.deleteTerminalByTsid(tsid);
 
 		//释放simcard
-		for (TerminalSim terminalSim : terminalSimList) {
+		if(terminalSim!=null){
 			simCardService.updateGroupSim2Cache(simCardDao.getByImsi(terminalSim.getImsi()),0);
 		}
 
-
-		return count>0?super.successTip():super.errorTip();
+		return super.successTip();
 	}
 
 }

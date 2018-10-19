@@ -3,6 +3,7 @@ package com.team.service.impl;
 import java.util.*;
 
 import com.team.model.Country;
+import com.team.service.TerminalSimService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -33,6 +34,9 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 
 	@Value("${sendWiFiPass}")
 	public String sendWiFiPass;
+
+	@Autowired
+	private TerminalSimService terminalSimService;
 
 	@Autowired
 	private TerminalDao terminalDao;
@@ -185,17 +189,21 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 
     @Override
     public ReturnMsg updateStatus(Integer tsid) {
-		int count = terminalDao.updateStatus(tsid);
-		return count>0?super.successTip():super.errorTip();
+		terminalSimService.deleteTerminalByTsid(tsid);
+		terminalDao.updateStatus(tsid);
+		return super.successTip();
     }
 
 	@Override
-	public ReturnMsg updateWiFiPass(Integer tsid) {
+	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword) {
+		if(wifiPassword==null){
+			wifiPassword = sendWiFiPass;
+		}
 		Map<String,Object> map = new HashMap<>();
 		map.put("tsid",tsid);
-		map.put("sendWiFiPass",sendWiFiPass);
-		int count = terminalDao.updateWiFiPass(map);
-		return count>0?super.successTip():super.errorTip();
+		map.put("sendWiFiPass",wifiPassword);
+		terminalDao.updateWiFiPass(map);
+		return super.successTip();
 	}
 
 

@@ -53,16 +53,14 @@
 		order by r.date desc
 	</select>
 	
-	<delete id="deleteTerminalByIds" parameterType="java.util.List">
+	<delete id="deleteTerminalByTsid">
 		delete from  m_terminal_sim
-	    where ID in
-		(<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
+		where tsid = #{tsid,jdbcType=INTEGER}
 	</delete>
 
-	<select id="getByIds" parameterType="java.util.List" resultType="com.team.model.TerminalSim">
+	<select id="getByTsid" resultType="com.team.model.TerminalSim">
 		select * from m_terminal_sim
-		where id in
-		(<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
+		where tsid = #{tsid,jdbcType=INTEGER}
 	</select>
 	
 </mapper>

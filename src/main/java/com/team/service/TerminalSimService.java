@@ -19,5 +19,5 @@ public interface TerminalSimService {
 	
 	public ResultList getTerminalSimList(Integer departmentId,Integer dId,Integer tsid,Long imsi,int page,int rows);
 	
-	public ReturnMsg deleteTerminalByIds(String ids);
+	public ReturnMsg deleteTerminalByTsid(Integer tsid);
 }

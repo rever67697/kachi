@@ -37,7 +37,15 @@ public interface InterfaceService {
     /**阿里云订单状态查询**/
     ReturnMsg aliStatusQuery(String outOrderId);
 
-
     /**订阅阿里消息**/
     void aliMessage() throws Exception;
+
+    /**终端下线**/
+    ReturnMsg tOffline(Integer tsid);
+
+    /**终端换卡**/
+    ReturnMsg tChangeCard(Integer tsid);
+
+    /**终端更新密码**/
+    ReturnMsg tPassword(Integer tsid,String wifiPassword);
 }

@@ -33,8 +33,8 @@ public class TerminalSimController {
 	
 	@PostMapping("/delete")
 	@PermissionLog
-	public ReturnMsg delete(String ids){
-		return terminalSimService.deleteTerminalByIds(ids);
+	public ReturnMsg delete(Integer tsid){
+		return terminalSimService.deleteTerminalByTsid(tsid);
 	}
 	
 }

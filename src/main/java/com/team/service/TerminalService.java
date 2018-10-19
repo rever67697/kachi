@@ -36,6 +36,6 @@ public interface TerminalService {
 
 	public ReturnMsg updateStatus(Integer tsid);
 
-	public ReturnMsg updateWiFiPass(Integer tsid);
+	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword);
 	
 }

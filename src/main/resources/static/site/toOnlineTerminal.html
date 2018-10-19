@@ -80,6 +80,7 @@
 			rownumbers:true,
 			scrollbarSize:0,
 			striped:true,
+			singleSelect:true,
 			fit:true
 		};
 		
@@ -105,30 +106,19 @@
   
   	function doDelete(){
   		var selectRows = $('#dg').datagrid("getSelections");
-  		if (selectRows.length > 0) {
-  			$.messager.confirm('提示','是否确定删除？',function(r){
-  				if(r){
-  					$('#dg').datagrid('loading');
-		  			var ids = [];
-		  			var TSIDs=[];
-		  			var IMSIs=[];
-		  			for(var i = 0;i < selectRows.length;i++){
-		  				ids.push(selectRows[i].id);
-		  				TSIDs.push(selectRows[i].tsid);
-		  				IMSIs.push(selectRows[i].imsi);
-		  			}
-		  			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{ids:ids.join(","),TSIDs:TSIDs.join(","),IMSIs:IMSIs.join(",")},function(data){
-		  				if(data && data.code && data.code == '200'){
-		  					doQuery();	
-		  				}else{
-		  					$('#dg').datagrid('loaded');
-		  				}
-		  				$.messager.alert("提示", data.msg, "info");
-		  			},'json');
-		  		}
-  			});
+        if (selectRows.length > 0 && selectRows.length == 1) {
+			$('#dg').datagrid('loading');
+			var rowData = selectRows[0];
+			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{tsid:rowData.tsid,imsi:rowData.imsi},function(data){
+				if(data && data.code && data.code == '200'){
+					doQuery();
+				}else{
+					$('#dg').datagrid('loaded');
+				}
+				$.messager.alert("提示", data.msg, "info");
+			},'json');
         }else {
-            $.messager.alert("提示", "请选择至少一条信息", "info");
+            $.messager.alert("提示", "请选择一条信息", "info");
         }
   	}
   	
@@ -160,9 +150,13 @@
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0 && selectRows.length == 1) {
             $('#dg').datagrid('loading');
-            $.post(kcJs.fn.getContextPath()+'/terminal/updateStatus',{tsid:selectRows[0].tsid},function (data) {
+            $.post(kcJs.fn.getContextPath()+'/terminal/updateStatus',{tsid:selectRows[0].tsid,id:selectRows[0].id},function (data) {
+                if(data && data.code && data.code == '200'){
+                    doQuery();
+                }else{
+                    $('#dg').datagrid('loaded');
+                }
                 $.messager.alert('提示',data.msg);
-                $('#dg').datagrid('loaded');
             },'json');
         }else {
             $.messager.alert("提示", "请选择一条信息", "info");

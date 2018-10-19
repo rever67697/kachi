@@ -4,6 +4,8 @@ import com.team.dao.auth.OperationLogDao;
 import com.team.model.TerminalChargeRecord;
 import com.team.model.auth.OperationLog;
 import com.team.service.InterfaceService;
+import com.team.service.TerminalService;
+import com.team.service.TerminalSimService;
 import com.team.service.impl.BaseService;
 import com.team.util.*;
 import com.team.vo.ReturnMsg;
@@ -31,10 +33,13 @@ public class InterfaceController  extends BaseService{
 
     @Autowired
     private InterfaceService interfaceService;
+
     @Autowired
     private OperationLogDao operationLogDao;
 
-    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte","aliQuery","aliCharge","aliStatusQuery");
+    private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte",
+                                                       "aliQuery","aliCharge","aliStatusQuery",
+                                                       "tOffline","tChangeCard","tPassword");
 
     @RequestMapping("/interface")
     @ResponseBody
@@ -91,6 +96,16 @@ public class InterfaceController  extends BaseService{
 
         }else if("aliStatusQuery".equals(name)){
             returnMsg = interfaceService.aliStatusQuery(request.getParameter("outOrderId"));
+
+        }else if("tOffline".equals(name)){//终端下线
+            returnMsg = interfaceService.tOffline(terminalChargeRecord.getTsid());
+
+        }else if("tChangeCard".equals(name)){//终端换卡
+            returnMsg = interfaceService.tChangeCard(terminalChargeRecord.getTsid());
+
+        }else if("tPassword".equals(name)){//终端更新密码
+            returnMsg = interfaceService.tPassword(terminalChargeRecord.getTsid(),request.getParameter("wifiPassword"));
+
         }
 
         //保存日志
@@ -128,7 +143,7 @@ public class InterfaceController  extends BaseService{
             }
         }
 
-        if(Arrays.asList("qtb","qti","tCharge","qte").contains(name) && record.getTsid()==null){
+        if(Arrays.asList("qtb","qti","tCharge","qte","tOffline","tChangeCard","tPassword").contains(name) && record.getTsid()==null){
             return errorTip("参数有误");
         }
         //qtbd

@@ -39,14 +39,14 @@ public interface TerminalSimDao {
 	 *@return
 	 *return
 	 */
-	public int deleteTerminalByIds(List<Integer> ids);
+	public int deleteTerminalByTsid(@Param("tsid") Integer tsid);
 
 	/**
 	 * 根据id列表查找
 	 * @param ids
 	 * @return
 	 */
-	public List<TerminalSim> getByIds(List<Integer> ids);
+	public TerminalSim getByTsid(@Param("tsid") Integer tsid);
 	
 	
 	

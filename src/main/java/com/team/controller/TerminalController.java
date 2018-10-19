@@ -114,7 +114,7 @@ public class TerminalController {
 	@PostMapping("/updateWiFiPass")
 	@PermissionLog()
 	public ReturnMsg updateWiFiPass(Integer tsid){
-		return terminalService.updateWiFiPass(tsid);
+		return terminalService.updateWiFiPass(tsid,null);
 	}
 
 }
