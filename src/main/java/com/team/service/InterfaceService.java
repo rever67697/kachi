@@ -48,4 +48,7 @@ public interface InterfaceService {
 
     /**终端更新密码**/
     ReturnMsg tPassword(Integer tsid,String wifiPassword);
+
+    /**检查终端是否在线**/
+    ReturnMsg tCheck(Integer tsid);
 }

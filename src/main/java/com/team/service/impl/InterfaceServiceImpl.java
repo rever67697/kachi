@@ -60,6 +60,10 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     private FlowBalanceDao flowBalanceDao;
     @Autowired
     private DepartmentDao departmentDao;
+    @Autowired
+    private TerminalSimDao terminalSimDao;
+    @Autowired
+    private TerminalSimFLowDao terminalSimFLowDao;
 
     @Autowired
     private TerminalService terminalService;
@@ -422,6 +426,27 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     @Override
     public ReturnMsg tPassword(Integer tsid,String wifiPassword) {
         return terminalService.updateWiFiPass(tsid,wifiPassword);
+    }
+
+    @Override
+    public ReturnMsg tCheck(Integer tsid) {
+        //1.先查询终端是否在线
+        TerminalSim terminalSim = terminalSimDao.getByTsid(tsid);
+        boolean isOnline = terminalSim != null;
+        Integer flag = isOnline ? 1 : null;
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("tsid",tsid);
+        map.put("flag",flag);
+
+        //2.查询时间
+        String time = terminalSimFLowDao.queryTime(map);
+
+        map = new TreeMap<>();
+        map.put("isOnline",isOnline);//是否在线
+        map.put("onlineTime",isOnline ? time : "");//在线开始时间
+        map.put("offlineTime",isOnline ? "" : time);//下线时间
+        return successTip(map);
     }
 
 }

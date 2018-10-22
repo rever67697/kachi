@@ -39,7 +39,7 @@ public class InterfaceController  extends BaseService{
 
     private List<String> INTEFACE_NAME = Arrays.asList("qtb","qti","tCharge","qd","qtbd","qte",
                                                        "aliQuery","aliCharge","aliStatusQuery",
-                                                       "tOffline","tChangeCard","tPassword");
+                                                       "tOffline","tChangeCard","tPassword","tCheck");
 
     @RequestMapping("/interface")
     @ResponseBody
@@ -106,6 +106,9 @@ public class InterfaceController  extends BaseService{
         }else if("tPassword".equals(name)){//终端更新密码
             returnMsg = interfaceService.tPassword(terminalChargeRecord.getTsid(),request.getParameter("wifiPassword"));
 
+        }else if("tCheck".equals(name)){//检查终端是否在线
+            returnMsg = interfaceService.tCheck(terminalChargeRecord.getTsid());
+
         }
 
         //保存日志
@@ -143,7 +146,7 @@ public class InterfaceController  extends BaseService{
             }
         }
 
-        if(Arrays.asList("qtb","qti","tCharge","qte","tOffline","tChangeCard","tPassword").contains(name) && record.getTsid()==null){
+        if(Arrays.asList("qtb","qti","tCharge","qte","tOffline","tChangeCard","tPassword","tCheck").contains(name) && record.getTsid()==null){
             return errorTip("参数有误");
         }
         //qtbd
