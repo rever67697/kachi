@@ -353,7 +353,13 @@
 		from tb_problem_card r
 		where 1=1
 		<if test="startDate!=null">
-			and r.selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+			and selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="tsid!=null">
+			and tsid=#{tsid,jdbcType=INTEGER}
+		</if>
+		<if test="imsi!=null">
+			and imsi=#{imsi,jdbcType=BIGINT}
 		</if>
 		order by selectDate desc
 	</select>

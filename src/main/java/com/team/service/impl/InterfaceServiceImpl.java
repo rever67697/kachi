@@ -53,17 +53,17 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     @Autowired
     private CostDayDao costDayDao;
     @Autowired
-    private TerminalChargeRecordDao terminalChargeRecordDao;
-    @Autowired
     private TerminalDao terminalDao;
-    @Autowired
-    private FlowBalanceDao flowBalanceDao;
     @Autowired
     private DepartmentDao departmentDao;
     @Autowired
     private TerminalSimDao terminalSimDao;
     @Autowired
+    private FlowBalanceDao flowBalanceDao;
+    @Autowired
     private TerminalSimFLowDao terminalSimFLowDao;
+    @Autowired
+    private TerminalChargeRecordDao terminalChargeRecordDao;
 
     @Autowired
     private TerminalService terminalService;

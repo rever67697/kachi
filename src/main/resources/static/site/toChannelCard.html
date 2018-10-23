@@ -19,11 +19,11 @@
 </head>
 <body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
-<!--<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"-->
-     <!--border="false">-->
-    <!--<form id="queryForm">-->
-        <!--<table class="table">-->
-            <!--<tr>-->
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"
+     border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
                 <!--<th>副卡IMSI：</th>-->
                 <!--<td><input name="imsi" placeholder="请输入副卡IMSI" class="onlyNumber"/></td>-->
                 <!--<th>所属部门：</th>-->
@@ -37,12 +37,16 @@
                     <!--<option value="1">临时卡</option>-->
                     <!--<option value="2">作废</option>-->
                 <!--</select></td>-->
-                <!--<td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查-->
-                    <!--询</a></td>-->
-            <!--</tr>-->
-        <!--</table>-->
-    <!--</form>-->
-<!--</div>-->
+                <th >终端编号</th>
+                <td ><input class="onlyNumber" name="tsid"/></td>
+                <th >IMSI</th>
+                <td ><input class="onlyNumber" name="imsi"/></td>
+                <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
+                    询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
 <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
     <table id="dg"></table>
 </div>

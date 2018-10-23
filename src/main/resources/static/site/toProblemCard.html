@@ -20,6 +20,10 @@
     <form id="queryForm">
         <table class="table">
             <tr>
+                <th >终端编号</th>
+                <td ><input class="onlyNumber" name="tsid"/></td>
+                <th >选卡IMSI</th>
+                <td ><input class="onlyNumber" name="imsi"/></td>
                 <th >选卡时间</th>
                 <td ><input readonly="readonly" id="dateRange"/></td>
                 <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>

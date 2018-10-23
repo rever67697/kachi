@@ -32,16 +32,11 @@ public class ChannelCardServiceImpl extends BaseService implements ChannelCardSe
 	private ChannelCardDao channelCardDao;
 
 	@Override
-	public ResultList getChannelCardList(Integer departmentId, Integer dId,Long imsi,Integer countryCode, Integer operatorCode,
-			Integer status, int page, int rows) {
+	public ResultList getChannelCardList(Integer tsid, Long imsi, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("imsi", imsi);
-		map.put("countryCode", countryCode);
-		map.put("operatorCode", operatorCode);
-		map.put("status", status);
-		map.put("departmentId", departmentId);
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("tsid", tsid);
 		List<ChannelCard> list = channelCardDao.getChannelCardList(map);
 		PageInfo<ChannelCard> pageInfo = new PageInfo<ChannelCard>(list);
 		return new ResultList(pageInfo.getTotal(), list);
