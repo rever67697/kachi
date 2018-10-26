@@ -24,8 +24,17 @@
                 <td ><input class="onlyNumber" name="tsid"/></td>
                 <th >选卡IMSI</th>
                 <td ><input class="onlyNumber" name="imsi"/></td>
+                <th>卡状态：</th>
+                <td><select name="status">
+                    <option value="">全部</option>
+                    <option value="0">正常</option>
+                    <option value="1">停用</option>
+                    <option value="2">指定</option>
+                    <option value="3">待激活</option>
+                    <option value="4">作废</option>
+                </select></td>
                 <th >选卡时间</th>
-                <td ><input readonly="readonly" id="dateRange"/></td>
+                <td ><input readonly="readonly" id="dateRange" style="width: 245px"/></td>
                 <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
             </tr>
         </table>

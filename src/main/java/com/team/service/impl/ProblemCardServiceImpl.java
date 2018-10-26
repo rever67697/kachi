@@ -27,13 +27,14 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     private ProblemCardDao problemCardDao;
 
     @Override
-    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,int page, int rows) {
+    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,int page, int rows) {
         PageHelper.startPage(page, rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         map.put("tsid",tsid);
         map.put("imsi",imsi);
+        map.put("status",status);
         List<ProblemCard> problemCardList = problemCardDao.list(map);
         PageInfo<ProblemCard> pageInfo = new PageInfo<ProblemCard>(problemCardList);
         return new ResultList(pageInfo.getTotal(), problemCardList);

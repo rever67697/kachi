@@ -14,9 +14,11 @@
 	</select>
 
 	<select id="list" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
-		select  r.*,
-		(select t.status from m_simcard t where r.imsi=t.imsi) status
-		from tb_problem_card r
+		select * from(
+			select  r.*,
+			(select t.status from m_simcard t where r.imsi=t.imsi) status
+			from tb_problem_card r
+		) t
 		where 1=1
 		<if test="startDate!=null">
 			and selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
@@ -26,6 +28,9 @@
 		</if>
 		<if test="imsi!=null">
 			and imsi=#{imsi,jdbcType=BIGINT}
+		</if>
+		<if test="status!=null">
+			and status=#{status,jdbcType=INTEGER}
 		</if>
 		order by count desc,selectDate desc
 	</select>

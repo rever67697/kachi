@@ -26,8 +26,8 @@ public class ProblemCardController {
 
 
     @PostMapping("/list")
-    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi, int page, int rows){
-        return problemCardService.list(startDate,endDate,tsid,imsi,page,rows);
+    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi,Integer status, int page, int rows){
+        return problemCardService.list(startDate,endDate,tsid,imsi,status,page,rows);
     }
 
     @PostMapping("/delete")
