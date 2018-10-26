@@ -336,11 +336,9 @@
 	</update>
 	
 	<select id="getProblemCard" resultType="com.team.model.SimCard">
-		select r.*
-		from m_simcard r,tb_problem_card t
-		where r.imsi=t.imsi
-		  and t.count=#{count,jdbcType=INTEGER}
-		  and t.createtime>=CURRENT_DATE
+		select *
+		from m_simcard
+		where imsi in(select distinct imsi from tb_problem_card where count >= #{count,jdbcType=INTEGER} and createtime>=CURRENT_DATE)
 	</select>
 
 </mapper>

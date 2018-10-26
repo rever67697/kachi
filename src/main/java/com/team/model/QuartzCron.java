@@ -69,4 +69,5 @@ public class QuartzCron implements Serializable {
     public void setCount(Integer count) {
         this.count = count;
     }
+
 }

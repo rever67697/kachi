@@ -93,6 +93,7 @@ public class ScheduleTask {
         problemCardDao.updateCount();
 
         //需要处理问题卡
+//        System.out.println("是否需要处理=="+quartzCron.getIsHandle());
         if (quartzCron.getIsHandle() == 0){
 
             //找出问题卡
