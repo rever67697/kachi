@@ -18,6 +18,8 @@ public class QuartzCron implements Serializable {
 
     private Integer isHandle;//是否处理问题卡
 
+    private Integer count;//达到多少次异常后处理问题卡
+
     private Date lastTime;
 
     public Integer getMinute() {
@@ -58,5 +60,13 @@ public class QuartzCron implements Serializable {
 
     public void setIsHandle(Integer isHandle) {
         this.isHandle = isHandle;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

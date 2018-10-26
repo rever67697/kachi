@@ -59,6 +59,10 @@
                     <option value="1">关闭</option>
                 </select></td>
             </tr>
+            <tr>
+                <th>异常次数阈值：</th>
+                <td colspan="2"><input name="count" class="onlyNumber"/></td>
+            </tr>
             <tr style="height:10px"></tr>
             <tr>
                 <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td>
@@ -83,8 +87,9 @@
             },
             {field: 'selectDate', title: '选卡时间', width: 150},
             {field: 'authTime', title: '鉴权时间', width: 150},
+            {field: 'count', title: '异常次数', width: 100}
         ]],
-        url: kcJs.fn.getContextPath() + '/simcard/listProblemCard',
+        url: kcJs.fn.getContextPath() + '/problemCard/list',
 			toolbar: kcJs.fn.getFunctions(),
         iconCls: 'icon-tip',
         nowrap: false,
@@ -113,7 +118,7 @@
         $('#doDialog').dialog({
             modal: true,
             width: 400,
-            height: 200,
+            height: 250,
             cache: false,
             title: "修改定时时间",
         });
@@ -162,7 +167,7 @@
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0 && selectRows.length==1) {
             $('#dg').datagrid('loading');
-            $.post(kcJs.fn.getContextPath() + '/quartz/deleteProblemCard', {imsi:selectRows[0].imsi}, function (data) {
+            $.post(kcJs.fn.getContextPath() + '/problemCard/delete', {imsi:selectRows[0].imsi}, function (data) {
                 if (data && data.code && data.code == '200') {
                     doQuery();
                 } else {

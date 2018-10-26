@@ -2,6 +2,7 @@ package com.team.controller;
 
 import com.team.annotation.PermissionLog;
 import com.team.model.QuartzCron;
+import com.team.service.ProblemCardService;
 import com.team.service.QuartzService;
 import com.team.service.SimCardService;
 import com.team.service.impl.BaseService;
@@ -24,18 +25,18 @@ public class QuartzController extends BaseService{
 
     @Autowired
     private QuartzService quartzService;
-    @Autowired
-    private SimCardService simCardService;
 
     @RequestMapping("/reset")
     @PermissionLog
-    public ReturnMsg set(Integer minute,Integer status,Integer isHandle) throws Exception{
+    public ReturnMsg set(Integer minute,Integer status,Integer count,Integer isHandle) throws Exception{
 
-        if(minute == null || minute<1 || minute>59 || status == null || (status!=0 && status!=1)|| isHandle==null || (isHandle!=0 && isHandle!=1)){
+        if(minute == null || minute<1 || minute>59 || status == null || (status!=0 && status!=1)
+                || isHandle==null || (isHandle!=0 && isHandle!=1)
+                || count==null || count<1){
             return errorTip("参数错误");
         }
 
-        return  quartzService.scheduleUpdateCronTrigger(minute,status,isHandle);
+        return  quartzService.scheduleUpdateCronTrigger(minute,status,count,isHandle);
     }
 
     @PostMapping("/getNow")
@@ -43,11 +44,6 @@ public class QuartzController extends BaseService{
         return quartzService.getNow();
     }
 
-    @PostMapping("/deleteProblemCard")
-    @PermissionLog
-    public ReturnMsg deleteProblemCard(Long imsi){
-        return simCardService.deleteProblemCard(imsi);
-    }
 
 
 }

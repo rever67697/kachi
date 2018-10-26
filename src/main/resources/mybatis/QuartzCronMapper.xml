@@ -12,6 +12,7 @@
 			cronStr= #{cronStr,jdbcType=VARCHAR},
 			status = #{status,jdbcType=INTEGER},
 			isHandle = #{isHandle,jdbcType=INTEGER},
+			`count` = #{count,jdbcType=INTEGER},
 			lasttime = now()
 	</update>
 

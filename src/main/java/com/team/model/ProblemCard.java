@@ -26,6 +26,8 @@ public class ProblemCard implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date authTime;//鉴权时间
 
+    private Integer count;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
@@ -85,6 +87,14 @@ public class ProblemCard implements Serializable {
 
     public void setReleased(Long released) {
         this.released = released;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     public ProblemCard() {

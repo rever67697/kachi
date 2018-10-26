@@ -142,10 +142,5 @@ public class SimCardController {
 		return returnMsg;
 	}
 
-	@PostMapping("/listProblemCard")
-	public ResultList listProblemCard(Date startDate,Date endDate,Integer tsid,Long imsi,int page, int rows){
-		return simCardService.listProblemCard(startDate,endDate,tsid,imsi,page,rows);
-	}
-
 	
 }

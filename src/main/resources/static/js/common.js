@@ -52,6 +52,13 @@ var kcJs=
     var ready_type={"0":["临时指定一次",v_colors.blue],
     				"1":["一直指定",v_colors.green]
     };
+    //取卡结果
+    var result_code={"0":"正常",
+        			 "1":"无卡可用",
+        			 "2":"设备欠费",
+        			 "3":"没有订单",
+        			 "4":"拒绝接入",
+    };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
     //日志分类
     var dic_bussinesstype=[
@@ -148,6 +155,10 @@ var kcJs=
 		getReadyType:function(s){
 			return ready_type[s];
 		},
+        //获取取卡结果
+        getResultCode:function(s){
+            return result_code[s];
+        },
 		//接收一个long类型的毫秒数，返回格式化的字符串
 		getDate:function(o,pattern){
 			if(o && /^\d+$/.test(o)){

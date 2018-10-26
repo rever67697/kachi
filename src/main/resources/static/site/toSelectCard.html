@@ -51,8 +51,12 @@
             {field: 'released', title: '释放卡',width: 150},
             {field: 'mcc', title: 'MCC', width: 80},
             {field: 'operatorName', title: '运营商', width:150},
-            {field: 'resultCode', title: '选卡结果', width: 80},
-            {field: 'assistant', title: 'assistant', width: 150},
+            {
+                field: 'resultCode', title: '选卡结果', width: 150, formatter: function (value, rec, index) {
+                return value+'-'+kcJs.fn.getResultCode(value + '');
+            }
+            },
+            {field: 'assistant', title: '副卡IMSI', width: 150},
             {field: 'selectDate', title: '选卡时间', width: 150},
         ]],
         //toolbar: kcJs.fn.getFunctions(),

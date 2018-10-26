@@ -21,31 +21,28 @@ import java.util.List;
  */
 public interface SimCardService {
 	
-	public ReturnMsg getSimCardByPool(Integer cpId);
+	ReturnMsg getSimCardByPool(Integer cpId);
 	
-	public ReturnMsg deleteSimCard(String ids);
+	ReturnMsg deleteSimCard(String ids);
 	
-	public ResultList getSimCardList(SimCardDTO simCard, Integer dId,Integer dateType, Date startDate, Date endDate,int page, int rows);
+	ResultList getSimCardList(SimCardDTO simCard, Integer dId,Integer dateType, Date startDate, Date endDate,int page, int rows);
 
-	public File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws Exception;
+	File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws Exception;
 	
-	public ReturnMsg getOutlineInfo(Integer dId);
+	ReturnMsg getOutlineInfo(Integer dId);
 
-	public ReturnMsg update(SimCard simCard);
+	ReturnMsg update(SimCard simCard);
 
-	public SimGroup initGroupSim2Cache(SimCard simCard);
+	SimGroup initGroupSim2Cache(SimCard simCard);
 
-	public ReturnMsg batchUpdate(SimCardDTO simCard, String ids);
+	ReturnMsg batchUpdate(SimCardDTO simCard, String ids);
 
-	public boolean updateGroupSim2Cache(SimCard simCard,int status);
+	boolean updateGroupSim2Cache(SimCard simCard,int status);
 
-	public FlowMonth getNowFlowMonth(SimCard simCard);
+	FlowMonth getNowFlowMonth(SimCard simCard);
 
-    public ReturnMsg getSimcardList(MultipartFile file);
+    ReturnMsg getSimcardList(MultipartFile file);
 
-	public void insertBatch(List<SimCard> list);
+	void insertBatch(List<SimCard> list);
 
-	public ResultList listProblemCard(Date startDate,Date endDate,Integer tsid,Long imsi,int page, int rows);
-
-	public ReturnMsg deleteProblemCard(Long imsi);
 }

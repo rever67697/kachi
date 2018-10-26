@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.ProblemCardDao">
+
+	<select id="getProblemCard" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
+		select  r.tsid,r.imsi,r.released,r.selectDate,l.authtime
+		from m_select_card r
+		left join m_terminal_sim_flow t on r.tsid=t.tsid and r.imsi=t.imsi and t.time between r.selectdate and adddate(r.selectdate,interval 5 minute) and t.type in (0,1,4)
+		left join m_auth_log l on r.tsid=l.tsid and r.imsi=l.imsi and l.authtime between r.selectdate and adddate(r.selectdate,interval 5 minute)
+		where r.selectdate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		and t.time is null
+		and r.imsi>0
+		order by r.imsi,r.tsid,r.selectDate desc
+	</select>
+
+	<select id="list" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
+		select  r.*,
+		(select t.status from m_simcard t where r.imsi=t.imsi) status
+		from tb_problem_card r
+		where 1=1
+		<if test="startDate!=null">
+			and selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="tsid!=null">
+			and tsid=#{tsid,jdbcType=INTEGER}
+		</if>
+		<if test="imsi!=null">
+			and imsi=#{imsi,jdbcType=BIGINT}
+		</if>
+		order by count desc,selectDate desc
+	</select>
+
+	<insert id="save" parameterType="com.team.model.ProblemCard">
+		insert into tb_problem_card
+		(imsi,tsid,selectDate,released,authTime)
+		values
+		(
+		#{imsi,jdbcType=BIGINT},
+		#{tsid,jdbcType=INTEGER},
+		#{selectDate,jdbcType=TIMESTAMP},
+		#{released,jdbcType=BIGINT},
+		#{authTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<delete id="delete">
+		delete from tb_problem_card
+		where imsi=#{imsi,jdbcType=BIGINT}
+	</delete>
+
+	<delete id="deleteBySelf">
+		delete from tb_problem_card
+		where imsi in(
+		select imsi from (
+		select imsi,max(selectDate) selectDate
+		from tb_problem_card
+		where createtime>=CURRENT_DATE
+		group by imsi
+		) r where
+		exists(select 1 from m_terminal_sim_flow t where t.imsi=r.imsi and t.type in (0,1,4) and t.time>r.selectDate))
+		and createtime>=CURRENT_DATE
+	</delete>
+	
+	<update id="updateCount">
+		update tb_problem_card r
+		set `count`=(select num from (select imsi,count(1) num
+									  from(
+											select tsid,imsi
+											from tb_problem_card
+											where createtime>=CURRENT_DATE
+											group by imsi,tsid
+									  ) t
+									  group by imsi) k
+					 where r.imsi=k.imsi)
+		where createtime>=CURRENT_DATE
+	</update>
+
+</mapper>
