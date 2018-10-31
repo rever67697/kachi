@@ -41,22 +41,24 @@
         <include refid="dId"></include>
 	</select> -->
 	<select id="getChannelCardList" resultType="com.team.model.ChannelCard" parameterType="java.util.Map">
-		select distinct tsid,
-			   r.assistant imsi,
-			   (select t.sversion from m_terminal t where r.tsid=t.tsid) number
-			   ,ifnull(c.namecn,c.countryname) countryName
-			   ,concat(o.OPERATORNAMECN,'(',t.OPERATORCODE,')') operatorName
-		from m_select_card r
-		left join m_simcard t on r.assistant=t.imsi
+		select r.*,
+			   (select t.sversion from m_terminal t where r.tsid=t.tsid) number,
+			    ifnull(c.namecn,c.countryname) countryName,
+				concat(o.OPERATORNAMECN,'(',t.OPERATORCODE,')') operatorName
+		from (
+				select distinct tsid,assistant imsi
+				from m_select_card
+				where assistant>0
+				<if test="tsid!=null">
+					and tsid=#{tsid,jdbcType=INTEGER}
+				</if>
+				<if test="imsi!=null">
+					and r.assistant=#{imsi,jdbcType=BIGINT}
+				</if>
+			  ) r
+		left join m_simcard t on r.imsi=t.imsi
 		left join m_operator o on o.operatorCode=t.operatorCode
 		left join m_country c on c.countryCode=t.countryCode
-		where r.assistant>0
-		<if test="tsid!=null">
-			and tsid=#{tsid,jdbcType=INTEGER}
-		</if>
-		<if test="imsi!=null">
-			and r.assistant=#{imsi,jdbcType=BIGINT}
-		</if>
 	</select>
 	
 	<update id="deleteChannelCards" parameterType="java.util.List">
