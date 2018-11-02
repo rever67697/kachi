@@ -112,19 +112,6 @@ public class PermissionLogAop {
 				operation = logInfo.value();
 			}
 			
-			//记录日志的额外信息，一般是指主要的参数是什么，key的格式的成对的key用‘_’分割，多个key用‘;’分割
-//			StringBuilder desc = new StringBuilder();
-//			String desc_str = "";
-//			if(!"".equals(logInfo.key())){
-//				String[] Keygroup = logInfo.key().split(";");
-//				for (String s : Keygroup) {
-//					String[] key = s.split("_");
-//					if(key.length==2)
-//						desc.append(key[1]).append("=").append(request.getParameter(key[0])).append(" | ");
-//				}
-//				desc_str = desc.substring(0, desc.lastIndexOf(" | "));
-//			}
-			
 			//下面是正式开启一个异步的任务来执行这个记录日志
 			final OperationLog operationLog = new OperationLog(user.getName(), bussinesstype, operation,
 					CommonUtil.getParamDesc(request),user.getDepartmentId(), IPUtils.getIpAddr(request),CommonUtil.browserInfo(request));

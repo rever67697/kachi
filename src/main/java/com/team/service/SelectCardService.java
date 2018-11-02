@@ -12,4 +12,6 @@ import java.util.Date;
 public interface SelectCardService {
 
     ResultList list(Date startDate, Date endDate, Integer tsid,int page, int rows);
+
+    ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid,Long imsi,int page, int rows);
 }

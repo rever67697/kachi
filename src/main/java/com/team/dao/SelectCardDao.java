@@ -14,5 +14,7 @@ public interface SelectCardDao {
 
     List<SelectCard> list(Map<String,Object> map);
 
+    List<SelectCard> listSelectCardLog(Map<String,Object> map);
+
 
 }

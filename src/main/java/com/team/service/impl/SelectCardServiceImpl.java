@@ -36,4 +36,17 @@ public class SelectCardServiceImpl implements SelectCardService {
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);
     }
+
+    @Override
+    public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi, int page, int rows) {
+        PageHelper.startPage(page,rows);
+        Map<String,Object> map = new HashMap<>();
+        map.put("startDate",startDate);
+        map.put("endDate",endDate);
+        map.put("tsid",tsid);
+        map.put("imsi",imsi);
+        List<SelectCard> list = selectCardDao.listSelectCardLog(map);
+        PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
+        return new ResultList(pageInfo.getTotal(),list);
+    }
 }

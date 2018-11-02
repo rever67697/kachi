@@ -57,6 +57,15 @@ public class SelectCard implements Serializable {
 
     private String operatorName;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date authTime;//选卡鉴权时间
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date firstTime;//选卡心跳开始时间
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date lastTime;//选卡心跳结束时间
+
     public String getOperatorName() {
         return operatorName;
     }
@@ -231,5 +240,29 @@ public class SelectCard implements Serializable {
 
     public void setAsignal(Integer asignal) {
         this.asignal = asignal;
+    }
+
+    public Date getAuthTime() {
+        return authTime;
+    }
+
+    public void setAuthTime(Date authTime) {
+        this.authTime = authTime;
+    }
+
+    public Date getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Date lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public Date getFirstTime() {
+        return firstTime;
+    }
+
+    public void setFirstTime(Date firstTime) {
+        this.firstTime = firstTime;
     }
 }

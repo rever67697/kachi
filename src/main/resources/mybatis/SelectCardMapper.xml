@@ -21,5 +21,29 @@
 		</if>
 		order by r.selectDate desc
 	</select>
+	
+	<select id="listSelectCardLog" parameterType="java.util.Map" resultType="com.team.model.SelectCard">
+		select  r.tsid,
+			  	r.imsi,
+				r.released,
+				r.selectdate,
+				t.authtime,
+				k.time firstTime,
+			   (select min(time) from m_terminal_sim_flow kk where r.tsid=kk.tsid and r.imsi=kk.imsi and kk.time>k.time and kk.type=4) lastTime
+		from m_select_card r
+		left join m_auth_log t on r.tsid=t.tsid and r.imsi=t.imsi and t.authtime between r.selectdate and adddate(r.selectdate,interval 1 minute)
+		left join m_terminal_sim_flow k on r.tsid=k.tsid and r.imsi=k.imsi and k.type=0 and k.time between t.authtime and adddate(t.authtime,interval 1 minute)
+		where 1=1
+		<if test="tsid!=null">
+			and r.tsid=#{tsid,jdbcType=INTEGER}
+		</if>
+		<if test="imsi!=null">
+			and r.imsi=#{imsi,jdbcType=BIGINT}
+		</if>
+		<if test="startDate!=null">
+			and (r.selectdate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP})
+		</if>
+		order by r.selectdate desc
+	</select>
 
 </mapper>

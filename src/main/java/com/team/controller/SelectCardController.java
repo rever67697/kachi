@@ -27,5 +27,10 @@ public class SelectCardController {
         return selectCardService.list(startDate,endDate,tsid,page, rows);
     }
 
+    @PostMapping("/listSelectCardLog")
+    public Object listSelectCardLog(Date startDate,Date endDate, Integer tsid, Long imsi,int page, int rows){
+        return selectCardService.listSelectCardLog(startDate,endDate,tsid,imsi,page, rows);
+    }
+
 
 }

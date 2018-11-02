@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>选卡日志</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet"
+          title="blue"/>
+    <link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+    <script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+
+
+</head>
+<body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
+
+<div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;"
+     border="false">
+    <form id="queryForm">
+        <table class="table">
+            <tr>
+                <th >终端编号</th>
+                <td ><input class="onlyNumber" name="tsid"/></td>
+                <th >选卡IMSI</th>
+                <td ><input class="onlyNumber" name="imsi"/></td>
+                <th >选卡时间</th>
+                <td ><input readonly="readonly" id="dateRange"/></td>
+                <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
+                    询</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+    <table id="dg"></table>
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+    var options = {
+        title: '选卡日志列表',
+        queryParams: $('#queryForm').serializeObject(),
+        columns: [[
+            {field: 'ck', checkbox: true},
+            {field: 'tsid', title: '终端编号', width: 100},
+            {field: 'imsi', title: '选卡IMSI', width: 130},
+            {field: 'released', title: '释放卡',width: 150},
+            {field: 'selectDate', title: '选卡时间', width: 150},
+            {field: 'authTime', title: '鉴权时间', width: 150},
+            {field: 'aa', title: '选卡结果', width: 110, formatter: function (value, row, index) {
+                var status = kcJs.fn.getCardStatus(row.firstTime?'0':'1');
+                return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + (row.firstTime?'成功':'失败') + '</div>' : '';
+            }},
+            {field: 'firstTime', title: '心跳开始时间', width: 150},
+            {field: 'lastTime', title: '心跳结束时间', width: 150},
+        ]],
+        //toolbar: kcJs.fn.getFunctions(),
+        url: kcJs.fn.getContextPath() + '/selectCard/listSelectCardLog',
+        iconCls: 'icon-tip',
+        nowrap: false,
+        pagination: true,
+        pageList: [20, 30, 50],
+        rownumbers: true,
+        scrollbarSize: 0,
+        striped: true,
+        fit: true
+    };
+
+    //日期时间范围
+    laydate.render({
+        elem: '#dateRange',
+        type: 'datetime',
+        range: '至',
+        max:new Date().format("yyyy-MM-dd")+' 23:59:59'
+    });
+
+
+    $(function () {
+        $('#dateRange').val(new Date().format("yyyy-MM-dd")+' 00:00:00 至 '+new Date().format("yyyy-MM-dd")+' 23:59:59');
+
+        doQuery();
+
+    });
+
+
+    function doQuery() {
+        options.queryParams = $('#queryForm').serializeObject();
+        var dateRange = $('#dateRange').val();
+        if(dateRange){
+            var dates = dateRange.split(" 至 ");
+            options.queryParams.startDate = dates[0];
+            options.queryParams.endDate = dates[1];
+        }
+        $('#dg').datagrid(options);
+    }
+
+
+</script>
+
+
+</html>
