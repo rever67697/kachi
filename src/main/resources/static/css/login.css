@@ -1,6 +1,6 @@
 *{box-sizing: border-box;padding:0;margin:0}
 body{background:url('../images/login_bgx.png') ;color: #5a5a5a;font-family:'微软雅黑'}
-.login{width: 403px;margin: 0 auto;margin-top: 98px}
+.login{width: 403px}
 .login_logo{text-align: center;margin-bottom: 25px;height:46px}
 .login_body{background:rgb(247,247,247);padding:28px 47px 20px 47px;border-radius:8px;
 			box-shadow:-5px 0px 5px rgba(0,0,0,0.1),0px -1px 5px rgba(0,0,0,0.1),
@@ -62,3 +62,13 @@ body{background:url('../images/login_bgx.png') ;color: #5a5a5a;font-family:'微�
 	text-align:center
 }
 input:checked{border:1px solid blue}
+
+.login{
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform:translate(-50%,-50%);
+	-webkit-transform: translate(-50%,-50%);
+	-moz-transform: translate(-50%,-50%);
+	-o-transform: translate(-50%,-50%);
+}
