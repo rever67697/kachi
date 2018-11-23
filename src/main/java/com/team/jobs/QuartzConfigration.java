@@ -44,7 +44,7 @@ public class QuartzConfigration {
         jobDetail.setTargetObject(task);
 
         /*
-         * sayHello为需要执行的方法
+         * run为需要执行的方法
          * 通过这几个配置，告诉JobDetailFactoryBean我们需要执行定时执行ScheduleTask类中的run方法
          */
         jobDetail.setTargetMethod("run");

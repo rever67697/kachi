@@ -1,5 +1,5 @@
 $(function(){
-	//$('.login').css('margin-top',($(window).height()-420)/2+'px');
+	$('.login').css('margin-top',($(window).height()-420)/2+'px');
 	
 	changeValidateCode();
 	initLogInfo();

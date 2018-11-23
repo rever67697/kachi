@@ -44,7 +44,7 @@ import com.github.pagehelper.PageHelper;
 
 @SpringBootApplication			//@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan
 @MapperScan("com.team.dao")		//查找报指定包及其子包下面的dao接口
-@EnableCaching					//开启注解缓存
+//@EnableCaching					//开启注解缓存
 @EnableScheduling               //开启定时
 public class Application{
 	private static Logger logger = Logger.getLogger(Application.class);
@@ -52,13 +52,13 @@ public class Application{
     /**
      * 数据源，druid连接池
      */
-    @Value("${spring.datasource.type}")  
-    private Class<? extends DataSource> dataSourceType;  
+    @Value("${spring.datasource.type}")
+    private Class<? extends DataSource> dataSourceType;
 
-    @Bean(name="dataSource", destroyMethod = "close", initMethod="init")  
-    @ConfigurationProperties(prefix = "spring.datasource")  
-    public DataSource dataSource() { 
-    	logger.info("-------------------- writeDataSource init ---------------------");        
+    @Bean(name="dataSource", destroyMethod = "close", initMethod="init")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource() {
+    	logger.info("-------------------- writeDataSource init ---------------------");
 	    return DataSourceBuilder.create().type(dataSourceType).build();
     }
     

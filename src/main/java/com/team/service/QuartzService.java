@@ -38,7 +38,7 @@ public class QuartzService extends BaseService{
 
         String newCron = "0 */"+minute+" * * * ?";
 
-        //关闭或者开启任务
+        //关闭或者开启任务  0-开启
         if(status==0){
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
 //            String currentCron = trigger.getCronExpression();// 当前Trigger使用的
@@ -54,6 +54,8 @@ public class QuartzService extends BaseService{
             // 按新的trigger重新设置job执行
             scheduler.rescheduleJob(cronTrigger.getKey(), trigger);
         }else {
+            //关闭任务
+            //把当前的任务卸掉
             scheduler.unscheduleJob(cronTrigger.getKey());
         }
 
