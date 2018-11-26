@@ -59,6 +59,12 @@ var kcJs=
         			 "3":"没有订单",
         			 "4":"拒绝接入",
     };
+
+    var d_cpStatus={"0":["正常",v_colors.blue],
+        "1":["待激活",v_colors.orange],
+        "2":["拔出",v_colors.gray],
+        "8":["超时",v_colors.red]
+    };
     var dic_noYes=[{"value":"0","name":"否"},{"value":"1","name":"是"}];
     //日志分类
     var dic_bussinesstype=[
@@ -158,6 +164,10 @@ var kcJs=
         //获取取卡结果
         getResultCode:function(s){
             return result_code[s];
+        },
+        //获取取卡结果
+        getCpStatus:function(s){
+            return d_cpStatus[s];
         },
 		//接收一个long类型的毫秒数，返回格式化的字符串
 		getDate:function(o,pattern){

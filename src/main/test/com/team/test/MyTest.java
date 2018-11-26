@@ -148,7 +148,7 @@ public class MyTest {
 
 	@Test
 	public void testGetSimcard() {
-		Object object = simGroupCache.get("SIM_460110664449848");
+		Object object = simGroupCache.get("SIM_460042341604162");
 
 		System.out.println(CommonUtil.convertBean(object, com.hqrh.rw.common.model.SimCard.class));
 		System.out.println(CommonUtil.convertBean(object, SimCard.class));

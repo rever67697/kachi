@@ -67,35 +67,35 @@ public class Application{
      * @return
      * @throws Exception
      */
-    @Bean  
-    public SqlSessionFactory sqlSessionFactory() throws Exception {  
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();  
+    @Bean
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-        //分页插件  
-        PageHelper pageHelper = new PageHelper();  
-        Properties props = new Properties();  
-        props.setProperty("reasonable", "true");  
-        props.setProperty("supportMethodsArguments", "true");  
-        props.setProperty("returnPageInfo", "check");  
-        props.setProperty("params", "count=countSql");  
-        pageHelper.setProperties(props);  
-        //添加插件  
-        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});  
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();  
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mybatis/*.xml"));  
-        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);  
-        return sqlSessionFactoryBean.getObject();  
-    } 
+        //分页插件
+        PageHelper pageHelper = new PageHelper();
+        Properties props = new Properties();
+        props.setProperty("reasonable", "true");
+        props.setProperty("supportMethodsArguments", "true");
+        props.setProperty("returnPageInfo", "check");
+        props.setProperty("params", "count=countSql");
+        pageHelper.setProperties(props);
+        //添加插件
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mybatis/*.xml"));
+        sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        return sqlSessionFactoryBean.getObject();
+    }
     
     /**  
      * 配置事务管理器  
      */  
-    @Bean(name="transactionManager")  
-    @Primary  
-    public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) throws Exception {  
-        return new DataSourceTransactionManager(dataSource);  
-    }  
-    
+    @Bean(name="transactionManager")
+    @Primary
+    public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+        return new DataSourceTransactionManager(dataSource);
+    }
+
     /**
      * 配置session有效时间，这里默认是30min
      *@return
