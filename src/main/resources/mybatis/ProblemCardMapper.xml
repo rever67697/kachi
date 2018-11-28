@@ -32,7 +32,7 @@
 		<if test="status!=null">
 			and status=#{status,jdbcType=INTEGER}
 		</if>
-		order by count desc,selectDate desc
+		order by count desc,imsi,selectDate desc
 	</select>
 
 	<insert id="save" parameterType="com.team.model.ProblemCard">
