@@ -41,22 +41,20 @@ public class QuartzService extends BaseService{
         //关闭或者开启任务  0-开启
         if(status==0){
             CronTrigger trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
-//            String currentCron = trigger.getCronExpression();// 当前Trigger使用的
-            String currentCron = quartzCron.getCronStr();// 当前Trigger使用的
-            System.out.println(currentCron);
-            System.out.println(newCron);
             // 表达式调度构建器
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(newCron);
             // 按新的cronExpression表达式重新构建trigger
-            trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
             trigger = trigger.getTriggerBuilder().withIdentity(cronTrigger.getKey())
                     .withSchedule(scheduleBuilder).build();
             // 按新的trigger重新设置job执行
+            scheduler.pauseJob(cronTrigger.getJobKey());
             scheduler.rescheduleJob(cronTrigger.getKey(), trigger);
         }else {
             //关闭任务
-            //把当前的任务卸掉
-            scheduler.unscheduleJob(cronTrigger.getKey());
+            //把当前的任务停掉
+            scheduler.pauseJob(cronTrigger.getJobKey());// 停止触发器
+//            scheduler.unscheduleJob(cronTrigger.getKey());// 移除触发器
+//            scheduler.deleteJob(cronTrigger.getJobKey());// 删除任务
         }
 
         quartzCron.setCronStr(newCron);
