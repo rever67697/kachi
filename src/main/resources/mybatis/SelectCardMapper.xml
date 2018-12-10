@@ -27,7 +27,7 @@
 				r.imsi,
 				r.released,
 				r.selectdate,
-				(select authtime from m_auth_log t where r.imsi=t.imsi and r.tsid=t.tsid and t.authtime between r.selectdate and adddate(r.selectdate,interval 1 minute) limit 1) authtime,
+				(select authtime from m_auth_log t where r.imsi=t.imsi and r.tsid=t.tsid and t.authtime between r.selectdate and adddate(r.selectdate,interval 2 minute) limit 1) authtime,
 				(select time from m_terminal_sim_flow k where r.tsid=k.tsid and r.imsi=k.imsi and k.type=0 and k.time between r.selectdate and adddate(r.selectdate,interval 2 minute) limit 1) firstTime,
 				(select min(time) from m_terminal_sim_flow kk where r.tsid=kk.tsid and r.imsi=kk.imsi and kk.time>r.selectdate and kk.type=4) lastTime
 		from m_select_card r
