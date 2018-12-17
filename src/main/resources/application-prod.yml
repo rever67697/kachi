@@ -5,7 +5,7 @@ spring:
     username: nvt123456
     url: jdbc:mysql://119.23.146.223:3306/nvtdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
 
-urlPrefix:  http://localhost:10086/kachiManagerment/download?fileName=
+urlPrefix:  http://120.77.71.143:10086/kachiManagerment/download?fileName=
 
 # memcache
 memcache:
