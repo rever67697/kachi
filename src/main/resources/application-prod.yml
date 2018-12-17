@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    password: nvt
+    username: nvt123456
+    url: jdbc:mysql://119.23.146.223:3306/nvtdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+
+urlPrefix:  http://localhost:10086/kachiManagerment/download?fileName=
+
+# memcache
+memcache:
+  simGroup: 119.23.146.223:11501
+  sim:  119.23.146.223:11501
+  simFlow:  119.23.146.223:11501
+  vpublic:  119.23.146.223:11501
+
+#是否订阅阿里云的消息
+bookMessage:  true
+
+#生产环境下定义日志输出配置classpath:logback-spring-prod.xml
+
+logging:
+  config: classpath:logback-spring-prod.xml

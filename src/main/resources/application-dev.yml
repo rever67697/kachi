@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    username: root
+    url: jdbc:mysql://localhost:3306/hqrh?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+
+urlPrefix:  http://localhost:10086/kachiManagerment/download?fileName=
+
+# memcache
+memcache:
+  simGroup: 120.79.176.232:10087
+  sim:  120.79.176.232:10087
+  simFlow:  120.79.176.232:10087
+  vpublic:  120.79.176.232:10087
+
+#是否订阅阿里云的消息
+bookMessage:  false

@@ -1,0 +1,70 @@
+server:
+  port: 10086
+  servlet:
+    context-path: /kachiManagerment
+
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize:  5
+    minIdle:  5
+    maxActive:  20
+    maxWait:  60000
+    timeBetweenEvictionRunsMillis:  60000
+    minEvictableIdleTimeMillis: 60000
+    validationQuery:  SELECT 1 from dual
+    testWhileIdle:  true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize:  20
+
+  thymeleaf:
+    prefix: classpath:/static/site/
+    suffix: .html
+
+#spring-boot整合mybatis
+mybatis:
+  #config-location: classpath:/mapper/config/mybatisConfig.xml #可以注射掉,没用到该配置文件
+  mapper-locations: classpath:/mybatis/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+filter:
+  noFilterPath: .css;.js;.png;.jpg;gif;verificationCode;login.html;login;logout;error404.html;getCode;q;interface;download;getPublicKey
+
+sendWiFiPass: 88888888
+
+#memcached缓存配置
+memcache:
+  initConn: 15
+  minConn:  10
+  maxConn:  100
+  maintSleep: 30
+  nagle:  false
+  maxIdle:  6000
+  socketTO: 30000
+  socketConnectTO:  0
+  aliveCheck: true
+  failback: true
+  failover: true
+
+aliyun:
+  accessKey:  LTAIXlpkOgjoa4h6
+  accessSecurity: 6QCw9x8aPkpGBrxfK6UTh7ybc73pmL
+logging:
+  level:
+    com.team.dao: debug
+
+
+
