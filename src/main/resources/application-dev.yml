@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: root
     username: root
-    url: jdbc:mysql://localhost:3306/hqrh?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/nvtdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
 
 urlPrefix:  http://localhost:10086/kachiManagerment/download?fileName=
 
