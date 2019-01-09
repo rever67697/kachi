@@ -7,6 +7,7 @@ import com.team.dao.TerminalChargeRecordDao;
 import com.team.model.FlowBalance;
 import com.team.model.TerminalChargeRecord;
 import com.team.service.TerminalChargeService;
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
@@ -90,25 +91,19 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
     }
 
     @Override
-    public ResultList list(Integer tsid, Date startDate, Date endDate, int page, int rows) {
+    public ResultList list(Integer tsid, Date startDate, Date endDate,Integer departmentId,Integer dId, int page, int rows) {
         PageHelper.startPage(page, rows);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("tsid",tsid);
         map.put("startDate",startDate);
         map.put("endDate",endDate);
+        map.put("departmentId", departmentId);
+        map.put("dId", CommonUtil.changeDepartmentId(dId));
         List<TerminalChargeRecord> list = terminalChargeRecordDao.list(map);
 
         PageInfo<TerminalChargeRecord> pageInfo = new PageInfo<TerminalChargeRecord>(list);
         return new ResultList(pageInfo.getTotal(), list);
     }
 
-    @Override
-    public ReturnMsg count(Integer tsid, Date startDate, Date endDate) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("tsid",tsid);
-        map.put("startDate",startDate);
-        map.put("endDate",endDate);
-        return successTip(terminalChargeRecordDao.count(map));
-    }
 
 }

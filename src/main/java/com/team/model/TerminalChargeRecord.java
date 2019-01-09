@@ -39,6 +39,16 @@ public class TerminalChargeRecord implements Serializable {
     @JsonIgnore
     private String note;
 
+    private String departmentName;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
     public String getNote() {
         return note;
     }

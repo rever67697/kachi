@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.team.dao.SelectCardDao;
 import com.team.model.SelectCard;
 import com.team.service.SelectCardService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,25 +27,29 @@ public class SelectCardServiceImpl implements SelectCardService {
     private SelectCardDao selectCardDao;
 
     @Override
-    public ResultList list(Date startDate, Date endDate, Integer tsid,int page, int rows) {
+    public ResultList list(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows) {
         PageHelper.startPage(page,rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         map.put("tsid",tsid);
+        map.put("departmentId", departmentId);
+        map.put("dId", CommonUtil.changeDepartmentId(dId));
         List<SelectCard> list = selectCardDao.list(map);
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);
     }
 
     @Override
-    public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi, int page, int rows) {
+    public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi,Integer departmentId,Integer dId, int page, int rows) {
         PageHelper.startPage(page,rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         map.put("tsid",tsid);
         map.put("imsi",imsi);
+        map.put("departmentId", departmentId);
+        map.put("dId", CommonUtil.changeDepartmentId(dId));
         List<SelectCard> list = selectCardDao.listSelectCardLog(map);
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);

@@ -41,6 +41,8 @@
                 <td ><input class="onlyNumber" name="tsid"/></td>
                 <th >副卡IMSI</th>
                 <td ><input class="onlyNumber" name="imsi"/></td>
+                <th>部门：</th>
+                <td><select name="departmentId"><option value="">全部</option></select></td>
                 <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
                     询</a></td>
             </tr>
@@ -154,6 +156,7 @@
 //            {field: 'balance', title: '账户余额', width: 80},
             {field: 'operatorName', title: '运营商', width: 130},
             {field: 'countryName', title: '国家', width: 80},
+            {field: 'departmentName', title: '部门', width: 150},
 //            {field: 'mcNumber', title: '短信中心号码', width: 100},
 //            {field: 'detail', title: '详情', width: 130},
 //            {field: 'departmentName', title: '所属部门', width: 120}
@@ -194,7 +197,7 @@
             title: "excel上传副卡信息"
         });
 
-        kcJs.fn.initSelect({"container": $('[name=countryCode]'), "url": 'getCountryDic', "nullDesc": "全部"});
+        // kcJs.fn.initSelect({"container": $('[name=countryCode]'), "url": 'getCountryDic', "nullDesc": "全部"});
         kcJs.fn.initSelect({"container": $('[name=departmentId]'), "url": 'getDepartmentDic', "nullDesc": "全部"});
 
     });

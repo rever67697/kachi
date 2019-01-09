@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.ProblemCardDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<select id="getProblemCard" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
 		select  r.tsid,r.imsi,r.released,r.selectDate,l.authtime
 		from m_select_card r
@@ -14,15 +20,16 @@
 	</select>
 
 	<select id="list" resultType="com.team.model.ProblemCard" parameterType="java.util.Map">
-		select * from(
-			select  r.*,
-			(select t.status from m_simcard t where r.imsi=t.imsi) status
-			from tb_problem_card r
-		) t
+		select r.* ,
+			   d.name departmentName
+		from(
+			select  c.*,
+			(select t.status from m_simcard t where c.imsi=t.imsi) status
+			from tb_problem_card c
+		) r
+		left join m_terminal t on r.tsid=t.tsid
+		left join m_department d on t.departmentId=d.id and d.status=0
 		where 1=1
-		<if test="startDate!=null">
-			and selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
-		</if>
 		<if test="tsid!=null">
 			and tsid=#{tsid,jdbcType=INTEGER}
 		</if>
@@ -32,6 +39,13 @@
 		<if test="status!=null">
 			and status=#{status,jdbcType=INTEGER}
 		</if>
+		<if test="departmentId != null">
+			and d.id=#{departmentId,jdbcType=INTEGER}
+		</if>
+		<if test="startDate!=null">
+			and selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		</if>
+		<include refid="dId"></include>
 		order by count desc,imsi,selectDate desc
 	</select>
 

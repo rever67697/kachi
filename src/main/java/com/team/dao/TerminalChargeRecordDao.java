@@ -15,8 +15,6 @@ public interface TerminalChargeRecordDao {
 
     List<TerminalChargeRecord> list(Map<String,Object> map);
 
-    Map<String,Object> count(Map<String,Object> map);
-
     int save(TerminalChargeRecord terminalChargeRecord);
 
 }

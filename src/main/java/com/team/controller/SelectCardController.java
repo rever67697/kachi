@@ -2,11 +2,13 @@ package com.team.controller;
 
 import com.team.annotation.PermissionLog;
 import com.team.service.SelectCardService;
+import com.team.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -23,13 +25,15 @@ public class SelectCardController {
     private SelectCardService selectCardService;
 
     @PostMapping("/list")
-    public Object list(Date startDate,Date endDate, Integer tsid, int page, int rows){
-        return selectCardService.list(startDate,endDate,tsid,page, rows);
+    public Object list(Date startDate,Date endDate, Integer tsid, Integer departmentId, int page, int rows, HttpServletRequest request){
+        Integer dId = CommonUtil.getUser(request).getDepartmentId();
+        return selectCardService.list(startDate,endDate,tsid,departmentId,dId,page,rows);
     }
 
     @PostMapping("/listSelectCardLog")
-    public Object listSelectCardLog(Date startDate,Date endDate, Integer tsid, Long imsi,int page, int rows){
-        return selectCardService.listSelectCardLog(startDate,endDate,tsid,imsi,page, rows);
+    public Object listSelectCardLog(Date startDate,Date endDate, Integer tsid, Long imsi,Integer departmentId,int page, int rows, HttpServletRequest request){
+        Integer dId = CommonUtil.getUser(request).getDepartmentId();
+        return selectCardService.listSelectCardLog(startDate,endDate,tsid,imsi,departmentId,dId,page, rows);
     }
 
 

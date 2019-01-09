@@ -44,8 +44,8 @@ public class ChannelCardController {
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId,Integer tsid,Long imsi,Integer countryCode,Integer operatorCode, Integer status,
 			int page, int rows,HttpServletRequest request) {
-//		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return channelCardService.getChannelCardList(tsid,imsi, page, rows);
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return channelCardService.getChannelCardList(tsid,imsi,departmentId,dId ,page, rows);
 	}
 
 	@PostMapping("/delete")

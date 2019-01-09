@@ -33,6 +33,8 @@
                     <option value="3">待激活</option>
                     <option value="4">作废</option>
                 </select></td>
+                <th>部门：</th>
+                <td><select name="departmentId"><option value="">全部</option></select></td>
                 <th >选卡时间</th>
                 <td ><input readonly="readonly" id="dateRange" style="width: 245px"/></td>
                 <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
@@ -96,7 +98,8 @@
             },
             {field: 'selectDate', title: '选卡时间', width: 150},
             {field: 'authTime', title: '鉴权时间', width: 150},
-            {field: 'count', title: '异常次数', width: 100}
+            {field: 'count', title: '异常次数', width: 100},
+            {field: 'departmentName', title: '部门', width: 150},
         ]],
         url: kcJs.fn.getContextPath() + '/problemCard/list',
 			toolbar: kcJs.fn.getFunctions(),
@@ -131,6 +134,8 @@
             cache: false,
             title: "修改定时时间",
         });
+
+        kcJs.fn.initSelect({"container": $('[name=departmentId]'), "url": 'getDepartmentDic', "nullDesc": "全部"});
 
     });
 

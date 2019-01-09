@@ -27,8 +27,10 @@
                 <td ><input class="onlyNumber" name="tsid"/></td>
                 <th >选卡IMSI</th>
                 <td ><input class="onlyNumber" name="imsi"/></td>
+                <th>部门：</th>
+                <td><select name="departmentId"><option value="">全部</option></select></td>
                 <th >选卡时间</th>
-                <td ><input readonly="readonly" id="dateRange"/></td>
+                <td ><input readonly="readonly" id="dateRange" style="width:95%"/></td>
                 <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
                     询</a></td>
             </tr>
@@ -48,9 +50,9 @@
         queryParams: $('#queryForm').serializeObject(),
         columns: [[
             {field: 'ck', checkbox: true},
-            {field: 'tsid', title: '终端编号', width: 100},
+            {field: 'tsid', title: '终端编号', width: 90},
             {field: 'imsi', title: '选卡IMSI', width: 130},
-            {field: 'released', title: '释放卡',width: 150},
+            {field: 'released', title: '释放卡',width: 130},
             {field: 'selectDate', title: '选卡时间', width: 150},
             {field: 'authTime', title: '鉴权时间', width: 150},
             {field: 'aa', title: '选卡结果', width: 110, formatter: function (value, row, index) {
@@ -59,6 +61,7 @@
             }},
             {field: 'firstTime', title: '心跳开始时间', width: 150},
             {field: 'lastTime', title: '心跳结束时间', width: 150},
+            {field: 'departmentName', title: '部门', width: 150}
         ]],
         //toolbar: kcJs.fn.getFunctions(),
         url: kcJs.fn.getContextPath() + '/selectCard/listSelectCardLog',
@@ -85,6 +88,9 @@
         $('#dateRange').val(new Date().format("yyyy-MM-dd")+' 00:00:00 至 '+new Date().format("yyyy-MM-dd")+' 23:59:59');
 
         doQuery();
+
+        kcJs.fn.initSelect({"container": $('[name=departmentId]'), "url": 'getDepartmentDic', "nullDesc": "全部"});
+
 
     });
 

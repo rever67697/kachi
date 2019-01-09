@@ -10,7 +10,7 @@ import com.team.vo.ReturnMsg;
 
 public interface ChannelCardService {
 
-	public ResultList getChannelCardList(Integer tsid, Long imsi,int page, int rows);
+	public ResultList getChannelCardList(Integer tsid, Long imsi, Integer departmentId, Integer dId, int page, int rows);
 
 	public ReturnMsg deleteChannelCards(String ids);
 

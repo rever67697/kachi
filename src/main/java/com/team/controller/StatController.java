@@ -41,14 +41,9 @@ public class StatController {
 
 	@PostMapping("/chargeList")
 	@ResponseBody
-	public ResultList list(Integer tsid,Integer type,Date startDate,Date endDate,int page, int rows) {
-		return terminalChargeService.list(tsid,startDate,endDate, page, rows);
-	}
-
-	@PostMapping("/chargeCount")
-	@ResponseBody
-	public ReturnMsg count(Integer tsid,Integer type,Date startDate,Date endDate) {
-		return terminalChargeService.count(tsid,startDate,endDate);
+	public ResultList list(Integer tsid,Integer departmentId,Date startDate,Date endDate,int page, int rows,HttpServletRequest request) {
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+		return terminalChargeService.list(tsid,startDate,endDate,departmentId,dId, page, rows);
 	}
 
 	@RequestMapping("/")

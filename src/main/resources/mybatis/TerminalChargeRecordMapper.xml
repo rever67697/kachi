@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.TerminalChargeRecordDao">
+
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
 	
 	<select id="list" resultType="com.team.model.TerminalChargeRecord" parameterType="java.util.Map">
-		select *
-		from m_terminal_charge_record
+		select r.*,
+			   d.name departmentName
+		from m_terminal_charge_record r
+		left join m_terminal t on r.tsid=t.tsid
+		left join m_department d on t.departmentId=d.id and d.status=0
 		where 1=1
 		<if test="tsid!=null">
-			and tsid=#{tsid,jdbcType=INTEGER}
+			and r.tsid=#{tsid,jdbcType=INTEGER}
 		</if>
 		<if test="startDate!=null">
-			and (createDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP})
+			and (r.createDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP})
 		</if>
-		order by createDate desc
-	</select>
-
-	<select id="count" resultType="java.util.Map" parameterType="java.util.Map">
-		select round(ifnull(sum(case when chargeFlow=100000000000 then 0 else chargeFlow end),0)/1024/1024,2) chargeFlow,
-			   ifnull(sum(chargeDate),0) chargeDate
-		from m_terminal_charge_record
-		where 1=1
-		<if test="tsid!=null">
-			and tsid=#{tsid,jdbcType=INTEGER}
+		<if test="departmentId != null">
+			and d.id=#{departmentId,jdbcType=INTEGER}
 		</if>
-		<if test="startDate!=null">
-			and (createDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP})
-		</if>
+		<include refid="dId"></include>
+		order by r.createDate desc
 	</select>
 	
 	<insert id="save" parameterType="com.team.model.TerminalChargeRecord">

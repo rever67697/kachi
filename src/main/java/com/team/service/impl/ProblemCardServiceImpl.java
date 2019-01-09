@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.team.dao.ProblemCardDao;
 import com.team.model.ProblemCard;
 import com.team.service.ProblemCardService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     private ProblemCardDao problemCardDao;
 
     @Override
-    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,int page, int rows) {
+    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,Integer departmentId,Integer dId,int page, int rows) {
         PageHelper.startPage(page, rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
@@ -35,6 +36,8 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
         map.put("tsid",tsid);
         map.put("imsi",imsi);
         map.put("status",status);
+        map.put("departmentId", departmentId);
+        map.put("dId", CommonUtil.changeDepartmentId(dId));
         List<ProblemCard> problemCardList = problemCardDao.list(map);
         PageInfo<ProblemCard> pageInfo = new PageInfo<ProblemCard>(problemCardList);
         return new ResultList(pageInfo.getTotal(), problemCardList);

@@ -66,6 +66,16 @@ public class SelectCard implements Serializable {
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastTime;//选卡心跳结束时间
 
+    private String departmentName;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
     public String getOperatorName() {
         return operatorName;
     }

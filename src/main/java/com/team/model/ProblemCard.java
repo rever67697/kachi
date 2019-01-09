@@ -31,6 +31,8 @@ public class ProblemCard implements Serializable {
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
+    private String departmentName;
+
 
 
     public Long getImsi() {
@@ -95,6 +97,14 @@ public class ProblemCard implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     public ProblemCard() {

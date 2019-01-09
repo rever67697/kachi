@@ -2,6 +2,7 @@ package com.team.controller;
 
 import com.team.annotation.PermissionLog;
 import com.team.service.ProblemCardService;
+import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -26,8 +28,9 @@ public class ProblemCardController {
 
 
     @PostMapping("/list")
-    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi,Integer status, int page, int rows){
-        return problemCardService.list(startDate,endDate,tsid,imsi,status,page,rows);
+    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi, Integer status, Integer departmentId, int page, int rows, HttpServletRequest request){
+        Integer dId = CommonUtil.getUser(request).getDepartmentId();
+        return problemCardService.list(startDate,endDate,tsid,imsi,status,departmentId,dId,page,rows);
     }
 
     @PostMapping("/delete")
