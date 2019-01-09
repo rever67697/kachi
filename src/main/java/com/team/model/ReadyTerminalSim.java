@@ -21,7 +21,7 @@ public class ReadyTerminalSim implements Serializable {
 
 	private Integer lastStatus;// SIM卡前状态
 	//@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date insertDate;// 添加时间
 
 	private Integer operator;// 操作人

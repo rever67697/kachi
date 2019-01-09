@@ -26,7 +26,7 @@ public class ChannelCard implements Serializable{
 	
 	private String mcNumber;//短信中心号码
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date rechargeTime;//最后一次充值时间
 	
 	private Double balance;//账户余额

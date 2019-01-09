@@ -1,11 +1,13 @@
 server:
   port: 10086
-  servlet:
-    context-path: /kachiManagerment
+  context-path: /kachiManagerment
 
 spring:
   profiles:
     active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource

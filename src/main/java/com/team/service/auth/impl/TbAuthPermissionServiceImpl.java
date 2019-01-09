@@ -86,12 +86,29 @@ public class TbAuthPermissionServiceImpl extends BaseService implements TbAuthPe
 				map.put("roleId", role.getId());
 				map.put("array", ids.split(","));
 				tbAuthPermissionDao.insertRolePermission(map);
+				//特殊处理，针对这个用户也是系统角色的情况
+				if(isAdmin(roles)!=null){
+					map.put("roleId", isAdmin(roles).getId());
+					tbAuthPermissionDao.insertRolePermission(map);
+				}
 			}
 		}else{
 			returnMsg = super.errorTip();
 		}
 		
 		return returnMsg;
+	}
+
+	//判断当前角色列表是否包含系统管理员的角色
+	private TbAuthRole isAdmin(List<TbAuthRole> roles){
+		if(CommonUtil.listNotBlank(roles)){
+			for (TbAuthRole role : roles) {
+				if("GROUP_ADMIN".equals(role.getCode())){
+					return role;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

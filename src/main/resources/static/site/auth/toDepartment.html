@@ -31,10 +31,14 @@
 							<input type="hidden" name="id" />
 							<input type="hidden" name="parentId" />
 							<table class="appTable">
+								<tr style="display: none" id="id-info">
+									<td style="width:100px;">ID：</td>
+									<td style="width:280px;">
+										<input name="id" class="user-input2"  disabled="disabled"/></td>
+								</tr>
 								<tr>
 									<td style="width:100px;">名称：<span class="flag">*</span></td>
-									<td style="width:280px;">
-									<input name="text" class="easyui-validatebox user-input2" required="true" />
+									<td style="width:280px;"><input name="text" class="easyui-validatebox user-input2" required="true" /></td>
 								</tr>
 								<tr>
 									<td>简称：</td>
@@ -101,6 +105,7 @@
 	  }
 	  
 	function autoValid(node){
+		$('#id-info').show();
 		$('#doForm').form('load',node.attributes);
 		initBtn();
 		
@@ -136,6 +141,7 @@
 	}
 	
 	$('#addRootBtn').click(function(){
+		$('#id-info').hide();
 		$('#doForm').form('clear');
 		$('[name=parentId]').val('');
 		$('#delBtn').linkbutton('disable');
@@ -146,6 +152,7 @@
 		if($('#addMenuBtn').hasClass('l-btn-disabled')){
 			return;
 		}
+		$('#id-info').hide();
 		$('#doForm').form('clear');
 		$('[name=parentId]').val($('#orgtree').tree('getSelected').id);
 		$('#delBtn').linkbutton('disable');
@@ -156,6 +163,7 @@
 		if($('#delBtn').hasClass('l-btn-disabled')){
 			return;
 		}
+		$('#id-info').hide();
 		var node= $('#orgtree').tree('getSelected');
 		if(node.id){
 			$.messager.confirm('提示','是否确定删除？',function(r){if(r){
@@ -173,6 +181,7 @@
 		if($('#saveBtn').hasClass('l-btn-disabled')){
 			return;
 		}
+		$('#id-info').hide();
 		if($('#doForm').form('validate')){
 			$.post(kcJs.fn.getContextPath()+'/department/save',$('#doForm').serializeObject(),function(data){
 				$.messager.alert('提示',data.msg,'info');

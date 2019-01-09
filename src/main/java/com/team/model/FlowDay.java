@@ -15,14 +15,14 @@ public class FlowDay implements Serializable{
 	
 	private Long imsi;//
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date date;//消费日期
 	
 	private Integer flow;//本国流量，单位
 	
 	private Integer roamFlow;//漫游流量（国内是省内流量）
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date lastUpdateTime;//最后更新时间
 
 	public Integer getId() {

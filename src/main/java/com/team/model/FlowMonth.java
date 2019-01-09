@@ -27,13 +27,13 @@ public class FlowMonth implements Serializable{
 	
 	private Integer residueFlow;//本国流量剩余额度
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date lastUpDatetime;//最后更新时间
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodStartDate;//本账期起始时间
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date accountPeriodEndDate;//本帐期结束时间
 	
 	private Integer maxRoamFlow;//最大漫游流量（省内流量）

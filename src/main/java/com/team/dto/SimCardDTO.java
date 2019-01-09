@@ -46,10 +46,10 @@ public class SimCardDTO {
 
     private Integer provinceCode;//省编码
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date expiryDate;//有效期截卡时间
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date insertDate;//插入时间
 
     private Integer usedVpn;//是否支持vpn
@@ -72,7 +72,7 @@ public class SimCardDTO {
 
     private Integer cStatus;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date openDate;//开卡日期
 
     private Integer departmentId;//部门id

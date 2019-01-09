@@ -63,7 +63,7 @@ public class Terminal implements Serializable{
 	
 	private String androidVersion;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date validityDate;//有效期截止时间
 	
 	private String note;//备注
@@ -72,7 +72,7 @@ public class Terminal implements Serializable{
 
 	private String sendWiFiPass;//发下给终端更新的WiFi密码
 
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createDate;
 
 	public Long getAllowFlow() {

@@ -27,7 +27,7 @@
 		  and ur.status=0
 		  and c.status=0
 		  and c.id=#{id,jdbcType=INTEGER}
-		  and r.code=concat('USER_',#{id,jdbcType=INTEGER})
+		order by instr(code,'USER') desc
 	</select>
 	
 	<insert id="insertRole" parameterType="com.team.model.auth.TbAuthRole" useGeneratedKeys="true" keyProperty="id">

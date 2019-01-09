@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     password: nvt123456
     username: nvt
     url: jdbc:mysql://119.23.146.223:3306/nvtdb?useUnicode=true&characterEncoding=UTF-8&useSSL=false
