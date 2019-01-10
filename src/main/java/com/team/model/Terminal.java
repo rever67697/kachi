@@ -47,23 +47,13 @@ public class Terminal implements Serializable{
 	private Integer usedSoft;//是否支持软卡
 	
 	private Integer departmentId;//部门ID
-	
-	private String meid;//WCDMA的MEID
-	
+
 	private String departmentName;
 	
 	private String countryName;
 	
 	private Long allowFlow;//剩余流量
 	
-	/******以下几个没有了？*******/
-	private Integer saleType;//销售类型
-	
-	private Integer resetWifi;//是否重置wifi：0：不重置；1：重置
-	
-	private String androidVersion;
-	
-//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date validityDate;//有效期截止时间
 	
 	private String note;//备注
@@ -72,8 +62,13 @@ public class Terminal implements Serializable{
 
 	private String sendWiFiPass;//发下给终端更新的WiFi密码
 
-//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date createDate;
+	private Integer maxDayData;//每日最大流量KB
+
+	private Integer daySpeedLimit;//超过最大流量后限速速率Kbps
+	
+	private String sendNewSSID;//更新SSID
+
+	private Date createDate;//创建时间
 
 	public Long getAllowFlow() {
 		return allowFlow;
@@ -108,8 +103,8 @@ public class Terminal implements Serializable{
 			Integer upLog, String imei, Integer activated,
 			Integer homeLocation, String ssid, String wifiPassword,
 			String licFix, Integer usedVpn, Integer usedSoft,
-			Integer departmentId, String meid,String sendWiFiPass, Integer saleType,
-			Integer resetWifi, String androidVersion) {
+			Integer departmentId, Integer autoOrder, String sendWiFiPass,
+			Integer maxDayData,Integer daySpeedLimit,String sendNewSSID		) {
 		super();
 		this.tsid = tsid;
 		this.mac = mac;
@@ -128,11 +123,11 @@ public class Terminal implements Serializable{
 		this.usedVpn = usedVpn;
 		this.usedSoft = usedSoft;
 		this.departmentId = departmentId;
-		this.meid = meid;
+		this.autoOrder = autoOrder;
 		this.sendWiFiPass = sendWiFiPass;
-		this.saleType = saleType;
-		this.resetWifi = resetWifi;
-		this.androidVersion = androidVersion;
+		this.maxDayData=maxDayData;
+		this.daySpeedLimit=daySpeedLimit;
+		this.sendNewSSID=sendNewSSID;
 	}
 
 	public Integer getId() {
@@ -279,14 +274,6 @@ public class Terminal implements Serializable{
 		this.departmentId = departmentId;
 	}
 
-	public String getMeid() {
-		return meid;
-	}
-
-	public void setMeid(String meid) {
-		this.meid = meid;
-	}
-
 	public String getDepartmentName() {
 		return departmentName;
 	}
@@ -301,30 +288,6 @@ public class Terminal implements Serializable{
 
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
-	}
-
-	public Integer getSaleType() {
-		return saleType;
-	}
-
-	public void setSaleType(Integer saleType) {
-		this.saleType = saleType;
-	}
-
-	public Integer getResetWifi() {
-		return resetWifi;
-	}
-
-	public void setResetWifi(Integer resetWifi) {
-		this.resetWifi = resetWifi;
-	}
-
-	public String getAndroidVersion() {
-		return androidVersion;
-	}
-
-	public void setAndroidVersion(String androidVersion) {
-		this.androidVersion = androidVersion;
 	}
 
 	public Integer getAutoOrder() {
@@ -351,6 +314,30 @@ public class Terminal implements Serializable{
 		this.createDate = createDate;
 	}
 
+	public Integer getMaxDayData() {
+		return maxDayData;
+	}
+
+	public void setMaxDayData(Integer maxDayData) {
+		this.maxDayData = maxDayData;
+	}
+
+	public Integer getDaySpeedLimit() {
+		return daySpeedLimit;
+	}
+
+	public void setDaySpeedLimit(Integer daySpeedLimit) {
+		this.daySpeedLimit = daySpeedLimit;
+	}
+
+	public String getSendNewSSID() {
+		return sendNewSSID;
+	}
+
+	public void setSendNewSSID(String sendNewSSID) {
+		this.sendNewSSID = sendNewSSID;
+	}
+
 	@Override
 	public String toString() {
 		return "Terminal{" +
@@ -372,17 +359,17 @@ public class Terminal implements Serializable{
 				", usedVpn=" + usedVpn +
 				", usedSoft=" + usedSoft +
 				", departmentId=" + departmentId +
-				", meid='" + meid + '\'' +
 				", departmentName='" + departmentName + '\'' +
 				", countryName='" + countryName + '\'' +
 				", allowFlow=" + allowFlow +
-				", saleType=" + saleType +
-				", resetWifi=" + resetWifi +
-				", androidVersion='" + androidVersion + '\'' +
 				", validityDate=" + validityDate +
 				", note='" + note + '\'' +
 				", autoOrder=" + autoOrder +
 				", sendWiFiPass='" + sendWiFiPass + '\'' +
+				", maxDayData=" + maxDayData +
+				", daySpeedLimit=" + daySpeedLimit +
+				", sendNewSSID='" + sendNewSSID + '\'' +
+				", createDate=" + createDate +
 				'}';
 	}
 }

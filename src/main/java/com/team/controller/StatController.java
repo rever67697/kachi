@@ -37,8 +37,19 @@ public class StatController {
 	private TerminalChargeService terminalChargeService;
 	@Autowired
 	private StatService statService;
-	
 
+
+    /**
+     * 充值记录列表查询
+     * @param tsid
+     * @param departmentId
+     * @param startDate
+     * @param endDate
+     * @param page
+     * @param rows
+     * @param request
+     * @return
+     */
 	@PostMapping("/chargeList")
 	@ResponseBody
 	public ResultList list(Integer tsid,Integer departmentId,Date startDate,Date endDate,int page, int rows,HttpServletRequest request) {
@@ -46,16 +57,24 @@ public class StatController {
 		return terminalChargeService.list(tsid,startDate,endDate,departmentId,dId, page, rows);
 	}
 
+    /**
+     * 首页统计查询
+     * @param request
+     * @return
+     */
 	@RequestMapping("/")
 	@ResponseBody
 	public Object index(HttpServletRequest request){
 
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 
+		//查询终端近7天数据量图表信息
 		Map<String,Object> terminalCountMap = statService.terminalCount(dId);
+		//查询终端当月消耗排名前十
 		Map<String,Object> terminalCostMap = statService.terminalCost(dId);
 
 		StatBean statBean = (StatBean) terminalCountMap.get("statBean");
+		//查询页面其他展示参数信息
 		statBean = statService.fixInformation(statBean,dId);
 
 		Map<String,Object> map = new HashMap<>();

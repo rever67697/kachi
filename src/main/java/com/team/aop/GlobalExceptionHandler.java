@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public ReturnMsg handler(Exception e){
 		logger.error(e.getMessage());
+		e.printStackTrace();
 		ReturnMsg returnMsg = new ReturnMsg(IConstant.CODE_UNKNOW, e.getMessage());
 		if(e instanceof KachiException){
 			returnMsg.setMsg(((KachiException)e).getMsg());

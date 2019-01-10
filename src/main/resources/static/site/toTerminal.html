@@ -26,19 +26,12 @@
 					  <option value="2">停用</option><option value="3">注销</option>
 				  </select>
 				  </td>
-				  <!--<th>激活状态：</th>-->
-				  <!--<td><select name="activated">-->
-					  <!--<option value="">全部</option><option value="1">已激活</option><option value="0">未激活</option>-->
-				  <!--</select>-->
-				  <!--</td>-->
 				  <th>部门：</th>
 				  <td><select name="departmentId"><option value="">全部</option></select></td>
 				  <th>激活时间：</th>
 				  <td><input readonly="readonly" id="dateRange" style="width:95%"/></td>
 				  <td width="80px"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
 			  </tr>
-			  <!--<tr>-->
-			  <!--</tr>-->
 		  </table>
 	  </form>
   </div>
@@ -89,10 +82,9 @@
 			  <tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>SSID：</th><td><input name="ssid"/></td></tr>
 			  <tr><th>WIFI密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
 			  <tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
-			  <tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
-			  <tr><th>sendWiFiPass：</th><td><input name="sendWiFiPass"/></td><th></th><td></tr>
-			  <!-- <tr><th>销售类型：</th><td><input name="saleType" class="onlyNumber"/></td><th>是否重置wifi：</th><td><select class="fill-noYes" name="resetWifi"></select></td></tr>
-              <tr><th>androidVersion：</th><td><input name="androidVersion"/></td></tr> -->
+			  <tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>是否自动下单：</th><td><select class="fill-noYes" name="autoOrder"></select></td></tr>
+			  <tr><th>sendWiFiPass：</th><td><input name="sendWiFiPass"/></td><th>maxDayData：</th><td><input name="maxDayData"/></td></tr>
+			  <tr><th>daySpeedLimit：</th><td><input name="daySpeedLimit" /></td><th>sendNewSSID：</th><td><input name="sendNewSSID"/></td></tr>
 			  <tr style="height:10px"></tr>
 			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 		  </table>
@@ -266,7 +258,7 @@
 		$('#doDialog').dialog({
 			modal : true,
    			width:800,
-   			height:425,
+   			height:460,
    			cache: false,
 			title : "添加/修改终端信息"
 		});

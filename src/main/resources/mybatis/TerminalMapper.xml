@@ -2,85 +2,83 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.TerminalDao">
 
-	<sql id="departmentId">
-		<if test="departmentId!=null" >  
-         	and d.id = #{departmentId,jdbcType=INTEGER}  
+    <sql id="departmentId">
+        <if test="departmentId!=null">
+            and d.id = #{departmentId,jdbcType=INTEGER}
         </if>
-	</sql>
-	
-	<sql id="dId">
-		<if test="dId!=null" >  
-         	and (d.id = #{dId,jdbcType=INTEGER}  or d.parentId = #{dId,jdbcType=INTEGER})
-        </if>
-	</sql>
+    </sql>
 
-	<select id="getTerminalList" resultType="com.team.model.Terminal" parameterType="java.util.Map">
-		select r.*,
-			  d.name departmentName,
-			  ifnull(k.namecn,k.countryname) countryName,
-			  f.allowFlow,
-			  f.validityDate,
-			  f.note
-		from m_terminal r
-		left join m_department d on r.departmentId=d.id and d.status=0
-		left join m_country k  on k.countrycode=r.homeLocation
-		left join m_flow_balance f on r.tsid=f.tsid
-		where 1=1
-		<if test="tsid!=null" >  
-         	and r.tsid = #{tsid,jdbcType=INTEGER}  
+    <sql id="dId">
+        <if test="dId!=null">
+            and (d.id = #{dId,jdbcType=INTEGER} or d.parentId = #{dId,jdbcType=INTEGER})
         </if>
-		<if test="status!=null" >  
-         	and r.status = #{status,jdbcType=INTEGER}  
+    </sql>
+
+    <select id="getTerminalList" resultType="com.team.model.Terminal" parameterType="java.util.Map">
+        select r.*,
+        d.name departmentName,
+        ifnull(k.namecn,k.countryname) countryName,
+        f.allowFlow,
+        f.validityDate,
+        f.note
+        from m_terminal r
+        left join m_department d on r.departmentId=d.id and d.status=0
+        left join m_country k on k.countrycode=r.homeLocation
+        left join m_flow_balance f on r.tsid=f.tsid
+        where 1=1
+        <if test="tsid!=null">
+            and r.tsid = #{tsid,jdbcType=INTEGER}
         </if>
-		<if test="activated!=null" >  
-         	and r.activated = #{activated,jdbcType=INTEGER}  
+        <if test="status!=null">
+            and r.status = #{status,jdbcType=INTEGER}
         </if>
-		<if test="departmentId!=null" >
-			and d.id = #{departmentId,jdbcType=INTEGER}
-		</if>
-		<if test="startDate!=null">
-			and (r.createDate>=#{startDate,jdbcType=TIMESTAMP} and r.createDate&lt;=#{endDate,jdbcType=TIMESTAMP})
-		</if>
+        <if test="activated!=null">
+            and r.activated = #{activated,jdbcType=INTEGER}
+        </if>
+        <if test="departmentId!=null">
+            and d.id = #{departmentId,jdbcType=INTEGER}
+        </if>
+        <if test="startDate!=null">
+            and (r.createDate>=#{startDate,jdbcType=TIMESTAMP} and r.createDate&lt;=#{endDate,jdbcType=TIMESTAMP})
+        </if>
         <include refid="dId"/>
         order by d.id,r.tsid
-	</select> 
-	
-	<select id="getSelectedList" resultType="com.team.model.Terminal">
-		select * from m_terminal
-		where tsid in
-		<foreach collection="array" item="item" separator="," open="(" close=")">
-			#{item,jdbcType=INTEGER}
-		</foreach>
-	</select>
-	
-	<update id="deleteTerminalByIds" parameterType="java.util.List">
-	    update m_terminal
-	    set status=3
-	    where ID in (<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
-	</update>
-	
-	<insert id="insertTerminal" parameterType="com.team.model.Terminal">
+    </select>
+
+    <select id="getSelectedList" resultType="com.team.model.Terminal">
+        select * from m_terminal
+        where tsid in
+        <foreach collection="array" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <update id="deleteTerminalByIds" parameterType="java.util.List">
+        update m_terminal
+        set status=3
+        where ID in (<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
+    </update>
+
+    <insert id="insertTerminal" parameterType="com.team.model.Terminal">
 	    insert into m_terminal (TSID, MAC, 
 	      MODEL, BATCH, SVERSION, 
 	      `KEY`, STATUS, UPLOG, 
 	      IMEI, ACTIVATED, HOMELOCATION, 
 	      SSID, WIFIPASSWORD, LICFIX, 
 	      USEDVPN, USEDSOFT, departmentId, 
-	      MEID,sendWiFiPass<!-- , SALETYPE, resetWiFi,
-	      androidVersion -->)
+	      autoOrder,sendWiFiPass,maxDayData,daySpeedLimit,sendNewSSID)
 	    values (#{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
 		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
 		        #{key,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{upLog,jdbcType=INTEGER}, 
 		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
 		        #{ssid,jdbcType=VARCHAR}, #{wifiPassword,jdbcType=VARCHAR}, #{licFix,jdbcType=VARCHAR}, 
 		        #{usedVpn,jdbcType=INTEGER}, #{usedSoft,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-		        #{meid,jdbcType=VARCHAR},#{sendWiFiPass,jdbcType=VARCHAR}
-		        <!-- , #{saleType,jdbcType=INTEGER}, #{resetWifi,jdbcType=INTEGER}, 
-	            #{androidVersion,jdbcType=VARCHAR} -->
+		        #{autoOrder,jdbcType=INTEGER},#{sendWiFiPass,jdbcType=VARCHAR},
+		        #{maxDayData,jdbcType=INTEGER},#{daySpeedLimit,jdbcType=INTEGER},#{sendNewSSID,jdbcType=VARCHAR}
 	     	   )
   	</insert>
-	
-  	<update id="updateTerminalById" parameterType="com.team.model.Terminal">
+
+    <update id="updateTerminalById" parameterType="com.team.model.Terminal">
 	    update m_terminal
 	    set TSID = #{tsid,jdbcType=INTEGER},
 	      MAC = #{mac,jdbcType=VARCHAR},
@@ -99,47 +97,47 @@
 	      USEDVPN = #{usedVpn,jdbcType=INTEGER},
 	      USEDSOFT = #{usedSoft,jdbcType=INTEGER},
 	      departmentId = #{departmentId,jdbcType=INTEGER},
-	      MEID = #{meid,jdbcType=VARCHAR},
-		  sendWiFiPass = #{sendWiFiPass,jdbcType=VARCHAR}
-	      <!-- ,SALETYPE = #{saleType,jdbcType=INTEGER},
-	      resetWiFi = #{resetWifi,jdbcType=INTEGER},
-	      androidVersion = #{androidVersion,jdbcType=VARCHAR} -->
+	      autoOrder = #{autoOrder,jdbcType=VARCHAR},
+		  sendWiFiPass = #{sendWiFiPass,jdbcType=VARCHAR},
+		  maxDayData = #{maxDayData,jdbcType=INTEGER},
+		  daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER},
+		  sendNewSSID = #{sendNewSSID,jdbcType=VARCHAR}
 	    where ID = #{id,jdbcType=INTEGER}
   	</update>
-  	
-  	<update id="updateDepartment" parameterType="java.util.Map">
-  		update m_terminal
-  		set departmentId=#{departmentId,jdbcType=INTEGER}
-  		where id in
-  		(<foreach collection="ids" separator="," item="item">#{item,jdbcType=INTEGER}</foreach>)
-  	</update>
-	
-	<update id="updateStatus">
+
+    <update id="updateDepartment" parameterType="java.util.Map">
+        update m_terminal
+        set departmentId=#{departmentId,jdbcType=INTEGER}
+        where id in
+        (<foreach collection="ids" separator="," item="item">#{item,jdbcType=INTEGER}</foreach>)
+    </update>
+
+    <update id="updateStatus">
 		update m_terminal
 		set status=2
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
-	
-	<update id="updateWiFiPass" parameterType="java.util.Map">
+
+    <update id="updateWiFiPass" parameterType="java.util.Map">
 		update m_terminal
 		set sendWiFiPass=#{sendWiFiPass,jdbcType=VARCHAR}
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
-	
-	<select id="getByTsid" resultType="com.team.model.Terminal" parameterType="java.util.Map">
-		select * from m_terminal
-		where tsid = #{tsid,jdbcType=INTEGER}
-		<if test="departmentId!=null">
-			and departmentId=#{departmentId,jdbcType=INTEGER}
-		</if>
-	</select>
-	
-	<select id="qtbd" resultType="com.team.dto.TerminalDTO">
-		select * from m_terminal
-		where departmentId = #{departmentId,jdbcType=INTEGER}
-		<if test="tsid!=null">
-			and id>=#{tsid,jdbcType=INTEGER}
-		</if>
-		order by tsid
-	</select>
+
+    <select id="getByTsid" resultType="com.team.model.Terminal" parameterType="java.util.Map">
+        select * from m_terminal
+        where tsid = #{tsid,jdbcType=INTEGER}
+        <if test="departmentId!=null">
+            and departmentId=#{departmentId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="qtbd" resultType="com.team.dto.TerminalDTO">
+        select * from m_terminal
+        where departmentId = #{departmentId,jdbcType=INTEGER}
+        <if test="tsid!=null">
+            and id>=#{tsid,jdbcType=INTEGER}
+        </if>
+        order by tsid
+    </select>
 </mapper>

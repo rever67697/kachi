@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 
 /**
  * @Author : wuzhiheng
- * @Description :
+ * @Description : 首页统计的参数
  * @Date Created in 下午2:16 2018/8/16
  */
 public class StatBean implements Serializable {
