@@ -66,6 +66,9 @@
 			<if test="imsi != null">
 				and r.imsi=#{imsi,jdbcType=BIGINT}
 			</if>
+			<if test="iccid != null and iccid!=''">
+				and r.iccid=#{iccid,jdbcType=VARCHAR}
+			</if>
 			<if test="countryCode != null">
 				and r.countryCode=#{countryCode,jdbcType=INTEGER}
 			</if>
@@ -165,6 +168,9 @@
 		</if>
 		<if test="imsi != null">
 			and r.imsi=#{imsi,jdbcType=BIGINT}
+		</if>
+		<if test="iccid != null and iccid!=''">
+			and r.iccid=#{iccid,jdbcType=VARCHAR}
 		</if>
 		<if test="countryCode != null">
 			and r.countryCode=#{countryCode,jdbcType=INTEGER}

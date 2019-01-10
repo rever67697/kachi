@@ -119,6 +119,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("startDate",startDate);
 		map.put("endDate",endDate);
 		map.put("packageId",simCard.getPackageId());
+		map.put("iccid",simCard.getIccid());
 		List<SimCard> list = simCardDao.getSimCardList(map);
 
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
@@ -140,6 +141,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("startDate",startDate);
 		map.put("endDate",endDate);
 		map.put("packageId",simCard.getPackageId());
+		map.put("iccid",simCard.getIccid());
 
 		Field[] fields = SimCard.class.getDeclaredFields();
 //		List<Map<String,Object>> list = simCardDao.getSimCardListMap(map);
