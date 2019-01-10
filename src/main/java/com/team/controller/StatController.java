@@ -48,12 +48,15 @@ public class StatController {
 
 	@RequestMapping("/")
 	@ResponseBody
-	public Object index(Model model){
-		Map<String,Object> terminalCountMap = statService.terminalCount();
-		Map<String,Object> terminalCostMap = statService.terminalCost();
+	public Object index(HttpServletRequest request){
+
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+
+		Map<String,Object> terminalCountMap = statService.terminalCount(dId);
+		Map<String,Object> terminalCostMap = statService.terminalCost(dId);
 
 		StatBean statBean = (StatBean) terminalCountMap.get("statBean");
-		statBean = statService.fixInformation(statBean);
+		statBean = statService.fixInformation(statBean,dId);
 
 		Map<String,Object> map = new HashMap<>();
 

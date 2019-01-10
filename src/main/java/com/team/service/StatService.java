@@ -11,10 +11,10 @@ import java.util.Map;
  */
 public interface StatService {
 
-    Map<String,Object> terminalCount();
+    Map<String,Object> terminalCount(Integer dId);
 
-    Map<String,Object> terminalCost();
+    Map<String,Object> terminalCost(Integer dId);
 
-    StatBean fixInformation(StatBean statBean);
+    StatBean fixInformation(StatBean statBean,Integer dId);
 
 }

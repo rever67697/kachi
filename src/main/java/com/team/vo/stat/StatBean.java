@@ -68,7 +68,6 @@ public class StatBean implements Serializable {
     private static DecimalFormat df = new DecimalFormat("0.00");
 
 
-
     public Integer getmTCount() {
         return mTCount;
     }
@@ -286,19 +285,18 @@ public class StatBean implements Serializable {
     }
 
 
+    public void fix() {
+        this.mResidueFlow = this.mMaxFlow - this.mUsedFlow;
+        this.tAvgCost = df.format(tTCount > 0 ? mUserFlow / tTCount : 0);
+        this.cCostRate = df.format(mMaxFlow > 0 ? (mUsedFlow / mMaxFlow * 100) : 0);
 
-    public void fix(){
-        this.mResidueFlow = this.mMaxFlow-this.mUsedFlow;
-        this.tAvgCost = df.format(mUserFlow/tTCount);
-        this.cCostRate = df.format(mUsedFlow/mMaxFlow*100);
-
-        this.tChargeFlowStr = this.tChargeFlow>1024?df.format(this.tChargeFlow/1024)+"T":this.tChargeFlow+"G";
-        this.tResidueFlowStr = this.tResidueFlow>1024?df.format(this.tResidueFlow/1024)+"T":this.tResidueFlow+"G";
-        this.mUserFlowStr = this.mUserFlow>1024?df.format(this.mUserFlow/1024)+"T":this.mUserFlow+"G";
-        this.mCardFlowStr = this.mCardFlow>1024?df.format(this.mCardFlow/1024)+"T":this.mCardFlow+"G";
-        this.mMaxFlowStr = this.mMaxFlow>1024?df.format(this.mMaxFlow/1024)+"T":this.mMaxFlow+"G";
-        this.mUsedFlowStr = this.mUsedFlow>1024?df.format(this.mUsedFlow/1024)+"T":this.mUsedFlow+"G";
-        this.mResidueFlowStr = this.mResidueFlow>1024?df.format(this.mResidueFlow/1024)+"T":this.mResidueFlow+"G";
+        this.tChargeFlowStr = this.tChargeFlow > 1024 ? df.format(this.tChargeFlow / 1024) + "T" : this.tChargeFlow + "G";
+        this.tResidueFlowStr = this.tResidueFlow > 1024 ? df.format(this.tResidueFlow / 1024) + "T" : this.tResidueFlow + "G";
+        this.mUserFlowStr = this.mUserFlow > 1024 ? df.format(this.mUserFlow / 1024) + "T" : this.mUserFlow + "G";
+        this.mCardFlowStr = this.mCardFlow > 1024 ? df.format(this.mCardFlow / 1024) + "T" : this.mCardFlow + "G";
+        this.mMaxFlowStr = this.mMaxFlow > 1024 ? df.format(this.mMaxFlow / 1024) + "T" : this.mMaxFlow + "G";
+        this.mUsedFlowStr = this.mUsedFlow > 1024 ? df.format(this.mUsedFlow / 1024) + "T" : this.mUsedFlow + "G";
+        this.mResidueFlowStr = this.mResidueFlow > 1024 ? df.format(this.mResidueFlow / 1024) + "T" : this.mResidueFlow + "G";
 
     }
 }

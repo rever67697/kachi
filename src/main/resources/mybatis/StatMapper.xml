@@ -2,10 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.StatDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<select id="queryTerminalCount" resultType="com.team.vo.stat.TerminalCount">
 		select r.stat_date,
-			   (select count(1) from m_terminal t where date_format(t.createDate,'%Y-%m-%d')=r.stat_date) active_num,
-			   (select count(1) from m_terminal t where date_format(t.createDate,'%Y-%m-%d')&lt;=r.stat_date) total_num
+			   (select count(1)
+			   		from m_terminal t
+			   		left join m_department d on t.departmentid=d.id and d.status=0
+			   		where date_format(t.createDate,'%Y-%m-%d')=r.stat_date
+			   		<include refid="dId"/>
+			   ) active_num,
+			   (select count(1)
+			   		from m_terminal t
+					left join m_department d on t.departmentid=d.id and d.status=0
+					where date_format(t.createDate,'%Y-%m-%d')&lt;=r.stat_date
+					<include refid="dId"/>
+			   ) total_num
 		from(
 			select subdate(current_date,interval '6' day) stat_date from dual
 			union
@@ -24,41 +40,49 @@
 	</select>
 	
 	<select id="queryTerminalCost" resultType="com.team.vo.stat.TerminalCost">
-		select tsid,
-			   round(sum(flow)/1024/1024,2) flow
-		from  m_cost_day
-		where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)
-		group by tsid
+		select r.tsid,
+			   round(sum(r.flow)/1024/1024,2) flow
+		from  m_cost_day r
+		left join m_terminal t on r.tsid=t.tsid
+		left join m_department d on t.departmentid=d.id and d.status=0
+		where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)
+		<include refid="dId"/>
+		group by r.tsid
 		order by 2 desc
 		limit 10
 	</select>
 
 	
 	<select id="stat" resultType="com.team.vo.stat.StatBean">
-		<![CDATA[
 			select * from
 			(select
-				(select count(1) from m_terminal where createDate>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_t_count,
-				(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date=current_date) d_user_flow,
-				(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date=current_date) d_card_flow,
-				(select round(ifnull(sum(flow),0)/1024/1024,2) from m_cost_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_user_flow,
-				(select round(ifnull(sum(flow),0)/1024/1024,2) from m_flow_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) m_card_flow,
-				(select round(ifnull(sum(chargeflow),0)/1024/1024,2) from m_terminal_charge_record where chargeflow<>100000000000 and chargeflow>0
-					and createdate>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) t_charge_flow,
-				(select round(ifnull(sum(allowflow),0)/1024/1024,2) from m_flow_balance where allowflow<>100000000000) t_residue_flow,
-				(select ifnull(sum(duration),0) from m_cost_day where date>=DATE_ADD(current_date(),interval - day(current_date())+1 day)) t_duration,
-				(select count(distinct operator) from m_terminal_charge_record where chargeflow>0 and chargeflow<>100000000000 and createdate>=current_date) c_charge_flow,
-				(select count(distinct operator) from m_terminal_charge_record where chargedate is not null and createdate>=current_date) c_charge_date,
-				(select count(distinct operator) from m_terminal_charge_record where ((chargeflow>0 and chargeflow<>100000000000) or chargedate is not null) and createdate>=current_date) c_charge_total,
-				(select round(sum(t.maxflow)/1024/1024,2) m_max_flow from m_simcard r,m_simpackage t where r.packageId=t.id) m_max_flow,
-				(select round(ifnull(sum(usedflow),2)/1024/1024,2) from m_flow_month where date=date_format(DATE_ADD(current_date(),interval - day(current_date())+1 day),'%Y-%m'))m_used_flow
+				(select count(distinct t.tsid) from m_terminal t left join m_department d on t.departmentId=d.id and d.status=0 where t.createDate>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_t_count,
+				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.date=current_date <include refid="dId"/>) d_user_flow,
+				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_flow_day r left join m_simcard t on r.imsi=t.imsi left join m_department d on t.departmentId=d.id and d.status=0 where r.date=current_date <include refid="dId"/>) d_card_flow,
+				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0  where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_user_flow,
+				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_flow_day r left join m_simcard t on r.imsi=t.imsi left join m_department d on t.departmentId=d.id and d.status=0 where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_card_flow,
+				(select round(ifnull(sum(r.chargeflow),0)/1024/1024,2)
+					from m_terminal_charge_record r
+					left join m_terminal t on r.tsid=t.tsid
+					left join m_department d on t.departmentId=d.id and d.status=0
+					where r.chargeflow!=100000000000 and r.chargeflow>0
+					  and r.createdate>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) t_charge_flow,
+				(select round(ifnull(sum(r.allowflow),0)/1024/1024,2) from m_flow_balance r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.allowflow!=100000000000 <include refid="dId"/>) t_residue_flow,
+				(select ifnull(sum(r.duration),0) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) t_duration,
+				(select count(distinct r.operator) from m_terminal_charge_record r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.chargeflow>0 and r.chargeflow!=100000000000 and r.createdate>=current_date <include refid="dId"/>) c_charge_flow,
+				(select count(distinct r.operator) from m_terminal_charge_record r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.chargedate is not null and r.createdate>=current_date <include refid="dId"/>) c_charge_date,
+				(select count(distinct r.operator) from m_terminal_charge_record r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where ((r.chargeflow>0 and r.chargeflow!=100000000000) or r.chargedate is not null) and r.createdate>=current_date <include refid="dId"/>) c_charge_total,
+				(select round(ifnull(sum(p.maxflow),0)/1024/1024,2) from m_simcard r inner join m_simpackage p on r.packageId=p.id left join m_department d on r.departmentId=d.id and d.status=0 where 1=1 <include refid="dId"/>) m_max_flow,
+				(select round(ifnull(sum(r.usedflow),0)/1024/1024,2) from m_flow_month r left join m_simcard t on r.imsi=t.imsi left join m_department d on t.departmentId=d.id and d.status=0 where r.date=date_format(DATE_ADD(current_date(),interval - day(current_date())+1 day),'%Y-%m') <include refid="dId"/>)m_used_flow
 				from dual
 			) r,
-			(select round(ifnull(sum(case when chargeflow=100000000000 then 0 when chargeflow<0 then 0 else chargeflow end),0)/1024/1024,2) d_charge_flow,
-					ifnull(sum(chargedate),0) d_charge_date
-			from m_terminal_charge_record
-			where createdate>=current_date
+			(select round(ifnull(sum(case when r.chargeflow=100000000000 then 0 when r.chargeflow&lt;0 then 0 else r.chargeflow end),0)/1024/1024,2) d_charge_flow,
+					ifnull(sum(r.chargedate),0) d_charge_date
+			from m_terminal_charge_record r
+			left join m_terminal t on r.tsid=t.tsid
+			left join m_department d on t.departmentId=d.id and d.status=0
+			where r.createdate>=current_date
+			<include refid="dId"/>
 			) k
-		]]>
 	</select>
 </mapper>

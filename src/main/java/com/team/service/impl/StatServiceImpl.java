@@ -2,6 +2,7 @@ package com.team.service.impl;
 
 import com.team.dao.StatDao;
 import com.team.service.StatService;
+import com.team.util.CommonUtil;
 import com.team.vo.stat.StatBean;
 import com.team.vo.stat.TerminalCost;
 import com.team.vo.stat.TerminalCount;
@@ -25,11 +26,11 @@ public class StatServiceImpl implements StatService {
     private StatDao statDao;
 
     @Override
-    public Map<String,Object> terminalCount() {
+    public Map<String, Object> terminalCount(Integer dId) {
 
-        List<TerminalCount> terminalCountList = statDao.queryTerminalCount();
+        List<TerminalCount> terminalCountList = statDao.queryTerminalCount(CommonUtil.changeDepartmentId(dId));
 
-        List<Map<String,Object>> series = new ArrayList<>();
+        List<Map<String, Object>> series = new ArrayList<>();
 
         List<String> xAxis = new ArrayList<>();
 
@@ -43,35 +44,35 @@ public class StatServiceImpl implements StatService {
             data2.add(terminalCount.getTotalNum());
         }
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("name","当天激活量");
-        map.put("type","line");
-        map.put("data",data1);
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "当天激活量");
+        map.put("type", "line");
+        map.put("data", data1);
         series.add(map);
         map = new HashMap<>();
-        map.put("name","总激活量");
-        map.put("type","line");
-        map.put("data",data2);
+        map.put("name", "总激活量");
+        map.put("type", "line");
+        map.put("data", data2);
         series.add(map);
 
-        Map<String,Object> ret = new HashMap<>();
-        ret.put("series",series);
-        ret.put("xAxis",xAxis);
-        ret.put("legend",new String[]{"当天激活量","总激活量"});
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("series", series);
+        ret.put("xAxis", xAxis);
+        ret.put("legend", new String[]{"当天激活量", "总激活量"});
 
         StatBean statBean = new StatBean();
-        statBean.setdTCount(data1.get(data1.size()-1));
-        statBean.settTCount(data2.get(data1.size()-1));
+        statBean.setdTCount(data1.size() > 0 ? (data1.get(data1.size() - 1)) : 0);
+        statBean.settTCount(data2.size() > 0 ? (data2.get(data2.size() - 1)) : 0);
 
-        ret.put("statBean",statBean);
+        ret.put("statBean", statBean);
 
         return ret;
     }
 
     @Override
-    public Map<String, Object> terminalCost() {
+    public Map<String, Object> terminalCost(Integer dId) {
 
-        List<TerminalCost> terminalCostList = statDao.queryTerminalCost();
+        List<TerminalCost> terminalCostList = statDao.queryTerminalCost(CommonUtil.changeDepartmentId(dId));
 
         List<String> xAxis = new ArrayList<>();
         List<Double> series = new ArrayList<>();
@@ -81,17 +82,17 @@ public class StatServiceImpl implements StatService {
             series.add(terminalCost.getFlow());
         }
 
-        Map<String,Object> ret = new HashMap<>();
-        ret.put("xAxis",xAxis);
-        ret.put("series",series);
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("xAxis", xAxis);
+        ret.put("series", series);
 
         return ret;
     }
 
     @Override
-    public StatBean fixInformation(StatBean sb) {
+    public StatBean fixInformation(StatBean sb, Integer dId) {
 
-        StatBean statBean = statDao.stat();
+        StatBean statBean = statDao.stat(CommonUtil.changeDepartmentId(dId));
         statBean.setdTCount(sb.getdTCount());
         statBean.settTCount(sb.gettTCount());
         statBean.fix();

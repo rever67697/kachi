@@ -3,6 +3,7 @@ package com.team.dao;
 import com.team.vo.stat.StatBean;
 import com.team.vo.stat.TerminalCost;
 import com.team.vo.stat.TerminalCount;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,13 +15,13 @@ import java.util.List;
 public interface StatDao {
 
     /**查询每天激活终端**/
-    List<TerminalCount> queryTerminalCount();
+    List<TerminalCount> queryTerminalCount(@Param("dId") Integer dId);
 
     /**查询当月终端消耗排名前十名**/
-    List<TerminalCost> queryTerminalCost();
+    List<TerminalCost> queryTerminalCost(@Param("dId") Integer dId);
 
     /**查询当月激活终端**/
-    StatBean stat();
+    StatBean stat(@Param("dId") Integer dId);
 
 
 }
