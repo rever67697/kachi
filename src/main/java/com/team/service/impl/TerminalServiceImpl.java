@@ -130,14 +130,14 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 					Integer usedVpn = CommonUtil.getCellIntVal(row.getCell(14));
 					Integer usedSoft = CommonUtil.getCellIntVal(row.getCell(15));
 					Integer departmentId = CommonUtil.getCellIntVal(row.getCell(16));
-					Integer autoOrder = CommonUtil.getCellIntVal(row.getCell(17));
+					String meid = CommonUtil.getCellStringVal(row.getCell(17));
 					String sendWiFiPass = CommonUtil.getCellStringVal(row.getCell(18));
 					Integer maxDayData = CommonUtil.getCellIntVal(row.getCell(19));
 					Integer daySpeedLimit = CommonUtil.getCellIntVal(row.getCell(20));
 					String sendNewSSID = CommonUtil.getCellStringVal(row.getCell(21));
 					
 					terminal = new Terminal(tsid, mac, model, batch, sVersion, key, status, upLog, imei, activated,
-							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, autoOrder,sendWiFiPass,
+							homeLocation, ssid, wifiPassword, licFix, usedVpn, usedSoft, departmentId, meid,sendWiFiPass,
 							maxDayData,daySpeedLimit,sendNewSSID);
 					list.add(terminal);
 				} catch (Exception e) {

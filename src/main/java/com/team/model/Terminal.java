@@ -58,7 +58,7 @@ public class Terminal implements Serializable{
 	
 	private String note;//备注
 
-	private Integer autoOrder;//0: 不自动下单；1：自动下单扣款
+	private String meid;//WCDMA的MEID
 
 	private String sendWiFiPass;//发下给终端更新的WiFi密码
 
@@ -103,7 +103,7 @@ public class Terminal implements Serializable{
 			Integer upLog, String imei, Integer activated,
 			Integer homeLocation, String ssid, String wifiPassword,
 			String licFix, Integer usedVpn, Integer usedSoft,
-			Integer departmentId, Integer autoOrder, String sendWiFiPass,
+			Integer departmentId, String meid, String sendWiFiPass,
 			Integer maxDayData,Integer daySpeedLimit,String sendNewSSID		) {
 		super();
 		this.tsid = tsid;
@@ -123,7 +123,7 @@ public class Terminal implements Serializable{
 		this.usedVpn = usedVpn;
 		this.usedSoft = usedSoft;
 		this.departmentId = departmentId;
-		this.autoOrder = autoOrder;
+		this.meid = meid;
 		this.sendWiFiPass = sendWiFiPass;
 		this.maxDayData=maxDayData;
 		this.daySpeedLimit=daySpeedLimit;
@@ -290,12 +290,12 @@ public class Terminal implements Serializable{
 		this.countryName = countryName;
 	}
 
-	public Integer getAutoOrder() {
-		return autoOrder;
+	public String getMeid() {
+		return meid;
 	}
 
-	public void setAutoOrder(Integer autoOrder) {
-		this.autoOrder = autoOrder;
+	public void setMeid(String meid) {
+		this.meid = meid;
 	}
 
 	public String getSendWiFiPass() {
@@ -364,7 +364,7 @@ public class Terminal implements Serializable{
 				", allowFlow=" + allowFlow +
 				", validityDate=" + validityDate +
 				", note='" + note + '\'' +
-				", autoOrder=" + autoOrder +
+				", meid=" + meid +
 				", sendWiFiPass='" + sendWiFiPass + '\'' +
 				", maxDayData=" + maxDayData +
 				", daySpeedLimit=" + daySpeedLimit +

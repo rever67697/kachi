@@ -66,14 +66,14 @@
 	      IMEI, ACTIVATED, HOMELOCATION, 
 	      SSID, WIFIPASSWORD, LICFIX, 
 	      USEDVPN, USEDSOFT, departmentId, 
-	      autoOrder,sendWiFiPass,maxDayData,daySpeedLimit,sendNewSSID)
+	      meid,sendWiFiPass,maxDayData,daySpeedLimit,sendNewSSID)
 	    values (#{tsid,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, 
 		        #{model,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{sVersion,jdbcType=VARCHAR}, 
 		        #{key,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{upLog,jdbcType=INTEGER}, 
 		        #{imei,jdbcType=VARCHAR}, #{activated,jdbcType=INTEGER}, #{homeLocation,jdbcType=INTEGER}, 
 		        #{ssid,jdbcType=VARCHAR}, #{wifiPassword,jdbcType=VARCHAR}, #{licFix,jdbcType=VARCHAR}, 
 		        #{usedVpn,jdbcType=INTEGER}, #{usedSoft,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
-		        #{autoOrder,jdbcType=INTEGER},#{sendWiFiPass,jdbcType=VARCHAR},
+		        #{meid,jdbcType=VARCHAR},#{sendWiFiPass,jdbcType=VARCHAR},
 		        #{maxDayData,jdbcType=INTEGER},#{daySpeedLimit,jdbcType=INTEGER},#{sendNewSSID,jdbcType=VARCHAR}
 	     	   )
   	</insert>
@@ -97,7 +97,7 @@
 	      USEDVPN = #{usedVpn,jdbcType=INTEGER},
 	      USEDSOFT = #{usedSoft,jdbcType=INTEGER},
 	      departmentId = #{departmentId,jdbcType=INTEGER},
-	      autoOrder = #{autoOrder,jdbcType=VARCHAR},
+	      meid = #{meid,jdbcType=VARCHAR},
 		  sendWiFiPass = #{sendWiFiPass,jdbcType=VARCHAR},
 		  maxDayData = #{maxDayData,jdbcType=INTEGER},
 		  daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER},
