@@ -47,6 +47,21 @@
 	  </table>
   </div>
 
+  <div id="ssidDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <form id="ssidForm">
+		  <input type="hidden" name="id"/>
+		  <table class="table">
+			  <tr><th>终端编号：</th><td><input name="tsid" disabled="disabled"/></td></tr>
+			  <tr><th>SSID：</th><td><input name="ssid"/></td></tr>
+			  <tr><th>sendNewSSID：</th><td><input name="sendNewSSID"/></td></tr>
+			  <tr><th>每日最大流量KB：</th><td><input name="maxDayData" class="onlyNumber"/></td></tr>
+			  <tr><th>超过最大流量后限速速率Kbps：</th><td><input name="daySpeedLimit" class="onlyNumber"/</td></tr>
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+
   </body>
 
   <script type="text/javascript">
@@ -94,6 +109,14 @@
    			height:460,
    			cache: false,
 			title : "详细信息"
+		});
+
+		$('#ssidDialog').dialog({
+			modal : true,
+			width:500,
+			height:270,
+			cache: false,
+			title : "修改SSID"
 		});
 		
 		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"nullDesc":"全部"});
@@ -162,5 +185,34 @@
             $.messager.alert("提示", "请选择一条信息", "info");
         }
     }
+
+	function doSSID(){
+		var selectRows = $('#dg').datagrid("getSelections");
+		if (selectRows.length > 0 && selectRows.length == 1) {
+			var rowData = $('#dg').datagrid("getSelected");
+			//根据tsid获取当前终端信息
+			$.post(kcJs.fn.getContextPath()+'/terminal/list',{tsid:rowData.tsid},function (data) {
+				if(data.rows.length>0){
+					kcJs.fn.autoFillData($('#ssidDialog'),data.rows[0]);
+					$('#ssidDialog').dialog('open');
+				}else {
+					$.messager.alert("提示", "没有相关信息", "info");
+				}
+			},'json');
+		}else {
+			$.messager.alert("提示", "请选择其中一条信息", "info");
+		}
+	}
+
+	function saveData() {
+		$('#dg').datagrid('loading');
+		$.post(kcJs.fn.getContextPath()+'/terminal/updateSSID',$('#ssidForm').serializeObject(),function (data) {
+			$.messager.alert('提示',data.msg);
+			$('#dg').datagrid('loaded');
+			if(data.code=='200'){
+				$('#ssidDialog').dialog('close');
+			}
+		},'json');
+	}
   </script>
 </html>

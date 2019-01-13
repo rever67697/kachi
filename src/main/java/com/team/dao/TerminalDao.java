@@ -21,7 +21,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public List<Terminal> getTerminalList(Map<String, Object> map);
+	List<Terminal> getTerminalList(Map<String, Object> map);
 	
 	/**
 	 * 根据id批量删除终端
@@ -29,7 +29,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public int deleteTerminalByIds(List<Integer> ids);
+	int deleteTerminalByIds(List<Integer> ids);
 	
 	/**
 	 * 插入一条终端数据
@@ -37,7 +37,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public int insertTerminal(Terminal terminal);
+	int insertTerminal(Terminal terminal);
 	
 	/**
 	 * 根据id更新终端信息
@@ -45,7 +45,7 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public int updateTerminalById(Terminal terminal);
+	int updateTerminalById(Terminal terminal);
 	
 	/**
 	 * 批量更改终端的额所属部门
@@ -53,21 +53,23 @@ public interface TerminalDao {
 	 *@return
 	 *return
 	 */
-	public int updateDepartment(Map<String, Object> map);
+	int updateDepartment(Map<String, Object> map);
 
 	/**
 	 * 根据终端编号列表查询终端列表
 	 * @param list
 	 * @return
 	 */
-	public List<Terminal> getSelectedList(String[] list);
+	List<Terminal> getSelectedList(String[] list);
 
-	public int updateStatus(@Param("tsid") Integer tsid);
+	int updateStatus(@Param("tsid") Integer tsid);
 
-	public int updateWiFiPass(Map<String,Object> map);
+	int updateWiFiPass(Map<String,Object> map);
 
-	public Terminal getByTsid(Map<String,Object> map);
+	Terminal getByTsid(Map<String,Object> map);
 
-	public List<TerminalDTO> qtbd(Map<String,Object> map);
+	List<TerminalDTO> qtbd(Map<String,Object> map);
+	
+	int updateSSID(Terminal terminal);
 
 }

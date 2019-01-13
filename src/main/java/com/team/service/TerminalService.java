@@ -19,23 +19,25 @@ import com.team.model.Terminal;
  */
 public interface TerminalService {
 	
-	public ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid, Integer status,
+	ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid, Integer status,
 									  Integer activated, Date startDate, Date endDate,int page, int rows);
 
-	public ResultList getSelectedList(String terminalList);
+	ResultList getSelectedList(String terminalList);
 
-	public ReturnMsg deleteTerminalByIds(String ids);
+	ReturnMsg deleteTerminalByIds(String ids);
 	
-	public ReturnMsg saveTerminal(Terminal terminal);
+	ReturnMsg saveTerminal(Terminal terminal);
 	
-	public ReturnMsg getTerminalList(MultipartFile file);
+	ReturnMsg getTerminalList(MultipartFile file);
 	
-	public void insertBatch(List<Terminal> list);
+	void insertBatch(List<Terminal> list);
 	
-	public ReturnMsg updateDepartment(String ids,Integer departmentId);
+	ReturnMsg updateDepartment(String ids,Integer departmentId);
 
-	public ReturnMsg updateStatus(Integer tsid);
+	ReturnMsg updateStatus(Integer tsid);
 
-	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword);
+	ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword);
+
+	ReturnMsg updateSSID(Terminal terminal);
 	
 }

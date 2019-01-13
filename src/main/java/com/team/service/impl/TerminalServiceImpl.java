@@ -207,5 +207,11 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		return super.successTip();
 	}
 
+	@Override
+	public ReturnMsg updateSSID(Terminal terminal) {
+		terminalDao.updateSSID(terminal);
+		return successTip();
+	}
+
 
 }

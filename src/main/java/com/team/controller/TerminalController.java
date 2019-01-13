@@ -12,6 +12,7 @@ import com.team.service.TerminalChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,8 +45,9 @@ public class TerminalController {
 	private TerminalChargeService terminalChargeService;
 	
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer status,Integer tsid,Integer activated,
-			int page,int rows,Date startDate,Date endDate,HttpServletRequest request){
+	public ResultList list(Integer departmentId, Integer status, Integer tsid, Integer activated,
+						   @RequestParam(name = "page",defaultValue = "1") int page, @RequestParam(name = "rows",defaultValue = "1") int rows,
+						   Date startDate, Date endDate, HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
 		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, startDate,endDate,page, rows);
 	}
@@ -115,6 +117,12 @@ public class TerminalController {
 	@PermissionLog()
 	public ReturnMsg updateWiFiPass(Integer tsid){
 		return terminalService.updateWiFiPass(tsid,null);
+	}
+
+	@PostMapping("/updateSSID")
+	@PermissionLog()
+	public ReturnMsg updateSSID(Terminal terminal){
+		return terminalService.updateSSID(terminal);
 	}
 
 }

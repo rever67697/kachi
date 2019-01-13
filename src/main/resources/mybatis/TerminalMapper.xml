@@ -124,6 +124,15 @@
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
 
+    <update id="updateSSID" parameterType="com.team.model.Terminal">
+        update m_terminal
+        set ssid=#{ssid,jdbcType=VARCHAR},
+            sendNewSSID = #{sendNewSSID,jdbcType=VARCHAR},
+            maxDayData = #{maxDayData,jdbcType=INTEGER},
+		    daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER}
+		where id=#{id,jdbcType=INTEGER}
+    </update>
+
     <select id="getByTsid" resultType="com.team.model.Terminal" parameterType="java.util.Map">
         select * from m_terminal
         where tsid = #{tsid,jdbcType=INTEGER}
