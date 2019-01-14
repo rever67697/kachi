@@ -13,6 +13,7 @@
 			status = #{status,jdbcType=INTEGER},
 			isHandle = #{isHandle,jdbcType=INTEGER},
 			`count` = #{count,jdbcType=INTEGER},
+			alarmCount = #{alarmCount,jdbcType=INTEGER},
 			lasttime = now()
 	</update>
 

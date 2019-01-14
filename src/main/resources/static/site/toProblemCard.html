@@ -74,6 +74,10 @@
                 <th>异常次数阈值：</th>
                 <td colspan="2"><input name="count" class="onlyNumber"/></td>
             </tr>
+            <tr>
+                <th>警报提醒次数阈值：</th>
+                <td colspan="2"><input name="alarmCount" class="onlyNumber"/></td>
+            </tr>
             <tr style="height:10px"></tr>
             <tr>
                 <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td>
@@ -130,7 +134,7 @@
         $('#doDialog').dialog({
             modal: true,
             width: 400,
-            height: 250,
+            height: 270,
             cache: false,
             title: "修改定时时间",
         });
@@ -145,6 +149,7 @@
             $('#doForm [name=status]').val(data.status);
             $('#doForm [name=isHandle]').val(data.isHandle);
             $('#doForm [name=count]').val(data.count);
+            $('#doForm [name=alarmCount]').val(data.alarmCount);
         },'json');
         $('#doDialog').dialog('open');
     }

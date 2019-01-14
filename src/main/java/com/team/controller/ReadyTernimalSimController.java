@@ -30,9 +30,9 @@ public class ReadyTernimalSimController {
 
 	@PostMapping("/save")
 	@PermissionLog
-	public ReturnMsg save(Integer tsid, Integer type, String args,HttpServletRequest request) {
+	public ReturnMsg save(Integer tsid, Integer type, String args,String remark,HttpServletRequest request) {
 		Integer userId = CommonUtil.getUser(request).getId();
-		return ReadyTerminalSimService.save(tsid, type, args,userId);
+		return ReadyTerminalSimService.save(tsid, type, args,userId,remark);
 	}
 
 	@PostMapping("/update")

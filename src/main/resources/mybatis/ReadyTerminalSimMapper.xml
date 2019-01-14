@@ -42,7 +42,7 @@
 
 	<insert id="insert" parameterType="java.util.List">
 		insert into m_ready_terminal_sim ( TSID, imsi,
-		lastStatus, insertDate, operator,type)
+		lastStatus, insertDate, operator,type,remark)
 		values
 		<foreach collection="list" item="l" separator=",">
 			(
@@ -51,7 +51,8 @@
 			#{l.lastStatus,jdbcType=INTEGER},
 			now(),
 			#{l.operator,jdbcType=INTEGER},
-			#{l.type,jdbcType=INTEGER}
+			#{l.type,jdbcType=INTEGER},
+			#{l.remark,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
@@ -62,7 +63,8 @@
 			type = #{type,jdbcType=INTEGER},
 			imsi = #{imsi,jdbcType=BIGINT},
 			insertDate=now(),
-			lastStatus=#{lastStatus,jdbcType=INTEGER}
+			lastStatus=#{lastStatus,jdbcType=INTEGER},
+			remark = #{remark,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 </mapper>

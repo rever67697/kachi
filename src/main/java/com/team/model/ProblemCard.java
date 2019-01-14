@@ -18,17 +18,14 @@ public class ProblemCard implements Serializable {
 
     private Integer status;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date selectDate;//选卡时间
 
     private Long released;//释放卡
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date authTime;//鉴权时间
 
     private Integer count;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     private String departmentName;

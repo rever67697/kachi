@@ -15,4 +15,6 @@ public interface ProblemCardService {
     ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi,Integer status,Integer departmentId,Integer dId, int page, int rows);
 
     ReturnMsg delete(Long imsi);
+
+    ReturnMsg getAlarmList();
 }

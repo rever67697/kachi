@@ -27,6 +27,22 @@ $(document).ready(function () {
 
     tabClose();
     tabCloseEven();
+
+    $.post(kcJs.fn.getContextPath()+'/problemCard/alarmList',function(data){
+        if(data.data.length<=0){
+            return;
+        }
+        $.messager.show({
+            title:'选卡错误超过【'+data.data[0].status+'】次警报',
+            msg:getAlarmText(data.data),
+            timeout:0,
+            showType:'slide',
+            width:300,
+            height:400
+        });
+    },'json');
+
+
 });
 
 
@@ -240,4 +256,13 @@ function submit(){
 function toIndex() {
     addTab("首页",kcJs.fn.getContextPath()+'/site/stat.html',"icon icon-whome");
     // addTab("首页",kcJs.fn.getContextPath()+'/site/toSimPool.html?id=2',"icon icon-whome");
+}
+
+function getAlarmText(data) {
+    var html = '<div style="height: 335px;padding-bottom: 5px;overflow: auto;border-bottom: 1px dotted #ccc"><table class="table"><tr ><th>序号</th><th>IMSI</th><th>错误次数</th></tr>';
+    $.each(data,function (idx, obj) {
+        html += '<tr><td>'+(idx+1)+'</td><td>'+obj.imsi+'</td><td>'+obj.count+'</td></tr>';
+    });
+    html += '</table></div>';
+    return html;
 }

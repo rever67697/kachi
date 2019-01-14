@@ -28,4 +28,11 @@ public interface ProblemCardDao {
     int deleteBySelf();
 
     int updateCount();
+
+    /**
+     * 查找大于警报阈值的卡
+     * @param alarmCount
+     * @return
+     */
+    List<ProblemCard> getAlarmList(@Param("alarmCount") Integer alarmCount);
 }

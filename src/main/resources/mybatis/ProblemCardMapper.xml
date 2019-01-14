@@ -94,4 +94,13 @@
 		where createtime>=CURRENT_DATE
 	</update>
 
+	<select id="getAlarmList" resultType="com.team.model.ProblemCard">
+		select imsi,`count`,#{alarmCount,jdbcType=INTEGER} status
+		from tb_problem_card
+		where createtime>current_date
+		  and `count` >= #{alarmCount,jdbcType=INTEGER}
+		group by imsi,`count`
+		order by `count` desc
+	</select>
+
 </mapper>

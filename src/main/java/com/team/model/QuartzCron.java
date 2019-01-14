@@ -22,6 +22,8 @@ public class QuartzCron implements Serializable {
 
     private Date lastTime;
 
+    private Integer alarmCount;//用于首页显示选卡错误警报的阈值
+
     public Integer getMinute() {
         return minute;
     }
@@ -70,4 +72,14 @@ public class QuartzCron implements Serializable {
         this.count = count;
     }
 
+    public Integer getAlarmCount() {
+        return alarmCount;
+    }
+
+    public void setAlarmCount(Integer alarmCount) {
+        if(alarmCount==null){
+            alarmCount=0;
+        }
+        this.alarmCount = alarmCount;
+    }
 }

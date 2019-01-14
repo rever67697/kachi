@@ -20,8 +20,7 @@ public class ReadyTerminalSim implements Serializable {
 	private Long imsi;
 
 	private Integer lastStatus;// SIM卡前状态
-	//@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+
 	private Date insertDate;// 添加时间
 
 	private Integer operator;// 操作人
@@ -32,12 +31,17 @@ public class ReadyTerminalSim implements Serializable {
 
 	private String operatorName;//运营商名称
 
-	public ReadyTerminalSim(Integer tsid,Long imsi,Integer lastStatus, Integer type, Integer operator) {
+	private String remark;//备注
+
+
+
+	public ReadyTerminalSim(Integer tsid,Long imsi,Integer lastStatus, Integer type, Integer operator,String remark) {
 		this.tsid = tsid;
 		this.imsi = imsi;
 		this.lastStatus = lastStatus;
 		this.type = type;
 		this.operator = operator;
+		this.remark=remark;
 	}
 	
 	public ReadyTerminalSim() {
@@ -115,5 +119,13 @@ public class ReadyTerminalSim implements Serializable {
 
 	public void setOperatorMan(String operatorMan) {
 		this.operatorMan = operatorMan;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 }

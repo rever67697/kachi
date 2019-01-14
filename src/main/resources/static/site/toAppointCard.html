@@ -52,6 +52,10 @@
                     <option value="1">一直指定</option>
                 </select>
             </tr>
+            <tr>
+                <th>备注：</th>
+                <td><textarea name="remark" rows="3"></textarea></td>
+            </tr>
             <tr style="height:20px"></tr>
             <tr>
                 <td colspan="2" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok"
@@ -150,6 +154,10 @@
                     <option value="1">一直指定</option>
                 </select>
             </tr>
+            <tr>
+                <th>备注：</th>
+                <td><textarea name="remark" rows="3"></textarea></td>
+            </tr>
             <tr style="height:20px"></tr>
             <tr>
                 <td colspan="2" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok"
@@ -195,6 +203,7 @@
                 return status ? status[0] : '';
             }
             },
+            {field: 'remark', title: '备注', width: 200},
         ]],
         toolbar: kcJs.fn.getFunctions(),
         url: kcJs.fn.getContextPath() + '/readyTerminalSim/list',
@@ -345,7 +354,7 @@
         $('#doDialog').dialog({
             modal: true,
             width: 400,
-            height: 230,
+            height: 300,
             cache: false,
             title: "添加"
         });
@@ -369,7 +378,7 @@
         $('#updateDialog').dialog({
             modal: true,
             width: 400,
-            height: 220,
+            height: 290,
             cache: false,
             title: "修改"
         });
@@ -404,7 +413,8 @@
             $.post(kcJs.fn.getContextPath() + '/readyTerminalSim/save', {
                 args: args,
                 tsid: tsid,
-                type: type
+                type: type,
+                remark:$('#doForm [name=remark]').val()
             }, function (data) {
                 if (data) {
                     $.messager.alert('提示', data.msg, 'info');

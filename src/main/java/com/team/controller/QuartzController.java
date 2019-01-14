@@ -28,7 +28,7 @@ public class QuartzController extends BaseService{
 
     @RequestMapping("/reset")
     @PermissionLog
-    public ReturnMsg set(Integer minute,Integer status,Integer count,Integer isHandle) throws Exception{
+    public ReturnMsg set(Integer minute,Integer status,Integer count,Integer isHandle,Integer alarmCount) throws Exception{
 
         if(minute == null || minute<1 || minute>59 || status == null || (status!=0 && status!=1)
                 || isHandle==null || (isHandle!=0 && isHandle!=1)
@@ -36,7 +36,7 @@ public class QuartzController extends BaseService{
             return errorTip("参数错误");
         }
 
-        return  quartzService.scheduleUpdateCronTrigger(minute,status,count,isHandle);
+        return  quartzService.scheduleUpdateCronTrigger(minute,status,count,isHandle,alarmCount);
     }
 
     @PostMapping("/getNow")

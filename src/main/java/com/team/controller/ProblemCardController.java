@@ -38,4 +38,11 @@ public class ProblemCardController {
     public ReturnMsg delete(Long imsi){
         return problemCardService.delete(imsi);
     }
+
+
+    @PostMapping("/alarmList")
+    public ReturnMsg alarmList(){
+        return problemCardService.getAlarmList();
+    }
+
 }

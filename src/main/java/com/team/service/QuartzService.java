@@ -32,7 +32,7 @@ public class QuartzService extends BaseService{
     @Autowired
     private QuartzCronDao quartzCronDao;
 
-    public ReturnMsg scheduleUpdateCronTrigger(int minute,int status,int count,int isHandle) throws SchedulerException {
+    public ReturnMsg scheduleUpdateCronTrigger(int minute,int status,int count,int isHandle,Integer alarmCount) throws SchedulerException {
 
         QuartzCron quartzCron = quartzCronDao.get();
 
@@ -62,6 +62,7 @@ public class QuartzService extends BaseService{
         quartzCron.setStatus(status);
         quartzCron.setIsHandle(isHandle);
         quartzCron.setCount(count);
+        quartzCron.setAlarmCount(alarmCount);
         //更新数据库
         quartzCronDao.update(quartzCron);
 

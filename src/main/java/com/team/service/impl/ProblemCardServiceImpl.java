@@ -3,7 +3,9 @@ package com.team.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.team.dao.ProblemCardDao;
+import com.team.dao.QuartzCronDao;
 import com.team.model.ProblemCard;
+import com.team.model.QuartzCron;
 import com.team.service.ProblemCardService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
@@ -26,6 +28,8 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
 
     @Autowired
     private ProblemCardDao problemCardDao;
+    @Autowired
+    private QuartzCronDao quartzCronDao;
 
     @Override
     public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,Integer departmentId,Integer dId,int page, int rows) {
@@ -47,5 +51,13 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     public ReturnMsg delete(Long imsi) {
         int count = problemCardDao.delete(imsi);
         return count>0?successTip():errorTip();
+    }
+
+    @Override
+    public ReturnMsg getAlarmList() {
+        QuartzCron quartzCron = quartzCronDao.get();
+        List<ProblemCard> alarmList = problemCardDao.getAlarmList(quartzCron.getAlarmCount());
+
+        return successTip(alarmList);
     }
 }
