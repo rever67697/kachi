@@ -13,6 +13,9 @@
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="../js/common.js"></script>
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <style>
+        .table th{min-width: 55px}
+    </style>
 </head>
 <body id="main-layout" class="easyui-layout" style="overflow-y: hidden" scroll="no">
 
@@ -37,7 +40,7 @@
                 <td><select name="departmentId"><option value="">全部</option></select></td>
                 <th >选卡时间</th>
                 <td ><input readonly="readonly" id="dateRange" style="width: 245px"/></td>
-                <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
+                <td><a class="easyui-linkbutton" id="search_btn" iconCls="icon-search" plain="true" onclick="doQuery()">查询</a></td>
             </tr>
         </table>
     </form>

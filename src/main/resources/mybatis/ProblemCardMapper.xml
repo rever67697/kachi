@@ -77,7 +77,6 @@
 				group by imsi
 			) r
 			where exists(select 1 from m_terminal_sim_flow t where t.imsi=r.imsi and t.type in (0,1,4) and t.time>r.selectDate))
-		and createtime>=CURRENT_DATE
 	</delete>
 	
 	<update id="updateCount">
