@@ -65,10 +65,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	@Autowired
 	private TerminalSimDao terminalSimDao;
 
-	@Override
 	/**
 	 * 根据卡池id找出其上面的卡
 	 */
+	@Override
 	public ReturnMsg getSimCardByPool(Integer cpId) {
 		List<SimCard> list = simCardDao.getSimCardByPool(cpId);
 		ReturnMsg returnMsg = super.successTip();
@@ -76,10 +76,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return returnMsg;
 	}
 
-	@Override
 	/**
 	 * 状态为作废的卡可以删除
+	 * @param ids
+	 * @return
 	 */
+	@Override
 	public ReturnMsg deleteSimCard(String ids) {
 		String[] arr = ids.split(",");
 		List<Integer> list = new ArrayList<Integer>();
@@ -90,20 +92,35 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		List<SimCard> simCardList = simCardDao.getByIds(list);
 
 		//删除卡
-		int count = simCardDao.deleteSimCard(list);
+		simCardDao.deleteSimCard(list);
 
-		//删除缓存
-		for (SimCard simCard : simCardList) {
-			simCache.remove(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi());
+		//删除卡组缓存
+		if(CommonUtil.listNotBlank(simCardList)){
+			for (SimCard simCard : simCardList) {
+
+				String groupKey = getGroupKeyByImsi(simCard.getImsi());
+
+				removeSimBySimGroupCache(groupKey,simCard.getImsi());
+				//删除卡缓存
+				simCache.remove(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi());
+			}
 		}
 
-		return count > 0 ? super.successTip() : super.errorTip();
+		return super.successTip();
 	}
 
-	@Override
 	/**
-	 * 根据条件寻找出sim卡列表
+	 * 页面查询列表
+	 * @param simCard
+	 * @param dId
+	 * @param dateType
+	 * @param startDate
+	 * @param endDate
+	 * @param page
+	 * @param rows
+	 * @return
 	 */
+	@Override
 	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,Integer dateType,Date startDate,Date endDate,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -126,6 +143,16 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
+	/**
+	 * 页面导出excel
+	 * @param simCard
+	 * @param dId
+	 * @param dateType
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	public File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -197,10 +224,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return  file;
 	}
 
-	@Override
 	/**
-	 * 查询流量卡总览信息
+	 * 获取某个部门的总体卡信息概览
+	 * @param dId
+	 * @return
 	 */
+	@Override
 	public ReturnMsg getOutlineInfo(Integer dId) {
 		ReturnMsg returnMsg = super.successTip();
 		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil
@@ -213,11 +242,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return returnMsg;
 	}
 
-	@Override
 	/**
-	 * isChangePeriod : 帐期参数是否发生变化
-	 * isChangePackage : 套餐参数是否发生变化
+	 * 页面更新单个卡信息
+	 * @param simCard
+	 * @return
 	 */
+	@Override
 	public ReturnMsg update(SimCard simCard) {
 
 		SimCard oldSimCard = simCardDao.getById(simCard.getId());
@@ -226,7 +256,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		simCardDao.update(simCard);
 
 		//2.如果卡的帐期或者持续时间发生变化，需要重新计算卡的月流量
-		//reCalculateFlowMonth(simCard,isChangePeriod,isChangePackage);
 		reCalculateFlowMonth(oldSimCard,simCard.getOffPeriod(),simCard.getSuStained(),simCard.getPackageId());
 
 		//3.需要更新缓存里面的卡组信息
@@ -238,11 +267,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 
 		//4.更新卡缓存
-		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-		if(!bCached) {
-			logger.error("save SimCard to Cache is error! simCard: " + simCard);
-		}
+		updateSimCardFromCache(simCard);
+
 		return super.successTip();
 	}
 
@@ -313,6 +339,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return simGroup;
 	}
 
+	/**
+	 * 页面批量更新卡，只更新某几个字段
+	 * @param simCardDTO
+	 * @param ids
+	 * @return
+	 */
     @Override
     public ReturnMsg batchUpdate(SimCardDTO simCardDTO, String ids) {
 		if(checkParams(simCardDTO)){
@@ -327,6 +359,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			map.put("usedVpn",simCardDTO.getUsedVpn());
 			map.put("softType",simCardDTO.getSoftType());
 			map.put("openDate",simCardDTO.getOpenDate());
+			map.put("departmentId",simCardDTO.getDepartmentId());
 
 			List<Integer> list = new ArrayList<>();
 			for (String s : ids.split(",")) {
@@ -356,11 +389,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			for (SimCard simCard : simCardList) {
 
 				//更新卡缓存
-				boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-						CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-				if(!bCached) {
-					logger.error("save SimCard to Cache is error! simCard: " + simCard);
-				}
+				updateSimCardFromCache(simCard);
 
 				//更新卡组缓存
 				if(simCard.getPackageId() != 0) {//TODO 只有一些特定字段发生变化时，才需要更新组缓存
@@ -454,12 +483,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 						CommonUtil.convertBean(flowMonth, com.hqrh.rw.common.model.FlowMonth.class));
 			}
 		}
-	}
-
-	public static void main(String[] args){
-		Integer a = null;
-
-		System.out.println(a.intValue());
 	}
 
 	/**
@@ -799,6 +822,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return simFlowMonth;
 	}
 
+	/**
+	 * 页面上传excel中读取卡列表
+	 * @param file
+	 * @return
+	 */
 	@Override
 	public ReturnMsg getSimcardList(MultipartFile file) {
 		ReturnMsg returnMsg = super.successTip();
@@ -845,8 +873,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}
 	}
 
+	/**
+	 * 页面批量更新tempImei
+	 * @param list
+	 */
 	@Override
-	public void insertBatch(List<SimCard> list) {
+	public void batchUpdateTempImei(List<SimCard> list) {
 		for (SimCard simCard : list) {
 			//查库找出数据库里面的这张卡
 			SimCard nowSimCard = simCardDao.getByImsi(simCard.getImsi());
@@ -855,8 +887,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				//更新临时IMEI
 				simCardDao.updateTempImei(nowSimCard);
 				//刷新缓存
-				simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-						CommonUtil.convertBean(nowSimCard, com.hqrh.rw.common.model.SimCard.class));
+				updateSimCardFromCache(nowSimCard);
 			}
 		}
 	}
@@ -966,10 +997,16 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	}
 
+	/**
+	 * 用于在simcard批量更新功能上的判断，判断是否有相关字段的变化
+	 * @param simCard
+	 * @return
+	 */
 	private boolean checkParams(SimCardDTO simCard){
 		if(simCard.getStatus()!=null || simCard.getPackageId()!=null || simCard.getSuStained()!=null
 				|| simCard.getExpiryDate()!=null || simCard.getOpenDate()!=null || simCard.getProvinceCode()!=null
-				|| simCard.getOffPeriod()!=null || simCard.getUsedVpn()!=null || simCard.getSoftType()!=null ){
+				|| simCard.getOffPeriod()!=null || simCard.getUsedVpn()!=null || simCard.getSoftType()!=null
+				|| simCard.getDepartmentId()!=null){
 			return true;
 		}
 		return false;
@@ -1038,6 +1075,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		return simFlowMonth;
 	}
 
+	/**
+	 * 更新卡组缓存里面卡的使用状态，0-空闲，1-占用
+	 * @param simCard
+	 */
 	private void refreshCacheStatus(SimCard simCard){
 		if(simCard.getStatus() == 0){
 			TerminalSim terminalSim = getTerminalSimBySim(simCard.getImsi());
@@ -1049,6 +1090,20 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		}else if(simCard.getStatus() == 1 || simCard.getStatus() == 4){
 			updateGroupSim2Cache(simCard,1);
 		}
+	}
+
+	/**
+	 * 更新缓存里面的卡信息
+	 * @param simCard
+	 * @return
+	 */
+	private boolean updateSimCardFromCache(SimCard simCard){
+		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+		if(!bCached) {
+			logger.error("save SimCard to Cache is error! simCard: " + simCard);
+		}
+		return bCached;
 	}
 }
 

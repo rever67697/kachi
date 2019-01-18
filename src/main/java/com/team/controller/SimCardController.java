@@ -136,7 +136,7 @@ public class SimCardController {
 		ReturnMsg returnMsg = simCardService.getSimcardList(file);
 		if("200".equals(returnMsg.getCode())){
 			List<SimCard> list = (List<SimCard>) returnMsg.getData();
-			simCardService.insertBatch(list);
+			simCardService.batchUpdateTempImei(list);
 			returnMsg.setData(list.size());
 		}
 		return returnMsg;

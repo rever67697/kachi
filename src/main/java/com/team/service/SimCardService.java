@@ -43,6 +43,6 @@ public interface SimCardService {
 
     ReturnMsg getSimcardList(MultipartFile file);
 
-	void insertBatch(List<SimCard> list);
+	void batchUpdateTempImei(List<SimCard> list);
 
 }

@@ -273,7 +273,8 @@
 			softType = #{softType,jdbcType=INTEGER},
 			expiryDate = #{expiryDate,jdbcType=TIMESTAMP},
 			openDate = #{openDate,jdbcType=TIMESTAMP},
-			tempImei = #{tempImei,jdbcType=VARCHAR}
+			tempImei = #{tempImei,jdbcType=VARCHAR},
+			departmentId = #{departmentId,jdbcType=INTEGER}
 		where id=#{id,jdbcType=INTEGER}
 	</update>
 	
@@ -312,6 +313,9 @@
 			</if>
 			<if test="expiryDate!=null">
 				expiryDate=#{expiryDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="departmentId!=null">
+				departmentId=#{departmentId,jdbcType=INTEGER},
 			</if>
 		</set>
 		where id in 

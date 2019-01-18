@@ -92,7 +92,7 @@
                                 <th>套餐：</th>
                                 <td><select name="packageId"></select></td>
                                 <th>所属部门：</th>
-                                <td><select name="departmentId"></select></td>
+                                <td><select name="departmentId"><option value="">全部</option></select></td>
                             </tr>
                             <tr>
                                 <th>使用状态：</th>
@@ -123,7 +123,6 @@
                     <form id="doForm">
                         <input type="hidden" name="id"/>
                         <input type="hidden" name="operatorCode"/>
-                        <input type="hidden" name="departmentId"/>
                         <input type="hidden" name="cpId"/>
                         <table class="table th-normal">
                             <tr>
@@ -229,7 +228,7 @@
                             </tr>
                             <tr>
                                 <th>所属部门：</th>
-                                <td><input name="departmentName" readonly="readonly"/></td>
+                                <td><select name="departmentId"><option value="0"></option></select></td>
                                 <th>分组：</th>
                                 <td><input name="groupPref"/></td>
                             </tr>
@@ -297,11 +296,12 @@
                                 <th>开卡时间：</th>
                                 <td><input name="openDate" readonly="readonly"/></td>
                             </tr>
+
                             <tr>
+                                <th>所属部门：</th>
+                                <td><select name="departmentId"><option value=""></option></select></td>
                                 <th>省：</th>
                                 <td><select name="provinceCode"></select></td>
-                                <th></th>
-                                <td></td>
                             </tr>
                             <tr style="height:10px"></tr>
                             <tr>
@@ -472,9 +472,11 @@
         kcJs.fn.initSelect({"container": $('#queryForm [name=packageId]'), "url": 'getPackageDic', "nullDesc": "全部"});
 
         kcJs.fn.initSelect({
-            "container": $('#queryForm [name=departmentId]'),
+            "container": $('[name=departmentId]'),
             "url": 'getDepartmentDic',
-            "nullDesc": "全部"
+            "needNull":false,
+            "nullDesc": "全部",
+            "append":true
         });
 
         kcJs.fn.initSelect({
