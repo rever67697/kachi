@@ -99,8 +99,8 @@
 	      departmentId = #{departmentId,jdbcType=INTEGER},
 	      meid = #{meid,jdbcType=VARCHAR},
 		  sendWiFiPass = #{sendWiFiPass,jdbcType=VARCHAR},
-		  maxDayData = #{maxDayData,jdbcType=INTEGER},
-		  daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER},
+		  maxDayData = ifnull(#{maxDayData,jdbcType=INTEGER},0),
+		  daySpeedLimit = ifnull(#{daySpeedLimit,jdbcType=INTEGER},0),
 		  sendNewSSID = #{sendNewSSID,jdbcType=VARCHAR}
 	    where ID = #{id,jdbcType=INTEGER}
   	</update>
@@ -128,8 +128,8 @@
         update m_terminal
         set ssid=#{ssid,jdbcType=VARCHAR},
             sendNewSSID = #{sendNewSSID,jdbcType=VARCHAR},
-            maxDayData = #{maxDayData,jdbcType=INTEGER},
-		    daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER}
+            maxDayData = ifnull(#{maxDayData,jdbcType=INTEGER},0),
+		    daySpeedLimit = ifnull(#{daySpeedLimit,jdbcType=INTEGER},0)
 		where id=#{id,jdbcType=INTEGER}
     </update>
 

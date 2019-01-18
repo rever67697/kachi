@@ -68,11 +68,9 @@
 				   case when p.isactive=1 then 1 else 0 end active,
 				   ifnull(type,0) type,
 				   count(c.id) count
-			from m_simpool p 
-			left join m_simcard c
-			on p.spid=c.cpid
-			left join m_department d
-			on p.departmentId=d.id and d.status=0
+			from m_simpool p
+			left join m_simcard c on p.spid=c.cpid
+			left join m_department d on p.departmentId=d.id and d.status=0
 			where 1=1
 			<include refid="dId"/>
 			group by p.id,p.isactive,p.type

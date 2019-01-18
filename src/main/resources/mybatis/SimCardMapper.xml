@@ -47,7 +47,7 @@
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
-			left join m_department d on p.departmentId=d.id and d.status=0
+			left join m_department d on r.departmentId=d.id and d.status=0
 			left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 			left join m_country c on r.countryCode = c.countryCode
 			left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -150,7 +150,7 @@
 		from m_simcard r
 		left join m_simpackage t on r.packageid=t.id and t.status=0
 		left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
-		left join m_department d on p.departmentId=d.id and d.status=0
+		left join m_department d on r.departmentId=d.id and d.status=0
 		left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 		left join m_country c on r.countryCode = c.countryCode
 		left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -219,7 +219,7 @@
 		left join m_simpool p
 		on r.cpid=p.spid
 		left join m_department d
-		on p.departmentid=d.id and d.status=0
+		on r.departmentid=d.id and d.status=0
 		where 1=1
 		<include refid="dId"></include>
 	</select>
