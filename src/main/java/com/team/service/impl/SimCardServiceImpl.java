@@ -1098,8 +1098,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @return
 	 */
 	private boolean updateSimCardFromCache(SimCard simCard){
+
+		//对于他们提出的经常看不到缓存的信息，我也不知道，之前设置缓存是没有设置第三个日期参数的，我现在改成设置29天过期看看
+
 		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class),new Date(1000*60*60*24*29));
 		if(!bCached) {
 			logger.error("save SimCard to Cache is error! simCard: " + simCard);
 		}

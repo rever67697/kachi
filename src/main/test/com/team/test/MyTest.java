@@ -125,12 +125,14 @@ public class MyTest {
 
 	@Test
 	public void testSimGroup() {
-		String imsi = "460016697645756";
-		MemcachedItem m = simCache.gets("0_46001_0_10_6");
-		List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
-		for (GroupCacheSim groupCacheSim : list) {
-			if((Long.valueOf(groupCacheSim.getImsi()).toString().equals(imsi))){
-				System.out.println(groupCacheSim);
+		String imsi = "460040458106201";
+		MemcachedItem m = simCache.gets("11_46004_0_31_1");
+		if(m!=null){
+			List<GroupCacheSim> list = (List<GroupCacheSim>) m.getValue();
+			for (GroupCacheSim groupCacheSim : list) {
+				//if((Long.valueOf(groupCacheSim.getImsi()).toString().equals(imsi))){
+					System.out.println(groupCacheSim);
+				//}
 			}
 		}
 
