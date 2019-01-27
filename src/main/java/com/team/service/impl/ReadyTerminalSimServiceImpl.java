@@ -63,11 +63,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 		//simCardService.updateGroupSim2Cache(simCard,0);
 
 		//4.更新卡缓存
-		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-		if(!bCached) {
-			logger.error("save SimCard to Cache is error! simCard: " + simCard);
-		}
+		simCardService.updateSimCardFromCache(simCard);
 
         return super.successTip();
     }
@@ -95,12 +91,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 		for (ReadyTerminalSim readyTerminalSim : list) {
 			SimCard simCard = simCardDao.getByImsi(readyTerminalSim.getImsi());
 
-			//4.更新卡缓存
-			boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-					CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-			if(!bCached) {
-				logger.error("save SimCard to Cache is error! simCard: " + simCard);
-			}
+			simCardService.updateSimCardFromCache(simCard);
 		}
 
 		return count>0?super.successTip():super.errorTip();
@@ -131,18 +122,10 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 				//simCardService.updateGroupSim2Cache(simCard,0);
 
 				//4.更新旧卡缓存
-				boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-						CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-				if(!bCached) {
-					logger.error("save SimCard to Cache is error! simCard: " + simCard);
-				}
+				simCardService.updateSimCardFromCache(simCard);
 				//5.更新新卡缓存
 				simCard = simCardDao.getByImsi(readyTerminalSim.getImsi());
-				bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-						CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
-				if(!bCached) {
-					logger.error("save SimCard to Cache is error! simCard: " + simCard);
-				}
+				simCardService.updateSimCardFromCache(simCard);
 			}
 			count = readyTerminalSimDao.update(readyTerminalSim);
 		}

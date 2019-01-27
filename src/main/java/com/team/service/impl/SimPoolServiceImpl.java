@@ -101,8 +101,7 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 			for (SimCard simCard : simCardList) {
 
 				//更新卡缓存
-				simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-						CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+				simCardService.updateSimCardFromCache(simCard);
 
 
 				//更新卡组

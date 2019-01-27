@@ -36,7 +36,7 @@ public interface TerminalService {
 
 	ReturnMsg updateStatus(Integer tsid);
 
-	ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword);
+	ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword,String ssid);
 
 	ReturnMsg updateSSID(Terminal terminal);
 	

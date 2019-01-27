@@ -45,4 +45,6 @@ public interface SimCardService {
 
 	void batchUpdateTempImei(List<SimCard> list);
 
+	boolean updateSimCardFromCache(SimCard simCard);
+
 }

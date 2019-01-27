@@ -44,6 +44,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	// 卡最后月流量缓存
 	private static final Cache simFlowCache = CacheFactory .getCache(MConstant.MEM_SIM_FlOW);
 
+	private static final Cache publicCache = CacheFactory .getCache(MConstant.MEM_PUBLIC);
+
 	private ExportExcelUtil<SimCard> exportExcelUtil = new ExportExcelUtil();
 
 	@Autowired
@@ -1097,14 +1099,20 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @param simCard
 	 * @return
 	 */
-	private boolean updateSimCardFromCache(SimCard simCard){
+	public boolean updateSimCardFromCache(SimCard simCard){
 
-		//对于他们提出的经常看不到缓存的信息，我也不知道，之前设置缓存是没有设置第三个日期参数的，我现在改成设置29天过期看看
+		//对于他们提出的经常看不到缓存的信息，我也不知道，之前设置缓存是没有设置第三个日期参数的，我现在改成设置1天过期看看
 
 		boolean bCached = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class),new Date(1000*60*60*24*29));
+				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class),
+					new Date(System.currentTimeMillis()+1000*60*60*24));
+
 		if(!bCached) {
 			logger.error("save SimCard to Cache is error! simCard: " + simCard);
+		}
+
+		if (simCard.getPackageId() != 0) {
+			publicCache.remove(MConstant.CACHE_OPERATOR_GROUP_KEY_PREE + simCard.getOperatorCode());
 		}
 		return bCached;
 	}

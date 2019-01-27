@@ -120,7 +120,14 @@
 
     <update id="updateWiFiPass" parameterType="java.util.Map">
 		update m_terminal
-		set sendWiFiPass=#{sendWiFiPass,jdbcType=VARCHAR}
+		<set>
+            <if test="sendWiFiPass != null and sendWiFiPass != '' ">
+                sendWiFiPass=#{sendWiFiPass,jdbcType=VARCHAR},
+            </if>
+            <if test="sendNewSSID != null and sendNewSSID != '' ">
+                sendNewSSID=#{sendNewSSID,jdbcType=VARCHAR}
+            </if>
+        </set>
 		where tsid=#{tsid,jdbcType=INTEGER}
 	</update>
 

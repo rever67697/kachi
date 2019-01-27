@@ -47,8 +47,11 @@ public interface InterfaceService {
     ReturnMsg tChangeCard(Integer tsid);
 
     /**终端更新密码**/
-    ReturnMsg tPassword(Integer tsid,String wifiPassword);
+    ReturnMsg tPassword(Integer tsid,String wifiPassword,String ssid);
 
     /**检查终端是否在线**/
     ReturnMsg tCheck(Integer tsid);
+
+    /**返回终端信息**/
+    ReturnMsg tTerminal(Integer tsid);
 }

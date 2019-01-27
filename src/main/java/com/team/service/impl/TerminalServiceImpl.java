@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
@@ -196,13 +197,14 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
     }
 
 	@Override
-	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword) {
-		if(wifiPassword==null){
+	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword,String ssid) {
+		if(StringUtils.isEmpty(wifiPassword)){
 			wifiPassword = sendWiFiPass;
 		}
 		Map<String,Object> map = new HashMap<>();
 		map.put("tsid",tsid);
 		map.put("sendWiFiPass",wifiPassword);
+		map.put("sendNewSSID",ssid);
 		terminalDao.updateWiFiPass(map);
 		return super.successTip();
 	}

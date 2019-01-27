@@ -110,8 +110,7 @@ public class ScheduleTask {
                     //刷新卡组缓存
                     simCardService.updateGroupSim2Cache(simCard,1);
                     //刷新卡缓存
-                    simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
-                            CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class));
+                    simCardService.updateSimCardFromCache(simCard);
                 }
             }
 

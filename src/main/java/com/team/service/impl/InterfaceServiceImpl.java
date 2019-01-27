@@ -424,8 +424,8 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
     }
 
     @Override
-    public ReturnMsg tPassword(Integer tsid,String wifiPassword) {
-        return terminalService.updateWiFiPass(tsid,wifiPassword);
+    public ReturnMsg tPassword(Integer tsid,String wifiPassword,String ssid) {
+        return terminalService.updateWiFiPass(tsid,wifiPassword,ssid);
     }
 
     @Override
@@ -447,6 +447,13 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         map.put("onlineTime",isOnline ? time : "");//在线开始时间
         map.put("offlineTime",isOnline ? "" : time);//下线时间
         return successTip(map);
+    }
+
+    @Override
+    public ReturnMsg tTerminal(Integer tsid) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("tsid",tsid);
+        return successTip(terminalDao.getByTsid(map));
     }
 
 }

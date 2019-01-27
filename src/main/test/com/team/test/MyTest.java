@@ -76,12 +76,13 @@ public class MyTest {
 
 	@Test
 	public void testMemcached() {
-		String[] a = new String[]{"1", "2", "3"};
-		Boolean ok = simGroupCache.set("wzh", a);
+		SimCard simCard = new SimCard();
+		simCard.setImsi(1111111L);
+		simCard.setPackageId(100);
+		Boolean ok = simCache.set(MConstant.CACHE_SIM_KEY_PREF + simCard.getImsi(),
+				CommonUtil.convertBean(simCard, com.hqrh.rw.common.model.SimCard.class),new Date(System.currentTimeMillis()+1000*60*60*24*24));
 		System.out.println(ok.toString());
-		a = (String[]) simGroupCache.gets("wzh").getValue();
 
-		System.out.println(Arrays.toString(a));
 	}
 
 	@Test
