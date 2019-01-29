@@ -9,7 +9,6 @@ import com.team.vo.ReturnMsg;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  */
 public interface SimCardService {
 	
-	ReturnMsg getSimCardByPool(Integer cpId);
+	ReturnMsg getSimCardByPool(Integer cpId, Integer departmentId);
 	
 	ReturnMsg deleteSimCard(String ids);
 	

@@ -42,8 +42,9 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getByPool")
-	public ReturnMsg getByPool(Integer cpId){
-		return simCardService.getSimCardByPool(cpId);
+	public ReturnMsg getByPool(Integer cpId,HttpServletRequest request){
+		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
+		return simCardService.getSimCardByPool(cpId,departmentId);
 	}
 	
 	@PostMapping("/list")

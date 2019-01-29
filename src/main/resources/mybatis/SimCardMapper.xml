@@ -8,10 +8,13 @@
 		</if>
 	</sql>
 
-	<select id="getSimCardByPool" resultType="com.team.model.SimCard">
-		select id,imsi,status,cpchannelId
-		from m_simcard
+	<select id="getSimCardByPool" resultType="com.team.model.SimCard" parameterType="java.util.Map">
+		select id,imsi,status,cpchannelId,(select name from m_department d where d.id=r.departmentId) departmentName
+		from m_simcard r
 		where cpid=#{cpId,jdbcType=INTEGER}
+		<if test="dId!=null">
+			and departmentId = #{dId,jdbcType=INTEGER}
+		</if>
 		order by cpchannelId
 	</select> 
 	

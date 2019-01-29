@@ -271,10 +271,11 @@
 	             		var count = 0;
 	             		for(var i = 0;i < total;i++){
 	             			var box = kcJs.fn.getCardStatus(5);
-	             			var imsi = '';
+	             			var imsi = '',departmentName = '';
 	             			if((count < cardList.length) && ((i) == cardList[count].cpChannelId)){
 	             				box = kcJs.fn.getCardStatus(cardList[count].status);
 	             				imsi = cardList[count].imsi;
+								departmentName = cardList[count].departmentName;
 	             				count ++;
 
 								for(var j=0;j<cardStatus.length;j++){
@@ -288,7 +289,7 @@
 	             			$('<div class="box" color="'+box[1]+'" style="background:'+box[1]+'"></div>').appendTo($('.card_container',$(obj)))
 	             			.tooltip({
 							    position: 'top',
-							    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i)+'<br>IMSI：'+imsi+'<br>状态：'+box[0]+'</div>',
+							    content: '<div style="padding:5px 10px;color:#fff">通道编号：'+(i)+'<br/>IMSI：'+imsi+'<br/>状态：'+box[0]+'<br/>部门：'+departmentName+'</div>',
 							    onShow: function(){
 									$(this).tooltip('tip').css({
 										backgroundColor:$(this).attr('color'),

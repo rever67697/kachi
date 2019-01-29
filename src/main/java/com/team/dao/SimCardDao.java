@@ -20,11 +20,11 @@ public interface SimCardDao {
 	
 	/**
 	 * 根据卡池id查找其下面的卡，为了在页面显示什么位置有卡，卡的状态是什么
-	 *@param cpId
+	 *@param map
 	 *@return
 	 *return
 	 */
-	public List<SimCard> getSimCardByPool(@Param("cpId")Integer cpId);
+	public List<SimCard> getSimCardByPool(Map<String,Object> map);
 	
 	/**
 	 * 根据卡套餐id寻找是否有SIM卡在使用这个套餐，如果没有数据返回，则判断没有sim卡在使用这个套餐

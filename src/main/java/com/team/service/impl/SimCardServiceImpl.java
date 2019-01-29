@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -71,8 +70,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 根据卡池id找出其上面的卡
 	 */
 	@Override
-	public ReturnMsg getSimCardByPool(Integer cpId) {
-		List<SimCard> list = simCardDao.getSimCardByPool(cpId);
+	public ReturnMsg getSimCardByPool(Integer cpId, Integer departmentId) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("cpId",cpId);
+		map.put("dId",CommonUtil.changeDepartmentId(departmentId));
+		List<SimCard> list = simCardDao.getSimCardByPool(map);
 		ReturnMsg returnMsg = super.successTip();
 		returnMsg.setData(new ResultList(list != null ? list.size() : 0, list));
 		return returnMsg;

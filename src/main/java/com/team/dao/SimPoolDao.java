@@ -25,7 +25,7 @@ public interface SimPoolDao {
 	
 	/**
 	 * 根据代理商查找卡池的总览信息
-	 *@param departmentId
+	 *@param dId
 	 *@return
 	 *return
 	 */
