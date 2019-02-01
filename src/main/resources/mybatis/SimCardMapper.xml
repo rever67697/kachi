@@ -12,9 +12,6 @@
 		select id,imsi,status,cpchannelId,(select name from m_department d where d.id=r.departmentId) departmentName
 		from m_simcard r
 		where cpid=#{cpId,jdbcType=INTEGER}
-		<if test="dId!=null">
-			and departmentId = #{dId,jdbcType=INTEGER}
-		</if>
 		order by cpchannelId
 	</select> 
 	
@@ -40,7 +37,7 @@
 			select r.*
 				   ,t.name packageName
 				   ,p.name simPoolName
-				   ,d.name departmentName
+				   ,(select name from m_department dd where dd.id=r.departmentId limit 1) departmentName
 				   ,o.OPERATORNAMECN operatorName
 				   ,ifnull(c.namecn,c.countryName) countryName
 				   ,ifnull(pr.namecn,r.provincecode) provinceName
@@ -49,8 +46,8 @@
 				   ,case when r.status in (1,2,4) or ts.tsid is not null then 1 else 0 end cStatus
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
-			left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
-			left join m_department d on r.departmentId=d.id and d.status=0
+			left join m_simpool p on r.cpid=p.spid
+			left join m_department d on p.departmentId=d.id and d.status=0
 			left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 			left join m_country c on r.countryCode = c.countryCode
 			left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -64,7 +61,7 @@
 				and r.status=#{status,jdbcType=INTEGER}
 			</if>
 			<if test="departmentId != null">
-				and d.id=#{departmentId,jdbcType=INTEGER}
+				and r.departmentId=#{departmentId,jdbcType=INTEGER}
 			</if>
 			<if test="imsi != null">
 				and r.imsi=#{imsi,jdbcType=BIGINT}
@@ -143,7 +140,7 @@
 					,r.NOTE
 			,t.name PACKAGENAME
 			,p.name SIMPOOLNAME
-			,d.name DEPARTMENTNAME
+			,(select name from m_department dd where dd.id=r.departmentId limit 1) DEPARTMENTNAME
 			,o.OPERATORNAMECN OPERATORNAME
 			,ifnull(c.namecn,c.countryName) COUNTRYNAME
 			,ifnull(pr.namecn,r.provincecode) PROVINCENAME
@@ -152,8 +149,8 @@
 			,case when r.status in (1,2,4) or ts.tsid is not null then 1 else 0 end CSTATUS
 		from m_simcard r
 		left join m_simpackage t on r.packageid=t.id and t.status=0
-		left join m_simpool p on r.cpid=p.spid and p.ISACTIVE=1
-		left join m_department d on r.departmentId=d.id and d.status=0
+		left join m_simpool p on r.cpid=p.spid and
+		left join m_department d on p.departmentId=d.id and d.status=0
 		left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 		left join m_country c on r.countryCode = c.countryCode
 		left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -167,7 +164,7 @@
 			and r.status=#{status,jdbcType=INTEGER}
 		</if>
 		<if test="departmentId != null">
-			and d.id=#{departmentId,jdbcType=INTEGER}
+			and r.departmentId=#{departmentId,jdbcType=INTEGER}
 		</if>
 		<if test="imsi != null">
 			and r.imsi=#{imsi,jdbcType=BIGINT}
@@ -219,10 +216,8 @@
                sum(case when r.status=3 then 1 else 0 end) readCardCount,
 	           sum(case when r.status=4 then 1 else 0 end) offCardCount
 		from  m_simcard r
-		left join m_simpool p
-		on r.cpid=p.spid
-		left join m_department d
-		on r.departmentid=d.id and d.status=0
+		left join m_simpool p on r.cpid=p.spid
+		left join m_department d on p.departmentid=d.id and d.status=0
 		where 1=1
 		<include refid="dId"></include>
 	</select>

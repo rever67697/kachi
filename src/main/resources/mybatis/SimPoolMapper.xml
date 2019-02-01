@@ -71,9 +71,6 @@
 			from m_simpool p
 			left join m_department d on p.departmentId=d.id and d.status=0
 			left join m_simcard c on p.spid=c.cpid
-			<if test="dId!=null">
-				and (d.id = c.departmentId  or d.parentId = c.departmentId)
-			</if>
 			where 1=1
 			<include refid="dId"/>
 			group by p.id,p.isactive,p.type

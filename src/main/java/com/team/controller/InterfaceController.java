@@ -115,8 +115,10 @@ public class InterfaceController  extends BaseService{
         }
 
         //保存日志
-        saveLog(request);
-
+        if(!"1".equals(request.getParameter("s"))){
+            saveLog(request);
+        }
+        
         return returnMsg;
     }
 

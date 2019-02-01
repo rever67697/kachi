@@ -5,6 +5,7 @@ server:
 spring:
   profiles:
     active: prod
+  ##把数据库日期格式转换成json返回页面的格式
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
