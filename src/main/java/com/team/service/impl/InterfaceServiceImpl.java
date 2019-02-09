@@ -415,12 +415,12 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
 
     @Override
     public ReturnMsg tOffline(Integer tsid) {
-        return terminalService.updateStatus(tsid);
+        return terminalService.offline(tsid);
     }
 
     @Override
     public ReturnMsg tChangeCard(Integer tsid) {
-        return terminalSimService.deleteTerminalByTsid(tsid);
+        return terminalSimService.changeCard(tsid);
     }
 
     @Override

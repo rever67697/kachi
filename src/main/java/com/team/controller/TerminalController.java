@@ -107,11 +107,7 @@ public class TerminalController {
 		return terminalService.getSelectedList(terminalList);
 	}
 
-	@PostMapping("/updateStatus")
-	@PermissionLog()
-	public ReturnMsg updateStatus(Integer tsid){
-		return terminalService.updateStatus(tsid);
-	}
+
 
 	@PostMapping("/updateWiFiPass")
 	@PermissionLog()

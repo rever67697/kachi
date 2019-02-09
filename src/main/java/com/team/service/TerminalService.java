@@ -34,7 +34,7 @@ public interface TerminalService {
 	
 	ReturnMsg updateDepartment(String ids,Integer departmentId);
 
-	ReturnMsg updateStatus(Integer tsid);
+	ReturnMsg offline(Integer tsid);
 
 	ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword,String ssid);
 

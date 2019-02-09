@@ -189,13 +189,25 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		return super.successTip();
 	}
 
+	/**
+	 * 在线终端 -> 终端下线
+	 * @param tsid
+	 * @return
+	 */
     @Override
-    public ReturnMsg updateStatus(Integer tsid) {
-		terminalSimService.deleteTerminalByTsid(tsid);
+    public ReturnMsg offline(Integer tsid) {
+		terminalSimService.changeCard(tsid);
 		terminalDao.updateStatus(tsid);
 		return super.successTip();
     }
 
+	/**
+	 * 在线终端 & 接口->更新终端的wifi名称和密码
+	 * @param tsid
+	 * @param wifiPassword
+	 * @param ssid
+	 * @return
+	 */
 	@Override
 	public ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword,String ssid) {
 		if(StringUtils.isEmpty(wifiPassword)){
@@ -209,6 +221,11 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		return super.successTip();
 	}
 
+	/**
+	 * 在线终端->修改SSID
+	 * @param terminal
+	 * @return
+	 */
 	@Override
 	public ReturnMsg updateSSID(Terminal terminal) {
 		terminalDao.updateSSID(terminal);

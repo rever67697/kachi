@@ -98,7 +98,8 @@ public class CommonController {
 	public void downloadFile(String fileName,HttpServletResponse response,HttpServletRequest request) throws Exception{
 		fileName = URLDecoder.decode(fileName, "utf-8");
 		Resource resource = new ClassPathResource("/static/file/"+fileName);
-		if (request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
+		String userAgent = request.getHeader("User-Agent").toUpperCase();
+		if (userAgent.contains("MSIE") || userAgent .contains("TRIDENT")) {
 			try {
 				fileName = URLEncoder.encode(fileName, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
@@ -106,12 +107,12 @@ public class CommonController {
 			}
 		} else {
 			try {
-				fileName = new String(fileName.getBytes(), "ISO-8859-1");
+				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/x-msdownload");// application/msexcel

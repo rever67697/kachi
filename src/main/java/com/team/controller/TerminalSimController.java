@@ -2,6 +2,7 @@ package com.team.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.team.service.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,17 +25,31 @@ public class TerminalSimController {
 	
 	@Autowired
 	private TerminalSimService terminalSimService;
-	
+	@Autowired
+	private TerminalService terminalService;
+
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalSimService.getTerminalSimList(departmentId,dId,tsid, imsi, page, rows);
+		return terminalSimService.list(departmentId,dId,tsid, imsi, page, rows);
 	}
-	
-	@PostMapping("/delete")
+
+	/**
+	 * 终端换卡
+	 */
+	@PostMapping("/changeCard")
 	@PermissionLog
-	public ReturnMsg delete(Integer tsid){
-		return terminalSimService.deleteTerminalByTsid(tsid);
+	public ReturnMsg changeCard(Integer tsid){
+		return terminalSimService.changeCard(tsid);
+	}
+
+	/**
+	 * 终端下线
+	 */
+	@PostMapping("/offline")
+	@PermissionLog()
+	public ReturnMsg offline(Integer tsid){
+		return terminalService.offline(tsid);
 	}
 	
 }

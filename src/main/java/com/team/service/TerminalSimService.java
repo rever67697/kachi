@@ -15,9 +15,9 @@ import com.team.vo.ReturnMsg;
  */
 public interface TerminalSimService {
 	
-	public ReturnMsg getTerminalSimByTsid(Integer tsid);
+	ReturnMsg getTerminalSimByTsid(Integer tsid);
 	
-	public ResultList getTerminalSimList(Integer departmentId,Integer dId,Integer tsid,Long imsi,int page,int rows);
+	ResultList list(Integer departmentId,Integer dId,Integer tsid,Long imsi,int page,int rows);
 	
-	public ReturnMsg deleteTerminalByTsid(Integer tsid);
+	ReturnMsg changeCard(Integer tsid);
 }

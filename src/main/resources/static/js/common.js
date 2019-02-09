@@ -184,12 +184,29 @@ var kcJs=
 		//给指定容器下的输入框自动填充数值
 		autoFillData:function(container,data){
 			var _this = this;
-			$('input,select,textarea',$(container)).each(function(i,o){
-	  			var name = $(this).attr('name');
+			$(':input',$(container)).each(function(i,o){
+	  			var name = this.name;
 	  			if(name){
-	  				$(this).val(data[name]);
+	  				this.value = data[name];
 	  			}
 	  		});
+		},
+		//暂时不启用这个函数，这个函数可以记录修改之前的参数
+		autoFillData_new:function(container,data){
+			var _this = this;
+			var prefix = 'kaChiLog_';
+			if($('#kaChiLogDiv',$(container)).length>0){
+				$('#kaChiLogDiv',$(container)).remove();
+			}
+			var ele = $('<div style="display: none" id="kaChiLogDiv"></div>');
+			$(':input',$(container)).each(function(i,o){
+				var name = this.name;
+				if(name){
+					this.value = data[name];
+				}
+				ele.append('<input name="'+(prefix+this.name)+'" type="hidden" value="'+this.value+'">');
+			});
+			$(container).append(ele);
 		},
 		//给指定的select容器初始化数据，参数container：容器,data：数组数据,needNull：是否需要给一个空值，nullDesc：空值的描述，defaultVal：是否选中默认值
 		initSelectOption:function(option){

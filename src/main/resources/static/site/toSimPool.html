@@ -310,7 +310,7 @@
   	function doModifyDept(){
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
-  			 kcJs.fn.autoFillData($('#doDialog'),selectRows[0]);
+  			 kcJs.fn.autoFillData($('#doForm'),selectRows[0]);
              $('#doDialog').dialog('open');
         }else {
             $.messager.alert("提示", "请选择其中一条信息", "info");

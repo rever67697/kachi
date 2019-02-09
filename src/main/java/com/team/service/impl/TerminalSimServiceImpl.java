@@ -20,6 +20,7 @@ import com.team.service.TerminalSimService;
 import com.team.util.CommonUtil;
 import com.team.vo.ResultList;
 import com.team.vo.ReturnMsg;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 终端对应的卡的相关操作	m_terminal_sim
@@ -39,10 +40,9 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 
 	@Override
 	/**
-	 * 通过终端tsid找到对应的SIM卡
+	 * 终端管理 -> 查找占用卡
 	 *@param tsid
 	 *@return
-	 *return
 	 */
 	public ReturnMsg getTerminalSimByTsid(Integer tsid) {
 		List<TerminalSim> list = terminalSimDao.getTerminalSimByTsid(tsid);
@@ -53,8 +53,18 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 		return returnMsg;
 	}
 
+	/**
+	 * 在线终端 -> 列表
+	 * @param departmentId
+	 * @param dId
+	 * @param tsid
+	 * @param imsi
+	 * @param page
+	 * @param rows
+	 * @return
+	 */
 	@Override
-	public ResultList getTerminalSimList(Integer departmentId,Integer dId,Integer tsid, Long imsi, int page,int rows) {
+	public ResultList list(Integer departmentId,Integer dId,Integer tsid, Long imsi, int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tsid", tsid);
@@ -66,8 +76,13 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 		return new ResultList(pageInfo.getTotal(), list);
 	}
 
+	/**
+	 * 在线终端 -> 终端换卡
+	 * @param tsid
+	 * @return
+	 */
 	@Override
-	public ReturnMsg deleteTerminalByTsid(Integer tsid) {
+	public ReturnMsg changeCard(Integer tsid) {
 		TerminalSim terminalSim  = terminalSimDao.getByTsid(tsid);
 		terminalSimDao.deleteTerminalByTsid(tsid);
 
