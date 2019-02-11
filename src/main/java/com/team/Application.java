@@ -12,6 +12,8 @@ import com.team.service.impl.InterfaceServiceImpl;
 import com.team.util.SpringUtil;
 import org.apache.log4j.Logger;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -24,8 +26,12 @@ import com.github.pagehelper.PageHelper;
 
 @SpringBootApplication			//@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan
 @MapperScan("com.team.dao")		//查找报指定包及其子包下面的dao接口
-public class Application{
+public class Application implements CommandLineRunner {
+
 	private static Logger logger = Logger.getLogger(Application.class);
+
+	@Autowired
+    private InterfaceService interfaceService;
 
     @Bean
     public PageHelper pageHelper() {
@@ -98,11 +104,16 @@ public class Application{
     public static void main(String[] args) throws Exception{
         SpringApplication.run(Application.class, args);
         logger.info("SpringBoot Start Success!");
-        InterfaceService interfaceService = SpringUtil.getBean(InterfaceServiceImpl.class);
+//        InterfaceService interfaceService = SpringUtil.getBean(InterfaceServiceImpl.class);
+//
+//        //订阅阿里云的消息推送
+//        interfaceService.aliMessage();
 
-        //订阅阿里云的消息推送
-        interfaceService.aliMessage();
     }
 
-    
+
+    @Override
+    public void run(String... strings) throws Exception {
+        interfaceService.aliMessage();
+    }
 }

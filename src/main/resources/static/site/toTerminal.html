@@ -103,9 +103,9 @@
 		  <table class="table th-normal">
 			  <tr><th>终端编号：</th><td colspan="2"><input class="easyui-validatebox" name="tsid" required="true" readonly="readonly"/></td></tr>
 			  <tr><th>剩余流量(GB)：</th><td><input name="allowFlow" class="easyui-validatebox" required="true"/></td>
-				  <td><select name="selectFlow" class="charge" onchange="changeFlow()"><option value="0">充值流量</option><option value="1048576">1G</option></select></td></tr>
+				  <td><select name="selectFlow" class="charge" onchange="changeFlow()"></select></td></tr>
 			  <tr><th>有效期截止日期：</th><td><input name="validityDate" class="easyui-validatebox"  readonly="readonly"/></td>
-				  <td><select name="selectDate" class="charge" onchange="changeDate()"><option value="0">充值日期</option><option value="1">1天</option><option value="7">7天</option></select></td></tr>
+				  <td><select name="selectDate" class="charge" onchange="changeDate()"></select></td></tr>
 			  <tr><th>备注：</th><td colspan="2"><input name="note" /></td></tr>
 			  <tr style="height:10px"></tr>
 			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="charge()">充 值</a>

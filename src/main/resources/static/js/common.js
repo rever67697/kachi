@@ -186,7 +186,7 @@ var kcJs=
 			var _this = this;
 			$(':input',$(container)).each(function(i,o){
 	  			var name = this.name;
-	  			if(name){
+	  			if(name && data[name]){
 	  				this.value = data[name];
 	  			}
 	  		});
