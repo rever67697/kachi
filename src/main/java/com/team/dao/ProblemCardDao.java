@@ -31,8 +31,8 @@ public interface ProblemCardDao {
 
     /**
      * 查找大于警报阈值的卡
-     * @param alarmCount
+     * @param
      * @return
      */
-    List<ProblemCard> getAlarmList(@Param("alarmCount") Integer alarmCount);
+    List<ProblemCard> getAlarmList(Map<String,Object> map);
 }

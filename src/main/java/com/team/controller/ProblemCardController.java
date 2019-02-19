@@ -41,8 +41,9 @@ public class ProblemCardController {
 
 
     @PostMapping("/alarmList")
-    public ReturnMsg alarmList(){
-        return problemCardService.getAlarmList();
+    public ReturnMsg alarmList(HttpServletRequest request){
+        Integer dId = CommonUtil.getUser(request).getDepartmentId();
+        return problemCardService.getAlarmList(dId);
     }
 
 }

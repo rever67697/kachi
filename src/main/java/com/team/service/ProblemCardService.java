@@ -16,5 +16,5 @@ public interface ProblemCardService {
 
     ReturnMsg delete(Long imsi);
 
-    ReturnMsg getAlarmList();
+    ReturnMsg getAlarmList(Integer dId);
 }

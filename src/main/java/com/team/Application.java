@@ -49,7 +49,7 @@ public class Application implements CommandLineRunner {
 
 
     /**
-     * RequestContextListener注册
+     * RequestContextListener注册，额，好像springboot已经注入了这个bean，不需要重复注入也可以
      */
     @Bean
     public ServletListenerRegistrationBean<RequestContextListener> requestContextListenerRegistration() {
@@ -112,6 +112,11 @@ public class Application implements CommandLineRunner {
     }
 
 
+    /**
+     * 实现CommandLineRunner接口,在springboot启动后的执行的一些任务，可以在类上搭配@Order(num)来使用
+     * @param strings
+     * @throws Exception
+     */
     @Override
     public void run(String... strings) throws Exception {
         interfaceService.aliMessage();

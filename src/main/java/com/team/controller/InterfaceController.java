@@ -109,7 +109,7 @@ public class InterfaceController  extends BaseService{
         }else if("tCheck".equals(name)){//检查终端是否在线
             returnMsg = interfaceService.tCheck(terminalChargeRecord.getTsid());
 
-        }else if("tTerminal".equals(name)){//检查终端是否在线
+        }else if("tTerminal".equals(name)){//检查终端具体信息
             returnMsg = interfaceService.tTerminal(terminalChargeRecord.getTsid());
 
         }
