@@ -80,7 +80,7 @@
 			  <tr><th>终端状态：</th><td><select name="status">
 				  <option value="0">正常</option><option value="1">未初始化</option>
 				  <option value="2">停用</option><option value="3">注销</option>
-			  </select></td><th>是否上传日志：</th><td><select class="fill-noYes" name="upLog"></select></td></tr>
+			  </select></td><th>是否上传日志：</th><td><select name="upLog"><option value="0">否</option><option value="1">是</option><option value="2">只上传一次</option></select></td></tr>
 			  <tr><th>IMEI：</th><td><input name="imei"/></td><th>是否已经激活：</th><td><select class="fill-noYes" name="activated"></select></td></tr>
 			  <tr><th>归属地：</th><td><select name="homeLocation"></select></td><th>SSID：</th><td><input name="ssid"/></td></tr>
 			  <tr><th>WIFI密码：</th><td><input name="wifiPassword"/></td><th>LIC后缀：</th><td><input name="licFix"/></td></tr>
@@ -129,7 +129,9 @@
   </body>
 
   <script type="text/javascript">
-  	var options={
+	  var dicLog = {'0':'否','1':'是','2':'只上传一次'};
+
+	  var options={
 			title:'终端设备列表',
 			queryParams:$('#queryForm').serializeObject(),
 			columns:[[
@@ -148,7 +150,7 @@
 			         	{field:'sVersion',title:'软件版本',width:60},
 			         	{field:'upLog',title:'是否上传日志',width:75,formatter:function(value,rec,index){
 			         		value+='';
-			         		return value?(value=='0'?'否':(value=='1'?'是':'')):'';
+			         		return dicLog[value];
 			         	}},
 			         	{field:'usedVpn',title:'是否支持VPN',width:75,formatter:function(value,rec,index){
 			         		value+='';
@@ -582,8 +584,8 @@
     }
 
     function reset() {
-		$('#chargeForm [name=allowFlow]').val('0');
-		$('#chargeForm [name=validityDate]').val('');
+		$('#chargeForm [name=allowFlow],#chargeForm [name=oriFlow]').val('0');
+		$('#chargeForm [name=validityDate],#chargeForm [name=oriDate]').val('');
     }
     
 

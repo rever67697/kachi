@@ -43,7 +43,7 @@ public class TbAuthUser implements Serializable{
 	private List<TbAuthRole> roles;
 
 	public Integer getIsAdmin() {
-		return isAdmin;
+		return isAdmin==null?0:isAdmin;
 	}
 
 	public void setIsAdmin(Integer isAdmin) {
@@ -51,7 +51,7 @@ public class TbAuthUser implements Serializable{
 	}
 
 	public Integer getIsAdmin2() {
-		return isAdmin2;
+		return isAdmin2==null?0:isAdmin2;
 	}
 
 	public void setIsAdmin2(Integer isAdmin2) {

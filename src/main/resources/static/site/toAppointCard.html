@@ -215,6 +215,8 @@
         singleSelect: true,
         fit: true
     };
+
+    var dicLog = {'0':'否','1':'是','2':'只上传一次'};
     var terminal_options = {
         queryParams: $('#queryForm_t').serializeObject(),
         columns: [[
@@ -237,7 +239,7 @@
             {
                 field: 'upLog', title: '是否上传日志', width: 100, formatter: function (value, rec, index) {
                 value += '';
-                return value ? (value == '0' ? '否' : (value == '1' ? '是' : '')) : '';
+                return dicLog[value];
             }
             },
             {
@@ -547,7 +549,7 @@
                 $.post(kcJs.fn.getContextPath() + '/readyTerminalSim/delete', {
                     id: rowData.id,
                     imsi: rowData.imsi,
-                    lastStatus: rowData.lastStatus,
+                    lastStatus: rowData.lastStatus||0,
                     tsid: rowData.tsid
                 }, function (data) {
                     if (data) {
