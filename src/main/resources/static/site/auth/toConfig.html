@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>参数配置</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/themes/default/easyui.css" rel="stylesheet"
+          title="blue"/>
+    <link rel="stylesheet" type="text/css" href="../../css/easyui/themes/icon.css"/>
+    <script type="text/javascript" src="../../js/jquery-1.6.3.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <style>
+        .table th,.table td{text-align: left;padding-top:5px;padding-bottom: 5px;padding-left: 10px}
+        .table caption{font-size: 20px;margin-bottom: 20px}
+    </style>
+</head>
+<body id="main-layout" class="easyui-layout" style="overflow-y: hidden;background: #f6f6f8" scroll="no">
+
+<div region="center" title="" style="overflow:hidden;background:#FFF;padding:20px 200px" border="false">
+    <form id="doForm">
+        <input type="hidden" name="id" value="-1"/>
+        <table class="table th-normal">
+            <caption>参数配置</caption>
+            <tr>
+                <th width="130px"></th>
+                <th width="150px">参数名称</th>
+                <th width="200px">参数值</th>
+                <th>参数描述</th>
+            </tr>
+
+            <tr>
+                <th rowspan="4">扫描问题卡</th>
+                <td>是否开启扫描：</td>
+                <td><select name="statusProblemcard">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select></td>
+                <td>定时扫描</td>
+            </tr>
+
+            <tr>
+                <td>定时时间：</td>
+                <td><input name="problemcardMinute" class="onlyNumber" required="true"/></td>
+                <td>分钟</td>
+            </tr>
+
+            <tr>
+                <td>是否处理问题卡：</td>
+                <td ><select name="isHandleProblemcard">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select></td>
+                <td>在扫描时是否把问题卡的状态改为停用</td>
+            </tr>
+
+            <tr>
+                <td>异常次数阈值：</td>
+                <td><input name="thresholdProblemcard" class="onlyNumber"/></td>
+                <td>达到阈值后，将会把SIM卡的状态改为停用</td>
+            </tr>
+
+            <!--                                                      -->
+
+            <tr>
+                <th rowspan="3">取卡异常短信发送</th>
+                <td>是否开启发送：</td>
+                <td><select name="statusMsg">
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select></td>
+                <td>定时扫描取卡异常并且发送短信</td>
+            </tr>
+
+            <tr>
+                <td>定时时间：</td>
+                <td><input name="msgMinute" class="onlyNumber" required="true"/></td>
+                <td>每隔多少分钟扫描取卡异常</td>
+            </tr>
+
+            <tr>
+                <td>手机号码：</td>
+                <td><input name="msgPhone" class="onlyNumber"/></td>
+                <td>手机号码</td>
+            </tr>
+
+            <tr>
+                <th>其他参数</th>
+                <td>警报提醒次数阈值：</td>
+                <td ><input name="thresholdAlarm" class="onlyNumber"/></td>
+                <td>达到阈值后，将会在首页弹出提示框</td>
+            </tr>
+
+            <tr style="height:20px"></tr>
+            <tr>
+                <td colspan="4"  class="noborder" style="text-align: center"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        doRest();
+    });
+
+    function doRest() {
+        $.post(kcJs.fn.getContextPath()+'/quartz/getNow',{},function (data) {
+            kcJs.fn.autoFillData($('#doForm'),data);
+        },'json');
+    }
+
+    function saveData() {
+
+        if($('#doForm [name=statusMsg]').val()=='1' &&
+            (!$('#doForm [name=msgPhone]').val() || !/^[1][0-9]{10}$/.test($('#doForm [name=msgPhone]').val()))){
+            $.messager.alert('提示','手机号码不规范','info');
+            return;
+        }
+
+        $.post(kcJs.fn.getContextPath() + '/quartz/reset', $('#doForm').serializeObject(), function (data) {
+            if (data) {
+                $.messager.alert('提示', data.msg, 'info');
+                if (data.code == '200') {
+                    doQuery();
+                } else {
+                    $('#dg').datagrid('loaded');
+                }
+            }
+
+        });
+    }
+</script>
+</html>	

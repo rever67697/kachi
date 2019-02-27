@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface SelectCardDao {
 
-    List<SelectCard> list(Map<String,Object> map);
+    List<SelectCard> listUnnormal(Map<String,Object> map);
 
     List<SelectCard> listSelectCardLog(Map<String,Object> map);
 

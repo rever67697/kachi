@@ -350,6 +350,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
 //            System.out.println("message id: " + message.getMessageId());
 //            System.out.println("message dequeue count:" + message.getDequeueCount());
 
+            HttpURLConnection conn = null;
             try{
                 Map<String,Object> contentMap=gson.fromJson(message.getMessageBodyAsString(), HashMap.class);
                 String phone=(String)contentMap.get("phone");
@@ -359,7 +360,7 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
                 String errMsg=(String)contentMap.get("err_msg");
 
                 String params = "/phone/"+phone+"/outId/"+outId+"/result/"+result+"/errCode/"+errCode+"/errMsg/"+errMsg;
-                HttpURLConnection conn = null;
+
                 System.out.println(toUrl+params);
                 URL url = new URL(toUrl+params);
                 conn = (HttpURLConnection) url.openConnection();
@@ -379,6 +380,8 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
             } catch (Throwable e) {
                 //您自己的代码部分导致的异常，应该return false,这样消息不会被delete掉，而会根据策略进行重推
                 return false;
+            }finally {
+                conn.disconnect();
             }
 
             //消息处理成功，返回true, SDK将调用MNS的delete方法将消息从队列中删除掉

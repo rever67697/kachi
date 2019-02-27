@@ -56,30 +56,30 @@
         <table class="table th-normal">
             <tr>
                 <th>定时时间：</th>
-                <td><input name="minute" class="easyui-validatebox onlyNumber" required="true"/></td>
+                <td><input name="problemcardMinute" class="easyui-validatebox onlyNumber" required="true"/></td>
                 <th>分钟</th>
             </tr>
             <tr>
                 <th>定时扫描：</th>
-                <td colspan="2"><select name="status">
-                    <option value="0">开启</option>
-                    <option value="1">关闭</option>
+                <td colspan="2"><select name="statusProblemcard">
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
                 </select></td>
             </tr>
             <tr>
                 <th>处理问题卡：</th>
-                <td colspan="2"><select name="isHandle">
-                    <option value="0">开启</option>
-                    <option value="1">关闭</option>
+                <td colspan="2"><select name="isHandleProblemcard">
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
                 </select></td>
             </tr>
             <tr>
                 <th>异常次数阈值：</th>
-                <td colspan="2"><input name="count" class="onlyNumber"/></td>
+                <td colspan="2"><input name="thresholdProblemcard" class="onlyNumber"/></td>
             </tr>
             <tr>
                 <th>警报提醒次数阈值：</th>
-                <td colspan="2"><input name="alarmCount" class="onlyNumber"/></td>
+                <td colspan="2"><input name="thresholdAlarm" class="onlyNumber"/></td>
             </tr>
             <tr style="height:10px"></tr>
             <tr>
@@ -148,11 +148,7 @@
 
     function doRest() {
         $.post(kcJs.fn.getContextPath()+'/quartz/getNow',{},function (data) {
-            $('#doForm [name=minute]').val(data.minute);
-            $('#doForm [name=status]').val(data.status);
-            $('#doForm [name=isHandle]').val(data.isHandle);
-            $('#doForm [name=count]').val(data.count);
-            $('#doForm [name=alarmCount]').val(data.alarmCount);
+            kcJs.fn.autoFillData($('#doForm'),data);
         },'json');
         $('#doDialog').dialog('open');
     }

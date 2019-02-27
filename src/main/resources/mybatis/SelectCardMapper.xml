@@ -8,7 +8,7 @@
 		</if>
 	</sql>
 
-	<select id="list" resultType="com.team.model.SelectCard" parameterType="java.util.Map">
+	<select id="listUnnormal" resultType="com.team.model.SelectCard" parameterType="java.util.Map">
 		select r.tsid,
 			   r.released,
 			   r.mcc,
@@ -20,7 +20,7 @@
 		from m_select_card r
 		left join m_operator o on r.operator=o.operatorCode
 		left join m_terminal t on r.tsid=t.tsid
-		left join m_department d on t.departmentId=d.id and d.status=0
+		left join m_department d on t.departmentId=d.id
 		where r.result_code != 0
 		<if test="tsid!=null">
 			  and r.tsid=#{tsid,jdbcType=INTEGER}

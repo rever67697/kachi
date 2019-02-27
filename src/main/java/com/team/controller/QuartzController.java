@@ -21,29 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/quartz")
 @PermissionLog("定时任务")
-public class QuartzController extends BaseService{
+public class QuartzController extends BaseService {
 
     @Autowired
     private QuartzService quartzService;
 
     @RequestMapping("/reset")
     @PermissionLog
-    public ReturnMsg set(Integer minute,Integer status,Integer count,Integer isHandle,Integer alarmCount) throws Exception{
+    public ReturnMsg reset(QuartzCron quartzCron) throws Exception {
 
-        if(minute == null || minute<1 || minute>59 || status == null || (status!=0 && status!=1)
-                || isHandle==null || (isHandle!=0 && isHandle!=1)
-                || count==null || count<1){
+        if (quartzCron.getProblemcardMinute() < 1 || quartzCron.getProblemcardMinute() > 59
+                || quartzCron.getThresholdProblemcard() < 1) {
             return errorTip("参数错误");
         }
 
-        return  quartzService.scheduleUpdateCronTrigger(minute,status,count,isHandle,alarmCount);
+        return quartzService.scheduleUpdate(quartzCron);
     }
 
     @PostMapping("/getNow")
-    public QuartzCron getNow(){
+    public QuartzCron getNow() {
         return quartzService.getNow();
     }
-
 
 
 }

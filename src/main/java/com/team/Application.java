@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 
 import com.team.service.InterfaceService;
+import com.team.service.QuartzService;
 import com.team.service.impl.InterfaceServiceImpl;
 import com.team.util.SpringUtil;
 import org.apache.log4j.Logger;
@@ -32,6 +33,8 @@ public class Application implements CommandLineRunner {
 
 	@Autowired
     private InterfaceService interfaceService;
+	@Autowired
+    private QuartzService quartzService;
 
     @Bean
     public PageHelper pageHelper() {
@@ -119,6 +122,10 @@ public class Application implements CommandLineRunner {
      */
     @Override
     public void run(String... strings) throws Exception {
+        //订阅阿里云的消息推送
         interfaceService.aliMessage();
+
+        //启动定时任务
+        quartzService.initJob();
     }
 }

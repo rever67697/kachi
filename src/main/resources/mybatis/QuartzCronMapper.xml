@@ -8,12 +8,16 @@
 
 	<update id="update" parameterType="com.team.model.QuartzCron">
 		update tb_quartz_cron
-		set `minute` = #{minute,jdbcType=INTEGER},
-			cronStr= #{cronStr,jdbcType=VARCHAR},
-			status = #{status,jdbcType=INTEGER},
-			isHandle = #{isHandle,jdbcType=INTEGER},
-			`count` = #{count,jdbcType=INTEGER},
-			alarmCount = #{alarmCount,jdbcType=INTEGER},
+		set problemcardMinute = #{problemcardMinute,jdbcType=INTEGER},
+			problemcardCronstr = #{problemcardCronstr,jdbcType=VARCHAR},
+			statusProblemcard = #{statusProblemcard,jdbcType=INTEGER},
+			isHandleProblemcard = #{isHandleProblemcard,jdbcType=INTEGER},
+			thresholdProblemcard = #{thresholdProblemcard,jdbcType=INTEGER},
+			thresholdAlarm = #{thresholdAlarm,jdbcType=INTEGER},
+			statusMsg = #{statusMsg,jdbcType=INTEGER},
+			msgMinute = #{msgMinute,jdbcType=INTEGER},
+			msgCronstr = #{msgCronstr,jdbcType=VARCHAR},
+			msgPhone = #{msgPhone,jdbcType=VARCHAR},
 			lasttime = now()
 	</update>
 

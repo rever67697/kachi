@@ -57,7 +57,7 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     public ReturnMsg getAlarmList(Integer dId) {
         Map<String,Object> map = new HashMap<>();
         QuartzCron quartzCron = quartzCronDao.get();
-        map.put("alarmCount",quartzCron.getAlarmCount());
+        map.put("alarmCount",quartzCron.getThresholdAlarm());
         map.put("dId",CommonUtil.changeDepartmentId(dId));
         List<ProblemCard> alarmList = problemCardDao.getAlarmList(map);
 

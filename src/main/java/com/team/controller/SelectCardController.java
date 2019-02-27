@@ -24,12 +24,20 @@ public class SelectCardController {
     @Autowired
     private SelectCardService selectCardService;
 
+    /**
+     * 取卡异常
+     * @return
+     */
     @PostMapping("/list")
-    public Object list(Date startDate,Date endDate, Integer tsid, Integer departmentId, int page, int rows, HttpServletRequest request){
+    public Object listUnnormal(Date startDate,Date endDate, Integer tsid, Integer departmentId, int page, int rows, HttpServletRequest request){
         Integer dId = CommonUtil.getUser(request).getDepartmentId();
-        return selectCardService.list(startDate,endDate,tsid,departmentId,dId,page,rows);
+        return selectCardService.listUnnormal(startDate,endDate,tsid,departmentId,dId,page,rows);
     }
 
+    /**
+     * 选卡日志
+     * @return
+     */
     @PostMapping("/listSelectCardLog")
     public Object listSelectCardLog(Date startDate,Date endDate, Integer tsid, Long imsi,Integer departmentId,int page, int rows, HttpServletRequest request){
         Integer dId = CommonUtil.getUser(request).getDepartmentId();

@@ -5,39 +5,73 @@ import java.util.Date;
 
 /**
  * @Author : wuzhiheng
- * @Description :
+ * @Description : 一些定时任务相关的配置
  * @Date Created in 下午11:10 2018/7/2
  */
 public class QuartzCron implements Serializable {
 
-    private Integer minute;//扫描时间间隔，针对选卡时间
+    private int problemcardMinute;//扫描时间间隔，针对选卡时间
 
-    private String cronStr;//定时任务描述
+    private String problemcardCronstr;//定时任务描述
 
-    private Integer status;//是否扫描
+    private int statusProblemcard;//是否扫描
 
-    private Integer isHandle;//是否处理问题卡
+    private int isHandleProblemcard;//是否处理问题卡
 
-    private Integer count;//达到多少次异常后处理问题卡
+    private int thresholdProblemcard;//达到多少次异常后处理问题卡
 
-    private Date lastTime;
+    private Date lastTime;//修改时间
 
-    private Integer alarmCount;//用于首页显示选卡错误警报的阈值
+    private int thresholdAlarm;//用于首页显示选卡错误警报的阈值
 
-    public Integer getMinute() {
-        return minute;
+    private int statusMsg;//是否开启发送短信
+
+    private int msgMinute;//扫描取卡异常
+
+    private String msgCronstr;//定时任务描述-扫描取卡异常
+
+    private String msgPhone;//短信接收手机
+
+    private String msgUrl;//短信接口地址
+
+    public int getProblemcardMinute() {
+        return problemcardMinute;
     }
 
-    public void setMinute(Integer minute) {
-        this.minute = minute;
+    public void setProblemcardMinute(int problemcardMinute) {
+        this.problemcardMinute = problemcardMinute;
     }
 
-    public String getCronStr() {
-        return cronStr;
+    public String getProblemcardCronstr() {
+        return problemcardCronstr;
     }
 
-    public void setCronStr(String cronStr) {
-        this.cronStr = cronStr;
+    public void setProblemcardCronstr(String problemcardCronstr) {
+        this.problemcardCronstr = problemcardCronstr;
+    }
+
+    public int getStatusProblemcard() {
+        return statusProblemcard;
+    }
+
+    public void setStatusProblemcard(int statusProblemcard) {
+        this.statusProblemcard = statusProblemcard;
+    }
+
+    public int getIsHandleProblemcard() {
+        return isHandleProblemcard;
+    }
+
+    public void setIsHandleProblemcard(int isHandleProblemcard) {
+        this.isHandleProblemcard = isHandleProblemcard;
+    }
+
+    public int getThresholdProblemcard() {
+        return thresholdProblemcard;
+    }
+
+    public void setThresholdProblemcard(int thresholdProblemcard) {
+        this.thresholdProblemcard = thresholdProblemcard;
     }
 
     public Date getLastTime() {
@@ -48,38 +82,51 @@ public class QuartzCron implements Serializable {
         this.lastTime = lastTime;
     }
 
-    public Integer getStatus() {
-        return status;
+    public int getThresholdAlarm() {
+        return thresholdAlarm;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setThresholdAlarm(int thresholdAlarm) {
+        this.thresholdAlarm = thresholdAlarm;
     }
 
-    public Integer getIsHandle() {
-        return isHandle;
+    public int getStatusMsg() {
+        return statusMsg;
     }
 
-    public void setIsHandle(Integer isHandle) {
-        this.isHandle = isHandle;
+    public void setStatusMsg(int statusMsg) {
+        this.statusMsg = statusMsg;
     }
 
-    public Integer getCount() {
-        return count;
+    public int getMsgMinute() {
+        return msgMinute;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setMsgMinute(int msgMinute) {
+        this.msgMinute = msgMinute;
     }
 
-    public Integer getAlarmCount() {
-        return alarmCount;
+    public String getMsgCronstr() {
+        return msgCronstr;
     }
 
-    public void setAlarmCount(Integer alarmCount) {
-        if(alarmCount==null){
-            alarmCount=0;
-        }
-        this.alarmCount = alarmCount;
+    public void setMsgCronstr(String msgCronstr) {
+        this.msgCronstr = msgCronstr;
+    }
+
+    public String getMsgPhone() {
+        return msgPhone;
+    }
+
+    public void setMsgPhone(String msgPhone) {
+        this.msgPhone = msgPhone;
+    }
+
+    public String getMsgUrl() {
+        return msgUrl;
+    }
+
+    public void setMsgUrl(String msgUrl) {
+        this.msgUrl = msgUrl;
     }
 }

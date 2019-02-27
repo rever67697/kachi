@@ -3,14 +3,14 @@ package com.team.service;
 import javax.annotation.Resource;
 
 import com.team.dao.QuartzCronDao;
+import com.team.jobs.HandleProblemcardTask;
+import com.team.jobs.JobManager;
+import com.team.jobs.SendMessageTask;
 import com.team.model.QuartzCron;
 import com.team.service.impl.BaseService;
 import com.team.vo.ReturnMsg;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
+import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,13 +18,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QuartzService extends BaseService{
+public class QuartzService extends BaseService {
 
-    @Resource(name = "jobDetail")
-    private JobDetail jobDetail;
+    @Resource(name = "jobDetail-handleProblemcard")
+    private JobDetail jobDetailhandleProblemcard;
 
-    @Resource(name = "jobTrigger")
-    private CronTrigger cronTrigger;
+    @Resource(name = "jobDetail-sendMsg")
+    private JobDetail jobDetailSendMsg;
 
     @Resource(name = "scheduler")
     private Scheduler scheduler;
@@ -32,45 +32,83 @@ public class QuartzService extends BaseService{
     @Autowired
     private QuartzCronDao quartzCronDao;
 
-    public ReturnMsg scheduleUpdateCronTrigger(int minute,int status,int count,int isHandle,Integer alarmCount) throws SchedulerException {
+    public ReturnMsg scheduleUpdate(QuartzCron quartzCron) throws SchedulerException {
 
-        QuartzCron quartzCron = quartzCronDao.get();
+        quartzCron.setProblemcardCronstr("0 */" + quartzCron.getProblemcardMinute() + " * * * ?");
+        quartzCron.setMsgCronstr("0 */" + quartzCron.getMsgMinute() + " * * * ?");
 
-        String newCron = "0 */"+minute+" * * * ?";
+        //调度处理问题
+        scheduleProblemcard(quartzCron);
+        //调度发短信
+        scheduleSendMsg(quartzCron);
 
-        //关闭或者开启任务  0-开启
-        if(status==0){
-            CronTrigger trigger = (CronTrigger) scheduler.getTrigger(cronTrigger.getKey());
-            // 表达式调度构建器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(newCron);
-            // 按新的cronExpression表达式重新构建trigger
-            trigger = trigger.getTriggerBuilder().withIdentity(cronTrigger.getKey())
-                    .withSchedule(scheduleBuilder).build();
-            // 按新的trigger重新设置job执行
-            scheduler.pauseJob(cronTrigger.getJobKey());
-            scheduler.rescheduleJob(cronTrigger.getKey(), trigger);
-        }else {
-            //关闭任务
-            //把当前的任务停掉
-            scheduler.pauseJob(cronTrigger.getJobKey());// 停止触发器
-//            scheduler.unscheduleJob(cronTrigger.getKey());// 移除触发器
-//            scheduler.deleteJob(cronTrigger.getJobKey());// 删除任务
-        }
-
-        quartzCron.setCronStr(newCron);
-        quartzCron.setMinute(minute);
-        quartzCron.setStatus(status);
-        quartzCron.setIsHandle(isHandle);
-        quartzCron.setCount(count);
-        quartzCron.setAlarmCount(alarmCount);
         //更新数据库
         quartzCronDao.update(quartzCron);
 
-        return successTip(newCron);
+        return successTip();
+    }
+
+    private void scheduleProblemcard(QuartzCron quartzCron) throws SchedulerException {
+        //关闭或者开启任务  1-开启
+        if (quartzCron.getStatusProblemcard() == 1) {
+
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), "trigger-handleProblemcard");
+
+            scheduler.pauseJob(jobDetailhandleProblemcard.getKey());
+            scheduler.deleteJob(jobDetailhandleProblemcard.getKey());
+            scheduler.scheduleJob(jobDetailhandleProblemcard,trigger);
+        } else {
+            //把当前的任务停掉
+            scheduler.pauseJob(jobDetailhandleProblemcard.getKey());
+        }
+    }
+
+    private void scheduleSendMsg(QuartzCron quartzCron) throws SchedulerException {
+        //关闭或者开启任务  1-开启
+        if (quartzCron.getStatusMsg() == 1) {
+
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), "trigger-sendMsg");
+            scheduler.pauseJob(jobDetailSendMsg.getKey());
+            scheduler.deleteJob(jobDetailSendMsg.getKey());
+            scheduler.scheduleJob(jobDetailSendMsg, trigger);
+        } else {
+            //把当前的任务停掉
+            scheduler.pauseJob(jobDetailSendMsg.getKey());
+        }
     }
 
 
-    public QuartzCron getNow(){
+    public QuartzCron getNow() {
         return quartzCronDao.get();
     }
+
+    /**
+     * 初始化定时任务
+     *
+     * @throws Exception
+     */
+    public void initJob() throws Exception {
+        QuartzCron quartzCron = getNow();
+
+        //定时任务-发送短信
+        if (quartzCron.getStatusMsg() == 1) {
+            System.out.println("========启动jobDetail-sendMsg============");
+
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), "trigger-sendMsg");
+
+            scheduler.scheduleJob(jobDetailSendMsg,trigger);
+        }
+
+        //定时任务-扫描处理问题卡
+        if (quartzCron.getStatusProblemcard() == 1) {
+            System.out.println("========启动jobDetail-handleProblemcard=============");
+
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), "trigger-handleProblemcard");
+
+            scheduler.scheduleJob(jobDetailhandleProblemcard,trigger);
+        }
+
+
+    }
+
 }

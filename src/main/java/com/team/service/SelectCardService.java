@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public interface SelectCardService {
 
-    ResultList list(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows);
+    ResultList listUnnormal(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows);
 
     ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid,Long imsi,Integer departmentId,Integer dId,int page, int rows);
 }

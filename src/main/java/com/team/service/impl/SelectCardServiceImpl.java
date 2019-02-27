@@ -26,8 +26,12 @@ public class SelectCardServiceImpl implements SelectCardService {
     @Autowired
     private SelectCardDao selectCardDao;
 
+    /**
+     * 取卡异常
+     * @return
+     */
     @Override
-    public ResultList list(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows) {
+    public ResultList listUnnormal(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows) {
         PageHelper.startPage(page,rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
@@ -35,11 +39,15 @@ public class SelectCardServiceImpl implements SelectCardService {
         map.put("tsid",tsid);
         map.put("departmentId", departmentId);
         map.put("dId", CommonUtil.changeDepartmentId(dId));
-        List<SelectCard> list = selectCardDao.list(map);
+        List<SelectCard> list = selectCardDao.listUnnormal(map);
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);
     }
 
+    /**
+     * 选卡日志
+     * @return
+     */
     @Override
     public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi,Integer departmentId,Integer dId, int page, int rows) {
         PageHelper.startPage(page,rows);
