@@ -59,28 +59,46 @@ public class SendMessageTask {
             e.printStackTrace();
         }
 
-        List<SelectCard> list = selectCardDao.listUnnormal(map);
+        List<SelectCard> list = selectCardDao.listNoCard(map);
 
         Map<String, String> paramMap = new TreeMap<>();
         StringBuilder params = new StringBuilder();
         if (CommonUtil.listNotBlank(list)) {
+
+            Set<String> set = new HashSet<>();
             for (SelectCard selectCard : list) {
-
-                paramMap.put("name", "cardselect");
-                paramMap.put("tsid", selectCard.getTsid().toString());
-                paramMap.put("result", selectCard.getResultCode() + "-" + resultMsg.get(selectCard.getResultCode().toString()));
-                paramMap.put("date", sdf.format(selectCard.getSelectDate()));
-                paramMap.put("tel", quartzCron.getMsgPhone());
-
-                for (Map.Entry<String, String> entry : paramMap.entrySet()) {
-                    params.append(entry.getKey())
-                            .append("=")
-                            .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
-                }
-                params.append("sign=" + MD5Utils.encrypt(params.toString().substring(0, params.toString().length() - 1)));
-//                System.out.println(quartzCron.getMsgUrl() + params.toString());
-                sendMsg(quartzCron.getMsgUrl() + params.toString());
+                set.add(selectCard.getTsid().toString());
             }
+
+            String tsid = "";
+
+            int flag = 0;
+            for (String s : set) {
+                if(flag < 3)
+                    tsid += s+";";
+
+                flag++;
+            }
+
+            tsid = tsid.substring(0, tsid.length() - 1);
+            if (set.size() > 3){
+                tsid += "等"+set.size()+"台";
+            }
+
+            paramMap.put("name", "cardselect");
+            paramMap.put("tsid", tsid);
+            paramMap.put("result", "1-" + resultMsg.get("1"));
+            paramMap.put("date", sdf.format(list.get(0).getSelectDate()));
+            paramMap.put("tel", quartzCron.getMsgPhone());
+
+            for (Map.Entry<String, String> entry : paramMap.entrySet()) {
+                params.append(entry.getKey())
+                        .append("=")
+                        .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
+            }
+            params.append("sign=" + MD5Utils.encrypt(params.toString().substring(0, params.toString().length() - 1)));
+//                System.out.println(quartzCron.getMsgUrl() + params.toString());
+            sendMsg(quartzCron.getMsgUrl() + params.toString());
         }
 
         logger.info("现在时间:" + sdf.format(new Date()) + " 执行处理发送短信任务!");
@@ -112,5 +130,6 @@ public class SendMessageTask {
             }
         });
     }
+
 
 }

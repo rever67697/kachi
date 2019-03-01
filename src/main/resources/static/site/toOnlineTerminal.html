@@ -132,7 +132,7 @@
         if (selectRows.length > 0 && selectRows.length == 1) {
 			$('#dg').datagrid('loading');
 			var rowData = selectRows[0];
-			$.post(kcJs.fn.getContextPath()+'/terminalSim/delete',{tsid:rowData.tsid,imsi:rowData.imsi},function(data){
+			$.post(kcJs.fn.getContextPath()+'/terminalSim/changeCard',{tsid:rowData.tsid,imsi:rowData.imsi},function(data){
 				if(data && data.code && data.code == '200'){
 					doQuery();
 				}else{
@@ -173,7 +173,7 @@
         var selectRows = $('#dg').datagrid("getSelections");
         if (selectRows.length > 0 && selectRows.length == 1) {
             $('#dg').datagrid('loading');
-            $.post(kcJs.fn.getContextPath()+'/terminal/updateStatus',{tsid:selectRows[0].tsid,id:selectRows[0].id},function (data) {
+            $.post(kcJs.fn.getContextPath()+'/terminalSim/offline',{tsid:selectRows[0].tsid,id:selectRows[0].id},function (data) {
                 if(data && data.code && data.code == '200'){
                     doQuery();
                 }else{

@@ -35,6 +35,7 @@ public class QuartzConfigration {
          * 通过这几个配置，告诉JobDetailFactoryBean我们需要执行定时执行ScheduleTask类中的run方法
          */
         jobDetail.setTargetMethod("run");
+        
         return jobDetail;
     }
 
