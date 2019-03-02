@@ -85,4 +85,29 @@
 			<include refid="dId"/>
 			) k
 	</select>
+
+	<select id="queryOnlineCount" resultType="com.team.model.StatTerminal" parameterType="java.util.Map">
+		select r.stat_date,
+			   sum(stat_count) stat_count
+		from tb_stat_terminal r
+		left join m_department d on r.departmentId = d.id
+		where stat_date between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		<include refid="dId"/>
+		group by r.stat_date
+		order by r.stat_date
+	</select>
+
+	<insert id="statTerminal" parameterType="com.team.model.StatTerminal">
+		insert into tb_stat_terminal
+		(stat_date,departmentId,stat_count)
+
+		select date_format(now(),'%Y-%m-%d %H:%i:00') statDate,
+			   d.id departmentId,
+			   count(1) statCount
+		  from m_terminal_sim r, m_terminal t, m_department d
+		 where t.tsid=r.tsid
+		   and t.departmentId=d.id
+		  group by d.id
+	</insert>
+
 </mapper>

@@ -577,7 +577,7 @@
         oriDate = oriDate?oriDate:(new Date().format('yyyy-MM-dd')+' 00:00:00');
         var selectDate = $('#chargeForm [name=selectDate]').val();
 
-        var autualDate = kcJs.fn.getDiffDate(oriDate.substr(0,10),selectDate);
+        var autualDate = kcJs.fn.getDiffDate(oriDate.substr(0,10),selectDate * 86400000,"yyyy-MM-dd 00:00:00");
 
         $('#chargeForm [name=validityDate]').val(autualDate);
         $('#chargeForm [name=chargeDate]').val(selectDate);

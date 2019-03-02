@@ -40,6 +40,7 @@ filter:
   noFilterPath: .css;.js;.png;.jpg;gif;verificationCode;login.html;login;logout;error404.html;getCode;q;interface;download;getPublicKey
 
 sendWiFiPass: 88888888
+isStatTerminal: true
 
 #memcached缓存配置
 memcache:

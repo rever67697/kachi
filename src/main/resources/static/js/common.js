@@ -314,11 +314,10 @@ var kcJs =
                     return funs;
                 }
             },
-            getDiffDate: function (date, n) {
+            getDiffDate: function (date, n , format) {
                 //间隔的毫秒= n * 24 * 60 * 60 * 1000
-                var intMilliSec = n * 86400000;
-                var resultDate = new Date(Date.parse(new Date(date)) + intMilliSec); //Date.parse()返回的是毫秒数
-                return resultDate.format("yyyy-MM-dd") + ' 00:00:00';
+                var resultDate = new Date(Date.parse(new Date(date)) + n); //Date.parse()返回的是毫秒数
+                return resultDate.format(format);
             },
             //终端充值初始化type=flow/date
             initCharge: function (obj, type) {
@@ -364,7 +363,7 @@ Date.prototype.format = function (format) {
     var o = {
         "M+": this.getMonth() + 1, //month
         "d+": this.getDate(),    //day
-        "h+": this.getHours(),   //hour
+        "H+": this.getHours(),   //hour
         "m+": this.getMinutes(), //minute
         "s+": this.getSeconds(), //second
         "q+": Math.floor((this.getMonth() + 3) / 3),  //quarter

@@ -20,9 +20,9 @@ public interface TerminalSimDao {
 	 *@return
 	 *return
 	 */
-	public List<TerminalSim> getTerminalSimByTsid(@Param("tsid")Integer tsid);
+	List<TerminalSim> getTerminalSimByTsid(@Param("tsid")Integer tsid);
 
-	public List<TerminalSim> getTerminalSimByImsi(@Param("imsi") Long imsi);
+	List<TerminalSim> getTerminalSimByImsi(@Param("imsi") Long imsi);
 	
 	
 	/**
@@ -31,7 +31,7 @@ public interface TerminalSimDao {
 	 *@return
 	 *return
 	 */
-	public List<TerminalSim> getTerminalSimList(Map<String, Object> map);
+	List<TerminalSim> getTerminalSimList(Map<String, Object> map);
 	
 	/**
 	 * 支持批量删除在线终端
@@ -39,15 +39,14 @@ public interface TerminalSimDao {
 	 *@return
 	 *return
 	 */
-	public int deleteTerminalByTsid(@Param("tsid") Integer tsid);
+	int deleteTerminalByTsid(@Param("tsid") Integer tsid);
 
 	/**
 	 * 根据id列表查找
 	 * @param ids
 	 * @return
 	 */
-	public TerminalSim getByTsid(@Param("tsid") Integer tsid);
-	
-	
+	TerminalSim getByTsid(@Param("tsid") Integer tsid);
+
 	
 }

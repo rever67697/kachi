@@ -1,6 +1,7 @@
 package com.team.service.impl;
 
 import com.team.dao.StatDao;
+import com.team.model.StatTerminal;
 import com.team.service.StatService;
 import com.team.util.CommonUtil;
 import com.team.vo.stat.StatBean;
@@ -9,10 +10,8 @@ import com.team.vo.stat.TerminalCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author : wuzhiheng
@@ -24,6 +23,9 @@ public class StatServiceImpl implements StatService {
 
     @Autowired
     private StatDao statDao;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm");
+
 
     @Override
     public Map<String, Object> terminalCount(Integer dId) {
@@ -98,6 +100,34 @@ public class StatServiceImpl implements StatService {
         statBean.fix();
 
         return statBean;
+    }
+
+    @Override
+    public Map<String, Object> statTerminal(Integer dId,Date startDate, Date endDate){
+        Map<String,Object> map = new HashMap<>();
+        map.put("startDate",startDate);
+        map.put("endDate",endDate);
+        map.put("dId",CommonUtil.changeDepartmentId(dId));
+
+
+        List<String> xAxis = new ArrayList<>();
+        List<Integer> series = new ArrayList<>();
+
+        List<StatTerminal> list = statDao.queryOnlineCount(map);
+
+        if(CommonUtil.listNotBlank(list)){
+            for (StatTerminal statTerminal : list) {
+                xAxis.add(sdf.format(statTerminal.getStatDate()));
+                series.add(statTerminal.getStatCount());
+            }
+        }
+
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("xAxis", xAxis);
+        ret.put("series", series);
+
+        return ret;
+
     }
 
 }

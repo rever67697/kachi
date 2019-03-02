@@ -2,6 +2,7 @@ package com.team.service;
 
 import com.team.vo.stat.StatBean;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -16,5 +17,8 @@ public interface StatService {
     Map<String,Object> terminalCost(Integer dId);
 
     StatBean fixInformation(StatBean statBean,Integer dId);
+
+    Map<String,Object> statTerminal(Integer dId,Date startDate, Date endDate);
+
 
 }

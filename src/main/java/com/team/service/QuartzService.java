@@ -12,6 +12,7 @@ import com.team.vo.ReturnMsg;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,8 +27,14 @@ public class QuartzService extends BaseService {
     @Resource(name = "jobDetail-sendMsg")
     private JobDetail jobDetailSendMsg;
 
+    @Resource(name = "jobDetail-statTerminal")
+    private JobDetail jobDetailStatTerminal;
+
     @Resource(name = "scheduler")
     private Scheduler scheduler;
+
+    @Value("${isStatTerminal}")
+    private boolean isStatTerminal;
 
     @Autowired
     private QuartzCronDao quartzCronDao;
@@ -106,6 +113,15 @@ public class QuartzService extends BaseService {
             Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), "trigger-handleProblemcard");
 
             scheduler.scheduleJob(jobDetailhandleProblemcard,trigger);
+        }
+
+        //定时任务-统计在线终端
+        if(isStatTerminal){
+            System.out.println("========启动jobDetail-statTerminal=============");
+
+            Trigger trigger = JobManager.me().buildTrigger("0 */5 * * * ?", "trigger-statTerminal");
+
+            scheduler.scheduleJob(jobDetailStatTerminal,trigger);
         }
 
 

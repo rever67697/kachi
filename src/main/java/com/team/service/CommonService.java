@@ -8,20 +8,20 @@ import com.team.vo.ReturnMsg;
  */
 public interface CommonService {
 
-	public ReturnMsg getCountryDic();
+	ReturnMsg getCountryDic();
 	
-	public ReturnMsg getDepartmentDic(Integer dId);
+	ReturnMsg getDepartmentDic(Integer dId);
 	
-	public ReturnMsg getOperatorDic(Integer countryCode,Integer mcc);
+	ReturnMsg getOperatorDic(Integer countryCode,Integer mcc);
 	
-	public ReturnMsg getSimPoolDic(Integer dId);
+	ReturnMsg getSimPoolDic(Integer dId);
 
-	public ReturnMsg getPackageDic(Integer operatorCode,Integer dId);
+	ReturnMsg getPackageDic(Integer operatorCode,Integer dId);
 
-	public ReturnMsg getProvinceDic(Integer countryCode);
+	ReturnMsg getProvinceDic(Integer countryCode);
 
-	public ReturnMsg getMccDic();
+	ReturnMsg getMccDic();
 
-	public Object q(Long imsi);
+	Object q(Long imsi);
 
 }

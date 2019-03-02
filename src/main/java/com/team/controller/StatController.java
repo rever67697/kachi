@@ -31,7 +31,7 @@ import java.util.Map;
 @Controller
 @PermissionLog("报表统计")
 @RequestMapping("/stat")
-public class StatController {
+public class StatController{
 
 	@Autowired
 	private TerminalChargeService terminalChargeService;
@@ -41,13 +41,6 @@ public class StatController {
 
     /**
      * 充值记录列表查询
-     * @param tsid
-     * @param departmentId
-     * @param startDate
-     * @param endDate
-     * @param page
-     * @param rows
-     * @param request
      * @return
      */
 	@PostMapping("/chargeList")
@@ -59,7 +52,6 @@ public class StatController {
 
     /**
      * 首页统计查询
-     * @param request
      * @return
      */
 	@RequestMapping("/")
@@ -84,6 +76,20 @@ public class StatController {
 		map.put("stat",statBean);
 		return map;
 	}
+
+	/**
+	 * 首页统计查询
+	 * @return
+	 */
+	@RequestMapping("/statTerminal")
+	@ResponseBody
+	public Object statTerminal(Date startDate,Date endDate,HttpServletRequest request){
+
+		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+
+		return statService.statTerminal(dId, startDate, endDate);
+	}
+
 
 
 }
