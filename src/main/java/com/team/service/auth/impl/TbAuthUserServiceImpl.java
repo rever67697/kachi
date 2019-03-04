@@ -69,7 +69,7 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 	public ReturnMsg saveOrUpdateUser(TbAuthUser user) {
 		if(user.getId()==null){
 			//1.创建用户
-			user.setPassWord(MD5Utils.encrypt(user.getPassWord()));
+			user.setPassWord(CommonUtil.encryptPassword(user.getPassWord()));
 			tbAuthUserDao.saveUser(user);
 			//2.创建用户角色
 			TbAuthRole role = new TbAuthRole("普通用户", "USER_"+user.getId());
@@ -118,8 +118,8 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 	@Override
 	public ReturnMsg modifyPwd(TbAuthUser user,String oldPwd, String newPwd) {
 		ReturnMsg returnMsg = null;
-		if(user.getPassWord().equals(MD5Utils.encrypt(oldPwd))){
-			newPwd = MD5Utils.encrypt(newPwd);
+		if(CommonUtil.validateUser(user,oldPwd)){
+			newPwd = CommonUtil.encryptPassword(newPwd);
 			user.setPassWord(newPwd);
 			tbAuthUserDao.modifyPwd(user);
 			returnMsg = super.successTip();
@@ -133,7 +133,7 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 	public ReturnMsg resetPwd(Integer id) {
 		TbAuthUser user = new TbAuthUser();
 		user.setId(id);
-		user.setPassWord(MD5Utils.encrypt("888888"));
+		user.setPassWord(CommonUtil.encryptPassword("888888"));
 		tbAuthUserDao.modifyPwd(user);
 		return super.successTip();
 	}

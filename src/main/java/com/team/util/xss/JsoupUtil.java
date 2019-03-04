@@ -40,6 +40,7 @@ public class JsoupUtil {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		String text = "<a href=\"http://www.baidu.com/a\" onclick=\"alert(1);\">sss</a><script>alert(0);</script>sss";
+		String a = "+_)((_!@#";
 		System.out.println(clean(text));
 	}
 

@@ -54,12 +54,16 @@
 
 	
 	<select id="stat" resultType="com.team.vo.stat.StatBean">
+		select v.*,
+			   case when v.m_user_count != 0 then round(v.m_user_flow / v.m_user_count,2) else 0 end tAvgCost
+		from(
 			select * from
 			(select
 				(select count(distinct t.tsid) from m_terminal t left join m_department d on t.departmentId=d.id and d.status=0 where t.createDate>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_t_count,
 				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0 where r.date=current_date <include refid="dId"/>) d_user_flow,
 				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_flow_day r left join m_simcard t on r.imsi=t.imsi left join m_department d on t.departmentId=d.id and d.status=0 where r.date=current_date <include refid="dId"/>) d_card_flow,
 				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0  where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_user_flow,
+				(select count(distinct r.tsid) from m_cost_day r left join m_terminal t on r.tsid=t.tsid left join m_department d on t.departmentId=d.id and d.status=0  where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_user_count,
 				(select round(ifnull(sum(r.flow),0)/1024/1024,2) from m_flow_day r left join m_simcard t on r.imsi=t.imsi left join m_department d on t.departmentId=d.id and d.status=0 where r.date>=DATE_ADD(current_date(),interval - day(current_date())+1 day) <include refid="dId"/>) m_card_flow,
 				(select round(ifnull(sum(r.chargeflow),0)/1024/1024,2)
 					from m_terminal_charge_record r
@@ -84,6 +88,7 @@
 			where r.createdate>=current_date
 			<include refid="dId"/>
 			) k
+		)v
 	</select>
 
 	<select id="queryOnlineCount" resultType="com.team.model.StatTerminal" parameterType="java.util.Map">

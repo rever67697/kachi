@@ -182,7 +182,7 @@
                         <div style="float:right;margin-top:-3px;height:30px;border: 1px solid #4e97e3;border-radius:4px;">
                             <input readonly="readonly" id="dateRange"
                              style="padding:0;padding-left:5px;border:0;float: left;height: 100%;
-                             width: 220px"/>
+                             width: 255px"/>
                             <span onclick="statTerminal()" style="width:60px;font-size:80%;color: #fff;float: left;text-align:center;height: 30px;line-height:30px;cursor: pointer">查&nbsp;询</span>
                         </div>
                     </h2>
@@ -201,17 +201,13 @@
         elem: '#dateRange',
         type: 'datetime',
         range: '至',
-        max:new Date().format("yyyy-MM-dd")+"23:59:59",
+        max:new Date().format("yyyy-MM-dd")+'23:59:59',
         trigger: 'click',
         btns: ['confirm'],
-        format:'yyyy-MM-dd HH:mm'
+        // format:'yyyy-MM-dd HH:mm'
     });
 
-    var d = new Date();
-    var min = 60 - parseInt(d.format('mm'));
-    var endDate = kcJs.fn.getDiffDate(d.format('yyyy-MM-dd HH:mm'),min*60*1000,"yyyy-MM-dd HH:mm");
-    var startDate = kcJs.fn.getDiffDate(endDate , -2*60*60*1000,'yyyy-MM-dd HH:mm');
-    $('#dateRange').val(startDate+' 至 '+endDate);
+    $('#dateRange').val(new Date().format("yyyy-MM-dd")+' 00:00:00 至 '+new Date().format("yyyy-MM-dd")+' 23:59:59');
 
     var tcountChart = echarts.init(document.getElementById('terminalCount'));
     var tcostChart = echarts.init(document.getElementById('terminalCost'));
@@ -340,8 +336,8 @@
         var params = {};
         if(dateRange){
             var dates = dateRange.split(" 至 ");
-            params.startDate = dates[0]+':00';
-            params.endDate = dates[1]+':00';
+            params.startDate = dates[0];
+            params.endDate = dates[1];
         }else {
             $.messager.alert("提示","请选择时间","info");
             return;
@@ -387,7 +383,7 @@
                 dataZoom: [
                     {
                         show: true,
-                        start: 50,
+                        start: 1,
                         end: 100,
                     },
                 ],

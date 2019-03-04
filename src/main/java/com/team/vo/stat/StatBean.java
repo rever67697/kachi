@@ -287,7 +287,7 @@ public class StatBean implements Serializable {
 
     public void fix() {
         this.mResidueFlow = this.mMaxFlow - this.mUsedFlow;
-        this.tAvgCost = df.format(tTCount > 0 ? mUserFlow / tTCount : 0);
+//        this.tAvgCost = df.format(tTCount > 0 ? mUserFlow / tTCount : 0);
         this.cCostRate = df.format(mMaxFlow > 0 ? (mUsedFlow / mMaxFlow * 100) : 0);
 
         this.tChargeFlowStr = this.tChargeFlow > 1024 ? df.format(this.tChargeFlow / 1024) + "T" : this.tChargeFlow + "G";

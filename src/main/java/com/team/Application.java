@@ -116,7 +116,7 @@ public class Application implements CommandLineRunner {
 
 
     /**
-     * 实现CommandLineRunner接口,在springboot启动后的执行的一些任务，可以在类上搭配@Order(num)来使用
+     * 实现CommandLineRunner接口,在springboot启动后的执行的一些任务，可以在类上搭配@Order(num)来使用;在这里应该也可以用@PostConstruct注解
      * @param strings
      * @throws Exception
      */

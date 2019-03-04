@@ -34,4 +34,6 @@ public class IConstant {
 
 	public final static Long NO_LIMIT = 100000000000L;
 
+	public final static String SALT = "kachi-";
+
 }
