@@ -74,15 +74,15 @@ public class SendMessageTask {
 
             int flag = 0;
             for (String s : set) {
-                if(flag < 3)
-                    tsid += s+";";
+                if (flag < 3)
+                    tsid += s + ";";
 
                 flag++;
             }
 
             tsid = tsid.substring(0, tsid.length() - 1);
-            if (set.size() > 3){
-                tsid += "等"+set.size()+"台";
+            if (set.size() > 3) {
+                tsid += "等" + set.size() + "台";
             }
 
             paramMap.put("name", "cardselect");
@@ -96,8 +96,10 @@ public class SendMessageTask {
                         .append("=")
                         .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
             }
-            params.append("sign=" + MD5Utils.encrypt(params.toString().substring(0, params.toString().length() - 1)));
-//                System.out.println(quartzCron.getMsgUrl() + params.toString());
+            params.setLength(params.length() - 1);
+            params.append("&sign=" + MD5Utils.encrypt(params.toString()));
+            //System.out.println(quartzCron.getMsgUrl() + params.toString());
+            //http://yunmifi.ytxun.cn/ntkcard/index.php/UTIL/index/cardselectfail?
             sendMsg(quartzCron.getMsgUrl() + params.toString());
         }
 
