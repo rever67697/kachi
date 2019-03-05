@@ -1,6 +1,7 @@
 package com.team.filter;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.team.exception.KachiException;
+import com.team.util.IConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -67,6 +70,7 @@ public class LoginFilter implements Filter{
 				response.sendRedirect(request.getContextPath()+"/site/login.html");
 			}
 		}else{
+			validPath(request);
 			arg2.doFilter(arg0, arg1);
 		}
 	}
@@ -74,6 +78,28 @@ public class LoginFilter implements Filter{
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		this.noFilterPath = arg0.getInitParameter("noFilterPath");
+	}
+
+	//过滤html
+	private boolean validPath(HttpServletRequest request){
+
+		String uri = request.getRequestURI().replace(request.getContextPath(), "");
+		if(!uri.endsWith("html"))
+			return true;
+
+		Map<String, Object> userPermission = CommonUtil.getUserPermission(request);
+
+		boolean ok = false;
+		for (Map.Entry<String, Object> entry : userPermission.entrySet()) {
+			if(uri.matches(".*"+entry.getKey()+"$")){
+				ok=true;
+				break;
+			}
+		}
+		if(!ok){
+			throw new KachiException(IConstant.NO_PERMISSION);
+		}
+		return true;
 	}
 
 }

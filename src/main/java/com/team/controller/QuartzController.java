@@ -30,7 +30,9 @@ public class QuartzController extends BaseService {
     @PermissionLog
     public ReturnMsg reset(QuartzCron quartzCron) throws Exception {
 
-        if (quartzCron.getProblemcardMinute() < 1 || quartzCron.getProblemcardMinute() > 59
+        if (    quartzCron.getProblemcardMinute() < 1 || quartzCron.getProblemcardMinute() > 59
+            ||  quartzCron.getMsgMinute() < 1 || quartzCron.getMsgMinute() > 59
+            ||  quartzCron.getStatTerminalMinute() < 1 || quartzCron.getStatTerminalMinute() > 59
                 || quartzCron.getThresholdProblemcard() < 1) {
             return errorTip("参数错误");
         }

@@ -34,6 +34,8 @@ public class QuartzCron implements Serializable {
 
     private String msgUrl;//短信接口地址
 
+    private int statTerminalMinute ;//每隔多少分钟就去统计一次在线终端
+
     public int getProblemcardMinute() {
         return problemcardMinute;
     }
@@ -128,5 +130,13 @@ public class QuartzCron implements Serializable {
 
     public void setMsgUrl(String msgUrl) {
         this.msgUrl = msgUrl;
+    }
+
+    public int getStatTerminalMinute() {
+        return statTerminalMinute;
+    }
+
+    public void setStatTerminalMinute(int statTerminalMinute) {
+        this.statTerminalMinute = statTerminalMinute;
     }
 }

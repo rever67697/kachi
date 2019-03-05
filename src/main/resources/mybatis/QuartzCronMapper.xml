@@ -18,6 +18,7 @@
 			msgMinute = #{msgMinute,jdbcType=INTEGER},
 			msgCronstr = #{msgCronstr,jdbcType=VARCHAR},
 			msgPhone = #{msgPhone,jdbcType=VARCHAR},
+			statTerminalMinute = #{statTerminalMinute,jdbcType=INTEGER},
 			lasttime = now()
 	</update>
 

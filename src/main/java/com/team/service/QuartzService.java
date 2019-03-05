@@ -48,6 +48,8 @@ public class QuartzService extends BaseService {
         scheduleProblemcard(quartzCron);
         //调度发短信
         scheduleSendMsg(quartzCron);
+        //调度统计在线终端
+        scheduleStatTerminal(quartzCron);
 
         //更新数据库
         quartzCronDao.update(quartzCron);
@@ -82,6 +84,14 @@ public class QuartzService extends BaseService {
             //把当前的任务停掉
             scheduler.pauseJob(jobDetailSendMsg.getKey());
         }
+    }
+
+    private void scheduleStatTerminal(QuartzCron quartzCron) throws SchedulerException{
+        Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?", "trigger-statTerminal");
+
+        scheduler.pauseJob(jobDetailStatTerminal.getKey());
+        scheduler.deleteJob(jobDetailStatTerminal.getKey());
+        scheduler.scheduleJob(jobDetailStatTerminal,trigger);
     }
 
 
@@ -119,7 +129,7 @@ public class QuartzService extends BaseService {
         if(isStatTerminal){
             System.out.println("========启动jobDetail-statTerminal=============");
 
-            Trigger trigger = JobManager.me().buildTrigger("0 */5 * * * ?", "trigger-statTerminal");
+            Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?", "trigger-statTerminal");
 
             scheduler.scheduleJob(jobDetailStatTerminal,trigger);
         }

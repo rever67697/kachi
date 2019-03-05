@@ -15,6 +15,7 @@ import com.team.service.StatService;
 import com.team.util.RSAUtil;
 import com.team.vo.stat.StatBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,9 @@ import com.team.vo.ReturnMsg;
 @Controller
 @PermissionLog("登录信息")
 public class LoginController {
+
+	@Value("${filter.noFilterPath}")
+	private String noFilterPath;
 	
 	@Autowired
 	private TbAuthRoleService tbAuthRoleService;
@@ -144,9 +148,13 @@ public class LoginController {
 		if(CommonUtil.listNotBlank(permission)){
 			for (TbAuthPermission p : permission) {
 				if(p.getUrl()!=null&&!p.getUrl().equals(""))
-				map.put(p.getUrl(), p.getText());
+					map.put(p.getUrl(), p.getText());
 			}
 		}
+		for (String s : noFilterPath.split(";")) {
+			map.put(s,"");
+		}
+		map.put("stat.html","");
 		request.getSession().setAttribute(IConstant.SESSION_PERMISSION_MAP, map);
 	}
 

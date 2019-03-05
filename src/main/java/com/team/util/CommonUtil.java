@@ -406,7 +406,7 @@ public class CommonUtil {
     }
 
     public static String getParamDesc(HttpServletRequest request) {
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new TreeMap<>();
         java.util.Enumeration params = request.getParameterNames();
         while (params.hasMoreElements()) {
             String paramName = (String) (params.nextElement());
