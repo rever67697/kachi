@@ -35,17 +35,15 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	@Autowired
 	private SimCardService simCardService;
 
-	// 卡缓存
-	private static final Cache simCache = CacheFactory.getCache(MConstant.MEM_SIM);
-
 	@Override
-	public ResultList list(Integer tsid, Long imsi, Integer dId,int page,
+	public ResultList list(Integer tsid, Long imsi, Integer dId,Integer departmentId,int page,
 			int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("dId",CommonUtil.changeDepartmentId(dId));
 		paramMap.put("imsi", imsi);
 		paramMap.put("tsid", tsid);
+		paramMap.put("departmentId", departmentId);
 		List<ReadyTerminalSim> list = readyTerminalSimDao.list(paramMap);
 		PageInfo<ReadyTerminalSim> pageInfo = new PageInfo<ReadyTerminalSim>(
 				list);

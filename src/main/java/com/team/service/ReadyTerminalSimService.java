@@ -6,12 +6,12 @@ import com.team.vo.ReturnMsg;
 
 public interface ReadyTerminalSimService {
 	
-  public ResultList list(Integer tsid,Long imsi,Integer dId,int page,int rows);
+  ResultList list(Integer tsid,Long imsi,Integer dId,Integer departmentId,int page,int rows);
 
-  public ReturnMsg delete(ReadyTerminalSim readyTerminalSim);
+  ReturnMsg delete(ReadyTerminalSim readyTerminalSim);
 
-  public ReturnMsg update(ReadyTerminalSim readyTerminalSim);
+  ReturnMsg update(ReadyTerminalSim readyTerminalSim);
 
-  public ReturnMsg save(Integer tsid,Integer type,String args,Integer userId,String remark);
+  ReturnMsg save(Integer tsid,Integer type,String args,Integer userId,String remark);
   
 }

@@ -11,7 +11,8 @@
 	<select id="list" resultType="com.team.model.ReadyTerminalSim" parameterType="java.util.Map">
 		select r.*,
 			  c.name operatorMan,
-			  concat(o.operatornamecn,' (',o.operatorCode,')') operatorName
+			  concat(o.operatornamecn,' (',o.operatorCode,')') operatorName,
+			  d.name departmentName
 		from m_ready_terminal_sim r
 		left join m_customer c on r.operator=c.id
 		left join m_terminal t on r.tsid=t.tsid
@@ -24,6 +25,9 @@
 		</if>
 		<if test="imsi!=null ">
 			and r.imsi like #{imsi,jdbcType=BIGINT}
+		</if>
+		<if test="departmentId!=null">
+			and d.id = #{departmentId,jdbcType=INTEGER}
 		</if>
 		<include refid="dId"/>
 		order by insertDate desc

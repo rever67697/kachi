@@ -13,36 +13,28 @@ import org.apache.ibatis.annotations.Param;
 public interface ReadyTerminalSimDao {
   /**
    * 获取指定卡列表记录
-   * 
-   * @param map tsid，imsi
    * @return
    */
-  public List<ReadyTerminalSim> list(Map<String, Object> map);
+  List<ReadyTerminalSim> list(Map<String, Object> map);
 
   /**
    * 根据id删除记录
-   * 
-   * @param
    * @return
    */
-  public int delete(ReadyTerminalSim readyTerminalSim);
+  int delete(ReadyTerminalSim readyTerminalSim);
 
   /**
    * 插入记录
-   * 
-   * @param list
    * @return
    */
-  public int insert(List<ReadyTerminalSim> list);
+  int insert(List<ReadyTerminalSim> list);
 
   /**
    * 更新单条记录
-   * 
-   * @param readyTerminalSim
    * @return
    */
-  public int update(ReadyTerminalSim readyTerminalSim);
+  int update(ReadyTerminalSim readyTerminalSim);
 
-  public ReadyTerminalSim getBydId(@Param("id") Integer id);
+  ReadyTerminalSim getBydId(@Param("id") Integer id);
 
 }

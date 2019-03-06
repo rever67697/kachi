@@ -17,6 +17,8 @@
 	  <form id="queryForm">
 		  <table class="table">
 			  <tr>
+				  <th>部门：</th>
+				  <td><select name="departmentId"><option value="">全部</option></select></td>
 				  <th>套餐名称：</th><td><input name="name" placeholder="请输入套餐名称"/></td>
 				  <th>套餐状态：</th>
 				  <td><select name="status"><option value="">全部</option><option  value="0">有效</option><option value="1">无效</option></select></td>
@@ -191,8 +193,10 @@
 		});
 
         kcJs.fn.initSelect({"container":$('[name=countryCode]'),"url":'getCountryDic',"needNull":false});
+		kcJs.fn.initSelect({"container":$('#queryForm [name=departmentId]'),"url":'getDepartmentDic',"needNull":false,"append":true});
 
-        $('#doForm [name=maxFlow]').keyup(function () {
+
+		$('#doForm [name=maxFlow]').keyup(function () {
             var _val = ($(this).val()+'').toUpperCase();
             if(!/^\d+[KMG]?$/.test(_val)){
                 $(this).val(_val.substr(0,_val.length-1));

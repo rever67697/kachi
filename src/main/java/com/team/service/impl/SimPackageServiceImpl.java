@@ -57,13 +57,14 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	/**
 	 * 查找卡套餐信息
 	 */
-	public ResultList getPackageList(Integer dId,Integer status, String name, int page, int rows) {
+	public ResultList list(Integer dId,Integer departmentId,Integer status, String name, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
 		map.put("status", status);
+		map.put("departmentId", departmentId);
 		map.put("dId", CommonUtil.changeDepartmentId(dId));
-		List<SimPackage> list = simPackageDao.getPackageList(map);
+		List<SimPackage> list = simPackageDao.list(map);
 		PageInfo<SimPackage> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);
 	}
@@ -72,13 +73,13 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	/**
 	 * 单条删除卡套餐
 	 */
-	public ReturnMsg deletePackage(Integer id) {
+	public ReturnMsg delete(Integer id) {
 		ReturnMsg returnMsg;
 		if(!CommonUtil.StringIsNull(simCardDao.getPackageExist(id))){
 			returnMsg = super.errorTip();
 			returnMsg.setMsg("删除失败，有SIM卡正在使用该套餐！");
 		}else{
-			int count = simPackageDao.deletePackage(id);
+			int count = simPackageDao.delete(id);
 			if(count>0){
 				//删除缓存
 				simCache.remove(MConstant.CACHE_PACKAGE_KEY_PREF + id);
@@ -89,10 +90,10 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	}
 
 	@Override
-	public ReturnMsg savePackage(SimPackage simPackage) {
+	public ReturnMsg save(SimPackage simPackage) {
 		int count = 0;
 		if(simPackage.getId()!=null){
-			SimPackage origin = simPackageDao.getPackage(simPackage.getId());
+			SimPackage origin = simPackageDao.getOne(simPackage.getId());
 
 			if(simPackage.getStatus().equals(1) && origin.getStatus().equals(0) && !CommonUtil.StringIsNull(simCardDao.getPackageExist(simPackage.getId()))){
 				ReturnMsg returnMsg = super.errorTip();
@@ -100,7 +101,7 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 				return returnMsg;
 			}
 
-			count = simPackageDao.updatePackage(simPackage);
+			count = simPackageDao.update(simPackage);
 			if(!simPackage.getMaxFlow().equals(origin.getMaxFlow()) || !simPackage.getMaxRoamFlow().equals(origin.getMaxRoamFlow())) {
 				//需要更新流量大小
 //				flowMonthDao.updateMonthFlowByPackage(simPackage);
@@ -139,7 +140,7 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 
 			}
 		}else{
-			count = simPackageDao.insertPackage(simPackage);
+			count = simPackageDao.insert(simPackage);
 		}
 		if(count>0){
 			//更新缓存

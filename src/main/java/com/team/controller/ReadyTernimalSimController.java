@@ -23,9 +23,9 @@ public class ReadyTernimalSimController {
 	private ReadyTerminalSimService ReadyTerminalSimService;
 
 	@PostMapping("/list")
-	public ResultList list(Integer tsid, Long imsi, int page,int rows,HttpServletRequest request) {
+	public ResultList list(Integer departmentId,Integer tsid, Long imsi, int page,int rows,HttpServletRequest request) {
 		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return ReadyTerminalSimService.list(tsid, imsi, dId,page,rows);
+		return ReadyTerminalSimService.list(tsid, imsi, dId,departmentId,page,rows);
 	}
 
 	@PostMapping("/save")

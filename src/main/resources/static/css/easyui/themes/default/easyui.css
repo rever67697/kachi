@@ -2012,7 +2012,7 @@ fieldset{border:1px solid #999}
 
 .text-top{font-size: 14px;display: inline-block;margin-bottom:3px}
 .text-bottom{font-size: 13px;color: #666}
-.text-title{padding:3px 0 3px 10px;background: #4e97e3;color:#fff;font-weight: bold;border-radius:4px;margin-bottom:10px}
+.text-title{padding:3px 0 3px 10px;background: #4e97e3;color:#fff;font-weight: bold;border-radius:4px;margin-bottom:10px;height:26px}
 
 .indicator{width:250px;height:60px;margin-bottom:5px ;border-bottom:1px dotted #ccc;cursor: default}
 .indicator-value{display: block;font-size: 18px ;color:red;margin-left:80px;padding-top: 8px;padding-bottom: 3px}

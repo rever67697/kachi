@@ -33,6 +33,8 @@ public class ReadyTerminalSim implements Serializable {
 
 	private String remark;//备注
 
+	private String departmentName;//终端所属部门
+
 
 
 	public ReadyTerminalSim(Integer tsid,Long imsi,Integer lastStatus, Integer type, Integer operator,String remark) {
@@ -127,5 +129,13 @@ public class ReadyTerminalSim implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 }

@@ -20,7 +20,7 @@ public interface SimPackageDao {
 	 *@return
 	 *return
 	 */
-	public List<SimPackage> getPackageList(Map<String, Object> map);
+	List<SimPackage> list(Map<String, Object> map);
 	
 	/**
 	 * 单条删除卡套餐
@@ -28,7 +28,7 @@ public interface SimPackageDao {
 	 *@return
 	 *return
 	 */
-	public int deletePackage(@Param("id") Integer id);
+	int delete(@Param("id") Integer id);
 	
 	/**
 	 * 更新套餐信息
@@ -36,7 +36,7 @@ public interface SimPackageDao {
 	 *@return
 	 *return
 	 */
-	public int updatePackage(SimPackage simPackage);
+	int update(SimPackage simPackage);
 	
 	/**
 	 * 添加卡套餐
@@ -44,12 +44,12 @@ public interface SimPackageDao {
 	 *@return
 	 *return
 	 */
-	public int insertPackage(SimPackage simPackage);
+	int insert(SimPackage simPackage);
 
 	/**
 	 * 获取某一个套餐信息
 	 * @param packageId
 	 * @return
 	 */
-    public SimPackage getPackage(Integer packageId);
+    SimPackage getOne(Integer packageId);
 }

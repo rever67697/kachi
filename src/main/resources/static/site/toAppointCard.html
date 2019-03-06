@@ -17,6 +17,8 @@
     <form id="queryForm">
         <table class="table">
             <tr>
+                <th>部门：</th>
+                <td><select name="departmentId"></select></td>
                 <th>终端编号：</th>
                 <td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
                 <th>指定卡IMSI：</th>
@@ -184,9 +186,9 @@
         columns: [[
             {field: 'ck', checkbox: true},
             {field: 'id', title: '指定卡id', hidden: true},
-            {field: 'tsid', title: '终端编号', width: 140},
-            {field: 'imsi', title: 'IMSI', width: 140},
-            {field: 'operatorName', title: '运营商', width: 160},
+            {field: 'tsid', title: '终端编号', width: 80},
+            {field: 'imsi', title: 'IMSI', width: 130},
+            {field: 'operatorName', title: '运营商', width: 140},
             {field: 'insertDate', title: '指定时间', width: 150},
             {
                 field: 'lastStatus', title: '指定前卡状态', width: 100, formatter: function (value, rec, index) {
@@ -194,13 +196,14 @@
                 return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
             },
-            {field: 'operatorMan', title: '操作人', width: 100},
+            {field: 'operatorMan', title: '操作人', width: 80},
             {
-                field: 'type', title: '指定类型', width: 150, formatter: function (value, rec, index) {
+                field: 'type', title: '指定类型', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getReadyType(value + '');
                 return status ? status[0] : '';
             }
             },
+            {field: 'departmentName', title: '所属部门', width: 160},
             {field: 'remark', title: '备注', width: 200},
         ]],
         toolbar: kcJs.fn.getFunctions(),

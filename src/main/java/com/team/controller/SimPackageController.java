@@ -27,22 +27,22 @@ public class SimPackageController {
 	private SimPackageService simPackageService;
 	
 	@PostMapping("/list")
-	public ResultList list(Integer status,String name,int page,int rows,HttpServletRequest request){
+	public ResultList list(Integer departmentId,Integer status,String name,int page,int rows,HttpServletRequest request){
 		Integer dId= CommonUtil.getUser(request).getDepartmentId();
-		return simPackageService.getPackageList(dId,status, name, page, rows);
+		return simPackageService.list(dId,departmentId,status, name, page, rows);
 	}
 	
 	@PostMapping("/save")
 	@PermissionLog
 	public ReturnMsg save(SimPackage simPackage,HttpServletRequest request){
 		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
-		return simPackageService.savePackage(simPackage);
+		return simPackageService.save(simPackage);
 	} 
 	
 	@PostMapping("/delete")
 	@PermissionLog
 	public ReturnMsg delete(Integer id){
-		return simPackageService.deletePackage(id);
+		return simPackageService.delete(id);
 	}
 
 	

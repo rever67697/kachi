@@ -463,7 +463,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 				//2.如果套餐发生了变化，需要重新计算套餐的最大使用参数
 				if(isChangePackage){
-					SimPackage simPackage = simPackageDao.getPackage(packageId);
+					SimPackage simPackage = simPackageDao.getOne(packageId);
 					flowMonth.setMaxFlow(simPackage.getMaxFlow());
 					flowMonth.setMaxRoamFlow(simPackage.getMaxRoamFlow());
 				}
@@ -816,7 +816,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 		//如果在当前账期找不到月流量，从套餐创建一个月流量记录。
 		if(simCard != null) {
-			SimPackage simPackage = simPackageDao.getPackage(simCard.getPackageId());
+			SimPackage simPackage = simPackageDao.getOne(simCard.getPackageId());
 			if(simPackage != null) {
 
 				simFlowMonth = createSimFlowMonth(simCard, simPackage);
