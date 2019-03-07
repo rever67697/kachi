@@ -111,13 +111,6 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
 
     @Override
     public ReturnMsg tCharge(TerminalChargeRecord terminalChargeRecord,boolean clearFlow,boolean clearDate,boolean noLimit) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("tsid",terminalChargeRecord.getTsid());
-        Terminal terminal = terminalDao.getByTsid(map);
-        if(terminal==null){
-            return errorTip("充值失败，终端不存在");
-        }
-
         //获取源流量和日期参数
         FlowBalance flowBalance = flowBalanceDao.findByTsid(terminalChargeRecord.getTsid());
         if(flowBalance==null){

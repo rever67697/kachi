@@ -141,11 +141,14 @@
     </update>
 
     <select id="getByTsid" resultType="com.team.model.Terminal" parameterType="java.util.Map">
-        select * from m_terminal
-        where tsid = #{tsid,jdbcType=INTEGER}
+        select t.*
+        from m_terminal t
+        left join m_department d on t.departmentId = d.id
+        where t.tsid = #{tsid,jdbcType=INTEGER}
         <if test="departmentId!=null">
-            and departmentId=#{departmentId,jdbcType=INTEGER}
+            and t.departmentId=#{departmentId,jdbcType=INTEGER}
         </if>
+        <include refid="dId"/>
     </select>
 
     <select id="qtbd" resultType="com.team.dto.TerminalDTO">
