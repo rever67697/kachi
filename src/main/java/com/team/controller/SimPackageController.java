@@ -27,15 +27,14 @@ public class SimPackageController {
 	private SimPackageService simPackageService;
 	
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer status,String name,int page,int rows,HttpServletRequest request){
-		Integer dId= CommonUtil.getUser(request).getDepartmentId();
-		return simPackageService.list(dId,departmentId,status, name, page, rows);
+	public ResultList list(Integer departmentId,Integer status,String name,int page,int rows){
+		return simPackageService.list(departmentId,status, name, page, rows);
 	}
 	
 	@PostMapping("/save")
 	@PermissionLog
-	public ReturnMsg save(SimPackage simPackage,HttpServletRequest request){
-		simPackage.setDepartmentId(CommonUtil.getUser(request).getDepartmentId());
+	public ReturnMsg save(SimPackage simPackage){
+		simPackage.setDepartmentId(CommonUtil.getDepartmentId());
 		return simPackageService.save(simPackage);
 	} 
 	

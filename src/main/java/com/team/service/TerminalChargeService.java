@@ -20,6 +20,6 @@ public interface TerminalChargeService {
      */
     ReturnMsg charge(TerminalChargeRecord record);
 
-    ResultList list(Integer tsid, Date startDate,Date endDate,Integer departmentId,Integer dId,int page,int rows);
+    ResultList list(Integer tsid, Date startDate,Date endDate,Integer departmentId,int page,int rows);
 
 }

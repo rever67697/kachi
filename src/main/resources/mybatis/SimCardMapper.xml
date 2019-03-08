@@ -101,6 +101,16 @@
 					</when>
 				</choose>
 			</if>
+			<if test="outDate!=null">
+				<choose>
+					<when test="outDate==1">
+						and (expiryDate is null or expiryDate &lt; now())
+					</when>
+					<otherwise>
+						and (expiryDate &gt; now())
+					</otherwise>
+				</choose>
+			</if>
 			<include refid="dId"></include>
 			order by r.cpid,r.cpchannelid
 	</select>
@@ -202,6 +212,16 @@
 				<when test="dateType==3">
 					and (openDate>=#{startDate,jdbcType=TIMESTAMP} and openDate&lt;=#{endDate,jdbcType=TIMESTAMP})
 				</when>
+			</choose>
+		</if>
+		<if test="outDate!=null">
+			<choose>
+				<when test="outDate==1">
+					and (expiryDate is null or expiryDate &lt; now())
+				</when>
+				<otherwise>
+					and (expiryDate &gt; now())
+				</otherwise>
 			</choose>
 		</if>
 		<include refid="dId"></include>

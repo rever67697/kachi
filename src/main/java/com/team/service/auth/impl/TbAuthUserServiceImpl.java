@@ -51,14 +51,13 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 	/**
 	 * 根据条件查找用户列表
 	 */
-	public ResultList getUserList(Integer status, String name,
-			Integer departmentId,Integer dId,int page,int rows) {
+	public ResultList getUserList(Integer status, String name,Integer departmentId,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", status);
 		map.put("name", name);
 		map.put("departmentId", departmentId);
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		map.put("status", status);
 		List<TbAuthUser> list = tbAuthUserDao.getUserList(map);
 		PageInfo<TbAuthUser> pageInfo = new PageInfo<TbAuthUser>(list);

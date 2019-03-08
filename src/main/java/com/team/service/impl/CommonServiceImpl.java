@@ -54,9 +54,9 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     /**
      * 查找所有的代理商
      */
-    public ReturnMsg getDepartmentDic(Integer dId) {
+    public ReturnMsg getDepartmentDic() {
         ReturnMsg returnMsg = super.successTip();
-        List<Dictionary> list = commonDao.getDepartmentDic(CommonUtil.changeDepartmentId(dId));
+        List<Dictionary> list = commonDao.getDepartmentDic(CommonUtil.getDId());
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }
@@ -80,9 +80,9 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     }
 
     @Override
-    public ReturnMsg getSimPoolDic(Integer dId) {
+    public ReturnMsg getSimPoolDic() {
         ReturnMsg returnMsg = super.successTip();
-        List<Dictionary> list = commonDao.getSimPoolDic(CommonUtil.changeDepartmentId(dId));
+        List<Dictionary> list = commonDao.getSimPoolDic(CommonUtil.getDId());
         if (list != null && list.size() > 0) {
             returnMsg.setData(list);
         }
@@ -90,10 +90,10 @@ public class CommonServiceImpl extends BaseService implements CommonService {
     }
 
     @Override
-    public ReturnMsg getPackageDic(Integer operatorCode,Integer dId) {
+    public ReturnMsg getPackageDic(Integer operatorCode) {
         ReturnMsg returnMsg = super.successTip();
         Map<String,Object> map = new HashMap<>();
-        map.put("dId",CommonUtil.changeDepartmentId(dId));
+        map.put("dId",CommonUtil.getDId());
         map.put("operatorCode",operatorCode);
         List<Dictionary> list = commonDao.getPackageDic(map);
         if (list != null && list.size() > 0) {

@@ -12,12 +12,12 @@ import com.team.vo.ReturnMsg;
  */
 public interface SimPoolService {
 	
-	public ResultList getSimPoolList(Integer dId,Integer spid,String name,Integer isActive,int page,int rows);
+	ResultList getSimPoolList(Integer spid,String name,Integer isActive,int page,int rows);
 	
-	public ReturnMsg getOutlineInfo(Integer dId);
+	ReturnMsg getOutlineInfo();
 	
-	public ReturnMsg update(SimPool simPool);
+	ReturnMsg update(SimPool simPool);
 
-	public ReturnMsg saveSimPool(SimPool simPool);
+	ReturnMsg saveSimPool(SimPool simPool);
 	
 }

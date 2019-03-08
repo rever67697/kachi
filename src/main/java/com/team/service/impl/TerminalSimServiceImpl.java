@@ -55,22 +55,16 @@ public class TerminalSimServiceImpl extends BaseService implements TerminalSimSe
 
 	/**
 	 * 在线终端 -> 列表
-	 * @param departmentId
-	 * @param dId
-	 * @param tsid
-	 * @param imsi
-	 * @param page
-	 * @param rows
 	 * @return
 	 */
 	@Override
-	public ResultList list(Integer departmentId,Integer dId,Integer tsid, Long imsi, int page,int rows) {
+	public ResultList list(Integer departmentId,Integer tsid, Long imsi, int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tsid", tsid);
 		map.put("imsi", imsi);
 		map.put("departmentId", departmentId);
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		List<TerminalSim> list = terminalSimDao.getTerminalSimList(map);
 		PageInfo<TerminalSim> pageInfo = new PageInfo<TerminalSim>(list);
 		return new ResultList(pageInfo.getTotal(), list);

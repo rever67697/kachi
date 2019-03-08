@@ -65,7 +65,7 @@
             <!--                                                      -->
 
             <tr>
-                <th rowspan="3">取卡异常短信发送</th>
+                <th rowspan="2">取卡异常短信发送</th>
                 <td>是否开启发送：</td>
                 <td><select name="statusMsg">
                     <option value="1">是</option>
@@ -80,11 +80,6 @@
                 <td>每隔多少分钟扫描取卡异常</td>
             </tr>
 
-            <tr>
-                <td>手机号码：</td>
-                <td><input name="msgPhone" class="onlyNumber"/></td>
-                <td>手机号码</td>
-            </tr>
 
             <tr>
                 <th rowspan="2">其他参数</th>
@@ -120,12 +115,6 @@
     }
 
     function saveData() {
-
-        if($('#doForm [name=statusMsg]').val()=='1' &&
-            (!$('#doForm [name=msgPhone]').val() || !/^[1][0-9]{10}$/.test($('#doForm [name=msgPhone]').val()))){
-            $.messager.alert('提示','手机号码不规范','info');
-            return;
-        }
 
         $.post(kcJs.fn.getContextPath() + '/quartz/reset', $('#doForm').serializeObject(), function (data) {
             if (data) {

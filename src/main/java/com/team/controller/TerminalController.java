@@ -33,7 +33,7 @@ import com.team.vo.ReturnMsg;
 @PermissionLog("终端管理")
 @RequestMapping("/terminal")
 @SuppressWarnings("all")
-public class TerminalController {
+public class TerminalController extends BaseController{
 
 	@Autowired
 	private TerminalService terminalService;
@@ -47,9 +47,8 @@ public class TerminalController {
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId, Integer status, Integer tsid, Integer activated,
 						   @RequestParam(name = "page",defaultValue = "1") int page, @RequestParam(name = "rows",defaultValue = "1") int rows,
-						   Date startDate, Date endDate, HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalService.getTerminalList(departmentId,dId, tsid, status,activated, startDate,endDate,page, rows);
+						   Date startDate, Date endDate){
+		return terminalService.getTerminalList(departmentId, tsid, status,activated, startDate,endDate,page, rows);
 	}
 	
 	@PostMapping("/delete")
@@ -98,7 +97,7 @@ public class TerminalController {
 	@PermissionLog
 	public ReturnMsg charge(TerminalChargeRecord terminalChargeRecord,HttpServletRequest request){
 		terminalChargeRecord.setCreateDate(new Date());
-		terminalChargeRecord.setOperator(CommonUtil.getUser(request).getName());
+		terminalChargeRecord.setOperator(CommonUtil.getUser().getName());
 		return terminalChargeService.charge(terminalChargeRecord);
 	}
 
@@ -119,6 +118,11 @@ public class TerminalController {
 	@PermissionLog()
 	public ReturnMsg updateSSID(Terminal terminal){
 		return terminalService.updateSSID(terminal);
+	}
+
+	@PostMapping("/getOne")
+	public ReturnMsg getOne(Integer tsid){
+		return terminalService.getOne(tsid);
 	}
 
 }

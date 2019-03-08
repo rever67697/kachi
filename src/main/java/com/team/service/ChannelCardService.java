@@ -10,14 +10,14 @@ import com.team.vo.ReturnMsg;
 
 public interface ChannelCardService {
 
-	public ResultList getChannelCardList(Integer tsid, Long imsi, Integer departmentId, Integer dId, int page, int rows);
+	 ResultList getChannelCardList(Integer tsid, Long imsi, Integer departmentId, int page, int rows);
 
-	public ReturnMsg deleteChannelCards(String ids);
+	 ReturnMsg deleteChannelCards(String ids);
 
-	public ReturnMsg saveChannelCard(ChannelCard channelCard);
+	 ReturnMsg saveChannelCard(ChannelCard channelCard);
 
-	public ReturnMsg getChannelCardList(MultipartFile file);
+	 ReturnMsg getChannelCardList(MultipartFile file);
 
-	public void insertBatch(List<ChannelCard> list);
+	 void insertBatch(List<ChannelCard> list);
 
 }

@@ -29,9 +29,8 @@ public class TbAuthUserController {
 	
 	@PostMapping("/list")
 	public ResultList list(Integer status, String name,
-			Integer departmentId,int page,int rows,HttpServletRequest  request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId(); 
-		return tbAuthUserService.getUserList(status, name,departmentId,dId, page, rows);
+			Integer departmentId,int page,int rows){
+		return tbAuthUserService.getUserList(status, name,departmentId, page, rows);
 	}
 	
 	@PostMapping("/save")
@@ -58,8 +57,8 @@ public class TbAuthUserController {
 	}
 	
 	@PostMapping("/modifyPwd")
-	public ReturnMsg modifyPwd(HttpServletRequest request,String oldPwd,String newPwd){
-		TbAuthUser user = CommonUtil.getUser(request);
+	public ReturnMsg modifyPwd(String oldPwd,String newPwd){
+		TbAuthUser user = CommonUtil.getUser();
 		return tbAuthUserService.modifyPwd(user, oldPwd, newPwd);
 	}
 	

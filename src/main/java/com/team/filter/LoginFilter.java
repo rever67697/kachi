@@ -44,7 +44,7 @@ public class LoginFilter implements Filter{
 		//System.out.println(request.getRequestURI());
 		
 		//先判断用户有没有登录
-		TbAuthUser user = CommonUtil.getUser(request);
+		TbAuthUser user = CommonUtil.getUser();
 		
 		if(user == null){
 			boolean ok = false;
@@ -87,7 +87,7 @@ public class LoginFilter implements Filter{
 		if(!uri.endsWith("html"))
 			return true;
 
-		Map<String, Object> userPermission = CommonUtil.getUserPermission(request);
+		Map<String, Object> userPermission = CommonUtil.getUserPermission();
 
 		boolean ok = false;
 		for (Map.Entry<String, Object> entry : userPermission.entrySet()) {

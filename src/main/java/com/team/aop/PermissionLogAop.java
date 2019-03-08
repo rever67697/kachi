@@ -56,7 +56,7 @@ public class PermissionLogAop {
         Method method = ms.getMethod();
         PermissionLog logInfo = method.getAnnotation(PermissionLog.class);
         HttpServletRequest request = CommonUtil.getRequest();
-		Map<String, Object> permission = CommonUtil.getUserPermission(request);
+		Map<String, Object> permission = CommonUtil.getUserPermission();
 
 		String uri = request.getRequestURI().replace(request.getContextPath(), "");
 		//1.执行方法之前，判断权限--onlyLog为true则代表这个只执行记录日志，不过滤权限，默认是false
@@ -76,12 +76,12 @@ public class PermissionLogAop {
 		TbAuthUser user = null;
 		Object result = null;
         if("用户登出".equals(logInfo.value())){
-			user = CommonUtil.getUser(request);
+			user = CommonUtil.getUser();
 			result = point.proceed();
 		}else {
 			//2.执行目标方法
 			result = point.proceed();
-			user = CommonUtil.getUser(request);
+			user = CommonUtil.getUser();
 		}
 
 		//3.记录日志，如果用户为空则不记录

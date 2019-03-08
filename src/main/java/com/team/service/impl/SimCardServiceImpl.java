@@ -70,10 +70,10 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 根据卡池id找出其上面的卡
 	 */
 	@Override
-	public ReturnMsg getSimCardByPool(Integer cpId, Integer departmentId) {
+	public ReturnMsg getSimCardByPool(Integer cpId) {
 		Map<String,Object> map = new HashMap<>();
 		map.put("cpId",cpId);
-		map.put("dId",CommonUtil.changeDepartmentId(departmentId));
+		map.put("dId",CommonUtil.getDId());
 		List<SimCard> list = simCardDao.getSimCardByPool(map);
 		ReturnMsg returnMsg = super.successTip();
 		returnMsg.setData(new ResultList(list != null ? list.size() : 0, list));
@@ -115,21 +115,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 页面查询列表
-	 * @param simCard
-	 * @param dId
-	 * @param dateType
-	 * @param startDate
-	 * @param endDate
-	 * @param page
-	 * @param rows
-	 * @return
 	 */
 	@Override
-	public ResultList getSimCardList(SimCardDTO simCard,Integer dId,Integer dateType,Date startDate,Date endDate,int page,int rows) {
+	public ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate,Date startDate,Date endDate,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		map.put("cpId", simCard.getCpId());
 		map.put("status", simCard.getStatus());
 		map.put("imsi", simCard.getImsi());
@@ -137,6 +129,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("operatorCode",simCard.getOperatorCode());
 		map.put("cStatus",simCard.getcStatus());
 		map.put("dateType",dateType);
+		map.put("outDate",outDate);
 		map.put("startDate",startDate);
 		map.put("endDate",endDate);
 		map.put("packageId",simCard.getPackageId());
@@ -149,19 +142,12 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 页面导出excel
-	 * @param simCard
-	 * @param dId
-	 * @param dateType
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws  Exception{
+	public File getCsv(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		map.put("cpId", simCard.getCpId());
 		map.put("status", simCard.getStatus());
 		map.put("imsi", simCard.getImsi());
@@ -169,6 +155,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("operatorCode",simCard.getOperatorCode());
 		map.put("cStatus",simCard.getcStatus());
 		map.put("dateType",dateType);
+		map.put("outDate",outDate);
 		map.put("startDate",startDate);
 		map.put("endDate",endDate);
 		map.put("packageId",simCard.getPackageId());
@@ -230,14 +217,11 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 获取某个部门的总体卡信息概览
-	 * @param dId
-	 * @return
 	 */
 	@Override
-	public ReturnMsg getOutlineInfo(Integer dId) {
+	public ReturnMsg getOutlineInfo() {
 		ReturnMsg returnMsg = super.successTip();
-		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil
-				.changeDepartmentId(dId));
+		List<OutlineInfo> list = simCardDao.getOutlineInfo(CommonUtil.getDId());
 		OutlineInfo info = null;
 		if (list != null && list.size() > 0) {
 			info = list.get(0);
@@ -248,8 +232,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 页面更新单个卡信息
-	 * @param simCard
-	 * @return
 	 */
 	@Override
 	public ReturnMsg update(SimCard simCard) {
@@ -279,9 +261,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 初始化一张卡到卡组,
-	 * 
-	 * @param simCard
-	 * @return
 	 */
 	@Override
 	public SimGroup initGroupSim2Cache(SimCard simCard) {
@@ -345,9 +324,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 	/**
 	 * 页面批量更新卡，只更新某几个字段
-	 * @param simCardDTO
-	 * @param ids
-	 * @return
 	 */
     @Override
     public ReturnMsg batchUpdate(SimCardDTO simCardDTO, String ids) {

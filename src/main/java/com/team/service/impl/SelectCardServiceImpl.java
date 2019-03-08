@@ -31,14 +31,14 @@ public class SelectCardServiceImpl implements SelectCardService {
      * @return
      */
     @Override
-    public ResultList listUnnormal(Date startDate, Date endDate, Integer tsid,Integer departmentId,Integer dId,int page, int rows) {
+    public ResultList listUnnormal(Date startDate, Date endDate, Integer tsid,Integer departmentId,int page, int rows) {
         PageHelper.startPage(page,rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         map.put("tsid",tsid);
         map.put("departmentId", departmentId);
-        map.put("dId", CommonUtil.changeDepartmentId(dId));
+        map.put("dId", CommonUtil.getDId());
         List<SelectCard> list = selectCardDao.listUnnormal(map);
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);
@@ -49,7 +49,7 @@ public class SelectCardServiceImpl implements SelectCardService {
      * @return
      */
     @Override
-    public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi,Integer departmentId,Integer dId, int page, int rows) {
+    public ResultList listSelectCardLog(Date startDate, Date endDate, Integer tsid, Long imsi,Integer departmentId,int page, int rows) {
         PageHelper.startPage(page,rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
@@ -57,7 +57,7 @@ public class SelectCardServiceImpl implements SelectCardService {
         map.put("tsid",tsid);
         map.put("imsi",imsi);
         map.put("departmentId", departmentId);
-        map.put("dId", CommonUtil.changeDepartmentId(dId));
+        map.put("dId", CommonUtil.getDId());
         List<SelectCard> list = selectCardDao.listSelectCardLog(map);
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);

@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public interface ProblemCardService {
 
-    ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi,Integer status,Integer departmentId,Integer dId, int page, int rows);
+    ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi,Integer status,Integer departmentId, int page, int rows);
 
     ReturnMsg delete(Long imsi);
 
-    ReturnMsg getAlarmList(Integer dId);
+    ReturnMsg getAlarmList();
 }

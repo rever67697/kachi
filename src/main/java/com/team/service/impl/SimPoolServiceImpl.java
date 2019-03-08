@@ -46,11 +46,11 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 	/**
 	 * 根据代理商id查找其所有的卡池
 	 */
-	public ResultList getSimPoolList(Integer dId,Integer spid,String name,Integer isActive,
+	public ResultList getSimPoolList(Integer spid,String name,Integer isActive,
 			int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		map.put("spid", spid);
 		map.put("name", name);
 		map.put("isActive", isActive);
@@ -66,9 +66,9 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 	 *@return
 	 *return
 	 */
-	public ReturnMsg getOutlineInfo(Integer dId) {
+	public ReturnMsg getOutlineInfo() {
 		ReturnMsg returnMsg = super.successTip();
-		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.changeDepartmentId(dId));
+		List<OutlineInfo> list = simPoolDao.getOutlineInfo(CommonUtil.getDId());
 		OutlineInfo info = null;
 		if(CommonUtil.listNotBlank(list)){
 			info = list.get(0);

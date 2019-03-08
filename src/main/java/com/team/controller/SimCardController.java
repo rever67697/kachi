@@ -42,23 +42,20 @@ public class SimCardController {
 	 *return
 	 */
 	@GetMapping("/getByPool")
-	public ReturnMsg getByPool(Integer cpId,HttpServletRequest request){
-		Integer departmentId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getSimCardByPool(cpId,departmentId);
+	public ReturnMsg getByPool(Integer cpId){
+		return simCardService.getSimCardByPool(cpId);
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(SimCardDTO simCard,Integer dateType, Date startDate,Date endDate,int page, int rows, HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getSimCardList(simCard,dId,dateType,startDate,endDate ,page, rows);
+	public ResultList list(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate,Date endDate,int page, int rows){
+		return simCardService.getSimCardList(simCard,dateType,outDate,startDate,endDate ,page, rows);
 	}
 
 	@GetMapping("/getCsv")
 	@PermissionLog
-	public void getCsv(SimCardDTO simCard,Integer dateType, Date startDate,Date endDate, HttpServletRequest request, HttpServletResponse response) throws  Exception{
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+	public void getCsv(SimCardDTO simCard,Integer dateType, Integer outDate,Date startDate,Date endDate, HttpServletResponse response) throws  Exception{
 
-		File file = simCardService.getCsv(simCard,dId,dateType,startDate,endDate);
+		File file = simCardService.getCsv(simCard,dateType,outDate,startDate,endDate);
 
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
@@ -106,9 +103,8 @@ public class SimCardController {
 	}
 
 	@PostMapping("/outlineInfo")
-	public ReturnMsg outlineInfo(HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simCardService.getOutlineInfo(dId);
+	public ReturnMsg outlineInfo(){
+		return simCardService.getOutlineInfo();
 	}
 	
 	@PostMapping("/delete")

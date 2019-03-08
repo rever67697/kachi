@@ -33,15 +33,13 @@ public class SimPoolController {
 	
 	@PostMapping("/list")
 	public ResultList list(Integer spid,String name,Integer isActive,
-			int page,int rows,HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simPoolService.getSimPoolList(dId,spid,name,isActive, page, rows);
+			int page,int rows){
+		return simPoolService.getSimPoolList(spid,name,isActive, page, rows);
 	}
 	
 	@PostMapping("/outlineInfo")
-	public ReturnMsg outlineInfo(HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return simPoolService.getOutlineInfo(dId);
+	public ReturnMsg outlineInfo(){
+		return simPoolService.getOutlineInfo();
 	}
 	
 	@PostMapping("/give")

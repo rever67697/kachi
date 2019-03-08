@@ -33,19 +33,12 @@ public class ChannelCardController {
 
 	/**
 	 * 查询获取副卡列表
-	 * 
-	 * @param number 卡号
-	 * @param operatorCode 运营商编号
-	 * @param status 状态
-	 * @param page 页数
-	 * @param rows 一页的记录数
 	 * @return
 	 */
 	@PostMapping("/list")
 	public ResultList list(Integer departmentId,Integer tsid,Long imsi,Integer countryCode,Integer operatorCode, Integer status,
-			int page, int rows,HttpServletRequest request) {
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return channelCardService.getChannelCardList(tsid,imsi,departmentId,dId ,page, rows);
+			int page, int rows) {
+		return channelCardService.getChannelCardList(tsid,imsi,departmentId ,page, rows);
 	}
 
 	@PostMapping("/delete")

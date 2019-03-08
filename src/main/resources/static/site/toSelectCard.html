@@ -29,7 +29,7 @@
                 <th>部门：</th>
                 <td><select name="departmentId"><option value="">全部</option></select></td>
                 <th >选卡时间</th>
-                <td ><input readonly="readonly" id="dateRange"/></td>
+                <td ><input readonly="readonly" id="dateRange" style="font-size: 80%;width: 95%;"/></td>
                 <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
                     询</a></td>
             </tr>
@@ -40,7 +40,22 @@
     <table id="dg"></table>
 </div>
 
-
+<div id="doDialog" closed="true" style="padding:0 10px;overflow:auto;background:#FFF;" iconCls="icon-user">
+    <form id="doForm">
+        <input type="hidden" name="id" value="-1"/>
+        <table class="table th-normal">
+            <tr>
+                <th>手机号码：</th>
+                <td><textarea name="phoneNumber" placeholder="多个号码中间用,分割" rows="2"></textarea></td>
+            </tr>
+            <tr style="height:10px"></tr>
+            <tr>
+                <td colspan="2" align="center" class="noborder">
+                    <a class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td>
+            </tr>
+        </table>
+    </form>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -62,7 +77,7 @@
             {field: 'selectDate', title: '选卡时间', width: 150},
             {field: 'departmentName', title: '部门', width: 200}
         ]],
-        //toolbar: kcJs.fn.getFunctions(),
+        toolbar: kcJs.fn.getFunctions(),
         url: kcJs.fn.getContextPath() + '/selectCard/list',
         iconCls: 'icon-tip',
         nowrap: false,
@@ -88,6 +103,14 @@
 
         doQuery();
 
+        $('#doDialog').dialog({
+            modal: true,
+            width: 400,
+            height: 150,
+            cache: false,
+            title: "配置手机号码",
+        });
+
         kcJs.fn.initSelect({"container": $('[name=departmentId]'), "url": 'getDepartmentDic', "nullDesc": "全部"});
 
 
@@ -103,6 +126,31 @@
             options.queryParams.endDate = dates[1];
         }
         $('#dg').datagrid(options);
+    }
+
+    function doSetPhone() {
+        $.post(kcJs.fn.getContextPath()+'/selectCard/getPhone',{},function (data) {
+            if(data.data)
+                kcJs.fn.autoFillData($('#doForm'),data.data);
+        },'json');
+        $('#doDialog').dialog('open');
+    }
+
+    function saveData() {
+        var phone = $('#doForm [name=phoneNumber]').val();
+        if(phone && !/^[1][0-9]{10}(,[1][0-9]{10})*$/.test(phone)){
+            $.messager.alert('提示','手机号码不规范','info');
+            return false;
+        }
+        $('#doDialog').dialog('close');
+        $('#dg').datagrid('loading');
+        $.post(kcJs.fn.getContextPath() + '/selectCard/savePhone', $('#doForm').serializeObject(), function (data) {
+            if (data) {
+                $.messager.alert('提示', data.msg, 'info');
+                $('#dg').datagrid('loaded');
+            }
+
+        });
     }
 
 

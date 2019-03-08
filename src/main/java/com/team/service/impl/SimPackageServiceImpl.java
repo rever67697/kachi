@@ -57,13 +57,13 @@ public class SimPackageServiceImpl extends BaseService implements SimPackageServ
 	/**
 	 * 查找卡套餐信息
 	 */
-	public ResultList list(Integer dId,Integer departmentId,Integer status, String name, int page, int rows) {
+	public ResultList list(Integer departmentId,Integer status, String name, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("name", name);
 		map.put("status", status);
 		map.put("departmentId", departmentId);
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		List<SimPackage> list = simPackageDao.list(map);
 		PageInfo<SimPackage> pageInfo = new PageInfo<>(list);
 		return new ResultList(pageInfo.getTotal(), list);

@@ -12,13 +12,13 @@ import java.util.Map;
  */
 public interface StatService {
 
-    Map<String,Object> terminalCount(Integer dId);
+    Map<String,Object> terminalCount();
 
-    Map<String,Object> terminalCost(Integer dId);
+    Map<String,Object> terminalCost();
 
-    StatBean fixInformation(StatBean statBean,Integer dId);
+    StatBean fixInformation(StatBean statBean);
 
-    Map<String,Object> statTerminal(Integer dId,Date startDate, Date endDate);
+    Map<String,Object> statTerminal(Date startDate, Date endDate);
 
 
 }

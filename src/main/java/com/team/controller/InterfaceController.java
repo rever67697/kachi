@@ -196,7 +196,7 @@ public class InterfaceController extends BaseService {
         if (Arrays.asList("qtb", "qti", "tCharge", "qte", "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal").contains(name)){
             Map<String,Object> map = new HashMap<>();
             map.put("tsid",toInt("tsid"));
-            map.put("dId",CommonUtil.changeDepartmentId(user.getDepartmentId()));
+            map.put("dId",user.getDepartmentId() != null && user.getDepartmentId() == 0 ? null : user.getDepartmentId());
 
             Terminal terminal = terminalDao.getByTsid(map);
             if(terminal == null)
@@ -308,10 +308,9 @@ public class InterfaceController extends BaseService {
         long time = System.currentTimeMillis();
         StringBuilder sb = new StringBuilder();
         Map<String,Object> map = new TreeMap<>();
-        map.put("name","tPassword");
+        map.put("name","tTerminal");
         map.put("time",time);
-        map.put("tsid","1162939");
-        map.put("wifiPassword",URLEncoder.encode("123456789+", "utf-8"));
+        map.put("tsid","10160266");
 
         map.put("n","guobin");
         map.put("p","339e922943b811b36d37aef9f2c56e7a");

@@ -35,8 +35,8 @@ public class TerminalVersionController {
 
     @PostMapping("/save")
     @PermissionLog()
-    public ReturnMsg saveTV(TerminalVersion terminalVersion,MultipartFile file, HttpServletRequest request) throws Exception{
-        String operatorMan = CommonUtil.getUser(request).getName();
+    public ReturnMsg saveTV(TerminalVersion terminalVersion,MultipartFile file) throws Exception{
+        String operatorMan = CommonUtil.getUser().getName();
         terminalVersion.setOperatorMan(operatorMan);
         terminalVersion.setOperatorTime(new Date());
         return terminalVersionService.saveOrUpdate(terminalVersion,file);

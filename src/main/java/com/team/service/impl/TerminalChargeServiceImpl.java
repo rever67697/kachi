@@ -91,14 +91,14 @@ public class TerminalChargeServiceImpl extends BaseService implements TerminalCh
     }
 
     @Override
-    public ResultList list(Integer tsid, Date startDate, Date endDate,Integer departmentId,Integer dId, int page, int rows) {
+    public ResultList list(Integer tsid, Date startDate, Date endDate,Integer departmentId, int page, int rows) {
         PageHelper.startPage(page, rows);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("tsid",tsid);
         map.put("startDate",startDate);
         map.put("endDate",endDate);
         map.put("departmentId", departmentId);
-        map.put("dId", CommonUtil.changeDepartmentId(dId));
+        map.put("dId", CommonUtil.getDId());
         List<TerminalChargeRecord> list = terminalChargeRecordDao.list(map);
 
         PageInfo<TerminalChargeRecord> pageInfo = new PageInfo<TerminalChargeRecord>(list);

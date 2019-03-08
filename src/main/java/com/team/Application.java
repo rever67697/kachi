@@ -21,12 +21,14 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.context.request.RequestContextListener;
 
 import com.github.pagehelper.PageHelper;
 
 @SpringBootApplication			//@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan
 @MapperScan("com.team.dao")		//查找报指定包及其子包下面的dao接口
+@EnableScheduling
 public class Application implements CommandLineRunner {
 
 	private static Logger logger = Logger.getLogger(Application.class);

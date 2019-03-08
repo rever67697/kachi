@@ -32,7 +32,7 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     private QuartzCronDao quartzCronDao;
 
     @Override
-    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,Integer departmentId,Integer dId,int page, int rows) {
+    public ResultList list(Date startDate,Date endDate,Integer tsid,Long imsi,Integer status,Integer departmentId,int page, int rows) {
         PageHelper.startPage(page, rows);
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
@@ -41,7 +41,7 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
         map.put("imsi",imsi);
         map.put("status",status);
         map.put("departmentId", departmentId);
-        map.put("dId", CommonUtil.changeDepartmentId(dId));
+        map.put("dId", CommonUtil.getDId());
         List<ProblemCard> problemCardList = problemCardDao.list(map);
         PageInfo<ProblemCard> pageInfo = new PageInfo<ProblemCard>(problemCardList);
         return new ResultList(pageInfo.getTotal(), problemCardList);
@@ -54,11 +54,11 @@ public class ProblemCardServiceImpl extends BaseService implements ProblemCardSe
     }
 
     @Override
-    public ReturnMsg getAlarmList(Integer dId) {
+    public ReturnMsg getAlarmList() {
         Map<String,Object> map = new HashMap<>();
         QuartzCron quartzCron = quartzCronDao.get();
         map.put("alarmCount",quartzCron.getThresholdAlarm());
-        map.put("dId",CommonUtil.changeDepartmentId(dId));
+        map.put("dId",CommonUtil.getDId());
         List<ProblemCard> alarmList = problemCardDao.getAlarmList(map);
 
         return successTip(alarmList);

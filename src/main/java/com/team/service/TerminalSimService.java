@@ -17,7 +17,7 @@ public interface TerminalSimService {
 	
 	ReturnMsg getTerminalSimByTsid(Integer tsid);
 	
-	ResultList list(Integer departmentId,Integer dId,Integer tsid,Long imsi,int page,int rows);
+	ResultList list(Integer departmentId,Integer tsid,Long imsi,int page,int rows);
 	
 	ReturnMsg changeCard(Integer tsid);
 }

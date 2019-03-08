@@ -23,22 +23,21 @@ public class ReadyTernimalSimController {
 	private ReadyTerminalSimService ReadyTerminalSimService;
 
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer tsid, Long imsi, int page,int rows,HttpServletRequest request) {
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return ReadyTerminalSimService.list(tsid, imsi, dId,departmentId,page,rows);
+	public ResultList list(Integer departmentId,Integer tsid, Long imsi, int page,int rows) {
+		return ReadyTerminalSimService.list(tsid, imsi,departmentId,page,rows);
 	}
 
 	@PostMapping("/save")
 	@PermissionLog
-	public ReturnMsg save(Integer tsid, Integer type, String args,String remark,HttpServletRequest request) {
-		Integer userId = CommonUtil.getUser(request).getId();
+	public ReturnMsg save(Integer tsid, Integer type, String args,String remark) {
+		Integer userId = CommonUtil.getUser().getId();
 		return ReadyTerminalSimService.save(tsid, type, args,userId,remark);
 	}
 
 	@PostMapping("/update")
 	@PermissionLog
-	public ReturnMsg update(ReadyTerminalSim readyTerminalSim,HttpServletRequest request) {
-		Integer operator = CommonUtil.getUser(request).getId();
+	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
+		Integer operator = CommonUtil.getUser().getId();
 		readyTerminalSim.setOperator(operator);
 		return ReadyTerminalSimService.update(readyTerminalSim);
 	}

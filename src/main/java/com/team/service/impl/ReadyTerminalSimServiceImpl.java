@@ -36,11 +36,10 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 	private SimCardService simCardService;
 
 	@Override
-	public ResultList list(Integer tsid, Long imsi, Integer dId,Integer departmentId,int page,
-			int rows) {
+	public ResultList list(Integer tsid, Long imsi,Integer departmentId,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("dId",CommonUtil.changeDepartmentId(dId));
+		paramMap.put("dId",CommonUtil.getDId());
 		paramMap.put("imsi", imsi);
 		paramMap.put("tsid", tsid);
 		paramMap.put("departmentId", departmentId);

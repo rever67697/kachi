@@ -49,12 +49,12 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 	 *@return
 	 *return
 	 */
-	public ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid,
+	public ResultList getTerminalList(Integer departmentId, Integer tsid,
 									  Integer status, Integer activated, Date startDate, Date endDate, int page, int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", departmentId);
-		map.put("dId", CommonUtil.changeDepartmentId(dId));
+		map.put("dId", CommonUtil.getDId());
 		map.put("tsid", tsid);
 		map.put("status", status);
 		map.put("activated", activated);
@@ -203,9 +203,6 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 
 	/**
 	 * 在线终端 & 接口->更新终端的wifi名称和密码
-	 * @param tsid
-	 * @param wifiPassword
-	 * @param ssid
 	 * @return
 	 */
 	@Override
@@ -231,6 +228,14 @@ public class TerminalServiceImpl extends BaseService implements TerminalService{
 		terminalDao.updateSSID(terminal);
 		return successTip();
 	}
+
+    @Override
+    public ReturnMsg getOne(Integer tsid) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("tsid",tsid);
+		map.put("dId",CommonUtil.getDId());
+		return successTip(terminalDao.getByTsid(map));
+    }
 
 
 }

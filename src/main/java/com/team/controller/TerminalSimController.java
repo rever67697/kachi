@@ -21,7 +21,7 @@ import com.team.vo.ReturnMsg;
 @RestController
 @PermissionLog("在线终端管理")
 @RequestMapping("/terminalSim")
-public class TerminalSimController {
+public class TerminalSimController extends BaseController{
 	
 	@Autowired
 	private TerminalSimService terminalSimService;
@@ -29,9 +29,8 @@ public class TerminalSimController {
 	private TerminalService terminalService;
 
 	@PostMapping("/list")
-	public ResultList list(Integer departmentId,Integer tsid,Long imsi,int page,int rows,HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalSimService.list(departmentId,dId,tsid, imsi, page, rows);
+	public ResultList list(Integer departmentId,Integer tsid,Long imsi,int page,int rows){
+		return terminalSimService.list(departmentId,tsid, imsi, page, rows);
 	}
 
 	/**

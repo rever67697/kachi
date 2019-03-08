@@ -20,15 +20,15 @@ import java.util.List;
  */
 public interface SimCardService {
 	
-	ReturnMsg getSimCardByPool(Integer cpId, Integer departmentId);
+	ReturnMsg getSimCardByPool(Integer cpId);
 	
 	ReturnMsg deleteSimCard(String ids);
 	
-	ResultList getSimCardList(SimCardDTO simCard, Integer dId,Integer dateType, Date startDate, Date endDate,int page, int rows);
+	ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate,int page, int rows);
 
-	File getCsv(SimCardDTO simCard,Integer dId,Integer dateType, Date startDate, Date endDate) throws Exception;
+	File getCsv(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate) throws Exception;
 	
-	ReturnMsg getOutlineInfo(Integer dId);
+	ReturnMsg getOutlineInfo();
 
 	ReturnMsg update(SimCard simCard);
 

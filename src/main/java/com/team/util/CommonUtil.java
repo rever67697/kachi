@@ -37,6 +37,8 @@ public class CommonUtil {
 
     private static Gson gson = new Gson();
 
+    private static List<String> NO_LOG_PARAM = Arrays.asList("passWord","repeatPwd","n","p");
+
     /**
      * 只要用作把Integer参数放进Map中，如果参数为空，返回null
      *
@@ -164,7 +166,7 @@ public class CommonUtil {
      * @return return
      */
     public static boolean StringIsNull(String str) {
-        return str == null || "".equals(str) || "null".equals(str) ? true : false;
+        return str == null || "".equals(str) || "null".equals(str);
     }
 
     public static String generateCode(int length) {
@@ -248,8 +250,8 @@ public class CommonUtil {
         return new Color(r, g, b);
     }
 
-    public static TbAuthUser getUser(HttpServletRequest request) {
-        return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
+    public static TbAuthUser getUser() {
+        return (TbAuthUser) getRequest().getSession().getAttribute(IConstant.SESSION_USER_NAME);
     }
 
     /**********构建树结构**********/
@@ -304,11 +306,7 @@ public class CommonUtil {
      * @return return
      */
     public static boolean listNotBlank(List<?> list) {
-        if (list != null && list.size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return list != null && list.size() > 0;
     }
 
     /**
@@ -326,21 +324,8 @@ public class CommonUtil {
         }
     }
 
-    /**
-     * 对全局的departmentid的作过滤
-     *
-     * @param departmentId
-     * @return return
-     */
-    public static Integer changeDepartmentId(Integer departmentId) {
-        if (departmentId != null && departmentId == 0) {
-            return null;
-        }
-        return departmentId;
-    }
-
-    public static Map<String, Object> getUserPermission(HttpServletRequest request) {
-        return (Map<String, Object>) request.getSession().getAttribute(IConstant.SESSION_PERMISSION_MAP);
+    public static Map<String, Object> getUserPermission() {
+        return (Map<String, Object>) getRequest().getSession().getAttribute(IConstant.SESSION_PERMISSION_MAP);
     }
 
     public static HttpServletRequest getRequest() {
@@ -410,9 +395,7 @@ public class CommonUtil {
         java.util.Enumeration params = request.getParameterNames();
         while (params.hasMoreElements()) {
             String paramName = (String) (params.nextElement());
-            if (CommonUtil.StringIsNull(request.getParameter(paramName))
-                    || "passWord".equals(paramName)
-                    || "repeatPwd".equals(paramName)) {
+            if (CommonUtil.StringIsNull(request.getParameter(paramName)) || NO_LOG_PARAM.contains(paramName)) {
                 continue;
             }
             result.put(paramName, URLDecoder.decode(request.getParameter(paramName)));
@@ -437,5 +420,26 @@ public class CommonUtil {
     public static void main(String[] args) throws Exception {
         System.out.println(encryptPassword(12345678 + ""));
         System.out.println(URLEncoder.encode("12345678+", "utf-8"));
+    }
+
+    /**
+     * 返回用户departmentId
+     * @return
+     */
+    public static Integer getDepartmentId(){
+        TbAuthUser user = getUser();
+        return user == null ? null : user.getDepartmentId();
+    }
+
+    /**
+     * 对全局的departmentid的作过滤
+     * @return return
+     */
+    public static Integer getDId() {
+        Integer departmentId = getDepartmentId();
+        if (departmentId != null && departmentId == 0) {
+            return null;
+        }
+        return departmentId;
     }
 }

@@ -28,9 +28,8 @@ public class ProblemCardController {
 
 
     @PostMapping("/list")
-    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi, Integer status, Integer departmentId, int page, int rows, HttpServletRequest request){
-        Integer dId = CommonUtil.getUser(request).getDepartmentId();
-        return problemCardService.list(startDate,endDate,tsid,imsi,status,departmentId,dId,page,rows);
+    public ResultList list(Date startDate, Date endDate, Integer tsid, Long imsi, Integer status, Integer departmentId, int page, int rows){
+        return problemCardService.list(startDate,endDate,tsid,imsi,status,departmentId,page,rows);
     }
 
     @PostMapping("/delete")
@@ -41,9 +40,8 @@ public class ProblemCardController {
 
 
     @PostMapping("/alarmList")
-    public ReturnMsg alarmList(HttpServletRequest request){
-        Integer dId = CommonUtil.getUser(request).getDepartmentId();
-        return problemCardService.getAlarmList(dId);
+    public ReturnMsg alarmList(){
+        return problemCardService.getAlarmList();
     }
 
 }

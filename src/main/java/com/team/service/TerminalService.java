@@ -19,7 +19,7 @@ import com.team.model.Terminal;
  */
 public interface TerminalService {
 	
-	ResultList getTerminalList(Integer departmentId, Integer dId, Integer tsid, Integer status,
+	ResultList getTerminalList(Integer departmentId, Integer tsid, Integer status,
 									  Integer activated, Date startDate, Date endDate,int page, int rows);
 
 	ResultList getSelectedList(String terminalList);
@@ -39,5 +39,7 @@ public interface TerminalService {
 	ReturnMsg updateWiFiPass(Integer tsid,String wifiPassword,String ssid);
 
 	ReturnMsg updateSSID(Terminal terminal);
+
+	ReturnMsg getOne(Integer tsid);
 	
 }

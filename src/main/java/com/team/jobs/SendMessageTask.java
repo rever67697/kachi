@@ -2,6 +2,7 @@ package com.team.jobs;
 
 import com.team.dao.QuartzCronDao;
 import com.team.dao.SelectCardDao;
+import com.team.dto.SelectCardDTO;
 import com.team.model.QuartzCron;
 import com.team.model.SelectCard;
 import com.team.util.CommonUtil;
@@ -9,6 +10,7 @@ import com.team.util.LogManager;
 import com.team.util.MD5Utils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.HttpURLConnection;
@@ -45,6 +47,14 @@ public class SendMessageTask {
         put("4", "拒绝接入");
     }};
 
+    public static Map<Integer,Set<Integer>> MAP = new HashMap<>();
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void clear(){
+        System.out.println("清空MAP");
+        MAP.clear();
+    }
+
     private void run() throws Exception {
 
         QuartzCron quartzCron = quartzCronDao.get();
@@ -59,48 +69,80 @@ public class SendMessageTask {
             e.printStackTrace();
         }
 
-        List<SelectCard> list = selectCardDao.listNoCard(map);
+        List<SelectCardDTO> list = selectCardDao.listNoCard(map);
 
-        Map<String, String> paramMap = new TreeMap<>();
-        StringBuilder params = new StringBuilder();
-        if (CommonUtil.listNotBlank(list)) {
+        List<List<SelectCardDTO>> tempList = new ArrayList<>();
 
-            Set<String> set = new HashSet<>();
-            for (SelectCard selectCard : list) {
-                set.add(selectCard.getTsid().toString());
+        Integer departmentId = null;
+        if(CommonUtil.listNotBlank(list)){
+            for (SelectCardDTO selectCard : list) {
+
+                if (selectCard.getPhoneNumber() == null || "".equals(selectCard.getPhoneNumber()))
+                    continue;
+
+                if(MAP.get(selectCard.getDepartmentId()) == null)
+                    MAP.put(selectCard.getDepartmentId(),new HashSet<>());
+
+                if (!MAP.get(selectCard.getDepartmentId()).contains(selectCard.getTsid())){
+                    MAP.get(selectCard.getDepartmentId()).add(selectCard.getTsid());
+
+                    if (tempList.isEmpty() || !departmentId.equals(selectCard.getDepartmentId())){
+                        List<SelectCardDTO> ll = new ArrayList<>();
+                        ll.add(selectCard);
+                        tempList.add(ll);
+                    }else {
+                        tempList.get(tempList.size()-1).add(selectCard);
+                    }
+                }
+
+                departmentId = selectCard.getDepartmentId();
             }
+        }
 
+        Map<String, String> paramMap;
+        StringBuilder params;
+
+        for (List<SelectCardDTO> selectCardDTOS : tempList) {
             String tsid = "";
 
             int flag = 0;
-            for (String s : set) {
+
+            paramMap = new TreeMap<>();
+
+
+            for (SelectCardDTO selectCard : selectCardDTOS) {
                 if (flag < 3)
-                    tsid += s + ";";
+                    tsid += selectCard.getTsid() + ";";
 
                 flag++;
             }
 
             tsid = tsid.substring(0, tsid.length() - 1);
-            if (set.size() > 3) {
-                tsid += "等" + set.size() + "台";
+            if (selectCardDTOS.size() > 3) {
+                tsid += "等" + selectCardDTOS.size() + "台";
             }
 
             paramMap.put("name", "cardselect");
             paramMap.put("tsid", tsid);
             paramMap.put("result", "1-" + resultMsg.get("1"));
-            paramMap.put("date", sdf.format(list.get(0).getSelectDate()));
-            paramMap.put("tel", quartzCron.getMsgPhone());
+            paramMap.put("date", sdf.format(selectCardDTOS.get(0).getSelectDate()));
 
-            for (Map.Entry<String, String> entry : paramMap.entrySet()) {
-                params.append(entry.getKey())
-                        .append("=")
-                        .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
+            for (String phoneNumber : selectCardDTOS.get(0).getPhoneNumber().split(",")) {
+                paramMap.put("tel", phoneNumber);
+
+                params = new StringBuilder();
+                for (Map.Entry<String, String> entry : paramMap.entrySet()) {
+                    params.append(entry.getKey())
+                            .append("=")
+                            .append(URLEncoder.encode(entry.getValue(), "UTF-8")).append("&");
+                }
+                params.setLength(params.length() - 1);
+                params.append("&sign=" + MD5Utils.encrypt(params.toString()));
+                //System.out.println(quartzCron.getMsgUrl() + params.toString());
+                //http://yunmifi.ytxun.cn/ntkcard/index.php/UTIL/index/cardselectfail?
+                sendMsg(quartzCron.getMsgUrl() + params.toString());
             }
-            params.setLength(params.length() - 1);
-            params.append("&sign=" + MD5Utils.encrypt(params.toString()));
-            //System.out.println(quartzCron.getMsgUrl() + params.toString());
-            //http://yunmifi.ytxun.cn/ntkcard/index.php/UTIL/index/cardselectfail?
-            sendMsg(quartzCron.getMsgUrl() + params.toString());
+
         }
 
         logger.info("现在时间:" + sdf.format(new Date()) + " 执行处理发送短信任务!");

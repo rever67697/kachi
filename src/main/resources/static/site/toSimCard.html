@@ -107,9 +107,17 @@
                                     <option value="2">插入时间</option>
                                     <option value="3">开卡日期</option>
                                 </select></th>
-                                <td colspan="3"><input readonly="readonly" id="dateRange" style="width:95%"/></td>
-                                <td colspan="2" align="center"><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"
-                                                   plain="true" onclick="doQuery()">查 询</a></td>
+                                <td><input readonly="readonly" id="dateRange" style="width:95%;font-size: 75%;padding-left:2px;padding-right: 2px;"/></td>
+                                <th>是否过期：</th>
+                                <td><select name="outDate">
+                                    <option value="">全部</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                                </td>
+                                <td colspan="2">
+                                    <a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"plain="true" onclick="doQuery()">查 询</a>
+                                </td>
                             </tr>
                         </table>
                     </form>
@@ -343,7 +351,6 @@
             {field: 'ck', checkbox: true},
             {field: 'id', title: 'SIM卡id', hidden: true},
             {field: 'imsi', title: 'IMSI', width: 120},
-//            {field: 'number', title: '卡号', width: 120},
             {field: 'iccid', title: 'ICCID', width: 150},
             {
                 field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {

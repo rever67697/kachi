@@ -11,6 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.team.jobs.SendMessageTask;
 import com.team.service.CountryService;
 import com.team.util.IConstant;
 import com.team.vo.ResultList;
@@ -41,9 +42,8 @@ public class CommonController {
 	}
 
 	@PostMapping("/getDepartmentDic")
-	public ReturnMsg getDepartmentDic(HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getDepartmentDic(dId);
+	public ReturnMsg getDepartmentDic(){
+		return commonService.getDepartmentDic();
 	}
 
 	@PostMapping("/getOperatorDic")
@@ -52,15 +52,13 @@ public class CommonController {
 	}
 
 	@PostMapping("/getSimPoolDic")
-	public ReturnMsg getSimPoolDic(HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getSimPoolDic(dId);
+	public ReturnMsg getSimPoolDic(){
+		return commonService.getSimPoolDic();
 	}
 
 	@PostMapping("/getPackageDic")
-	public ReturnMsg getPackageDic(Integer operatorCode,HttpServletRequest request){
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return commonService.getPackageDic(operatorCode,dId);
+	public ReturnMsg getPackageDic(Integer operatorCode){
+		return commonService.getPackageDic(operatorCode);
 	}
 
 	@PostMapping("/getProvinceDic")
@@ -139,7 +137,7 @@ public class CommonController {
 	}
 
 	@GetMapping("/download")
-	public void download(String fileName,HttpServletResponse response,HttpServletRequest request) throws Exception{
+	public void download(String fileName,HttpServletResponse response) throws Exception{
 		fileName = URLDecoder.decode(fileName, "utf-8");
 //		if (request.getHeader("User-Agent").toUpperCase().indexOf("TRIDENT") > 0) {
 //			try {
@@ -231,5 +229,16 @@ public class CommonController {
 			b1.close();
 			b2.close();
 		}
+	}
+
+	@GetMapping("/map")
+	@ResponseBody
+	public Object map(){
+		return SendMessageTask.MAP;
+	}
+
+	@GetMapping("/clearMap")
+	public void clearMap(){
+		SendMessageTask.MAP.clear();
 	}
 }

@@ -45,9 +45,8 @@ public class StatController{
      */
 	@PostMapping("/chargeList")
 	@ResponseBody
-	public ResultList list(Integer tsid,Integer departmentId,Date startDate,Date endDate,int page, int rows,HttpServletRequest request) {
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-		return terminalChargeService.list(tsid,startDate,endDate,departmentId,dId, page, rows);
+	public ResultList list(Integer tsid,Integer departmentId,Date startDate,Date endDate,int page, int rows) {
+		return terminalChargeService.list(tsid,startDate,endDate,departmentId, page, rows);
 	}
 
     /**
@@ -56,18 +55,16 @@ public class StatController{
      */
 	@RequestMapping("/")
 	@ResponseBody
-	public Object index(HttpServletRequest request){
-
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
+	public Object index(){
 
 		//查询终端近7天数据量图表信息
-		Map<String,Object> terminalCountMap = statService.terminalCount(dId);
+		Map<String,Object> terminalCountMap = statService.terminalCount();
 		//查询终端当月消耗排名前十
-		Map<String,Object> terminalCostMap = statService.terminalCost(dId);
+		Map<String,Object> terminalCostMap = statService.terminalCost();
 
 		StatBean statBean = (StatBean) terminalCountMap.get("statBean");
 		//查询页面其他展示参数信息
-		statBean = statService.fixInformation(statBean,dId);
+		statBean = statService.fixInformation(statBean);
 
 		Map<String,Object> map = new HashMap<>();
 
@@ -83,11 +80,9 @@ public class StatController{
 	 */
 	@RequestMapping("/statTerminal")
 	@ResponseBody
-	public Object statTerminal(Date startDate,Date endDate,HttpServletRequest request){
+	public Object statTerminal(Date startDate,Date endDate){
 
-		Integer dId = CommonUtil.getUser(request).getDepartmentId();
-
-		return statService.statTerminal(dId, startDate, endDate);
+		return statService.statTerminal(startDate, endDate);
 	}
 
 

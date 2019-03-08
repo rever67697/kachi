@@ -69,7 +69,7 @@
     <div class="easyui-layout" fit="true">
         <div region="center" title="" style="background:#FFF">
             <div class="easyui-layout" fit="true">
-                <div region="north" style="height:44px;background:#fff;overflow:hidden;">
+                <div region="north" style="height:44px;background:#fff;overflow: hidden">
                     <form id="queryForm_t">
                         <table class="table" style="margin-top:1px">
                             <tr>
@@ -105,22 +105,31 @@
     <div class="easyui-layout" fit="true">
         <div region="center" title="" style="background:#FFF">
             <div class="easyui-layout" fit="true">
-                <div region="north" style="height:44px;background:#fff;overflow:hidden;">
+                <div region="north" style="height:auto;background:#fff;overflow: hidden">
                     <form id="queryForm_c">
                         <table class="table" style="margin-top:1px">
                             <tr>
                                 <th>IMSI：</th>
                                 <td><input name="imsi" placeholder="请输入IMSI" class="onlyNumber"/></td>
+                                <th>卡池：</th>
+                                <td><select name="cpId"></select></td>
+                                <th>部门：</th>
+                                <td><select name="departmentId"></select></td>
+                            </tr>
+                            <tr>
                                 <th>状态：</th>
                                 <td><select name="status">
                                     <option value="0">正常</option>
                                     <option value="1">停用</option>
                                 </select></td>
-                                <th>卡池：</th>
-                                <td><select name="cpId"></select></td>
-                                <th>部门：</th>
-                                <td><select name="departmentId"></select></td>
-                                <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true"
+                                <th>使用状态：</th>
+                                <td><select name="cStatus">
+                                    <option value="">全部</option>
+                                    <option value="1">占用</option>
+                                    <option value="0">空闲</option>
+                                </select>
+                                </td>
+                                <td colspan="2"><a class="easyui-linkbutton" iconCls="icon-search" plain="true"
                                        onclick="doQuery_c()">查 询</a></td>
                             </tr>
                         </table>
@@ -295,13 +304,19 @@
         columns: [[
             {field: 'ck', checkbox: true},
             {field: 'id', title: 'SIM卡id', hidden: true},
-            {field: 'imsi', title: 'imsi', width: 120},
-            {field: 'number', title: '卡号', width: 120},
+            {field: 'imsi', title: 'IMSI', width: 120},
+            {field: 'iccid', title: 'ICCID', width: 150},
             {
                 field: 'status', title: '卡状态', width: 100, formatter: function (value, rec, index) {
                 var status = kcJs.fn.getCardStatus(value + '');
                 return status ? '<div style="border-radius:8px;color:#fff;width:90px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
             }
+            },
+            {
+                field: 'cstatus', title: '使用状态', width: 60, formatter: function (value, rec, index) {
+                    var status = kcJs.fn.getUsedStatus(value + '');
+                    return status ? '<div style="border-radius:8px;color:#fff;width:50px;text-align:center;background:' + status[1] + '">' + status[0] + '</div>' : '';
+                }
             },
             {field: 'operatorName', title: '运营商', width: 100},
             {field: 'packageName', title: '卡套餐', width: 100},
@@ -372,7 +387,7 @@
 
         $('#cardDialog').dialog({
             modal: true,
-            width: window.innerWidth * 0.98,
+            width: window.innerWidth * 0.9,
             height: 500,
             cache: false,
             title: '选取卡IMSI<span style="color:red">【可多选】</span>'
@@ -400,10 +415,27 @@
 
     /**新增-保存**/
     function saveData() {
+
         $('#doForm [name=imsi]').validatebox({
             required: true
         });
         if ($('#doForm').form('validate')) {
+
+            //需要判断终端的有效性
+            $.ajaxSetup({async : false});
+            var tsid = $('#doForm [name=tsid]').val();
+            var ok = false;
+            $.post(kcJs.fn.getContextPath()+'/terminal/getOne',{tsid:tsid},function (data) {
+                if(data.data)
+                    ok = true;
+            });
+            $.ajaxSetup({async : true});
+
+            if(!ok){
+                $.messager.alert('提示','终端号不存在','info');
+                return false;
+            }
+
             $('#doDialog').dialog('close');
             $('#dg').datagrid('loading');
             var args = '';
@@ -411,7 +443,6 @@
                 args += $('[name=idStatus]', $(this)).val() + ',' + $('[name=imsi]', $(this)).val() + ';';
             });
             args = args.substr(0, args.length - 1);
-            var tsid = $('#doForm [name=tsid]').val();
             var type = $('#doForm [name=type]').val();
             $.post(kcJs.fn.getContextPath() + '/readyTerminalSim/save', {
                 args: args,

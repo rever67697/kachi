@@ -64,16 +64,20 @@
 		order by r.selectdate desc
 	</select>
 
-	<select id="listNoCard" resultType="com.team.model.SelectCard" parameterType="java.util.Map">
-		select  r.tsid,
+	<select id="listNoCard" resultType="com.team.dto.SelectCardDTO" parameterType="java.util.Map">
+		select  t.departmentId,
+				r.tsid,
 				r.result_code,
-				r.selectdate
-		from m_select_card r
-		where r.result_code = 1
+				max(r.selectdate) selectdate,
+				(select phoneNumber from tb_send_message_phone  where departmentId = t.departmentId) phoneNumber
+		from m_select_card r,m_terminal t
+		where r.tsid=t.tsid
+		  and r.result_code = 1
 		<if test="startDate!=null">
 			and (r.selectDate between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP})
 		</if>
-		order by r.selectdate desc
+		group by t.departmentId,r.tsid,r.result_code
+		order by t.departmentId,selectdate desc
 	</select>
 
 	

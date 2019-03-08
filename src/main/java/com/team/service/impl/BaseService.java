@@ -1,5 +1,6 @@
 package com.team.service.impl;
 
+import com.team.util.CommonUtil;
 import com.team.util.IConstant;
 import com.team.vo.ReturnMsg;
 
@@ -24,5 +25,12 @@ public class BaseService {
 	protected ReturnMsg errorTip(String msg){
 		return new ReturnMsg(IConstant.CODE_ERROR, msg);
 	}
-	
+
+	protected Integer getDId(){
+		return CommonUtil.getDId();
+	}
+
+	protected Integer getDepartmentId(){
+		return CommonUtil.getDepartmentId();
+	}
 }

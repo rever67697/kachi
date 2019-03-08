@@ -10,13 +10,13 @@ public interface CommonService {
 
 	ReturnMsg getCountryDic();
 	
-	ReturnMsg getDepartmentDic(Integer dId);
+	ReturnMsg getDepartmentDic();
 	
 	ReturnMsg getOperatorDic(Integer countryCode,Integer mcc);
 	
-	ReturnMsg getSimPoolDic(Integer dId);
+	ReturnMsg getSimPoolDic();
 
-	ReturnMsg getPackageDic(Integer operatorCode,Integer dId);
+	ReturnMsg getPackageDic(Integer operatorCode);
 
 	ReturnMsg getProvinceDic(Integer countryCode);
 

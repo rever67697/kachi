@@ -28,9 +28,9 @@ public class StatServiceImpl implements StatService {
 
 
     @Override
-    public Map<String, Object> terminalCount(Integer dId) {
+    public Map<String, Object> terminalCount() {
 
-        List<TerminalCount> terminalCountList = statDao.queryTerminalCount(CommonUtil.changeDepartmentId(dId));
+        List<TerminalCount> terminalCountList = statDao.queryTerminalCount(CommonUtil.getDId());
 
         List<Map<String, Object>> series = new ArrayList<>();
 
@@ -72,9 +72,9 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Map<String, Object> terminalCost(Integer dId) {
+    public Map<String, Object> terminalCost() {
 
-        List<TerminalCost> terminalCostList = statDao.queryTerminalCost(CommonUtil.changeDepartmentId(dId));
+        List<TerminalCost> terminalCostList = statDao.queryTerminalCost(CommonUtil.getDId());
 
         List<String> xAxis = new ArrayList<>();
         List<Double> series = new ArrayList<>();
@@ -92,9 +92,9 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public StatBean fixInformation(StatBean sb, Integer dId) {
+    public StatBean fixInformation(StatBean sb) {
 
-        StatBean statBean = statDao.stat(CommonUtil.changeDepartmentId(dId));
+        StatBean statBean = statDao.stat(CommonUtil.getDId());
         statBean.setdTCount(sb.getdTCount());
         statBean.settTCount(sb.gettTCount());
         statBean.fix();
@@ -103,11 +103,11 @@ public class StatServiceImpl implements StatService {
     }
 
     @Override
-    public Map<String, Object> statTerminal(Integer dId,Date startDate, Date endDate){
+    public Map<String, Object> statTerminal(Date startDate, Date endDate){
         Map<String,Object> map = new HashMap<>();
         map.put("startDate",startDate);
         map.put("endDate",endDate);
-        map.put("dId",CommonUtil.changeDepartmentId(dId));
+        map.put("dId",CommonUtil.getDId());
 
 
         List<String> xAxis = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.team.dao;
 
+import com.team.dto.SelectCardDTO;
 import com.team.model.SelectCard;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface SelectCardDao {
 
     List<SelectCard> listSelectCardLog(Map<String,Object> map);
 
-    List<SelectCard> listNoCard(Map<String,Object> map);
+    List<SelectCardDTO> listNoCard(Map<String,Object> map);
 
 
 }
