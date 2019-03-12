@@ -99,13 +99,8 @@ public class SimPoolServiceImpl extends BaseService implements SimPoolService{
 			//更新缓存
 			List<SimCard> simCardList = simCardDao.getByPool(simPool.getSpid());
 			for (SimCard simCard : simCardList) {
-
-				//更新卡缓存
-				simCardService.updateSimCardFromCache(simCard);
-
-
-				//更新卡组
-				simCardService.initGroupSim2Cache(simCard);
+				//更新卡缓存和卡组缓存
+				simCardService.updateSimCardFromCache(simCard,false);
 			}
 
 		}

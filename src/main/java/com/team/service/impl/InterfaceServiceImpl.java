@@ -19,6 +19,7 @@ import com.team.dto.TerminalDTO;
 import com.team.model.*;
 import com.team.model.auth.Department;
 import com.team.model.auth.OperationLog;
+import com.team.model.auth.TbAuthUser;
 import com.team.service.InterfaceService;
 import com.team.service.TerminalChargeService;
 import com.team.service.TerminalService;
@@ -173,7 +174,8 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         }
 
         //5.保存充值流水
-        terminalChargeRecord.setOperator("接口充值");
+        TbAuthUser user = (TbAuthUser) CommonUtil.getRequest().getAttribute("user");
+        terminalChargeRecord.setOperator(user == null ? "接口充值" : user.getName());
         int count = terminalChargeRecordDao.save(terminalChargeRecord);
 
         return count>0?successTip():errorTip();

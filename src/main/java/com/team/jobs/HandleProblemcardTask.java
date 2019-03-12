@@ -92,8 +92,15 @@ public class HandleProblemcardTask {
             //找出问题卡
             List<SimCard> problemCards = simCardDao.getProblemCard(quartzCron.getThresholdProblemcard());
             for (SimCard simCard : problemCards) {
+
+                //0 1 2 3 4
+
+                //暂时不对已经指定的卡做处理
+                if(simCard.getStatus() == 2 || simCard.getStatus() == 4)
+                    continue;
+
                 //把卡状态改为1-停用
-                if (simCard.getStatus() != 1 && simCard.getStatus() != 4) {
+                if (simCard.getStatus() != 1) {
                     simCard.setStatus(1);
                     //更新status
                     map.put("imsi", simCard.getImsi());
@@ -103,7 +110,7 @@ public class HandleProblemcardTask {
                     //刷新卡组缓存
                     simCardService.updateGroupSim2Cache(simCard, 1);
                     //刷新卡缓存
-                    simCardService.updateSimCardFromCache(simCard);
+                    simCardService.updateSimCardFromCache(simCard,true);
                 }
             }
 

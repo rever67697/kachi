@@ -507,9 +507,9 @@
             }
             $('#cardDialog').dialog({title: '选取卡IMSI<span style="color:red">【单击一行选中】</span>'})
         } else {
-            card_options.toolbar = toolbar;
+            card_options.toolbar = null;
             card_options.onClickRow = null;
-            card_options.onDblClickRow = function (rowIndex, rowData) {
+            card_options.onClickRow = function (rowIndex, rowData) {
                 $('#cardDg').datagrid('selectRow', rowIndex);
                 selectCards();
             }
@@ -531,10 +531,12 @@
                         isExist = true;
                     }
                 });
+
+
                 if (!isExist) {
-                    if ($('#doForm [name=imsi]').length > 0 && $('#doForm [name=imsi]:eq(0)').val().length > 0) {
-                        $('#input_imsi').append(input_str);
-                    }
+                    // if ($('#doForm [name=imsi]').length > 0 && $('#doForm [name=imsi]:eq(0)').val().length > 0) {
+                    //     $('#input_imsi').append(input_str);
+                    // }
                     $('#doForm [name=imsi]:last').val(rowData.imsi);
                     $('#doForm [name=idStatus]:last').val(rowData.id + ',' + rowData.status);
                 }

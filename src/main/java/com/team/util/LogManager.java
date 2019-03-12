@@ -1,8 +1,9 @@
 package com.team.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 日志管理器
@@ -30,4 +31,11 @@ public class LogManager {
     public void executeLog(TimerTask task) {
         executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
     }
+
+    public static void main(String[] args) throws Exception{
+
+
+    }
+
+
 }

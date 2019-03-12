@@ -245,15 +245,13 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		reCalculateFlowMonth(oldSimCard,simCard.getOffPeriod(),simCard.getSuStained(),simCard.getPackageId());
 
 		//3.需要更新缓存里面的卡组信息
-		initGroupSim2Cache(simCard);
+		//4.更新卡缓存
+		updateSimCardFromCache(simCard,false);
 
 		//如果修改了卡状态，改为了停用或者作废，需要把卡组状态设置为1
 		if((simCard.getStatus() == 1 || simCard.getStatus() ==4 ) && !simCard.getStatus().equals(oldSimCard.getStatus()) ){
 			refreshCacheStatus(simCard);
 		}
-
-		//4.更新卡缓存
-		updateSimCardFromCache(simCard);
 
 		return super.successTip();
 	}
@@ -262,8 +260,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	/**
 	 * 初始化一张卡到卡组,
 	 */
-	@Override
-	public SimGroup initGroupSim2Cache(SimCard simCard) {
+	private SimGroup initGroupSim2Cache(SimCard simCard) {
 		if (simCard == null)
 			return null;
 
@@ -368,13 +365,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 
 			for (SimCard simCard : simCardList) {
 
-				//更新卡缓存
-				updateSimCardFromCache(simCard);
-
-				//更新卡组缓存
-				if(simCard.getPackageId() != 0) {//TODO 只有一些特定字段发生变化时，才需要更新组缓存
-					initGroupSim2Cache(simCard);
-				}
+				//更新卡缓存和卡组缓存
+				updateSimCardFromCache(simCard,false);
 			}
 		}
 
@@ -384,9 +376,6 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	/**
 	 * 如果卡的账期参数或者套餐发生变化，需要重新计算本月流量
 	 * @param simCard 更新前的simcard
-	 * @param offPeriod
-	 * @param sustained
-	 * @param packageId
 	 */
 	private void reCalculateFlowMonth(SimCard simCard, int offPeriod, int sustained, int packageId) {
 
@@ -867,7 +856,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 				//更新临时IMEI
 				simCardDao.updateTempImei(nowSimCard);
 				//刷新缓存
-				updateSimCardFromCache(nowSimCard);
+				updateSimCardFromCache(nowSimCard,false);
 			}
 		}
 	}
@@ -1077,7 +1066,8 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * @param simCard
 	 * @return
 	 */
-	public boolean updateSimCardFromCache(SimCard simCard){
+	@Override
+	public boolean updateSimCardFromCache(SimCard simCard,boolean onlySimCardCache){
 
 		//对于他们提出的经常看不到缓存的信息，我也不知道，之前设置缓存是没有设置第三个日期参数的，我现在改成设置1天过期看看
 
@@ -1092,10 +1082,17 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			logger.error("save SimCard to Cache is error! simCard: " + simCard);
 		}
 
+		//???
 		if (simCard.getPackageId() != 0) {
 			publicCache.remove(MConstant.CACHE_OPERATOR_GROUP_KEY_PREE + simCard.getOperatorCode());
 		}
+
+		//onlySimCardCache - false 同时需要更新卡组缓存	true - 只更新卡缓存,不更新卡组缓存，也许卡组缓存已经更新
+		if(!onlySimCardCache)
+			initGroupSim2Cache(simCard);
+
 		return bCached;
 	}
+
 }
 

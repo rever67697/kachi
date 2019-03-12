@@ -71,4 +71,9 @@
 			remark = #{remark,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+
+	<select id="selectByTsid" resultType="int">
+		select count(1) from m_ready_terminal_sim
+		where tsid=#{tsid,jdbcType=INTEGER}
+	</select>
 </mapper>

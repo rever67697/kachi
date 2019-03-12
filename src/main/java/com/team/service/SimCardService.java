@@ -32,7 +32,7 @@ public interface SimCardService {
 
 	ReturnMsg update(SimCard simCard);
 
-	SimGroup initGroupSim2Cache(SimCard simCard);
+//	SimGroup initGroupSim2Cache(SimCard simCard);
 
 	ReturnMsg batchUpdate(SimCardDTO simCard, String ids);
 
@@ -44,6 +44,6 @@ public interface SimCardService {
 
 	void batchUpdateTempImei(List<SimCard> list);
 
-	boolean updateSimCardFromCache(SimCard simCard);
+	boolean updateSimCardFromCache(SimCard simCard,boolean onlySimCardCache);
 
 }

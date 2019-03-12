@@ -37,4 +37,6 @@ public interface ReadyTerminalSimDao {
 
   ReadyTerminalSim getBydId(@Param("id") Integer id);
 
+  int selectByTsid(Integer tsid);
+
 }

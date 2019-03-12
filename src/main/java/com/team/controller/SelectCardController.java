@@ -53,6 +53,7 @@ public class SelectCardController{
     }
 
     @PostMapping("/savePhone")
+    @PermissionLog
     public Object savePhone(SendMesagePhone sendMesagePhone){
         return sendMessagePhoneService.save(sendMesagePhone);
     }

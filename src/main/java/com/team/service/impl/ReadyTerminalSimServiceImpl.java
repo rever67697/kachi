@@ -51,24 +51,35 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 
     @Override
     public ReturnMsg delete(ReadyTerminalSim readyTerminalSim) {
-		//1。删除当前数据
-		readyTerminalSimDao.delete(readyTerminalSim);
-		//2。根据imsi更新卡的状态为指定前的状态
-		simCardDao.resetStatus(readyTerminalSim);
-		//3.释放卡
+
 		SimCard simCard = simCardDao.getByImsi(readyTerminalSim.getImsi());
+
+		//1.删除当前数据
+		readyTerminalSimDao.delete(readyTerminalSim);
+		//2.根据imsi更新卡的状态为指定前的状态
+		//判断旧卡当前的状态是不是就是指定状态，如果不是，代表这张卡在指定期间修改过状态，那么这张卡就不做状态的修改了
+		if(simCard != null && simCard.getStatus() != null && simCard.getStatus() == 2){
+			simCardDao.resetStatus(readyTerminalSim);
+			simCard.setStatus(readyTerminalSim.getLastStatus());
+		}
+		//3.释放卡
 		//simCardService.updateGroupSim2Cache(simCard,0);
 
 		//4.更新卡缓存
-		simCardService.updateSimCardFromCache(simCard);
+		simCardService.updateSimCardFromCache(simCard,false);
 
-        return super.successTip();
+        return successTip();
     }
 
 
 	@Override
 	public ReturnMsg save(Integer tsid,Integer type,String args,Integer userId,String remark) {
-		int count = 0;
+
+		//判断tsid是否已经有指定卡了，一个终端tsid只能指定一张卡
+		if(readyTerminalSimDao.selectByTsid(tsid) > 0){
+			return errorTip("该终端已经有指定卡，不能重复指定");
+		}
+
 		List<ReadyTerminalSim> list = new ArrayList<ReadyTerminalSim>();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (String string : args.split(";")) {
@@ -79,7 +90,7 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 		}
 		if(list.size()>0){
 			//插入数据
-			count = readyTerminalSimDao.insert(list);
+			readyTerminalSimDao.insert(list);
 			//更新卡表卡状态为指定
 			simCardDao.updateCardStatus(ids);
 		}
@@ -88,45 +99,51 @@ public class ReadyTerminalSimServiceImpl extends BaseService implements ReadyTer
 		for (ReadyTerminalSim readyTerminalSim : list) {
 			SimCard simCard = simCardDao.getByImsi(readyTerminalSim.getImsi());
 
-			simCardService.updateSimCardFromCache(simCard);
+			simCardService.updateSimCardFromCache(simCard,false);
 		}
 
-		return count>0?super.successTip():super.errorTip();
+		return successTip();
 	}
 
 	@Override
 	public ReturnMsg update(ReadyTerminalSim readyTerminalSim) {
-		int count = 0;
 		if (readyTerminalSim.getId() != null) {
 			//1.获取原数据
 			ReadyTerminalSim old = readyTerminalSimDao.getBydId(readyTerminalSim.getId());
 
 			if(old !=null && !old.getImsi().equals(readyTerminalSim.getImsi())){
-				if(old.getLastStatus()==2){
+				if(old.getLastStatus() != null && old.getLastStatus()==2){
 					old.setLastStatus(0);
 				}
-				//1.如果imsi发生改变，需要把先更新之前卡的状态
-				simCardDao.resetStatus(old);
+				//获取旧卡，如果imsi发生改变，需要把先更新之前卡的状态
+				SimCard simCard = simCardDao.getByImsi(old.getImsi());
+
+				//判断旧卡当前的状态是不是就是指定状态，如果不是，代表这张卡在指定期间修改过状态，那么这张卡就不做状态的修改了
+				if(simCard.getStatus() != null && simCard.getStatus() ==2){
+					simCardDao.resetStatus(old);
+					//更新旧卡缓存
+					simCard.setStatus(old.getLastStatus());
+					simCardService.updateSimCardFromCache(simCard,false);
+				}
+
 
 				//2.把修改后的imsi的状态改为指定
 				Map<String,Object> map = new HashMap<>();
 				map.put("imsi",readyTerminalSim.getImsi());
-				map.put("status",new Integer(2));
+				map.put("status",2);
 				simCardDao.updateStatusByImsi(map);
 
-				SimCard simCard = simCardDao.getByImsi(old.getImsi());
-				//3.释放卡
+
+				//释放卡
 				//simCardService.updateGroupSim2Cache(simCard,0);
 
-				//4.更新旧卡缓存
-				simCardService.updateSimCardFromCache(simCard);
-				//5.更新新卡缓存
+				//更新新卡缓存
 				simCard = simCardDao.getByImsi(readyTerminalSim.getImsi());
-				simCardService.updateSimCardFromCache(simCard);
+				simCardService.updateSimCardFromCache(simCard,false);
 			}
-			count = readyTerminalSimDao.update(readyTerminalSim);
+			readyTerminalSimDao.update(readyTerminalSim);
 		}
-		return count>0?super.successTip():super.errorTip();
+		return successTip();
 	}
 
 }
