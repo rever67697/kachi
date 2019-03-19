@@ -17,12 +17,12 @@
     <form id="queryForm">
         <table class="table">
             <tr>
-                <th>部门：</th>
-                <td><select name="departmentId"></select></td>
                 <th>终端编号：</th>
                 <td><input name="tsid" placeholder="请输入终端编号" class="onlyNumber"/></td>
                 <th>指定卡IMSI：</th>
                 <td><input name="imsi" placeholder="请输入指定卡IMSI" class="onlyNumber"/></td>
+                <th>部门：</th>
+                <td><select name="departmentId"></select></td>
                 <td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查
                     询</a></td>
             </tr>
@@ -107,6 +107,7 @@
             <div class="easyui-layout" fit="true">
                 <div region="north" style="height:auto;background:#fff;overflow: hidden">
                     <form id="queryForm_c">
+                        <input type="hidden" name="forAppoint" value="1"/>
                         <table class="table" style="margin-top:1px">
                             <tr>
                                 <th>IMSI：</th>

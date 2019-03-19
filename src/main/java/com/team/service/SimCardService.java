@@ -24,7 +24,7 @@ public interface SimCardService {
 	
 	ReturnMsg deleteSimCard(String ids);
 	
-	ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate,int page, int rows);
+	ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate,Integer forAppoint, int page, int rows);
 
 	File getCsv(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate) throws Exception;
 	

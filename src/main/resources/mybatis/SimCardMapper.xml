@@ -111,6 +111,9 @@
 					</otherwise>
 				</choose>
 			</if>
+			<if test="forAppoint != null">
+				and p.spid is not null
+			</if>
 			<include refid="dId"></include>
 			order by r.cpid,r.cpchannelid
 	</select>

@@ -117,7 +117,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 页面查询列表
 	 */
 	@Override
-	public ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate,Date startDate,Date endDate,int page,int rows) {
+	public ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate,Date startDate,Date endDate,Integer forAppoint, int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
@@ -134,6 +134,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("endDate",endDate);
 		map.put("packageId",simCard.getPackageId());
 		map.put("iccid",simCard.getIccid());
+		map.put("forAppoint",forAppoint);
 		List<SimCard> list = simCardDao.getSimCardList(map);
 
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);

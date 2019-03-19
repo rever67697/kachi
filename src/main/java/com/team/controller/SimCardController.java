@@ -47,8 +47,8 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate,Date endDate,int page, int rows){
-		return simCardService.getSimCardList(simCard,dateType,outDate,startDate,endDate ,page, rows);
+	public ResultList list(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate,Date endDate,Integer forAppoint, int page, int rows){
+		return simCardService.getSimCardList(simCard,dateType,outDate,startDate,endDate ,forAppoint,page, rows);
 	}
 
 	@GetMapping("/getCsv")

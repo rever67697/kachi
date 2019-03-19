@@ -31,6 +31,9 @@ public interface StatDao {
     /**保存在线终端的统计结果**/
     int statTerminal();
 
+    /**每月统计上一个月的上线终端**/
+    int saveTerminalPerMonth();
+
 
 
 }

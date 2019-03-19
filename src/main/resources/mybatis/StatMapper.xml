@@ -96,23 +96,40 @@
 			   sum(stat_count) stat_count
 		from tb_stat_terminal r
 		left join m_department d on r.departmentId = d.id
-		where stat_date between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+		where `type` = 0
+		  and stat_date between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
 		<include refid="dId"/>
 		group by r.stat_date
 		order by r.stat_date
 	</select>
 
-	<insert id="statTerminal" parameterType="com.team.model.StatTerminal">
+	<insert id="statTerminal">
 		insert into tb_stat_terminal
-		(stat_date,departmentId,stat_count)
+		(stat_date,departmentId,stat_count,`type`)
 
 		select date_format(now(),'%Y-%m-%d %H:%i:00') statDate,
 			   d.id departmentId,
-			   count(1) statCount
+			   count(1) statCount,
+			   0 `type`
 		  from m_terminal_sim r, m_terminal t, m_department d
 		 where t.tsid=r.tsid
 		   and t.departmentId=d.id
 		  group by d.id
+	</insert>
+
+	<insert id="saveTerminalPerMonth">
+		insert into tb_stat_terminal
+		(stat_date,departmentId,stat_count,`type`)
+		select  date_add(date_add(current_date(),interval - day(current_date())+1 day),interval -1 month) statDate,
+				d.id departmentId,
+				count(distinct r.tsid) statCount,
+				1 `type`
+		from m_cost_day r,m_terminal t, m_department d
+		where t.tsid=r.tsid
+		  and t.departmentId=d.id
+		  and r.date >= date_add(date_add(current_date(),interval - day(current_date())+1 day),interval -1 month)
+		  and r.date &lt; date_add(current_date(),interval - day(current_date())+1 day)
+		group by d.id;
 	</insert>
 
 </mapper>
