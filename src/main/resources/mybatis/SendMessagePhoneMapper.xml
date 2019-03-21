@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.SendMesagePhoneDao">
+
+	<select id="getByUser" resultType="com.team.model.SendMesagePhone">
+		select * from tb_send_message_phone
+		where departmentId = #{departmentId,jdbcType=INTEGER}
+		limit 1
+	</select>
+
+	<insert id="save" parameterType="com.team.model.SendMesagePhone">
+		insert into tb_send_message_phone
+		(departmentId,phoneNumber,updateTime)
+		values
+		(
+			#{departmentId,jdbcType=INTEGER},
+			#{phoneNumber,jdbcType=VARCHAR},
+			now()
+		)
+	</insert>
+
+	<update id="update" parameterType="com.team.model.SendMesagePhone">
+		update tb_send_message_phone
+		   set phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+			   updateTime = now()
+		 where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>
