@@ -7,14 +7,10 @@
 	<select id="getUserList" parameterType="java.util.Map" resultType="com.team.model.auth.TbAuthUser">
 		select c.*,
 			   d.name departmentName,
-			   case when ur.id is not null then 1 else 0 end isAdmin,
-			   case when ur.id is not null then 1 else 0 end isAdmin2
+			   g.ip
 		from m_customer c
-		inner join m_department d
-		on c.departmentid=d.id and d.status=0
-		left join tb_auth_user_role ur
-		on c.id=ur.user_id  and ur.status=0
-		and ur.role_id=(select id from tb_auth_role where code='GROUP_ADMIN' and status=0)
+		inner join m_department d on c.departmentid=d.id and d.status=0
+		left join tb_department_ip_config g on (d.id=g.departmentid or d.parentid=g.departmentid)
 		where 1=1
 		<if test="status!=null">
 		  and c.status =#{status,jdbcType=INTEGER}
@@ -57,31 +53,31 @@
 	
 	<update id="updateStatus" parameterType="com.team.model.auth.TbAuthUser">
 		update m_customer
-		set status=#{status,jdbcType=INTEGER}
-		where id=#{id,jdbcType=INTEGER}	
+		set status = #{status,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 	
 	<update id="updateUser" parameterType="com.team.model.auth.TbAuthUser">
 		update m_customer
-		set sex=#{sex,jdbcType=VARCHAR},
-			qq=#{qq,jdbcType=VARCHAR},
-			wechat=#{wechat,jdbcType=VARCHAR},
-			sex=#{sex,jdbcType=VARCHAR},
-			email=#{email,jdbcType=VARCHAR},
-			age=#{age,jdbcType=INTEGER},
-			phonenumber=#{phoneNumber,jdbcType=VARCHAR},
-			departmentid=#{departmentId,jdbcType=INTEGER}
-		where id=#{id,jdbcType=INTEGER}	
+		set sex = #{sex,jdbcType=VARCHAR},
+			qq = #{qq,jdbcType=VARCHAR},
+			wechat = #{wechat,jdbcType=VARCHAR},
+			sex = #{sex,jdbcType=VARCHAR},
+			email = #{email,jdbcType=VARCHAR},
+			age = #{age,jdbcType=INTEGER},
+			phonenumber = #{phoneNumber,jdbcType=VARCHAR},
+			departmentid = #{departmentId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 	
 	<delete id="deleteUser">
 		delete from m_customer
-		where id=#{id,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	
 	<update id="modifyPwd" parameterType="com.team.model.auth.TbAuthUser">
 		update m_customer
-		set password=#{passWord,jdbcType=VARCHAR}
-		where id=#{id,jdbcType=INTEGER}
+		set password = #{passWord,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
 	</update>
 </mapper>

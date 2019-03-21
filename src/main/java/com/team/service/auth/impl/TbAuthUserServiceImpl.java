@@ -73,10 +73,7 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 			//2.创建用户角色
 			TbAuthRole role = new TbAuthRole("普通用户", "USER_"+user.getId());
 			tbAuthRoleDao.insertRole(role);
-			//3.判断用户是否为管理员，如果是，还需要把管理员的角色赋予给用户
-			if(user.getIsAdmin() == 1){
-				tbAuthRoleDao.inserAdminUserRole(user.getId());
-			}
+
 			//4.创建用户-角色的关联关系
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("userId", user.getId());
@@ -85,12 +82,6 @@ public class TbAuthUserServiceImpl extends BaseService implements TbAuthUserServ
 		}else{
 			//1.更新用户表
 			tbAuthUserDao.updateUser(user);
-			//2.对是否是管理的改变作操作
-			if(user.getIsAdmin()>user.getIsAdmin2()){//原本不是管理员，修改后变是了
-				tbAuthRoleDao.inserAdminUserRole(user.getId());
-			}else if(user.getIsAdmin()<user.getIsAdmin2()){//原本是管理员，修改后变不是了
-				tbAuthRoleDao.deleteAdminUserRole(user.getId());
-			}
 		}
 		
 		return super.successTip();

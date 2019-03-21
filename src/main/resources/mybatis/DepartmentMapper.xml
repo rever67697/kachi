@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.auth.DepartmentDao">
 
-	<insert id="insert" parameterType="com.team.model.auth.Department">
+	<insert id="insert" parameterType="com.team.model.auth.Department" useGeneratedKeys="true" keyProperty="id">
 		insert into m_department
 		(name,abbr,status,parentid,note)
 		values
@@ -35,8 +35,9 @@
 			   case when id=parentid then null when id=0 then null else parentid end parentId,
 			   name text,
 			   abbr url,
-			   note funDesc 
-		from m_department
+			   note funDesc,
+			   (select ip from tb_department_ip_config b where a.id=b.departmentId or a.parentId=b.departmentId) iconCls
+		from m_department a
 		where status=0
 		order by id
 	</select>

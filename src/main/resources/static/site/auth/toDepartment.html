@@ -48,6 +48,10 @@
 									<td>备注：</td>
 									<td><textarea name="funDesc"  class="user-input2 " style="height:50px"></textarea></td>
 								</tr>
+								<tr id="ip-info">
+									<td>限制ip登录：</td>
+									<td><textarea name="icon"  class="user-input2 " style="height:50px" placeholder="多个IP地址用英文,分割"></textarea></td>
+								</tr>
 							</table>
 					</form>
 				</fieldset>
@@ -57,6 +61,7 @@
   	
   </body>
   <script type="text/javascript">
+
 	  $(function(){
 	  	$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
 			if(data){
@@ -106,6 +111,11 @@
 	  
 	function autoValid(node){
 		$('#id-info').show();
+		if(node.attributes.parentId || node.attributes.parentId === 0){
+			$('#ip-info').hide();
+		}else {
+			$('#ip-info').show();
+		}
 		$('#doForm').form('load',node.attributes);
 		initBtn();
 		
@@ -142,6 +152,7 @@
 	
 	$('#addRootBtn').click(function(){
 		$('#id-info').hide();
+		$('#ip-info').show();
 		$('#doForm').form('clear');
 		$('[name=parentId]').val('');
 		$('#delBtn').linkbutton('disable');
@@ -152,7 +163,7 @@
 		if($('#addMenuBtn').hasClass('l-btn-disabled')){
 			return;
 		}
-		$('#id-info').hide();
+		$('#id-info,#ip-info').hide();
 		$('#doForm').form('clear');
 		$('[name=parentId]').val($('#orgtree').tree('getSelected').id);
 		$('#delBtn').linkbutton('disable');

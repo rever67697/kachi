@@ -25,13 +25,14 @@ public class DepartmentController {
 	
 	@PostMapping("/save")
 	@PermissionLog(value="维护部门",onlyLog=true)
-	public ReturnMsg save(Integer id,Integer parentId,String text,String url,String funDesc){
+	public ReturnMsg save(Integer id,Integer parentId,String text,String url,String funDesc,String icon){
 		Department department = new Department();
 		department.setId(id);
 		department.setParentId(parentId);
 		department.setName(text);
 		department.setAbbr(url);
 		department.setNote(funDesc);
+		department.setIp(icon);
 		return departmentService.saveOrUpdate(department);
 	}
 	

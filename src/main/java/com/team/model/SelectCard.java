@@ -68,6 +68,8 @@ public class SelectCard implements Serializable {
 
     private String departmentName;
 
+    private Date refSelectDate;
+
     public String getDepartmentName() {
         return departmentName;
     }
@@ -274,5 +276,13 @@ public class SelectCard implements Serializable {
 
     public void setFirstTime(Date firstTime) {
         this.firstTime = firstTime;
+    }
+
+    public Date getRefSelectDate() {
+        return refSelectDate;
+    }
+
+    public void setRefSelectDate(Date refSelectDate) {
+        this.refSelectDate = refSelectDate;
     }
 }

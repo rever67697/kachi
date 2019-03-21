@@ -2,6 +2,7 @@ package com.team.service.auth.impl;
 
 import java.util.List;
 
+import com.team.dao.auth.DepartmentIpConfigDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class DepartmentServiceImpl extends BaseService implements DepartmentServ
 
 	@Autowired
 	private DepartmentDao departmentDao;
+	@Autowired
+	private DepartmentIpConfigDao departmentIpConfigDao;
 	
 	@Override
 	public List<TbAuthPermission> list() {
@@ -36,6 +39,14 @@ public class DepartmentServiceImpl extends BaseService implements DepartmentServ
 		}else{
 			departmentDao.insert(d);
 		}
+
+		//保存限制登录的ip
+		if(d.getParentId() == null){
+			int count = departmentIpConfigDao.update(d);
+			if(count == 0 )
+				departmentIpConfigDao.save(d);
+		}
+
 		return super.successTip();
 	}
 

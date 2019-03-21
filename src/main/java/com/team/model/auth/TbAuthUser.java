@@ -37,9 +37,9 @@ public class TbAuthUser implements Serializable{
 	private String departmentName;
 	
 	private Integer isAdmin;
-	
-	private Integer isAdmin2;
-	
+
+	private String ip;//限制登录的ip，空为不限制
+
 	private List<TbAuthRole> roles;
 
 	public Integer getIsAdmin() {
@@ -48,14 +48,6 @@ public class TbAuthUser implements Serializable{
 
 	public void setIsAdmin(Integer isAdmin) {
 		this.isAdmin = isAdmin;
-	}
-
-	public Integer getIsAdmin2() {
-		return isAdmin2==null?0:isAdmin2;
-	}
-
-	public void setIsAdmin2(Integer isAdmin2) {
-		this.isAdmin2 = isAdmin2;
 	}
 
 	public Integer getId() {
@@ -162,5 +154,11 @@ public class TbAuthUser implements Serializable{
 		this.email = email;
 	}
 
-	
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 }

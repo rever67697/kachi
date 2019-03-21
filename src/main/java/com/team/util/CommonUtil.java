@@ -259,7 +259,7 @@ public class CommonUtil {
         List<TbAuthPermission> tree = new ArrayList<TbAuthPermission>();
         if (listNotBlank(list))
             for (TbAuthPermission node : list) {
-                if (node.getParentId() == null || node.getParentId() == 0) {
+                if (node.getParentId() == null) {
                     tree.add(node);
                     buid(list, node, needAttribute);
                 }
@@ -441,5 +441,17 @@ public class CommonUtil {
             return null;
         }
         return departmentId;
+    }
+
+    /**
+     * 验证用户登录的ip
+     * @return
+     */
+    public static boolean verifyLoginIp(TbAuthUser user, String ip) {
+        if(user.getIp() == null)
+            return true;
+        if(user.getIp().contains(ip))
+            return true;
+        return false;
     }
 }

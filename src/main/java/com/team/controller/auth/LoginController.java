@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.team.controller.BaseController;
 import com.team.service.StatService;
 import com.team.util.RSAUtil;
 import com.team.vo.stat.StatBean;
@@ -40,7 +41,7 @@ import com.team.vo.ReturnMsg;
  */
 @Controller
 @PermissionLog("登录信息")
-public class LoginController {
+public class LoginController extends BaseController {
 
 	@Value("${filter.noFilterPath}")
 	private String noFilterPath;
@@ -57,32 +58,13 @@ public class LoginController {
 	@PermissionLog(value="用户登录",onlyLog=true)
 	@PostMapping("/login")
 	@ResponseBody
-	public ReturnMsg  login(String userName,String passWord,String code,HttpServletRequest request,
-			HttpServletResponse response) throws Exception{
-		String msg = "";
+	public ReturnMsg  login(String userName,String passWord,String code,String ip) throws Exception{
 		//rsa解密
 		KeyPair keys = (KeyPair) request.getSession().getAttribute(IConstant.KEYPAIR);
 		passWord = RSAUtil.decrypt(passWord, keys);
 
-		String verificationCode = (String) request.getSession().getAttribute(IConstant.VERIFICATIONCODE);
-		if(verificationCode != null && verificationCode.equals(code)){
-			//根据用户名查询用户实体
-			TbAuthUser user = tbAuthUserService.getUserByName(userName);
-			if(CommonUtil.validateUser(user,passWord)){
-				//验证通过
-				List<TbAuthRole> roles = tbAuthRoleService.getRolesByUser(user);
-				user.setRoles(roles);
-				handlePermission(user.getId(),request);
-				request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
-				Cookie cookie = new Cookie(IConstant.SESSION_USER_NAME,user.getName());
-				cookie.setMaxAge(60*60*24*7);//7天有效
-				response.addCookie(cookie);
-			}else{
-				msg = "用户名或密码错误！";
-			}
-		}else{
-			msg = "验证码错误！";
-		}
+		String msg = verifyLogin(userName, passWord, code, ip);
+
 		if(!CommonUtil.StringIsNull(msg)){
 			throw new KachiException(msg);
 		}
@@ -101,8 +83,8 @@ public class LoginController {
 	 * @param request
 	 * @return
 	 */
-	public Object getMenu(HttpServletRequest request){
-		TbAuthUser user = getUser(request);
+	public Object getMenu(){
+		TbAuthUser user = getUser();
 		return tbAuthPermissionService.getMenuByUser(user);
 	}
 	
@@ -119,7 +101,7 @@ public class LoginController {
 	
 	@PostMapping("/getUser")
 	@ResponseBody
-	public TbAuthUser getUser(HttpServletRequest request){
+	public TbAuthUser getUser(){
 		return (TbAuthUser) request.getSession().getAttribute(IConstant.SESSION_USER_NAME);
 	}
 
@@ -138,11 +120,15 @@ public class LoginController {
 	/**
 	 * 权限管理，每跳到一个页面寻找功能
 	 */
-	public ReturnMsg getFunctions(HttpServletRequest request,Integer id){
-		return tbAuthPermissionService.getFunByUser(getUser(request),id);
+	public ReturnMsg getFunctions(Integer id){
+		return tbAuthPermissionService.getFunByUser(getUser(),id);
 	}
-	
-	private void handlePermission(Integer userId,HttpServletRequest request) {
+
+	/**
+	 * 把用户能访问的url放进内存
+	 * @param userId
+	 */
+	private void handlePermission(Integer userId) {
 		List<TbAuthPermission> permission = tbAuthPermissionService.getPermissionByUser(userId);
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(CommonUtil.listNotBlank(permission)){
@@ -159,13 +145,49 @@ public class LoginController {
 	}
 
 	/**
+	 * 验证登录，验证码，用户密码,ip限制
+	 * @return
+	 */
+	private String verifyLogin(String userName,String passWord,String code, String ip){
+		String msg = null;
+
+		String verificationCode = (String) request.getSession().getAttribute(IConstant.VERIFICATIONCODE);
+
+		if(verificationCode != null && verificationCode.equals(code)){
+			//根据用户名查询用户实体
+			TbAuthUser user = tbAuthUserService.getUserByName(userName);
+			if(CommonUtil.validateUser(user,passWord)){
+
+				if(CommonUtil.verifyLoginIp(user,ip)){
+					//验证通过
+					List<TbAuthRole> roles = tbAuthRoleService.getRolesByUser(user);
+					user.setRoles(roles);
+
+					handlePermission(user.getId());
+
+					request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
+				}else {
+					msg = "限制登录!";
+				}
+
+
+			}else{
+				msg = "用户名或密码错误！";
+			}
+		}else{
+			msg = "验证码错误！";
+		}
+
+		return msg;
+	}
+
+	/**
 	 * 获取公钥
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/getPublicKey",  method = { RequestMethod.GET })
 	@ResponseBody
-	public Object encryptionWithPublicKey(HttpServletRequest request) {
+	public Object encryptionWithPublicKey() {
 		try {
 			String basePath = "config/ds.properties";
 			KeyPair keyPair = RSAUtil.generateKeypair(1024, basePath);

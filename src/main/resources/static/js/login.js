@@ -64,13 +64,18 @@ function doLogin() {
                 var origPwd = $('[name=passWord]').val();
                 //实用公钥进行加密
                 $.jCryption.encrypt(origPwd, keys, function(encryptedPasswd) {  ///使用公钥谨慎性加密
-					$.post(getContextPath()+'/login',{userName:$('[name=userName]').val(),passWord:encryptedPasswd,code:$('[name=code]').val()},function(data){
-						if(data && data.code=='200'){
-							window.location.href=getContextPath()+'/index';
-						}else{
-							$('#msg').text(data.msg);
-							changeValidateCode();
-							$('[name=code]').val('');
+					$.post(getContextPath()+'/login',{userName:$('[name=userName]').val(),
+													  passWord:encryptedPasswd,
+						   							  code:$('[name=code]').val(),
+													  ip:/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0]
+						 							 },
+						function(data){
+							if(data && data.code=='200'){
+								window.location.href=getContextPath()+'/index';
+							}else{
+								$('#msg').text(data.msg);
+								changeValidateCode();
+								$('[name=code]').val('');
 						}
 					});
                 })

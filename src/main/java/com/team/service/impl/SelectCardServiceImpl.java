@@ -59,6 +59,17 @@ public class SelectCardServiceImpl implements SelectCardService {
         map.put("departmentId", departmentId);
         map.put("dId", CommonUtil.getDId());
         List<SelectCard> list = selectCardDao.listSelectCardLog(map);
+
+        if(CommonUtil.listNotBlank(list)){
+            for (SelectCard selectCard : list) {
+                //增加逻辑，不方便在sql里面写，先找出比当前数据大的最小选卡时间，这个时间如果比这个数据查出的鉴权记录还小，就把下面日期置空
+                if(selectCard.getRefSelectDate() != null && selectCard.getAuthTime() != null && selectCard.getRefSelectDate().before(selectCard.getAuthTime())){
+                    selectCard.setAuthTime(null);
+                    selectCard.setFirstTime(null);
+                }
+            }
+        }
+
         PageInfo<SelectCard> pageInfo = new PageInfo<>(list);
         return new ResultList(pageInfo.getTotal(),list);
     }

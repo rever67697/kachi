@@ -21,6 +21,8 @@ public class Department implements Serializable{
 	
 	private String note;//备注
 
+	private String ip;//限制ip登录
+
 	public Integer getId() {
 		return id;
 	}
@@ -68,7 +70,12 @@ public class Department implements Serializable{
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
-	
-	
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 }
