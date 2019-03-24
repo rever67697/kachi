@@ -448,10 +448,14 @@ public class CommonUtil {
      * @return
      */
     public static boolean verifyLoginIp(TbAuthUser user, String ip) {
-        if(user.getIp() == null)
+        if(StringIsNull(user.getIp()))
             return true;
         if(user.getIp().contains(ip))
             return true;
         return false;
+    }
+
+    public static String getIp(){
+        return (String) getRequest().getSession().getAttribute(IConstant.IP);
     }
 }

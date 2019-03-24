@@ -115,10 +115,10 @@
 	function autoValid(node){
 		$('#doForm').form('load',node.attributes);
 		initBtn();
-		if(node.attributes.parentId=='0'){
+		if(!node.attributes.parentId){
 			$('#addMenuBtn').linkbutton('enable');
 			$('#addFunBtn').linkbutton('disable');
-		}else if($('authtree').tree('getParent',node.target).attributes.parentId=='0'){
+		}else if(!$('authtree').tree('getParent',node.target).attributes.parentId){
 			$('#addMenuBtn').linkbutton('disable');
 			$('#addFunBtn').linkbutton('enable');
 		}

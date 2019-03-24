@@ -1,4 +1,9 @@
+
+
 $(function(){
+
+	setPersonal();
+
 	$('.login').css('margin-top',($(window).height()-420)/2+'px');
 	
 	changeValidateCode();
@@ -62,12 +67,13 @@ function doLogin() {
             if( null != keys && "undefined" != keys){
                 var postData = {};
                 var origPwd = $('[name=passWord]').val();
+                var ip = /(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0];
                 //实用公钥进行加密
                 $.jCryption.encrypt(origPwd, keys, function(encryptedPasswd) {  ///使用公钥谨慎性加密
 					$.post(getContextPath()+'/login',{userName:$('[name=userName]').val(),
 													  passWord:encryptedPasswd,
 						   							  code:$('[name=code]').val(),
-													  ip:/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0]
+													  ip:ip
 						 							 },
 						function(data){
 							if(data && data.code=='200'){
@@ -154,3 +160,20 @@ $.fn.serializeObject = function()
  });
  return o;
 };
+
+function setPersonal() {
+	$.post(getContextPath()+'/personal/personal',{ip:/(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0]},function (data) {
+		var bgImg ,titleText;
+		if(data.data){
+			$.each(data.data,function (idx, obj) {
+				if(obj.type === '0')
+					bgImg = obj.content;
+				if(obj.type === '1')
+					titleText = obj.content;
+			});
+
+			$('#titleText').text(titleText);
+			$('body').css('backgroundImage',"url('../"+bgImg+"')");
+		}
+	})
+}

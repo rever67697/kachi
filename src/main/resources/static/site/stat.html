@@ -392,6 +392,12 @@
                         data: data.series,
                         type: 'line', symbolSize: 8,
                         hoverAnimation: false,
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最大值',symbolSize:40},
+                                {type: 'min', name: '最小值',symbolSize:40}
+                            ]
+                        },
                     }
                 ]
             };

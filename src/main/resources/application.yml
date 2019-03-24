@@ -37,7 +37,7 @@ mybatis:
     map-underscore-to-camel-case: true
 
 filter:
-  noFilterPath: .css;.js;.png;.jpg;gif;verificationCode;login.html;login;logout;error404.html;getCode;q;interface;download;getPublicKey
+  noFilterPath: .css;.js;.png;.jpg;gif;verificationCode;login.html;login;logout;error404.html;getCode;q;interface;download;getPublicKey;personal
 
 sendWiFiPass: 88888888
 isStatTerminal: true

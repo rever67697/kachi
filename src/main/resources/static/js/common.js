@@ -341,7 +341,7 @@ var kcJs =
                     return diff;
                 }
                 return "";
-            }
+            },
 
         };
         return {fn: _FUNC};

@@ -36,4 +36,6 @@ public class IConstant {
 
 	public final static String SALT = "kachi-";
 
+	public final static String IP = "kachi-IP";
+
 }

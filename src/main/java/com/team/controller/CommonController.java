@@ -241,4 +241,5 @@ public class CommonController {
 	public void clearMap(){
 		SendMessageTask.MAP.clear();
 	}
+
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.auth.IpPersonalConfigDao">
+
+	<select id="list" resultType="com.team.model.auth.IpPersonalConfig">
+		select #{ip,jdbcType=VARCHAR} ip,
+			   '0' `type`,
+			   ifnull(
+			   		  (select concat(content,'|',operator) from tb_ip_personal_config where length(content)>0 and ip = #{ip,jdbcType=VARCHAR} and type='0'),
+			   		  (select concat(content,'|',operator) from tb_ip_personal_config where ip = 'ALL' and type='0')
+			   		 ) content
+		from dual
+		union all
+		select #{ip,jdbcType=VARCHAR} ip,
+			   '1' `type`,
+			   ifnull(
+			   		  (select concat(content,'|',operator) from tb_ip_personal_config where length(content)>0 and ip = #{ip,jdbcType=VARCHAR} and type='1'),
+			   		  (select concat(content,'|',operator) from tb_ip_personal_config where ip = 'ALL' and type='1')
+			   		 ) content
+		from dual
+	</select>
+
+	<insert id="save" parameterType="list">
+		insert into tb_ip_personal_config
+		(ip,content,type,operator)
+		values
+		<foreach collection="list"  item="item" separator=",">
+			(
+				#{item.ip,jdbcType=VARCHAR},
+				#{item.content,jdbcType=VARCHAR},
+				#{item.type,jdbcType=VARCHAR},
+				#{item.operator,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="delete">
+		delete from tb_ip_personal_config
+		where ip = #{ip,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

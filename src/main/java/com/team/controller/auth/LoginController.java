@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.team.controller.BaseController;
+import com.team.dao.auth.IpPersonalConfigDao;
+import com.team.model.auth.IpPersonalConfig;
 import com.team.service.StatService;
+import com.team.service.auth.IpPersonalConfigService;
 import com.team.util.RSAUtil;
 import com.team.vo.stat.StatBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,9 @@ public class LoginController extends BaseController {
 	@Autowired
 	private TbAuthPermissionService tbAuthPermissionService;
 
+	@Autowired
+	private IpPersonalConfigDao ipPersonalConfigDao;
+
 	@PermissionLog(value="用户登录",onlyLog=true)
 	@PostMapping("/login")
 	@ResponseBody
@@ -72,7 +78,10 @@ public class LoginController extends BaseController {
 	}
 
 	@GetMapping({"/index","/"})
-	public String index(){
+	public String index(Model model){
+		List<IpPersonalConfig> list = ipPersonalConfigDao.list(CommonUtil.getIp());
+		if(list.size() == 2)
+			model.addAttribute("titleText",list.get(1).getContent().split("\\|")[0]);
 		return "index";
 	}
 
@@ -166,8 +175,10 @@ public class LoginController extends BaseController {
 					handlePermission(user.getId());
 
 					request.getSession().setAttribute(IConstant.SESSION_USER_NAME, user);
+
+					request.getSession().setAttribute(IConstant.IP, ip);
 				}else {
-					msg = "限制登录!";
+					msg = "用户名或密码错误!";
 				}
 
 

@@ -29,7 +29,7 @@
 		<!-- 定义上面的层 -->
 		<div region="north" title="" style="height:65px;background:rgb(78,151,227);overflow:hidden" >
 			<div class="top-left">
-				<h1 style="cursor: pointer" onclick="toIndex()">云SIM卡池管理系统</h1>
+				<h1 style="cursor: pointer" onclick="toIndex()" th:text="${titleText}">云SIM卡池管理系统</h1>
 			</div>
 			<div class="top-right">
 				<ul>
@@ -95,8 +95,6 @@
 			</table>
 		</form>
 	</div>
-	<script type="text/javascript" th:src="@{/js/index.js}">
-
-</script>
+	<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>
