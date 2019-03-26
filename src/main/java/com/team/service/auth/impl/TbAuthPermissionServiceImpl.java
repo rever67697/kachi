@@ -52,7 +52,8 @@ public class TbAuthPermissionServiceImpl extends BaseService implements TbAuthPe
 
 	@Override
 	public List<TbAuthPermission> getPermissionTree() {
-		List<TbAuthPermission> list = tbAuthPermissionDao.getAllPermission();
+		Integer userId = CommonUtil.getUser().getId();
+		List<TbAuthPermission> list = tbAuthPermissionDao.getAllPermissionByCurUser(userId);
 		return CommonUtil.bulidTree(list,true);
 	}
 

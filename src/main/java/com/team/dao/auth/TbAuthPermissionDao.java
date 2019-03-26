@@ -37,7 +37,7 @@ public interface TbAuthPermissionDao {
 	 *@return
 	 *return
 	 */
-	public List<TbAuthPermission> getAllPermission();
+	public List<TbAuthPermission> getAllPermissionByCurUser(@Param("id") Integer id);
 	
 	/**
 	 * 通过用户id查找所拥有的权限id

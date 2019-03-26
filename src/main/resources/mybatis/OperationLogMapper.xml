@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.auth.OperationLogDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<insert id="saveLog" parameterType="com.team.model.auth.OperationLog">
 		insert into sys_operation_log
 		(username,departmentid,ip,browser,bussinesstype,operation,`desc`,createtime)
@@ -19,8 +25,9 @@
 	</insert>
 	
 	<select id="getLogList" resultType="com.team.model.auth.OperationLog" parameterType="java.util.Map">
-		select *
-		from sys_operation_log
+		select r.*
+		from sys_operation_log r
+		inner join m_department d on r.departmentId = d.id
 		where 1=1
 		<if test="username!=null and username!=''">
 			and username=#{username,jdbcType=VARCHAR}
@@ -28,6 +35,7 @@
 		<if test="bussinesstype!=null and bussinesstype!=''">
 			and bussinesstype=#{bussinesstype,jdbcType=VARCHAR}
 		</if>
+		<include refid="dId"/>
 		order by createtime desc
 	</select>
 </mapper>

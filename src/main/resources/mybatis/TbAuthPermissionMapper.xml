@@ -29,12 +29,25 @@
 		order by order_num
 	</select>
 	
-	<select id="getAllPermission" resultType="com.team.model.auth.TbAuthPermission">
-		select * 
-		from tb_auth_permission
-		where status=0
+	<select id="getAllPermissionByCurUser" resultType="com.team.model.auth.TbAuthPermission">
+		select p.*
+		from tb_auth_permission p,
+			 tb_auth_role_permission rp,
+			 tb_auth_role r,
+			 tb_auth_user_role ur,
+			 m_customer c
+		where p.id=rp.permission_id
+		  and rp.role_id=r.id
+	      and r.id=ur.role_id
+		  and ur.user_id=c.id
+		  and p.status=0
+		  and rp.status=0
+		  and r.status=0
+		  and ur.status=0
+		  and c.status=0
 		  and is_special=0
-		order by parent_id,order_num 
+		  and c.id = #{id,jdbcType=INTEGER}
+		  order by parent_id,order_num ;
 	</select>
 	
 	<select id="getPermissionByUser" resultType="com.team.model.auth.TbAuthPermission">

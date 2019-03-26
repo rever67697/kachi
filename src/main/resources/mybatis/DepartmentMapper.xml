@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.auth.DepartmentDao">
 
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
 	<insert id="insert" parameterType="com.team.model.auth.Department" useGeneratedKeys="true" keyProperty="id">
 		insert into m_department
 		(name,abbr,status,parentid,note)
@@ -36,9 +42,10 @@
 			   name text,
 			   abbr url,
 			   note funDesc,
-			   (select ip from tb_department_ip_config b where a.id=b.departmentId or a.parentId=b.departmentId) iconCls
-		from m_department a
+			   (select ip from tb_department_ip_config b where d.id=b.departmentId or d.parentId=b.departmentId) iconCls
+		from m_department d
 		where status=0
+		<include refid="dId"/>
 		order by id
 	</select>
 

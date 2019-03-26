@@ -28,7 +28,8 @@ public class DepartmentServiceImpl extends BaseService implements DepartmentServ
 	
 	@Override
 	public List<TbAuthPermission> list() {
-		List<TbAuthPermission> list = departmentDao.list();
+		Integer dId = getDId();
+		List<TbAuthPermission> list = departmentDao.list(dId);
 		return  CommonUtil.bulidTree(list,true);
 	}
 
@@ -40,8 +41,8 @@ public class DepartmentServiceImpl extends BaseService implements DepartmentServ
 			departmentDao.insert(d);
 		}
 
-		//保存限制登录的ip
-		if(d.getParentId() == null){
+		//保存限制登录的ip 并且只有admin的权限才能修改 departmentId=0
+		if(d.getParentId() == null && getDepartmentId() == 0){
 			int count = departmentIpConfigDao.update(d);
 			if(count == 0 )
 				departmentIpConfigDao.save(d);

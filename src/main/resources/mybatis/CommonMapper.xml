@@ -36,7 +36,7 @@
 
     <select id="getSimPoolDic" resultType="com.team.vo.Dictionary">
         select r.spid value,
-        r.name name
+               substr(r.name,instr(r.name,':')+1) name
         from m_simpool r
         left join m_department d
         on r.departmentId=d.id

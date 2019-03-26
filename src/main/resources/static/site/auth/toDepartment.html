@@ -19,7 +19,7 @@
 	<div region="center" title="" style="overflow:hidden;background:#FFF;">
 		<div class="easyui-layout"  fit="true">
 			<div region="north" style="height:40px;padding:5px 0 0 5px;background-color:#FFF" >
-		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" id="addRootBtn">增加根部门</a>
+		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" disabled="true" plain="true" id="addRootBtn">增加根部门</a>
 		        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" disabled="true" plain="true" id="addMenuBtn">增加子部门</a>
 		        <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-remove" disabled="true" plain="true" id="delBtn">删除</a>
 		        <a href="javascript:void(0)" class="easyui-linkbutton"  iconCls="icon-save" disabled="true" plain="true" id="saveBtn">保存</a>
@@ -66,6 +66,9 @@
 	  	$.post(kcJs.fn.getContextPath()+'/getUser',function(data){
 			if(data){
 				$('#departmentId').val(data.departmentId);
+				if(data.departmentId !== 0){
+					$('#ip-info').remove();
+				}
 			}
 		},'json');
 		
@@ -145,6 +148,9 @@
 	}
 	
 	function initBtn(){
+	  	if($('#departmentId').val()==='0'){
+			$('#addRootBtn').linkbutton('enable');
+		}
 		$('#addMenuBtn').linkbutton('disable');
 		$('#delBtn').linkbutton('disable');
 		$('#saveBtn').linkbutton('disable');
@@ -157,6 +163,7 @@
 		$('[name=parentId]').val('');
 		$('#delBtn').linkbutton('disable');
 		$('#saveBtn').linkbutton('enable');
+
 	});
 	
 	$('#addMenuBtn').click(function(){

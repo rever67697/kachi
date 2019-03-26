@@ -13,14 +13,14 @@ import com.team.model.auth.TbAuthPermission;
  */
 public interface DepartmentDao {
 	
-	public int insert(Department d);
+	int insert(Department d);
 	
-	public int update(Department d);
+	int update(Department d);
 	
-	public int delete(@Param("id") Integer id);
+	int delete(@Param("id") Integer id);
 	
-	public List<TbAuthPermission> list();
+	List<TbAuthPermission> list(@Param("dId") Integer dId);
 
-	public List<Department> getAllDepartment();
+	List<Department> getAllDepartment();
 
 }

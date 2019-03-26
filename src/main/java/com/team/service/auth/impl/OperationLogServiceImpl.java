@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.team.service.impl.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import com.team.vo.ResultList;
  * author:wuzhiheng
  */
 @Service
-public class OperationLogServiceImpl implements OperationLogService {
+public class OperationLogServiceImpl extends BaseService implements OperationLogService {
 
 	@Autowired
 	private OperationLogDao  operationLogDao;
@@ -30,6 +31,7 @@ public class OperationLogServiceImpl implements OperationLogService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", username);
 		map.put("bussinesstype", bussinesstype);
+		map.put("dId", getDId());
 		List<OperationLog> list = operationLogDao.getLogList(map);
 		PageInfo<OperationLog> pageInfo = new PageInfo<OperationLog>(list);
 		return new ResultList(pageInfo.getTotal(), list);
