@@ -297,7 +297,7 @@
 							    }
 							});
 	             		}
-	             		$('.title',$(obj)).html(rowData.name+' （'+rowData.type+'）').css('visibility','visible');
+	             		$('.title',$(obj)).html((rowData.name).substr((rowData.name).lastIndexOf(':')+1)+' （'+rowData.type+'）').css('visibility','visible');
 
 	            		$('.boxDesc',$(obj)).html(kcJs.fn.getBoxTxt(cardCount));
              		}

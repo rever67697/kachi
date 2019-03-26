@@ -54,4 +54,7 @@ public interface InterfaceService {
 
     /**返回终端信息**/
     ReturnMsg tTerminal(Integer tsid);
+
+    //检查在线终端的一些连接信息，连接数，信号等
+    ReturnMsg qtoi(Integer tsid);
 }

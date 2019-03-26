@@ -454,4 +454,17 @@ public class InterfaceServiceImpl extends BaseService implements InterfaceServic
         return successTip(terminalDao.getByTsid(map));
     }
 
+    @Override
+    public ReturnMsg qtoi(Integer tsid) {
+        Map<String,Object> map = terminalSimFLowDao.getUserInfo(tsid);
+
+        if(map == null){
+           map = new TreeMap<>();
+        }
+        map.put("online",map.size() > 0 ? true : false);
+        map.put("tsid",tsid);
+
+        return successTip(map);
+    }
+
 }

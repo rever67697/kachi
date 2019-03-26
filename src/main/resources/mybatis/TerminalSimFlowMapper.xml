@@ -9,5 +9,16 @@
 			and type=0
 		</if>
 	</select>
+
+	<select id="getUserInfo" resultType="java.util.TreeMap">
+		select power,
+			   userCount,
+			   signaly,
+			   signalType
+		from m_terminal_sim_flow
+		where tsid = #{tsid,jdbcType=INTEGER}
+		  and time>=(select max(beattime) from m_terminal_sim where tsid = #{tsid,jdbcType=INTEGER} )
+		order by time desc limit 1
+	</select>
 	
 </mapper>

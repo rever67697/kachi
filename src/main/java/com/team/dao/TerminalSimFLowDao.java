@@ -11,4 +11,6 @@ public interface TerminalSimFLowDao {
 
     String queryTime(Map<String,Object> map);
 
+    Map<String,Object> getUserInfo(Integer tsid);
+
 }

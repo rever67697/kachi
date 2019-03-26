@@ -47,7 +47,8 @@ public class InterfaceController extends BaseService {
     private List<String> INTEFACE_NAME = Arrays.asList(
             "qtb", "qti", "tCharge", "qd", "qtbd", "qte",
             "aliQuery", "aliCharge", "aliStatusQuery",
-            "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal"
+            "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal",
+            "qtoi"
     );
 
     @RequestMapping("/interface")
@@ -122,6 +123,9 @@ public class InterfaceController extends BaseService {
         } else if ("tTerminal".equals(name)) {//检查终端具体信息
             returnMsg = interfaceService.tTerminal(terminalChargeRecord.getTsid());
 
+        }else if ("qtoi".equals(name)) {//检查在线终端的一些连接信息，连接数，信号等
+            returnMsg = interfaceService.qtoi(terminalChargeRecord.getTsid());
+
         }
 
         //保存日志
@@ -193,7 +197,7 @@ public class InterfaceController extends BaseService {
         }
 
         //需要校验用户传过来的终端是否在其用户下
-        if (Arrays.asList("qtb", "qti", "tCharge", "qte", "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal").contains(name)){
+        if (Arrays.asList("qtb", "qti", "tCharge", "qte", "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal","qtoi").contains(name)){
             Map<String,Object> map = new HashMap<>();
             map.put("tsid",toInt("tsid"));
             map.put("dId",user.getDepartmentId() != null && user.getDepartmentId() == 0 ? null : user.getDepartmentId());
@@ -214,7 +218,7 @@ public class InterfaceController extends BaseService {
 
     private boolean validParams(String name){
         //下面这些接口必须要穿tsid
-        if (Arrays.asList("qtb", "qti", "tCharge", "qte", "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal").contains(name) && toInt("tsid") == null) {
+        if (Arrays.asList("qtb", "qti", "tCharge", "qte", "tOffline", "tChangeCard", "tPassword", "tCheck", "tTerminal","qtoi").contains(name) && toInt("tsid") == null) {
             return false;
         }
         //qtbd
@@ -308,12 +312,12 @@ public class InterfaceController extends BaseService {
         long time = System.currentTimeMillis();
         StringBuilder sb = new StringBuilder();
         Map<String,Object> map = new TreeMap<>();
-        map.put("name","tTerminal");
+        map.put("name","qtoi");
         map.put("time",time);
-        map.put("tsid","10160266");
+        map.put("tsid","79123480");
 
-        map.put("n","guobin");
-        map.put("p","339e922943b811b36d37aef9f2c56e7a");
+        map.put("n","admin");
+        map.put("p","496ed5603b21ed0ff5200560b1fe9653");
 
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             sb.append(entry).append("&");
