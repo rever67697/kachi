@@ -67,7 +67,7 @@ function doLogin() {
             if( null != keys && "undefined" != keys){
                 var postData = {};
                 var origPwd = $('[name=passWord]').val();
-                var ip = /(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0];
+                var ip = /(\d{1,3})(\.(\d{1,3})){3}|localhost/.exec(location.href)[0];
                 //实用公钥进行加密
                 $.jCryption.encrypt(origPwd, keys, function(encryptedPasswd) {  ///使用公钥谨慎性加密
 					$.post(getContextPath()+'/login',{userName:$('[name=userName]').val(),

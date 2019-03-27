@@ -342,6 +342,9 @@ var kcJs =
                 }
                 return "";
             },
+            getCurrentIp:function () {
+                return /(\d{1,3})(\.(\d{1,3})){3}|localhost/.exec(location.href)[0];;
+            }
 
         };
         return {fn: _FUNC};

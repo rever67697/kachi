@@ -312,7 +312,7 @@ public class InterfaceController extends BaseService {
         long time = System.currentTimeMillis();
         StringBuilder sb = new StringBuilder();
         Map<String,Object> map = new TreeMap<>();
-        map.put("name","qtoi");
+        map.put("name","tCheck");
         map.put("time",time);
         map.put("tsid","79123480");
 

@@ -166,7 +166,7 @@
   </body>
 
   <script type="text/javascript">
-	  var ip = /(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}|localhost/.exec(location.href)[0];
+	  var ip = kcJs.fn.getCurrentIp();
 
 	  var options= {
         title: '卡池设备列表',
