@@ -47,7 +47,7 @@
 			from m_simcard r
 			left join m_simpackage t on r.packageid=t.id and t.status=0
 			left join m_simpool p on r.cpid=p.spid
-			left join m_department d on p.departmentId=d.id and d.status=0
+			left join m_department d on r.departmentId=d.id and d.status=0
 			left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 			left join m_country c on r.countryCode = c.countryCode
 			left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -114,6 +114,9 @@
 			<if test="forAppoint != null">
 				and p.spid is not null
 			</if>
+			<if test="cpStatus!=null">
+				and r.cpStatus = #{cpStatus,jdbcType=INTEGER}
+			</if>
 			<include refid="dId"></include>
 			order by r.cpid,r.cpchannelid
 	</select>
@@ -163,7 +166,7 @@
 		from m_simcard r
 		left join m_simpackage t on r.packageid=t.id and t.status=0
 		left join m_simpool p on r.cpid=p.spid and
-		left join m_department d on p.departmentId=d.id and d.status=0
+		left join m_department d on r.departmentId=d.id and d.status=0
 		left join m_operator o on r.OPERATORCODE=o.OPERATORCODE
 		left join m_country c on r.countryCode = c.countryCode
 		left join m_province pr on r.countryCode = pr.countryCode and r.provinceCode = pr.provinceCode
@@ -227,6 +230,9 @@
 				</otherwise>
 			</choose>
 		</if>
+		<if test="cpStatus!=null">
+			and r.cpStatus = #{cpStatus,jdbcType=INTEGER}
+		</if>
 		<include refid="dId"></include>
 		order by r.cpid,r.cpchannelid
 	</select>
@@ -240,7 +246,7 @@
 	           sum(case when r.status=4 then 1 else 0 end) offCardCount
 		from  m_simcard r
 		left join m_simpool p on r.cpid=p.spid
-		left join m_department d on p.departmentid=d.id and d.status=0
+		left join m_department d on r.departmentid=d.id and d.status=0
 		where 1=1
 		<include refid="dId"></include>
 	</select>

@@ -115,7 +115,15 @@
                                     <option value="0">否</option>
                                 </select>
                                 </td>
-                                <td colspan="2">
+                                <th>卡池状态：</th>
+                                <td width="230px"><select name="cpStatus" style="width: 50px">
+                                        <option value="">全部</option>
+                                        <option value="0">正常</option>
+                                        <option value="1">待激活</option>
+                                        <option value="2">拔出</option>
+                                        <option value="4">其它</option>
+                                        <option value="8">超时</option>
+                                    </select>
                                     <a id="search_btn" class="easyui-linkbutton" iconCls="icon-search"plain="true" onclick="doQuery()">查 询</a>
                                 </td>
                             </tr>

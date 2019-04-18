@@ -66,6 +66,8 @@ public class SelectCardServiceImpl implements SelectCardService {
                 if(selectCard.getRefSelectDate() != null && selectCard.getAuthTime() != null && selectCard.getRefSelectDate().before(selectCard.getAuthTime())){
                     selectCard.setAuthTime(null);
                     selectCard.setFirstTime(null);
+                }else if(selectCard.getRefSelectDate() != null && selectCard.getFirstTime() != null && selectCard.getRefSelectDate().before(selectCard.getFirstTime())){
+                    selectCard.setFirstTime(null);
                 }
             }
         }

@@ -73,6 +73,7 @@ var kcJs =
             "0": ["正常", v_colors.blue],
             "1": ["待激活", v_colors.orange],
             "2": ["拔出", v_colors.gray],
+            "4": ["其它", v_colors["light-blue"]],
             "8": ["超时", v_colors.red]
         };
         var dic_noYes = [{"value": "0", "name": "否"}, {"value": "1", "name": "是"}];

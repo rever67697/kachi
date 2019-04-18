@@ -47,15 +47,15 @@ public class SimCardController {
 	}
 	
 	@PostMapping("/list")
-	public ResultList list(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate,Date endDate,Integer forAppoint, int page, int rows){
-		return simCardService.getSimCardList(simCard,dateType,outDate,startDate,endDate ,forAppoint,page, rows);
+	public ResultList list(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate,Date endDate,Integer forAppoint, Integer cpStatus,int page, int rows){
+		return simCardService.getSimCardList(simCard,dateType,outDate,startDate,endDate ,forAppoint,cpStatus,page, rows);
 	}
 
 	@GetMapping("/getCsv")
 	@PermissionLog
-	public void getCsv(SimCardDTO simCard,Integer dateType, Integer outDate,Date startDate,Date endDate, HttpServletResponse response) throws  Exception{
+	public void getCsv(SimCardDTO simCard,Integer dateType, Integer outDate,Date startDate,Date endDate,Integer cpStatus, HttpServletResponse response) throws  Exception{
 
-		File file = simCardService.getCsv(simCard,dateType,outDate,startDate,endDate);
+		File file = simCardService.getCsv(simCard,dateType,outDate,startDate,endDate,cpStatus);
 
 		response.reset();
 		response.setCharacterEncoding("UTF-8");
