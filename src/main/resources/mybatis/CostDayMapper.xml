@@ -2,17 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.CostDayDao">
 
-	<sql id="allColomn" >
-	    r.id, r.date, r.beginTime, 
-	    r.tsid, r.duration, r.flow, 
-	    r.cost, r.rxFlow, r.txFlow,r.additionalFlow, 
-	    r.isLocal,r.countryCode
-    </sql>
-    
   	<select id="getCostDayByTsid" resultType="com.team.model.CostDay" >
 	    select 
-	    <include refid="allColomn" />
-	    ,ifnull(t.namecn,t.countryname) countryName
+			r.id,
+			r.date,
+			r.beginTime,
+			r.tsid,
+			r.duration,
+			r.flow,
+			r.cost,
+			r.rxFlow,
+			r.txFlow,
+			r.additionalFlow,
+			r.isLocal,
+			r.countryCode,
+			ifnull(t.namecn,t.countryname) countryName
 	    from m_cost_day r
 	    left join m_country t
 	    on r.countryCode = t.countryCode
