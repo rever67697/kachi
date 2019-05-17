@@ -341,6 +341,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 			map.put("softType",simCardDTO.getSoftType());
 			map.put("openDate",simCardDTO.getOpenDate());
 			map.put("departmentId",simCardDTO.getDepartmentId());
+			map.put("note",simCardDTO.getNote());
 
 			List<Integer> list = new ArrayList<>();
 			for (String s : ids.split(",")) {
@@ -979,7 +980,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		if(simCard.getStatus()!=null || simCard.getPackageId()!=null || simCard.getSuStained()!=null
 				|| simCard.getExpiryDate()!=null || simCard.getOpenDate()!=null || simCard.getProvinceCode()!=null
 				|| simCard.getOffPeriod()!=null || simCard.getUsedVpn()!=null || simCard.getSoftType()!=null
-				|| simCard.getDepartmentId()!=null){
+				|| simCard.getDepartmentId()!=null || !CommonUtil.StringIsNull(simCard.getNote())){
 			return true;
 		}
 		return false;

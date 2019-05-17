@@ -317,6 +317,12 @@
                                 <th>省：</th>
                                 <td><select name="provinceCode"></select></td>
                             </tr>
+                            <tr>
+                                <th>备注：</th>
+                                <td><input name="note"/></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr style="height:10px"></tr>
                             <tr>
                                 <td colspan="4" align="center" class="noborder"><a class="easyui-linkbutton" iconCls="icon-ok" plain="true"  onclick="saveBatchData()">提 交</a>
@@ -414,6 +420,7 @@
             {field: 'expiryDate', title: '有效期截卡时间', width: 120},
             {field: 'insertDate', title: '插入时间', width: 120},
             {field: 'openDate', title: '开卡日期', width: 120},
+            {field: 'note', title: '备注', width: 120},
         ]],
         toolbar: kcJs.fn.getFunctions(),
         url: kcJs.fn.getContextPath() + '/simcard/list',
@@ -468,7 +475,7 @@
         $('#doBatchDialog').dialog({
             modal: true,
             width: 800,
-            height: 350,
+            height: 370,
             cache: false,
             title: '批量修改',
         });

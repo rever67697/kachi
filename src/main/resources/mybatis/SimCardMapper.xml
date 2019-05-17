@@ -344,6 +344,9 @@
 			<if test="departmentId!=null">
 				departmentId=#{departmentId,jdbcType=INTEGER},
 			</if>
+			<if test="note!=null and note != ''">
+				note=#{note,jdbcType=VARCHAR},
+			</if>
 		</set>
 		where id in 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
