@@ -117,7 +117,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 页面查询列表
 	 */
 	@Override
-	public ResultList getSimCardList(SimCardDTO simCard,Integer dateType,Integer outDate,Date startDate,Date endDate,Integer forAppoint, Integer cpStatus,int page,int rows) {
+	public ResultList getSimCardList(SimCardDTO simCard,int page,int rows) {
 		PageHelper.startPage(page, rows);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
@@ -128,14 +128,16 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("countryCode",simCard.getCountryCode());
 		map.put("operatorCode",simCard.getOperatorCode());
 		map.put("cStatus",simCard.getcStatus());
-		map.put("dateType",dateType);
-		map.put("outDate",outDate);
-		map.put("startDate",startDate);
-		map.put("endDate",endDate);
+		map.put("dateType",simCard.getDateType());
+		map.put("outDate",simCard.getOutDate());
+		map.put("startDate",simCard.getStartDate());
+		map.put("endDate",simCard.getEndDate());
 		map.put("packageId",simCard.getPackageId());
 		map.put("iccid",simCard.getIccid());
-		map.put("forAppoint",forAppoint);
-		map.put("cpStatus",cpStatus);
+		map.put("forAppoint",simCard.getForAppoint());
+		map.put("cpStatus",simCard.getCpStatus());
+		map.put("overFlow",simCard.getOverFlow());
+
 		List<SimCard> list = simCardDao.getSimCardList(map);
 
 		PageInfo<SimCard> pageInfo = new PageInfo<SimCard>(list);
@@ -146,7 +148,7 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 	 * 页面导出excel
 	 */
 	@Override
-	public File getCsv(SimCardDTO simCard,Integer dateType,Integer outDate, Date startDate, Date endDate,Integer cpStatus) throws  Exception{
+	public File getCsv(SimCardDTO simCard) throws  Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("departmentId", simCard.getDepartmentId());
 		map.put("dId", CommonUtil.getDId());
@@ -156,13 +158,14 @@ public class SimCardServiceImpl extends BaseService implements SimCardService {
 		map.put("countryCode",simCard.getCountryCode());
 		map.put("operatorCode",simCard.getOperatorCode());
 		map.put("cStatus",simCard.getcStatus());
-		map.put("dateType",dateType);
-		map.put("outDate",outDate);
-		map.put("startDate",startDate);
-		map.put("endDate",endDate);
+		map.put("dateType",simCard.getDateType());
+		map.put("outDate",simCard.getOutDate());
+		map.put("startDate",simCard.getStartDate());
+		map.put("endDate",simCard.getEndDate());
 		map.put("packageId",simCard.getPackageId());
 		map.put("iccid",simCard.getIccid());
-		map.put("cpStatus",cpStatus);
+		map.put("cpStatus",simCard.getCpStatus());
+		map.put("overFlow",simCard.getOverFlow());
 
 
 		Field[] fields = SimCard.class.getDeclaredFields();

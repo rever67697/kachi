@@ -7,6 +7,7 @@ import java.util.Date;
 /**
  * @Author : wuzhiheng
  * @Description : 这个实体类主要使用作simcard批量更新时作参数的判断，用Integer不用int，可以判断前端有没有传参数
+ *                  同时作用于simcard页面传参查询
  * @Date Created in 上午9:19 2018/4/13
  */
 public class SimCardDTO {
@@ -72,7 +73,6 @@ public class SimCardDTO {
 
     private Integer cStatus;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date openDate;//开卡日期
 
     private Integer departmentId;//部门id
@@ -80,6 +80,21 @@ public class SimCardDTO {
     private String groupPref;//分组
 
     private String note;//备注
+
+    private Integer dateType;   //页面有三个日期字段
+    private Integer outDate;    //expireDate是否过期
+    private Date startDate;
+    private Date endDate;
+    private Integer forAppoint; //过滤有卡池编号的卡
+    private Integer overFlow;   //是否超流量
+
+
+
+
+
+
+
+
 
     public Integer getId() {
         return id;
@@ -345,5 +360,53 @@ public class SimCardDTO {
 
     public void setcStatus(Integer cStatus) {
         this.cStatus = cStatus;
+    }
+
+    public Integer getDateType() {
+        return dateType;
+    }
+
+    public void setDateType(Integer dateType) {
+        this.dateType = dateType;
+    }
+
+    public Integer getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(Integer outDate) {
+        this.outDate = outDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Integer getForAppoint() {
+        return forAppoint;
+    }
+
+    public void setForAppoint(Integer forAppoint) {
+        this.forAppoint = forAppoint;
+    }
+
+    public Integer getOverFlow() {
+        return overFlow;
+    }
+
+    public void setOverFlow(Integer overFlow) {
+        this.overFlow = overFlow;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team.dao.SimCardDao">
-	
+
 	<sql id="dId">
 		<if test="dId != null">
 			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
@@ -13,8 +13,8 @@
 		from m_simcard r
 		where cpid=#{cpId,jdbcType=INTEGER}
 		order by cpchannelId
-	</select> 
-	
+	</select>
+
 	<select id="getPackageExist" resultType="String">
 		select '1' result from dual where 
 		exists (select 1 from m_simcard r where r.packageid=#{packageId,jdbcType=INTEGER})
@@ -27,12 +27,12 @@
 			#{item,jdbcType=INTEGER}
 		</foreach>
 	</select>
-	
+
 	<select id="getByPool" resultType="com.team.model.SimCard">
 		select * from m_simcard
 		where cpId=#{cpId,jdbcType=INTEGER}
 	</select>
-	
+
 	<select id="getSimCardList" parameterType="java.util.Map" resultType="com.team.model.SimCard">
 			select r.*
 				   ,t.name packageName
@@ -117,6 +117,16 @@
 			<if test="cpStatus!=null">
 				and r.cpStatus = #{cpStatus,jdbcType=INTEGER}
 			</if>
+            <if test="overFlow!=null">
+                <choose>
+                    <when test="overFlow==1">
+                        and f.residueFlow &lt; 0
+                    </when>
+                    <otherwise>
+                        and f.residueFlow >= 0
+                    </otherwise>
+                </choose>
+            </if>
 			<include refid="dId"></include>
 			order by r.cpid,r.cpchannelid
 	</select>
@@ -233,6 +243,16 @@
 		<if test="cpStatus!=null">
 			and r.cpStatus = #{cpStatus,jdbcType=INTEGER}
 		</if>
+        <if test="overFlow!=null">
+            <choose>
+                <when test="overFlow==1">
+                    and f.residueFlow &lt; 0
+                </when>
+                <otherwise>
+                    and f.residueFlow >= 0
+                </otherwise>
+            </choose>
+        </if>
 		<include refid="dId"></include>
 		order by r.cpid,r.cpchannelid
 	</select>
@@ -250,29 +270,29 @@
 		where 1=1
 		<include refid="dId"></include>
 	</select>
-	
+
 	<delete id="deleteSimCard" parameterType="java.util.List">
 		delete from m_simcard
 		where status=4
 		  and id in(<foreach collection="list" item="item" separator=",">#{item,jdbcType=INTEGER}</foreach>)
 	</delete>
-	
+
 	<update id="updateCardDept" parameterType="com.team.model.SimPool">
 		update m_simcard
 		set departmentId=#{departmentId,jdbcType=INTEGER}  
 		where cpId = #{spid,jdbcType=INTEGER}
 	</update>
-	
+
 	<update id="updateCardStatus" parameterType="java.util.List">
-		update m_simcard 
-		set status=2 
+		update m_simcard
+		set status=2
 		where id in (
 		<foreach collection="list" item="item" separator=",">
 			#{item,jdbcType=INTEGER}
 		</foreach>
 		)
 	</update>
-	
+
 	<update id="updateStatusByImsi" parameterType="java.util.Map">
 		update m_simcard
 		set status=#{status,jdbcType=INTEGER}
@@ -304,13 +324,13 @@
 			departmentId = #{departmentId,jdbcType=INTEGER}
 		where id=#{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<update id="resetStatus" parameterType="com.team.model.ReadyTerminalSim">
 		update m_simcard
 		set status = #{lastStatus,jdbcType=INTEGER}
 		where imsi = #{imsi,jdbcType=BIGINT}
 	</update>
-	
+
 	<update id="batchUpdate" parameterType="java.util.Map">
 		update m_simcard
 		<set>
@@ -348,12 +368,12 @@
 				note=#{note,jdbcType=VARCHAR},
 			</if>
 		</set>
-		where id in 
+		where id in
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item,jdbcType=INTEGER}
 		</foreach>
 	</update>
-	
+
 	<select id="getByImsi" resultType="com.team.model.SimCard">
 		select * from m_simcard
 		where imsi=#{imsi,jdbcType=BIGINT}
@@ -363,7 +383,7 @@
 		select * from m_simcard
 		where id=#{id,jdbcType=INTEGER}
 	</select>
-	
+
 	<select id="getByPackage" resultType="com.team.model.SimCard">
 		select * from m_simcard
 		where packageId=#{packageId,jdbcType=INTEGER}
@@ -374,7 +394,7 @@
 		tempImei = #{tempImei,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<select id="getProblemCard" resultType="com.team.model.SimCard">
 		select *
 		from m_simcard
