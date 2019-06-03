@@ -87,7 +87,7 @@
 			  <tr><th>是否支持VPN：</th><td><select class="fill-noYes" name="usedVpn"></select></td><th>是否支持软卡：</th><td><select class="fill-noYes" name="usedSoft"></select></td></tr>
 			  <tr><th>所属部门：</th><td><select name="departmentId" class="easyui-validatebox" required="true"></select></td><th>WCDMA的MEID：</th><td><input name="meid"/></td></tr>
 			  <tr><th>sendNewSSID：</th><td><input name="sendNewSSID"/></td><th>sendWiFiPass：</th><td><input name="sendWiFiPass"/></td></tr>
-			  <tr><th>每日最大流量KB：</th><td><input name="maxDayData"/></td><th>超过最大流量后限速速率Kbps：</th><td><input name="daySpeedLimit" /></td></tr>
+			  <tr><th>每日最大流量GB：</th><td><input name="maxDayData"/></td><th>超过最大流量后限速速率Kbps：</th><td><input name="daySpeedLimit" /></td></tr>
 			  <tr style="height:10px"></tr>
 			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
 		  </table>
@@ -329,6 +329,9 @@
   		var selectRows = $('#dg').datagrid("getSelections");
   		if (selectRows.length > 0 && selectRows.length == 1) {
              var rowData = $('#dg').datagrid("getSelected");
+
+             rowData.maxDayData = rowData.maxDayData ? (rowData.maxDayData / 1024 / 1024).toFixed(2) : rowData.maxDayData;
+			//12240001 2000000
              kcJs.fn.autoFillData($('#doDialog'),rowData);
              $('#doDialog').dialog({title:'修改终端'});
              $('#doDialog').dialog('open');
@@ -435,6 +438,12 @@
   		if($('#doForm').form('validate')){
   			$('#doDialog').dialog('close');
   			$('#dg').datagrid('loading');
+			var maxDayData = $('#doForm [name=maxDayData]').val();
+
+			if(maxDayData){
+				$('#doForm [name=maxDayData]').val(parseInt(maxDayData * 1024 * 1024));
+			}
+
   			$.post(kcJs.fn.getContextPath()+'/terminal/save',$('#doForm').serializeObject(),function(data){
   				if(data){
 	    			$.messager.alert('提示',data.msg,'info');
