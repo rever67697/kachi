@@ -49,7 +49,7 @@ public class LoginFilter implements Filter{
 		if(user == null){
 			boolean ok = false;
 			for (String string : noFilterPath.split(";")) {
-				if(request.getRequestURI().endsWith(string)){
+				if(request.getRequestURI().matches(".*"+string+"$")){
 					ok = true;
 					break;
 				}
