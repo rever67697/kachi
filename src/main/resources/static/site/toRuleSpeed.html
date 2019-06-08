@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>限速配置</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/default/easyui.css" rel="stylesheet" title="blue"/>
+	<link rel="stylesheet" type="text/css" href="../css/easyui/themes/icon.css"/>
+	<script type="text/javascript" src="../js/jquery-1.6.3.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+  </head>
+
+  <body id="main-layout" class="easyui-layout" style="overflow-y: hidden"  scroll="no">
+
+  <div region="north" id="northDiv" style="height:45px;padding-left:2px;overflow-y:hidden;background:#FFF;" border="false">
+	  <form id="queryForm">
+		  <table class="table">
+			  <tr>
+				  <th>所属部门：</th><td><select name="departmentId"><option value="">全部</option></select></td>
+				  <td><a id="search_btn" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doQuery()">查 询</a></td>
+			  </tr>
+		  </table>
+	  </form>
+  </div>
+  <div region="center" title="" style="overflow:hidden;background:#FFF;padding-left:2px" border="false">
+	  <table id="dg" ></table>
+  </div>
+
+  <div id="doDialog" closed="true" style="padding:10px;overflow:hidden;background:#FFF;" iconCls="icon-user">
+	  <form id="doForm">
+		  <input type="hidden" name="id"/>
+		  <table class="table">
+			  <tr><th>部门：</th><td><select name="departmentId"></select></td></tr>
+			  <tr><th>每月最大流量GB：</th><td><input name="maxData"/></td></tr>
+			  <tr><th>每月限制速度kbps：</th><td><input name="speedLimit"/></td></tr>
+			  <tr><th>每日最大流量GB：</th><td><input name="maxDayData" /></td></tr>
+			  <tr><th>每日限制速度kbps：</th><td><input name="daySpeedLimit"/></td></tr>
+			  <tr style="height:10px"></tr>
+			  <tr><td colspan="4" align="center" class="noborder"><a  class="easyui-linkbutton" iconCls="icon-ok" plain="true" onclick="saveData()">提 交</a></td></tr>
+		  </table>
+	  </form>
+  </div>
+
+  </body>
+
+  <script type="text/javascript">
+  	var options={
+			title:'限速配置列表',
+			queryParams:$('#queryForm').serializeObject(),
+			columns:[[
+						{field:'ck',checkbox:true}, 
+			         	{field:'id',title:'id',hidden:true},
+			         	{field:'maxData',title:'每月最大流量GB',width:150,formatter:function(value,rowData,idx){
+							rowData.maxData = rowData.maxData ? (rowData.maxData / 1024 / 1024).toFixed(2) : rowData.maxData;
+							return rowData.maxData;
+						}},
+			         	{field:'speedLimit',title:'每月限制速度kbps',width:150},
+			         	{field:'maxDayData',title:'每日最大流量GB',width:150,formatter:function(value,rowData,idx){
+			         		rowData.maxDayData = rowData.maxDayData ? (rowData.maxDayData / 1024 / 1024).toFixed(2) : rowData.maxDayData;
+			         		return rowData.maxDayData;
+						}},
+			         	{field:'daySpeedLimit',title:'每日限制速度kbps',width:150},
+                		{field:'departmentName',title:'部门',width:200},
+					]],
+			toolbar: kcJs.fn.getFunctions(),
+			url:kcJs.fn.getContextPath()+'/ruleSpeed/list',
+			iconCls:'icon-tip',
+			nowrap:false,
+			pagination:true,
+			pageList:[20,30,50],
+			rownumbers:true,
+			scrollbarSize:0,
+			striped:true,
+			singleSelect:true,
+			fit:true,
+		};
+		
+  
+	$(function(){
+		doQuery();
+		
+		$('#doDialog').dialog({
+			modal : true,
+   			width:400,
+   			height:280,
+   			cache: false,
+			title : "新增"
+		});
+		
+		kcJs.fn.initSelect({"container":$('[name=departmentId]'),"url":'getDepartmentDic',"needNull":false,"append":true});
+	});
+	
+	function doQuery(){
+  		options.queryParams = $('#queryForm').serializeObject();
+  		$('#dg').datagrid(options);
+  	}
+
+  	function doAdd() {
+		$('#doForm')[0].reset();
+		$('#doForm [name=id]').val('');
+		$('#doDialog').dialog({title:'新增'});
+		$('#doDialog').dialog('open');
+	}
+
+	function doModify() {
+		var selectRows = $('#dg').datagrid("getSelections");
+		if (selectRows.length > 0 && selectRows.length == 1) {
+
+			var rowData = selectRows[0];
+			kcJs.fn.autoFillData('#doForm',rowData);
+
+			$('#doDialog').dialog({title:'修改'});
+			$('#doDialog').dialog('open');
+
+		}else {
+			$.messager.alert("提示", "请选择一条信息", "info");
+		}
+	}
+  
+  	function doDelete(){
+  		var selectRows = $('#dg').datagrid("getSelections");
+        if (selectRows.length > 0 && selectRows.length == 1) {
+			$('#dg').datagrid('loading');
+			var rowData = selectRows[0];
+			$.post(kcJs.fn.getContextPath()+'/ruleSpeed/delete',rowData,function(data){
+				if(data && data.code && data.code == '200'){
+					doQuery();
+				}else{
+					$('#dg').datagrid('loaded');
+				}
+				$.messager.alert("提示", data.msg, "info");
+			},'json');
+        }else {
+            $.messager.alert("提示", "请选择一条信息", "info");
+        }
+  	}
+
+	function saveData() {
+		$('#dg').datagrid('loading');
+
+		var maxData = $('#doForm [name=maxData]').val();
+		var maxDayData = $('#doForm [name=maxDayData]').val();
+
+		if(maxData){
+			$('#doForm [name=maxData]').val(parseInt(maxData * 1024 * 1024));
+		}
+		if(maxDayData){
+			$('#doForm [name=maxDayData]').val(parseInt(maxDayData * 1024 * 1024));
+		}
+
+		$.post(kcJs.fn.getContextPath()+'/ruleSpeed/save',$('#doForm').serializeObject(),function (data) {
+			$.messager.alert('提示',data.msg);
+			$('#dg').datagrid('loaded');
+			if(data.code=='200'){
+				$('#doDialog').dialog('close');
+				doQuery();
+			}
+		},'json');
+	}
+  </script>
+</html>

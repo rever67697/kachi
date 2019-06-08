@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.dao.RuleSpeedDao">
+
+	<sql id="dId">
+		<if test="dId != null">
+			and (d.id=#{dId,jdbcType=INTEGER} or d.parentid=#{dId,jdbcType=INTEGER})
+		</if>
+	</sql>
+
+	<select id="list" resultType="com.team.model.RuleSpeed" parameterType="java.util.Map">
+		select r.*,d.name departmentName
+		from m_rule_speed r,m_department d
+		<where>
+			r.departmentId = d.id
+			<if test="departmentId != null">
+				and r.departmentId = #{departmentId,jdbcType=INTEGER}
+			</if>
+			<include refid="dId"/>
+		</where>
+		order by d.id
+	</select>
+
+	<insert id="save" parameterType="com.team.model.RuleSpeed">
+		insert into m_rule_speed
+		(departmentId,maxData,speedLimit,maxDayData,daySpeedLimit)
+		select
+			#{departmentId,jdbcType=INTEGER},
+			#{maxData,jdbcType=BIGINT},
+			#{speedLimit,jdbcType=INTEGER},
+			#{maxDayData,jdbcType=BIGINT},
+			#{daySpeedLimit,jdbcType=INTEGER}
+		from dual
+		where not exists(select 1 from m_rule_speed where departmentId = #{departmentId,jdbcType=INTEGER})
+	</insert>
+
+	<update id="update" parameterType="com.team.model.RuleSpeed">
+		update m_rule_speed
+		set maxData = #{maxData,jdbcType=BIGINT},
+			speedLimit = #{speedLimit,jdbcType=INTEGER},
+			maxDayData = #{maxDayData,jdbcType=BIGINT},
+			daySpeedLimit = #{daySpeedLimit,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete">
+		delete from m_rule_speed
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>
