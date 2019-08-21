@@ -21,7 +21,7 @@ public class MD5Utils {
 	}
 	public static void main(String[] args) {
 		System.out.println(System.currentTimeMillis());
-		String d = encrypt("888888");
+		String d = encrypt("1001v2.1.0MD5a1b2c31385345938378");
 //		String a = encrypt("123456");
 		System.out.println(d);
 //		System.out.println(d.equals("1f82c942befda29b6ed487a51da199f78fce7f05"));

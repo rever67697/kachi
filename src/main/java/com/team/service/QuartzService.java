@@ -61,7 +61,8 @@ public class QuartzService extends BaseService {
         //关闭或者开启任务  1-开启
         if (quartzCron.getStatusProblemcard() == 1) {
 
-            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), "trigger-handleProblemcard");
+            //这里triggerName和jobName保持了一致
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), jobDetailhandleProblemcard.getKey().getName());
 
             scheduler.pauseJob(jobDetailhandleProblemcard.getKey());
             scheduler.deleteJob(jobDetailhandleProblemcard.getKey());
@@ -76,7 +77,7 @@ public class QuartzService extends BaseService {
         //关闭或者开启任务  1-开启
         if (quartzCron.getStatusMsg() == 1) {
 
-            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), "trigger-sendMsg");
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), jobDetailSendMsg.getKey().getName());
             scheduler.pauseJob(jobDetailSendMsg.getKey());
             scheduler.deleteJob(jobDetailSendMsg.getKey());
             scheduler.scheduleJob(jobDetailSendMsg, trigger);
@@ -87,7 +88,7 @@ public class QuartzService extends BaseService {
     }
 
     private void scheduleStatTerminal(QuartzCron quartzCron) throws SchedulerException{
-        Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?", "trigger-statTerminal");
+        Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?",jobDetailStatTerminal.getKey().getName() );
 
         scheduler.pauseJob(jobDetailStatTerminal.getKey());
         scheduler.deleteJob(jobDetailStatTerminal.getKey());
@@ -111,7 +112,7 @@ public class QuartzService extends BaseService {
         if (quartzCron.getStatusMsg() == 1) {
             System.out.println("========启动jobDetail-sendMsg============");
 
-            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), "trigger-sendMsg");
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getMsgCronstr(), jobDetailSendMsg.getKey().getName());
 
             scheduler.scheduleJob(jobDetailSendMsg,trigger);
         }
@@ -120,7 +121,7 @@ public class QuartzService extends BaseService {
         if (quartzCron.getStatusProblemcard() == 1) {
             System.out.println("========启动jobDetail-handleProblemcard=============");
 
-            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), "trigger-handleProblemcard");
+            Trigger trigger = JobManager.me().buildTrigger(quartzCron.getProblemcardCronstr(), jobDetailhandleProblemcard.getKey().getName());
 
             scheduler.scheduleJob(jobDetailhandleProblemcard,trigger);
         }
@@ -129,7 +130,7 @@ public class QuartzService extends BaseService {
         if(isStatTerminal){
             System.out.println("========启动jobDetail-statTerminal=============");
 
-            Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?", "trigger-statTerminal");
+            Trigger trigger = JobManager.me().buildTrigger("0 */"+quartzCron.getStatTerminalMinute()+" * * * ?", jobDetailStatTerminal.getKey().getName());
 
             scheduler.scheduleJob(jobDetailStatTerminal,trigger);
         }

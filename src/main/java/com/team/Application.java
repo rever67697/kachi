@@ -73,11 +73,11 @@ public class Application implements CommandLineRunner {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = null;
                 try {
-                    date = sdf.parse((String) source);
+                    date = sdf.parse(source);
                 } catch (ParseException e) {
                      sdf = new SimpleDateFormat("yyyy-MM-dd");
                     try {
-                        date = sdf.parse((String) source);
+                        date = sdf.parse(source);
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
@@ -89,18 +89,18 @@ public class Application implements CommandLineRunner {
     }
 
     /**
-     * 文件上传配置
+     * 文件上传配置 在yml里面可以设置
      * @return
      */
-    @Bean
-    public MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        //单个文件最大
-        factory.setMaxFileSize("50MB"); //KB,MB
-        /// 设置总上传数据总大小
-        factory.setMaxRequestSize("50MB");
-        return factory.createMultipartConfig();
-    }
+//    @Bean
+//    public MultipartConfigElement multipartConfigElement() {
+//        MultipartConfigFactory factory = new MultipartConfigFactory();
+//        //单个文件最大
+//        factory.setMaxFileSize("50MB"); //KB,MB
+//        /// 设置总上传数据总大小
+//        factory.setMaxRequestSize("50MB");
+//        return factory.createMultipartConfig();
+//    }
 
 
         /**

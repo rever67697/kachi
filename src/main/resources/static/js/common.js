@@ -17,7 +17,8 @@ var kcJs =
             "2": ["指定", v_colors.green],
             "3": ["待激活", v_colors.orange],
             "4": ["作废", v_colors.gray],
-            "5": ["休眠", v_colors.black]
+            "5": ["休眠", v_colors["light-blue"]],
+            "6": ["无卡", v_colors.black]
         };
         //sim卡的使用状态
         var u_status = {

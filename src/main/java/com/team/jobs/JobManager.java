@@ -3,9 +3,6 @@ package com.team.jobs;
 import org.quartz.*;
 import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
-
-import java.text.ParseException;
 
 /**
  * @Author : wuzhiheng
@@ -14,9 +11,9 @@ import java.text.ParseException;
  */
 public class JobManager {
 
-    public static String JOB_GROUP_NAME = "kachi-job";
+//    public static String JOB_GROUP_NAME = "kachi-job";
 
-    public static String TRIGGER_GROUP_NAME = "kachi-trigger";
+//    public static String TRIGGER_GROUP_NAME = "kachi-trigger";
 
     private static JobManager jobManager = new JobManager();
 
@@ -30,7 +27,7 @@ public class JobManager {
     public JobDetail buildJobDetail(Class<? extends Job> task, String jobName){
         JobDetailImpl jobDetail = new JobDetailImpl();
         jobDetail.setName(jobName);
-        jobDetail.setGroup(JOB_GROUP_NAME);
+//        jobDetail.setGroup(JOB_GROUP_NAME);
         jobDetail.setJobClass(task);
         return jobDetail;
     }
@@ -40,7 +37,7 @@ public class JobManager {
         try {
             trigger.setCronExpression(cronExpression);
             trigger.setName(triggerName);
-            trigger.setGroup(TRIGGER_GROUP_NAME);
+//            trigger.setGroup(TRIGGER_GROUP_NAME);
 
             //关联一个job
 //            trigger.setJobName("");
@@ -58,7 +55,7 @@ public class JobManager {
         try {
             trigger.setCronExpression(cronExpression);
             trigger.setName(triggerName);
-            trigger.setGroup(TRIGGER_GROUP_NAME);
+//            trigger.setGroup(TRIGGER_GROUP_NAME);
 
             //关联一个job
             trigger.setJobKey(jobKey);
@@ -69,6 +66,5 @@ public class JobManager {
 
         return trigger;
     }
-
 
 }
