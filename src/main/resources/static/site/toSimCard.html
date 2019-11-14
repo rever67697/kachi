@@ -32,7 +32,7 @@
                         <div>卡总数</div>
                     </td>
                     <td>
-                        <div class="kc-outline-number ligh-blue" id="onCardCount"></div>
+                        <div class="kc-outline-number blue" id="onCardCount"></div>
                         <div>正常卡数</div>
                     </td>
                     <td>
@@ -53,7 +53,10 @@
                         <div class="kc-outline-number gray" id="offCardCount"></div>
                         <div>作废卡数</div>
                     </td>
-                    <td></td>
+                    <td>
+                        <div class="kc-outline-number ligh-blue" id="sleepCardCount"></div>
+                        <div>休眠卡数</div>
+                    </td>
                     <td></td>
                 </tr>
             </table>
@@ -655,6 +658,7 @@
                 $('#appointCardCount').text(info.appointCardCount);
                 $('#readCardCount').text(info.readCardCount);
                 $('#offCardCount').text(info.offCardCount);
+                $('#sleepCardCount').text(info.sleepCardCount);
             }
         }, 'json');
     }

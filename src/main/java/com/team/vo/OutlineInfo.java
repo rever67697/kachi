@@ -29,6 +29,8 @@ public class OutlineInfo implements Serializable{
 	
 	private int offCardCount;//作废卡数4
 
+	private int sleepCardCount;//休眠卡数5
+
 	public int getReadCardCount() {
 		return readCardCount;
 	}
@@ -108,7 +110,12 @@ public class OutlineInfo implements Serializable{
 	public void setStopCardCount(int stopCardCount) {
 		this.stopCardCount = stopCardCount;
 	}
-	
-	
-	
+
+	public int getSleepCardCount() {
+		return sleepCardCount;
+	}
+
+	public void setSleepCardCount(int sleepCardCount) {
+		this.sleepCardCount = sleepCardCount;
+	}
 }
