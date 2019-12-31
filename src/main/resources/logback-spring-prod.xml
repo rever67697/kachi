@@ -54,4 +54,6 @@
         <appender-ref ref="fileErrorLog" />
     </root>
 
+    <!--<logger name="com.phfund" level="debug"/>-->
+
 </configuration>
