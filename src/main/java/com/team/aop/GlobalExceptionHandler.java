@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 		}
 		response.setContentType("application/json;charset=utf-8");
 		response.getWriter().write(new ObjectMapper().writeValueAsString(returnMsg));
-		return "";
+		return null;
 //		return returnMsg;
 	}
 
