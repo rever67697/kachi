@@ -195,14 +195,26 @@ var kcJs =
             },
             //给指定容器下的输入框自动填充数值
             autoFillData: function (container, data) {
-                if(!data)
-                    return;
+                if (!data)
+                return;
 
-                var _this = this;
-                $(':input', $(container)).each(function (i, o) {
+                $(':input:not(:radio,:checkbox)', $(container)).each(function (i, o) {
                     var name = this.name;
                     if (name && data[name] + '') {
                         $(this).val(data[name]);
+                    }
+                });
+
+                $(':radio', $(container)).each(function (i, o) {
+                    var name = this.name;
+                    if (name && (data[name] + '') && this.value == data[name]) {
+                        this.checked = true;
+                    }
+                });
+                $(':checkbox', $(container)).each(function (i, o) {
+                    var name = this.name;
+                    if (name && data[name] && data[name].split(',').indexOf(this.value) > -1) {
+                        this.checked = true;
                     }
                 });
             },
