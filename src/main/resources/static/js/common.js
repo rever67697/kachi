@@ -207,13 +207,15 @@ var kcJs =
 
                 $(':radio', $(container)).each(function (i, o) {
                     var name = this.name;
+                    this.checked = false;
                     if (name && (data[name] + '') && this.value == data[name]) {
                         this.checked = true;
                     }
                 });
                 $(':checkbox', $(container)).each(function (i, o) {
                     var name = this.name;
-                    if (name && data[name] && data[name].split(',').indexOf(this.value) > -1) {
+                    this.checked = false;
+                    if (name && data[name] && (data[name]+'').split(',').indexOf(this.value) > -1) {
                         this.checked = true;
                     }
                 });
