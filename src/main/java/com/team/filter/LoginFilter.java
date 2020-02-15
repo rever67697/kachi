@@ -49,7 +49,7 @@ public class LoginFilter implements Filter{
 		if(user == null){
 			boolean ok = false;
 			for (String string : noFilterPath.split(";")) {
-				if(request.getRequestURI().matches(".*"+string+"$")){
+				if(request.getServletPath().matches(".*"+string+"$")){
 					ok = true;
 					break;
 				}
@@ -83,7 +83,7 @@ public class LoginFilter implements Filter{
 	//过滤html
 	private boolean validPath(HttpServletRequest request){
 
-		String uri = request.getRequestURI().replace(request.getContextPath(), "");
+		String uri = request.getServletPath();
 		if(!uri.endsWith("html"))
 			return true;
 
